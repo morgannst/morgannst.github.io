@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Image Gallery - MINI App</title>
+  <meta name="description" content="View your uploaded images." />
+  <meta name="author" content="iton5" />
+  <meta property="og:title" content="View your uploaded images-iton5-thailand" />
+  <meta property="og:description" content="View your uploaded images-MINI App" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://lh3.googleusercontent.com/d/1Ck_OCfEW4dEp3A1k9yfQplYmW7qmwzFF" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+   
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap');
+    body { 
+        font-family: 'Prompt', sans-serif; 
+        background: linear-gradient(180deg, #F0F2F5 0%, #D8DAE2 100%); 
+        color: #1F2937; 
+    }
+    
+    .shadow-instagram {
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08), 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .shadow-light {
+        box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    
+    .btn-primary { 
+        background: linear-gradient(45deg, #FF6B6B, #FFB86B); 
+        color: white;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(255,107,107,0.3);
+    }
+    .btn-primary:hover { 
+        transform: translateY(-2px); 
+        box-shadow: 0 8px 20px rgba(255,107,107,0.4);
+    }
+    
+    .btn-share { 
+        background: linear-gradient(45deg, #10B981, #34D399); 
+        color: white;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(16,185,129,0.3);
+    }
+    .btn-share:hover { 
+        transform: translateY(-2px); 
+        box-shadow: 0 8px 20px rgba(16,185,129,0.4);
+    }
+
+    
+    .swal2-popup { 
+        background-color: #FFFFFF !important; 
+        border-radius: 1.5rem !important; 
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1), 0 5px 10px rgba(0,0,0,0.05) !important;
+    }
+    .swal2-title { color: #1F2937 !important; font-weight: 600 !important; }
+    .swal2-html-container img { border-radius: 1rem; }
+    .swal2-cancel { 
+        background-color: #E5E7EB !important; 
+        color: #4B5563 !important; 
+        border-radius: 0.75rem !important;
+    }
+    .swal2-styled.swal2-confirm { margin-left: 0.5rem !important; } 
+
+    .image-item {
+        position: relative;
+        overflow: hidden;
+        border-radius: 0.75rem; 
+        background-color: #E5E7EB;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
+    }
+    .image-item::before {
+        content: '';
+        display: block;
+        padding-top: 100%; 
+    }
+    .image-item img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+    .image-item:hover img {
+        transform: scale(1.05); 
+    }
+    
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+    #loading-overlay { 
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+      background-color: rgba(255, 255, 255, 0.9); backdrop-filter: blur(8px); 
+      display: none; justify-content: center; align-items: center; 
+      z-index: 9999; flex-direction: column; gap: 1rem; 
+    }
+    #profile-picture {
+        border-radius: 50%;
+        border: 4px solid white; 
+        box-shadow: 0 6px 20px rgba(0,0,0,0.15); 
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <div id="loading-overlay">
+    <img src="https://developers.line.biz/media/line-mini-app/LINE_spinner_light.svg" alt="Loading..." class="w-16 h-16">
+    <p id="loading-text" class="text-lg text-gray-600">กำลังโหลด...</p>
+  </div>
+
+  <div class="container mx-auto max-w-lg bg-white rounded-t-3xl shadow-instagram min-h-screen">
+    <header class="p-4 flex items-center justify-between border-b border-gray-100">
+        <h2 class="text-lg font-semibold text-gray-800">Profile</h2>
+    </header>
+
+    <div id="profile-header" class="text-center py-8 flex flex-col items-center gap-4 fade-in" style="visibility: hidden;">
+        <img id="profile-picture" src="https://placehold.co/128x128/E5E7EB/9CA3AF?text=User" alt="Profile Picture" class="w-28 h-28 rounded-full shadow-lg">
+        <h1 id="display-name" class="text-2xl font-bold text-gray-800">Display Name</h1>
+    </div>
+
+    <div class="px-4 pb-8">
+        <h3 class="text-xl font-bold mb-4 text-gray-800">My Photos</h3>
+        <main id="image-grid" class="grid grid-cols-3 gap-2">
+          </main>
+        
+        <div id="load-more-container" class="text-center mt-8" style="display: none;">
+            <button id="load-more-btn" class="btn-primary font-bold py-3 px-8 rounded-full shadow-instagram">
+                โหลดเพิ่มเติม
+            </button>
+        </div>
+
+        <div id="no-images-message" class="text-center text-gray-500 p-8" style="display: none;">
+            <p>ไม่พบรูปภาพในคอลเลกชันของคุณ</p>
+        </div>
+    </div>
+  </div>
+
+  <script type="module">
+    const LIFF_ID = "2008276127-wBplmxWo";
+    const SUPABASE_URL = "https://irlsgwnkyjcmgjcnbtqk.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlybHNnd25reWpjbWdqY25idHFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAyNzU5NzMsImV4cCI6MjA3NTg1MTk3M30.2oDM6Z2pjP5Ga5u-0RCitcbAzNbgJ56qTLDzgDdq4Jo";
+
+    const { createClient } = supabase;
+    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
+    
+    const loadingOverlay = document.getElementById('loading-overlay');
+    const loadingText = document.getElementById('loading-text');
+    const profileHeader = document.getElementById('profile-header');
+    const profilePicture = document.getElementById('profile-picture');
+    const displayName = document.getElementById('display-name');
+    const imageGrid = document.getElementById('image-grid');
+    const loadMoreContainer = document.getElementById('load-more-container');
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    const noImagesMessage = document.getElementById('no-images-message');
+
+    let currentUserId = null;
+    let imageOffset = 0;
+    let isLoading = false;
+    let hasMoreImages = true;
+
+    const showLoading = (text = 'กำลังโหลด...') => {
+        loadingText.textContent = text;
+        loadingOverlay.style.display = 'flex';
+    };
+    const hideLoading = () => {
+        loadingOverlay.style.display = 'none';
+    };
+    const showToast = (icon, title) => {
+        Swal.fire({
+            icon: icon, title: title, toast: true, position: 'top-end',
+            showConfirmButton: false, timer: 3000, timerProgressBar: true,
+            customClass: { 
+                popup: 'swal2-popup', 
+                title: 'swal2-title', 
+                confirmButton: 'btn-primary', 
+                cancelButton: 'swal2-cancel' 
+            }
+        });
+    };
+
+    async function shareImageWithLiff(imageUrl) {
+        if (!liff.isApiAvailable('shareTargetPicker')) {
+            showToast('error', 'เบราว์เซอร์ของคุณไม่รองรับการแชร์');
+            return;
+        }
+        try {
+            const imageMessage = {
+                type: 'image',
+                originalContentUrl: imageUrl,
+                previewImageUrl: imageUrl,
+            };
+            const result = await liff.shareTargetPicker([imageMessage]);
+            if (result) {
+                showToast('success', 'แชร์รูปภาพสำเร็จ!');
+            }
+        } catch (err) {
+            console.error('Share failed:', err);
+            showToast('error', `การแชร์ล้มเหลว: ${err.message}`);
+        }
+    }
+
+    function showImageOptions(imageUrl) {
+        Swal.fire({
+            title: 'ตัวเลือกรูปภาพ',
+            html: `
+                <img src="${imageUrl}" class="w-full max-w-xs mx-auto rounded-lg mb-4 shadow-light">
+                <div class="flex justify-center gap-4">
+                    <button id="swal-view-btn" class="btn-primary font-bold py-2 px-6 rounded-lg">ดูภาพ</button>
+                    <button id="swal-share-btn" class="btn-share font-bold py-2 px-6 rounded-lg">แชร์</button>
+                </div>
+            `,
+            showConfirmButton: false,
+            showCancelButton: true,
+            cancelButtonText: 'ยกเลิก',
+            customClass: { 
+                popup: 'swal2-popup', 
+                title: 'swal2-title', 
+                confirmButton: 'btn-primary', 
+                cancelButton: 'swal2-cancel' 
+            },
+            didOpen: () => {
+                document.getElementById('swal-view-btn').addEventListener('click', () => {
+                    Swal.close();
+                    Swal.fire({
+                        imageUrl: imageUrl,
+                        imageAlt: 'Full size image',
+                        showConfirmButton: false,
+                        background: 'transparent',
+                        backdrop: 'rgba(0,0,0,0.8)',
+                        customClass: {
+                            popup: 'swal2-popup',
+                            image: 'rounded-lg shadow-instagram'
+                        }
+                    });
+                });
+                document.getElementById('swal-share-btn').addEventListener('click', () => {
+                    Swal.close();
+                    shareImageWithLiff(imageUrl);
+                });
+            }
+        });
+    }
+
+    function renderImages(signedUrls) {
+        signedUrls.forEach((urlData, index) => {
+            if (urlData.signedUrl) {
+                const imageItem = document.createElement('div');
+                imageItem.className = 'image-item fade-in';
+                imageItem.style.animationDelay = `${index * 50}ms`;
+                imageItem.setAttribute('role', 'button');
+                imageItem.setAttribute('tabindex', '0');
+
+                imageItem.innerHTML = `<img src="${urlData.signedUrl}" alt="User image" loading="lazy" onerror="this.parentElement.style.display='none'">`;
+                
+                imageItem.addEventListener('click', () => showImageOptions(urlData.signedUrl));
+                
+                imageGrid.appendChild(imageItem);
+            }
+        });
+    }
+
+    async function fetchImages() {
+        if (isLoading || !hasMoreImages || !currentUserId) return;
+
+        isLoading = true;
+        loadMoreBtn.textContent = 'กำลังโหลด...';
+        loadMoreBtn.disabled = true;
+
+        try {
+            const { data, error } = await supabaseClient.functions.invoke('get-user-images', {
+                body: { 
+                    userId: currentUserId,
+                    offset: imageOffset 
+                },
+            });
+
+            if (error) throw error;
+            
+            const images = data.images;
+
+            if (images && images.length > 0) {
+                renderImages(images);
+                imageOffset += images.length;
+                
+                if (images.length < 50) {
+                    hasMoreImages = false;
+                    loadMoreContainer.style.display = 'none';
+                } else {
+                    loadMoreContainer.style.display = 'block';
+                }
+            } else {
+                hasMoreImages = false;
+                loadMoreContainer.style.display = 'none';
+                if (imageOffset === 0) {
+                    noImagesMessage.style.display = 'block';
+                }
+            }
+
+        } catch (err) {
+            console.error("Failed to fetch images:", err);
+            showToast('error', 'ไม่สามารถโหลดรูปภาพได้');
+        } finally {
+            isLoading = false;
+            loadMoreBtn.textContent = 'โหลดเพิ่มเติม';
+            loadMoreBtn.disabled = false;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        showLoading('กำลังเริ่มต้น...');
+        try {
+            await liff.init({ liffId: LIFF_ID, withLoginOnExternalBrowser: true });
+            
+            if (!liff.isLoggedIn()) {
+                liff.login({ redirectUri: window.location.href });
+                return;
+            }
+            
+            const profile = await liff.getProfile();
+            currentUserId = profile.userId;
+            
+            displayName.textContent = profile.displayName;
+            if (profile.pictureUrl) {
+                profilePicture.src = profile.pictureUrl;
+            }
+            profileHeader.style.visibility = 'visible';
+            
+            await fetchImages();
+
+        } catch (err) {
+            console.error('Critical Error:', err);
+            document.body.innerHTML = `<p class="text-center text-red-400 p-8">เกิดข้อผิดพลาดในการเริ่มต้นแอปพลิเคชัน: ${err.message}</p>`;
+        } finally {
+            hideLoading();
+        }
+    });
+    
+    loadMoreBtn.addEventListener('click', fetchImages);
+  </script>
+</body>
+</html>
