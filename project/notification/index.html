@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - LINE OA</title>
+    <meta name="description" content="Admin Send Message Dashboard for LIFF App" />
+    <meta name="author" content="iton5" />
+    <meta property="og:title" content="Admin Send Message Dashboard-iton5-thailand" />
+    <meta property="og:description" content="Admin Send Message Dashboard for LIFF App" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://lh3.googleusercontent.com/d/1Ck_OCfEW4dEp3A1k9yfQplYmW7qmwzFF" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <style>
+       @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;700&display=swap');
+        
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: #272838;
+            color: #F0F0F0;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #272838 0%, #5d536b 100%);
+        }
+        
+        .main-card {
+            background-color: rgba(93, 83, 107, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #347fc4 0%, #5d536b 100%);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 127, 196, 0.2);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 127, 196, 0.3);
+        }
+        
+        .btn-schedule {
+            background: linear-gradient(135deg, #d97706 0%, #b45309 100%); /* Amber color for schedule */
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(217, 119, 6, 0.2);
+        }
+        .btn-schedule:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(217, 119, 6, 0.3);
+        }
+
+        .swal2-popup {
+            background-color: #272838 !important;
+            color: #F0F0F0 !important;
+            border: 1px solid #7d6b91;
+        }
+        
+        .swal2-title, .swal2-html-container { 
+            color: #F0F0F0 !important;
+        }
+        
+        .swal2-select {
+            background-color: #5d536b !important;
+            color: #F0F0F0 !important;
+            border-color: #7d6b91 !important;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .pulse-anim {
+            animation: pulse 2s infinite ease-in-out;
+        }
+        
+       
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #272838; }
+        ::-webkit-scrollbar-thumb { background: #7d6b91; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #989fce; }
+        
+       
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(39, 40, 56, 0.8);
+            backdrop-filter: blur(5px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+       
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #347fc4;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #347fc4;
+        }
+        
+       
+        input[type="datetime-local"] {
+            color-scheme: dark;
+            max-width: 100%; 
+            box-sizing: border-box; 
+            -webkit-appearance: none; 
+            appearance: none;
+            display: block; 
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen">
+    
+   
+    <div id="loading-overlay">
+        <img src="https://developers.line.biz/media/line-mini-app/LINE_spinner_light.svg" alt="Loading..." class="w-16 h-16">
+        <p id="loading-text" class="text-lg text-[#989fce]">กำลังโหลด...</p>
+    </div>
+
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-8 fade-in">
+            <h1 class="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#989fce] to-[#347fc4]">
+                Admin Send Message Dashboard
+            </h1>
+            <p class="text-lg text-gray-300">ระบบจัดการการส่งข้อความ LINE OA</p>
+        </header>
+
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            
+            <div class="lg:col-span-2 space-y-8">
+                
+               
+                <div class="main-card rounded-2xl p-6 fade-in" style="animation-delay: 0.2s;">
+                    <h2 class="text-2xl font-semibold mb-4 text-[#989fce]">รายชื่อผู้ใช้</h2>
+                    
+                    <div class="flex flex-col md:flex-row gap-4 mb-4">
+                        <input type="text" id="search-input" placeholder="ค้นหาด้วย userId หรือ displayName..." 
+                               class="flex-grow bg-[#272838] border border-[#5d536b] rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#989fce] focus:outline-none transition text-white">
+                    </div>
+                    
+                    <div class="overflow-y-auto max-h-[50vh] pr-2">
+                        <table class="w-full text-left">
+                            <thead class="sticky top-0 bg-[#5d536b]/80 backdrop-blur-sm">
+                                <tr>
+                                    <th class="p-3 w-12"><input type="checkbox" id="select-all" class="form-checkbox h-5 w-5 bg-transparent rounded border-[#989fce] text-[#347fc4] focus:ring-0"></th>
+                                    <th class="p-3">User</th>
+                                    <th class="p-3 hidden md:table-cell">User ID</th>
+                                </tr>
+                            </thead>
+                            <tbody id="user-list">
+                                <!-- User  -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="mt-4 flex justify-center">
+                        <button id="load-more-btn" class="btn-primary font-bold py-2 px-6 rounded-lg text-white">
+                            โหลดเพิ่มเติม
+                        </button>
+                    </div>
+                </div>
+
+               
+                <div class="main-card rounded-2xl p-6 fade-in" style="animation-delay: 0.3s;">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-2xl font-semibold text-[#d97706] flex items-center gap-2">
+                            <span>⏳</span> รายการรอส่ง (Scheduled Queue)
+                        </h2>
+                        <button id="refresh-schedule-btn" class="text-sm bg-[#5d536b] hover:bg-[#7d6b91] text-white py-1.5 px-3 rounded transition flex items-center gap-1">
+                            🔄 <span class="hidden sm:inline">รีเฟรช</span>
+                        </button>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-[#5d536b]/50 text-gray-300 text-sm">
+                                <tr>
+                                    <th class="p-3 whitespace-nowrap">เวลาที่กำหนด (ส่ง)</th>
+                                    <th class="p-3">ประเภท</th>
+                                    <th class="p-3">ข้อความ (Preview)</th>
+                                    <th class="p-3 text-center">จัดการ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="schedule-list" class="text-sm">
+                                <!-- Scheduled -->
+                            </tbody>
+                        </table>
+                        <div id="no-schedule-msg" class="text-center p-6 text-gray-400 hidden bg-[#272838]/50 rounded-lg mt-2">
+                            ไม่มีรายการที่รอส่งในขณะนี้
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+           
+            <div class="lg:col-span-1 main-card rounded-2xl p-6 fade-in h-fit sticky top-4" style="animation-delay: 0.4s;">
+                <h2 class="text-2xl font-semibold mb-4 text-[#989fce]">เครื่องมือส่งข้อความ</h2>
+                
+               
+                <div class="mb-4">
+                    <label for="message-json" class="block mb-2 text-sm font-medium">JSON Message</label>
+                    <textarea id="message-json" rows="8" 
+                              class="w-full bg-[#272838] border border-[#5d536b] rounded-lg p-3 focus:ring-2 focus:ring-[#989fce] focus:outline-none transition text-white font-mono text-sm"
+                              placeholder='{
+    "type": "text",
+    "text": "สวัสดีครับ! นี่คือข้อความทดสอบ"
+}'></textarea>
+                </div>
+
+               
+                <div class="mb-6 p-4 rounded-xl border border-[#5d536b] bg-[#272838]/50">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-[#989fce]">⏰ ตั้งเวลาส่งล่วงหน้า</span>
+                        <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                            <input type="checkbox" name="toggle" id="schedule-toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer border-[#5d536b] right-4 checked:right-0 checked:border-[#347fc4] transition-all duration-300"/>
+                            <label for="schedule-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-[#5d536b] cursor-pointer"></label>
+                        </div>
+                    </div>
+                    
+                    <div id="schedule-input-container" class="hidden mt-3 transition-all duration-300">
+                        <label for="schedule-datetime" class="block mb-1 text-xs text-gray-400">เลือกวันและเวลา (เวลาเครื่องของคุณ)</label>
+                        <input type="datetime-local" id="schedule-datetime" 
+                               class="w-full bg-[#5d536b] text-white border border-[#7d6b91] rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#989fce] outline-none min-w-0">
+                    </div>
+                </div>
+                
+               
+                <div class="space-y-3">
+                    <button id="send-push-btn" class="w-full btn-primary font-bold py-3 rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                        📩 Push (ส่งหา 1 คน)
+                    </button>
+                    <button id="send-multicast-btn" class="w-full btn-primary font-bold py-3 rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                        📨 Multicast (ส่งหาคนที่เลือก)
+                    </button>
+                    <button id="send-broadcast-btn" class="w-full btn-primary font-bold py-3 rounded-lg text-white">
+                        📣 Broadcast (ส่งหาทุกคน)
+                    </button> 
+                    <button id="send-narrowcast-btn" class="w-full btn-primary font-bold py-3 rounded-lg text-white">
+                        🎯 Narrowcast (กลุ่มเป้าหมาย)
+                    </button>
+                </div>
+
+               
+                <div class="mt-6 space-y-3">
+                    <button id="view-logs-btn" class="w-full bg-transparent border border-[#7d6b91] text-[#989fce] font-bold py-3 rounded-lg hover:bg-[#7d6b91] hover:text-white transition">
+                        📜 ดูประวัติการส่งที่ไม่สำเร็จ
+                    </button>
+                    <button id="check-quota-btn" class="w-full bg-transparent border border-[#7d6b91] text-[#989fce] font-bold py-3 rounded-lg hover:bg-[#7d6b91] hover:text-white transition">
+                        📊 ตรวจสอบโควต้า
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        // --- Configuration ---
+        const LIFF_ID = "2008276127-apAxkl1e"; 
+        const SUPABASE_URL = "https://irlsgwnkyjcmgjcnbtqk.supabase.co"; 
+        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlybHNnd25reWpjbWdqY25idHFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAyNzU5NzMsImV4cCI6MjA3NTg1MTk3M30.2oDM6Z2pjP5Ga5u-0RCitcbAzNbgJ56qTLDzgDdq4Jo"; 
+        
+      
+        const { createClient } = supabase;
+        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
+        
+      
+        let currentPage = 0;
+        const PAGE_SIZE = 50;
+        let selectedUsers = new Set();
+        let isFetching = false;
+        let hasMoreUsers = true;
+        let isScheduleMode = false; 
+
+       
+        const loadingOverlay = document.getElementById('loading-overlay');
+        const loadingText = document.getElementById('loading-text');
+        
+        
+        const userListBody = document.getElementById('user-list');
+        const loadMoreBtn = document.getElementById('load-more-btn');
+        const searchInput = document.getElementById('search-input');
+        const selectAllCheckbox = document.getElementById('select-all');
+
+        
+        const scheduleListBody = document.getElementById('schedule-list');
+        const noScheduleMsg = document.getElementById('no-schedule-msg');
+        const refreshScheduleBtn = document.getElementById('refresh-schedule-btn');
+        
+        
+        const sendPushBtn = document.getElementById('send-push-btn');
+        const sendMulticastBtn = document.getElementById('send-multicast-btn');
+        const sendBroadcastBtn = document.getElementById('send-broadcast-btn');
+        const sendNarrowcastBtn = document.getElementById('send-narrowcast-btn');
+        const viewLogsBtn = document.getElementById('view-logs-btn');
+        const checkQuotaBtn = document.getElementById('check-quota-btn');
+        
+        
+        const messageJsonTextarea = document.getElementById('message-json');
+        const scheduleToggle = document.getElementById('schedule-toggle');
+        const scheduleContainer = document.getElementById('schedule-input-container');
+        const scheduleDatetimeInput = document.getElementById('schedule-datetime');
+
+       
+        const showLoading = (text = 'กำลังโหลด...') => {
+            loadingText.textContent = text;
+            loadingOverlay.style.display = 'flex';
+        };
+
+        const hideLoading = () => {
+            loadingOverlay.style.display = 'none';
+        };
+
+        const showToast = (icon, title) => {
+            Swal.fire({
+                icon: icon,
+                title: title,
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                customClass: {
+                    popup: '!bg-[#5d536b] !text-white',
+                }
+            });
+        };
+
+       
+        function toggleScheduleMode() {
+            isScheduleMode = scheduleToggle.checked;
+            
+            if (isScheduleMode) {
+                scheduleContainer.classList.remove('hidden');
+               
+                [sendPushBtn, sendMulticastBtn, sendBroadcastBtn, sendNarrowcastBtn].forEach(btn => {
+                    btn.classList.remove('btn-primary', 'pulse-anim');
+                    btn.classList.add('btn-schedule');
+                });
+                
+               
+                sendPushBtn.innerHTML = '🕒 จองคิว Push';
+                sendMulticastBtn.innerHTML = '🕒 จองคิว Multicast';
+                sendBroadcastBtn.innerHTML = '🕒 จองคิว Broadcast';
+                sendNarrowcastBtn.innerHTML = '🕒 จองคิว Narrowcast';
+
+               
+                const now = new Date();
+                now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+                scheduleDatetimeInput.min = now.toISOString().slice(0,16);
+
+            } else {
+                scheduleContainer.classList.add('hidden');
+                
+                [sendPushBtn, sendMulticastBtn, sendBroadcastBtn, sendNarrowcastBtn].forEach(btn => {
+                    btn.classList.add('btn-primary');
+                    btn.classList.remove('btn-schedule');
+                });
+                sendBroadcastBtn.classList.add('pulse-anim');
+
+                
+                sendPushBtn.innerHTML = '📩 Push (ส่งหา 1 คน)';
+                sendMulticastBtn.innerHTML = '📨 Multicast (ส่งหาคนที่เลือก)';
+                sendBroadcastBtn.innerHTML = '📣 Broadcast (ส่งหาทุกคน)';
+                sendNarrowcastBtn.innerHTML = '🎯 Narrowcast (กลุ่มเป้าหมาย)';
+            }
+        }
+
+       
+        async function fetchUsers() {
+            if (isFetching || !hasMoreUsers) return;
+            isFetching = true;
+           
+            if (currentPage === 0) showLoading('กำลังดึงข้อมูลผู้ใช้...');
+            
+            const from = currentPage * PAGE_SIZE;
+            const to = from + PAGE_SIZE - 1;
+            const searchTerm = searchInput.value.trim();
+
+            let query = supabaseClient
+                .from('user_profiles')
+                .select('userId, displayName, pictureUrl', { count: 'exact' })
+                .range(from, to)
+                .order('created_at', { ascending: false });
+
+            if (searchTerm) {
+                query = query.or(`displayName.ilike.%${searchTerm}%,userId.ilike.%${searchTerm}%`);
+            }
+
+            const { data, error, count } = await query;
+
+            if (error) {
+                console.error('Error fetching users:', error);
+                showToast('error', 'ไม่สามารถดึงข้อมูลผู้ใช้ได้');
+            } else {
+                renderUsers(data, currentPage === 0);
+                currentPage++;
+                if ((currentPage * PAGE_SIZE) >= count) {
+                    hasMoreUsers = false;
+                    loadMoreBtn.style.display = 'none';
+                }
+            }
+            isFetching = false;
+            hideLoading();
+        }
+
+        function renderUsers(users, clear = false) {
+            if (clear) {
+                userListBody.innerHTML = '';
+            }
+            const fragment = document.createDocumentFragment();
+            users.forEach(user => {
+                const tr = document.createElement('tr');
+                tr.className = 'border-b border-[#5d536b] hover:bg-[#5d536b]/50 transition cursor-pointer';
+                tr.dataset.userId = user.userId;
+                tr.innerHTML = `
+                    <td class="p-3">
+                        <input type="checkbox" class="user-checkbox form-checkbox h-5 w-5 bg-transparent rounded border-[#989fce] text-[#347fc4] focus:ring-0"
+                                data-userid="${user.userId}" ${selectedUsers.has(user.userId) ? 'checked' : ''}>
+                    </td>
+                    <td class="p-3">
+                        <div class="flex items-center gap-3">
+                            <img src="${user.pictureUrl}" alt="Profile" class="w-10 h-10 rounded-full object-cover" onerror="this.onerror=null;this.src='https://img.icons8.com/?size=80&id=492ILERveW8G&format=png';">
+                            <span class="font-medium">${user.displayName}</span>
+                        </div>
+                    </td>
+                    <td class="p-3 hidden md:table-cell font-mono text-sm text-gray-400">${user.userId}</td>
+                `;
+                fragment.appendChild(tr);
+            });
+            userListBody.appendChild(fragment);
+        }
+
+        function updateSendButtons() {
+            sendPushBtn.disabled = selectedUsers.size !== 1;
+            sendMulticastBtn.disabled = selectedUsers.size === 0;
+        }
+
+        function handleUserSelection(e) {
+            if (e.target.classList.contains('user-checkbox')) {
+                const userId = e.target.dataset.userid;
+                if (e.target.checked) {
+                    selectedUsers.add(userId);
+                } else {
+                    selectedUsers.delete(userId);
+                }
+                updateSendButtons();
+            } else if (e.target.closest('tr')) {
+                const checkbox = e.target.closest('tr').querySelector('.user-checkbox');
+                if (checkbox) {
+                    checkbox.checked = !checkbox.checked;
+                    checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+            }
+        }
+
+        async function fetchScheduledTasks() {
+            refreshScheduleBtn.innerHTML = '🔄 ...'; 
+            
+            const { data, error } = await supabaseClient
+                .from('scheduled_line_messages')
+                .select('*')
+                .eq('status', 'pending')
+                .order('scheduled_time', { ascending: true });
+
+            refreshScheduleBtn.innerHTML = '🔄 <span class="hidden sm:inline">รีเฟรช</span>';
+
+            if (error) {
+                console.error('Error fetching schedule:', error);
+                showToast('error', 'ไม่สามารถโหลดรายการรอส่งได้');
+                return;
+            }
+            
+            renderScheduledTasks(data);
+        }
+
+        function renderScheduledTasks(tasks) {
+            scheduleListBody.innerHTML = '';
+            
+            if (!tasks || tasks.length === 0) {
+                noScheduleMsg.classList.remove('hidden');
+                return;
+            }
+            noScheduleMsg.classList.add('hidden');
+
+            const fragment = document.createDocumentFragment();
+            tasks.forEach(task => {
+                const tr = document.createElement('tr');
+                tr.className = 'border-b border-[#5d536b] hover:bg-[#5d536b]/30 transition';
+                
+               
+                const dateObj = new Date(task.scheduled_time);
+                const dateStr = dateObj.toLocaleDateString('th-TH', { day: '2-digit', month: 'short', year: '2-digit' });
+                const timeStr = dateObj.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
+                
+               
+                let msgPreview = "ข้อความ";
+                try {
+                    const payload = typeof task.message_payload === 'string' ? JSON.parse(task.message_payload) : task.message_payload;
+                    const firstMsg = Array.isArray(payload) ? payload[0] : payload;
+                    if(firstMsg.type === 'text') msgPreview = firstMsg.text;
+                    else if(firstMsg.type === 'image') msgPreview = '[รูปภาพ]';
+                    else if(firstMsg.type === 'sticker') msgPreview = '[สติกเกอร์]';
+                    else msgPreview = `[${firstMsg.type}]`;
+                } catch(e) { msgPreview = "Error parsing message"; }
+
+               
+                let recipientInfo = "";
+                if(task.message_type === 'push') recipientInfo = "(1 คน)";
+                else if(task.message_type === 'multicast') recipientInfo = `(${task.recipients?.length || 0} คน)`;
+                else if(task.message_type === 'broadcast') recipientInfo = "(ทุกคน)";
+                else recipientInfo = "(กลุ่มเป้าหมาย)";
+
+                tr.innerHTML = `
+                    <td class="p-3 whitespace-nowrap">
+                        <div class="text-[#d97706] font-bold">${timeStr} น.</div>
+                        <div class="text-xs text-gray-400">${dateStr}</div>
+                    </td>
+                    <td class="p-3">
+                        <span class="bg-[#5d536b] text-xs px-2 py-1 rounded border border-[#7d6b91] uppercase tracking-wider">
+                            ${task.message_type}
+                        </span>
+                        <div class="text-xs text-gray-400 mt-1">${recipientInfo}</div>
+                    </td>
+                    <td class="p-3">
+                        <div class="text-sm truncate max-w-[150px] md:max-w-[200px]" title="${msgPreview}">${msgPreview}</div>
+                    </td>
+                    <td class="p-3 text-center">
+                        <button class="cancel-task-btn text-red-400 hover:text-red-300 transition p-2 hover:bg-red-900/20 rounded-full" 
+                                data-id="${task.id}" title="ยกเลิกรายการ">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </button>
+                    </td>
+                `;
+                fragment.appendChild(tr);
+            });
+            scheduleListBody.appendChild(fragment);
+        }
+
+        async function cancelTask(id) {
+            const result = await Swal.fire({
+                title: 'ยืนยันการยกเลิก?',
+                text: "รายการนี้จะถูกลบและไม่ถูกส่ง",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#7d6b91',
+                confirmButtonText: 'ลบทันที',
+                cancelButtonText: 'เก็บไว้',
+                customClass: { popup: '!bg-[#272838] !text-white' }
+            });
+
+            if (result.isConfirmed) {
+                showLoading('กำลังลบรายการ...');
+                const { error } = await supabaseClient
+                    .from('scheduled_line_messages')
+                    .delete()
+                    .eq('id', id);
+
+                hideLoading();
+
+                if (error) {
+                    console.error('Delete error:', error);
+                    showToast('error', 'ไม่สามารถลบรายการได้');
+                } else {
+                    showToast('success', 'ลบรายการเรียบร้อยแล้ว');
+                    fetchScheduledTasks(); 
+                }
+            }
+        }
+
+       
+        async function handleSendMessage(messageType) {
+            const messageJson = messageJsonTextarea.value.trim();
+            if (!messageJson) {
+                showToast('warning', 'กรุณากรอก JSON Message');
+                return;
+            }
+
+            let message;
+            try {
+                message = JSON.parse(messageJson);
+            } catch (e) {
+                showToast('error', 'รูปแบบ JSON ไม่ถูกต้อง');
+                return;
+            }
+
+          
+            let scheduledTime = null;
+            let action = 'send_now'; 
+
+            if (isScheduleMode) {
+                const dateVal = scheduleDatetimeInput.value;
+                if (!dateVal) {
+                    showToast('warning', 'กรุณาระบุวันเวลาที่ต้องการส่ง');
+                    return;
+                }
+              
+                scheduledTime = new Date(dateVal).toISOString();
+                
+                
+                if (new Date(scheduledTime) <= new Date()) {
+                     showToast('warning', 'เวลาที่ตั้งต้องเป็นอนาคตเท่านั้น');
+                     return;
+                }
+                
+                action = 'schedule';
+            }
+            
+            let recipients = [];
+            let confirmTitle = '';
+            
+            if (messageType === 'push' || messageType === 'multicast') {
+                recipients = Array.from(selectedUsers); 
+                if (recipients.length === 0) { 
+                    showToast('warning', 'กรุณาเลือกผู้ใช้ก่อนส่ง'); 
+                    return; 
+                }
+                confirmTitle = isScheduleMode 
+                    ? `ยืนยันการ "จองเวลาส่ง" ${messageType} หา ${recipients.length} คน?`
+                    : `ยืนยันการส่ง ${messageType} ไปยัง ${recipients.length} คน?`;
+            } else {
+                confirmTitle = isScheduleMode
+                    ? 'คุณแน่ใจหรือไม่ที่จะ "จองเวลาส่ง" Broadcast?'
+                    : 'คุณแน่ใจหรือไม่ที่จะส่ง Broadcast?';
+            }
+
+            Swal.fire({
+                title: confirmTitle,
+                text: isScheduleMode ? `ส่งเวลา: ${new Date(scheduleDatetimeInput.value).toLocaleString('th-TH')}` : "การกระทำนี้ไม่สามารถย้อนกลับได้!",
+                icon: isScheduleMode ? 'question' : 'warning',
+                showCancelButton: true,
+                confirmButtonColor: isScheduleMode ? '#d97706' : '#347fc4',
+                cancelButtonColor: '#7d6b91',
+                confirmButtonText: isScheduleMode ? 'ยืนยันการจอง' : 'ยืนยันส่งทันที',
+                cancelButtonText: 'ยกเลิก',
+                customClass: { popup: '!bg-[#272838] !text-white' }
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    showLoading(isScheduleMode ? 'กำลังบันทึกกำหนดการ...' : `กำลังส่งข้อความแบบ ${messageType}...`);
+                    try {
+                        const { data, error } = await supabaseClient.functions.invoke('notification', {
+                            body: { 
+                                action,         
+                                scheduledTime,  
+                                messageType, 
+                                recipients, 
+                                message 
+                            },
+                        });
+
+                        if (error) throw error;
+
+                        if (isScheduleMode) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'จองเวลาส่งสำเร็จ!',
+                                text: 'ระบบจะส่งข้อความอัตโนมัติเมื่อถึงเวลาที่กำหนด',
+                                customClass: { popup: '!bg-[#272838] !text-white' }
+                            });
+                           
+                            fetchScheduledTasks();
+                            
+                        } else {
+                           
+                            const failedSends = data.results?.filter(r => r.status === 'failed') || [];
+                            if (failedSends.length > 0) {
+                               Swal.fire({
+                                    icon: 'warning',
+                                    title: 'ส่งข้อความสำเร็จบางส่วน',
+                                    text: `${failedSends.length} ข้อความส่งไม่สำเร็จ กรุณาตรวจสอบ Log`,
+                                    customClass: { popup: '!bg-[#272838] !text-white' }
+                               });
+                            } else {
+                               showToast('success', 'ส่งข้อความสำเร็จ!');
+                            }
+                        }
+
+                    } catch (err) {
+                        console.error('Error sending message:', err);
+                        const errorDetails = err.context?.details ? JSON.stringify(err.context.details) : err.message;
+                        showToast('error', `เกิดข้อผิดพลาด: ${errorDetails}`);
+                    } finally {
+                        hideLoading();
+                    }
+                }
+            });
+        }
+
+       
+        async function handleSendNarrowcast() {
+            const messageJson = messageJsonTextarea.value.trim();
+            if (!messageJson) {
+                showToast('warning', 'กรุณากรอก JSON Message ก่อน');
+                return;
+            }
+
+           
+            let scheduledTime = null;
+            let action = 'send_now';
+            
+            if (isScheduleMode) {
+                const dateVal = scheduleDatetimeInput.value;
+                if (!dateVal) {
+                    showToast('warning', 'กรุณาระบุวันเวลาที่ต้องการส่ง');
+                    return;
+                }
+                scheduledTime = new Date(dateVal).toISOString();
+                 if (new Date(scheduledTime) <= new Date()) {
+                     showToast('warning', 'เวลาที่ตั้งต้องเป็นอนาคตเท่านั้น');
+                     return;
+                }
+                action = 'schedule';
+            }
+
+            showLoading('กำลังโหลดกลุ่มเป้าหมาย...');
+            try {
+                const { data, error } = await supabaseClient.functions.invoke('notification', {
+                    body: { messageType: 'getAudienceGroups' },
+                });
+
+                if (error) throw error;
+
+                const audienceGroups = data.audienceGroups || [];
+                if (audienceGroups.length === 0) {
+                    hideLoading();
+                    Swal.fire({
+                        icon: 'info', title: 'ไม่พบกลุ่มเป้าหมาย',
+                        text: 'กรุณาสร้างกลุ่มเป้าหมายใน LINE Official Account Manager ก่อน',
+                        customClass: { popup: '!bg-[#272838] !text-white' }
+                    });
+                    return;
+                }
+
+                const inputOptions = audienceGroups.reduce((acc, group) => {
+                    acc[group.audienceGroupId] = `${group.description} (${group.audienceCount.toLocaleString()} คน)`;
+                    return acc;
+                }, {});
+
+                hideLoading();
+
+                const { value: selectedAudienceGroupId } = await Swal.fire({
+                    title: isScheduleMode ? 'เลือกกลุ่มเป้าหมาย (ตั้งเวลา)' : 'เลือกกลุ่มเป้าหมายที่จะส่ง',
+                    input: 'select',
+                    inputOptions,
+                    inputPlaceholder: '--- เลือกกลุ่มเป้าหมาย ---',
+                    showCancelButton: true,
+                    confirmButtonText: isScheduleMode ? 'บันทึกการตั้งเวลา' : 'ยืนยันการส่ง',
+                    cancelButtonText: 'ยกเลิก',
+                    confirmButtonColor: isScheduleMode ? '#d97706' : '#347fc4',
+                    cancelButtonColor: '#7d6b91',
+                    customClass: { 
+                        popup: '!bg-[#272838] !text-white',
+                        select: '!w-full !p-2 !mt-4 !bg-[#5d536b] !text-white !border-[#7d6b91]'
+                    }
+                });
+
+                if (selectedAudienceGroupId) {
+                    let message;
+                    try { message = JSON.parse(messageJson); } 
+                    catch (e) { showToast('error', 'รูปแบบ JSON ไม่ถูกต้อง'); return; }
+
+                    showLoading(isScheduleMode ? 'กำลังบันทึก...' : 'กำลังส่งข้อความ Narrowcast...');
+                    try {
+                        const { data: sendData, error: sendError } = await supabaseClient.functions.invoke('notification', {
+                            body: {
+                                action,
+                                scheduledTime,
+                                messageType: 'narrowcast',
+                                recipientAudienceGroupId: selectedAudienceGroupId,
+                                message: message
+                            },
+                        });
+
+                        if (sendError) throw sendError;
+                        
+                        if (isScheduleMode) {
+                            showToast('success', 'จองเวลาส่ง Narrowcast สำเร็จ!');
+                            fetchScheduledTasks(); 
+                        } else {
+                            if (sendData.results?.some(r => r.status === 'failed')) {
+                                showToast('error', 'การส่ง Narrowcast ล้มเหลว! ตรวจสอบ Log');
+                            } else {
+                                showToast('success', 'ส่ง Narrowcast สำเร็จ!');
+                            }
+                        }
+                    } catch (err) {
+                        console.error('Error sending narrowcast:', err);
+                        showToast('error', `เกิดข้อผิดพลาด: ${err.message}`);
+                    } finally {
+                        hideLoading();
+                    }
+                }
+            } catch (err) {
+                hideLoading();
+                console.error('Error fetching audience groups:', err);
+                showToast('error', `ไม่สามารถโหลดกลุ่มเป้าหมายได้: ${err.message}`);
+            }
+        }
+
+       
+        async function displayFailedLogs() {
+            showLoading('กำลังโหลดประวัติ...');
+            const { data, error } = await supabaseClient
+                .from('message_logs')
+                .select('*')
+                .eq('status', 'failed')
+                .order('created_at', { ascending: false })
+                .limit(100);
+            
+            hideLoading();
+            
+            if (error) {
+                showToast('error', 'ไม่สามารถโหลดประวัติได้');
+                return;
+            }
+
+            let logHtml = `<div class="text-left max-h-[60vh] overflow-y-auto pr-2">`;
+            if (data.length === 0) {
+                logHtml += '<p>ไม่พบประวัติการส่งที่ล้มเหลว</p>';
+            } else {
+                data.forEach(log => {
+                    logHtml += `
+                        <div class="p-3 border-b border-[#5d536b]">
+                            <p><strong>เวลา:</strong> ${new Date(log.created_at).toLocaleString()}</p>
+                            <p><strong>ผู้รับ/กลุ่ม:</strong> ${log.recipient}</p>
+                            <p class="text-red-400"><strong>ข้อผิดพลาด:</strong> ${log.error_message}</p>
+                            <details class="mt-2">
+                                <summary class="cursor-pointer text-[#989fce]">ดู Payload</summary>
+                                <pre class="mt-1 p-2 bg-[#272838] rounded text-xs whitespace-pre-wrap text-gray-300">${JSON.stringify(log.message_payload, null, 2)}</pre>
+                            </details>
+                        </div>
+                    `;
+                });
+            }
+            logHtml += `</div>`;
+            
+            Swal.fire({
+                title: 'ประวัติการส่งที่ไม่สำเร็จ',
+                html: logHtml,
+                width: '80%',
+                confirmButtonText: 'ปิด',
+                customClass: { popup: '!bg-[#272838] !text-white' }
+            });
+        }
+
+        async function displayQuota() {
+            showLoading('กำลังตรวจสอบโควต้า...');
+            try {
+                const { data, error } = await supabaseClient.functions.invoke('notification', {
+                    body: { messageType: 'getQuota' },
+                });
+                if (error) throw error;
+                
+                const usage = data.usage;
+                const limit = data.limit;
+                const percentage = (limit > 0) ? (usage / limit) * 100 : 0;
+                
+                const quotaHtml = `
+                    <div class="text-center text-lg">
+                        <p class="mb-4">ใช้ไปแล้ว <span class="font-bold text-2xl text-[#989fce]">${usage.toLocaleString()}</span> / ${limit > 0 ? limit.toLocaleString() : 'ไม่จำกัด'} ข้อความ</p>
+                        ${limit > 0 ? `
+                        <div class="w-full bg-[#272838] rounded-full h-4 border border-[#5d536b]">
+                            <div class="bg-gradient-to-r from-[#347fc4] to-[#989fce] h-4 rounded-full" style="width: ${percentage.toFixed(2)}%"></div>
+                        </div>
+                        <p class="mt-2 text-sm text-gray-300">${percentage.toFixed(2)}%</p>
+                        ` : ''}
+                    </div>
+                `;
+                Swal.fire({
+                    title: 'โควต้าการส่งข้อความประจำเดือน',
+                    html: quotaHtml,
+                    confirmButtonText: 'ปิด',
+                    customClass: { popup: '!bg-[#272838] !text-white' }
+                });
+            } catch (err) {
+                console.error('Error fetching quota:', err);
+                showToast('error', `ไม่สามารถดึงข้อมูลโควต้าได้: ${err.message}`);
+            } finally {
+                hideLoading();
+            }
+        }
+
+       
+        document.addEventListener('DOMContentLoaded', async () => {
+            showLoading('กำลังเริ่มต้น LIFF...');
+            try {
+                await liff.init({ liffId: LIFF_ID, withLoginOnExternalBrowser: true  });
+                if (!liff.isLoggedIn()) {
+                    liff.login({ redirectUri: window.location.href });
+                    return;
+                }
+                showToast('success', 'เริ่มต้นระบบสำเร็จ');
+            } catch (err) {
+                console.error(err);
+                showToast('error', 'LIFF Init Failed');
+            }
+            hideLoading();
+            
+            await fetchUsers();
+            await fetchScheduledTasks(); 
+            
+           
+            loadMoreBtn.addEventListener('click', fetchUsers);
+            refreshScheduleBtn.addEventListener('click', fetchScheduledTasks);
+            
+            let searchTimeout;
+            searchInput.addEventListener('input', () => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    currentPage = 0;
+                    hasMoreUsers = true;
+                    loadMoreBtn.style.display = 'block';
+                    fetchUsers();
+                }, 500); 
+            });
+
+            userListBody.addEventListener('change', handleUserSelection);
+            userListBody.addEventListener('click', handleUserSelection);
+            
+          
+            scheduleListBody.addEventListener('click', (e) => {
+                const btn = e.target.closest('.cancel-task-btn');
+                if (btn) {
+                    const id = btn.dataset.id;
+                    cancelTask(id);
+                }
+            });
+            
+            selectAllCheckbox.addEventListener('change', (e) => {
+                const isChecked = e.target.checked;
+                const checkboxes = document.querySelectorAll('.user-checkbox');
+                checkboxes.forEach(cb => {
+                    if (cb.checked !== isChecked) {
+                       cb.checked = isChecked;
+                       cb.dispatchEvent(new Event('change', { bubbles: true }));
+                    }
+                });
+            });
+            
+            
+            scheduleToggle.addEventListener('change', toggleScheduleMode);
+
+           
+            sendPushBtn.addEventListener('click', () => handleSendMessage('push'));
+            sendMulticastBtn.addEventListener('click', () => handleSendMessage('multicast'));
+            sendBroadcastBtn.addEventListener('click', () => handleSendMessage('broadcast'));
+            sendNarrowcastBtn.addEventListener('click', handleSendNarrowcast);
+            
+            viewLogsBtn.addEventListener('click', displayFailedLogs);
+            checkQuotaBtn.addEventListener('click', displayQuota);
+        });
+    </script>
+</body>
+</html>
