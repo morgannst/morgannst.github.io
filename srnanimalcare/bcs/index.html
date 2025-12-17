@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Body Condition Score Guide - คู่มือประเมินรูปร่างสัตว์เลี้ยง</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Prompt -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Prompt', 'sans-serif'],
+                    },
+                    colors: {
+                        'vet-blue': '#005088',
+                        'vet-light': '#f0f9ff',
+                        'score-red': '#ef4444',
+                        'score-orange': '#f97316',
+                        'score-green': '#22c55e',
+                        'score-yellow': '#eab308',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Prompt', sans-serif; }
+        .score-card { transition: all 0.3s ease; }
+        .score-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+    </style>
+</head>
+<body class="bg-gray-50 text-slate-800">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-paw text-vet-blue text-2xl"></i>
+                    <span class="font-bold text-xl text-vet-blue">Vet Guide</span>
+                </div>
+                <div class="text-sm text-gray-500 hidden sm:block">โรงพยาบาลสัตว์สุราษฎร์ธานี</div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="bg-vet-blue text-white py-12 sm:py-20">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h1 class="text-3xl sm:text-5xl font-bold mb-4">Body Condition Score (BCS)</h1>
+            <p class="text-lg sm:text-xl text-blue-100 mb-8">คู่มือประเมินคะแนนร่างกายสุนัขและแมว เพื่อสุขภาพที่ดีระยะยาว</p>
+            <div class="inline-flex gap-4 bg-white/10 p-4 rounded-xl backdrop-blur-sm">
+                <div class="text-center px-4 border-r border-white/20">
+                    <div class="text-2xl font-bold">1-5</div>
+                    <div class="text-xs text-blue-200">ระบบคะแนน</div>
+                </div>
+                <div class="text-center px-4">
+                    <div class="text-2xl font-bold">Palpation</div>
+                    <div class="text-xs text-blue-200">ดูและคลำ</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Intro Section -->
+    <section class="max-w-6xl mx-auto px-4 py-12">
+        <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 flex flex-col md:flex-row gap-8 items-center">
+            <div class="md:w-2/3">
+                <h2 class="text-2xl font-bold text-vet-blue mb-4">ทำไมต้องประเมินรูปร่าง?</h2>
+                <p class="text-gray-600 mb-4 leading-relaxed">
+                    สัตวแพทย์จำเป็นต้องประเมินและให้คะแนนร่างกาย (BCS) เพื่อตรวจสอบภาวะโภชนาการ ปัจจุบันนิยมใช้เกณฑ์ <strong>1-5 คะแนน</strong> มากกว่าแบบ 1-9 เพราะมีความยืดหยุ่นสูง สามารถให้คะแนนครึ่งขั้น (เช่น 2.5 หรือ 3.5) ได้
+                </p>
+                <div class="flex gap-2 items-center text-sm font-medium text-gray-500 bg-gray-100 p-3 rounded-lg inline-block">
+                    <i class="fa-solid fa-hand-pointer text-vet-blue"></i>
+                    เทคนิคสำคัญ: ต้องใช้ "สายตา" มอง + ใช้ "มือ" คลำเสมอ
+                </div>
+            </div>
+            <div class="md:w-1/3 flex justify-center">
+                <div class="text-center">
+                    <i class="fa-solid fa-weight-scale text-6xl text-vet-blue/20 mb-2"></i>
+                    <p class="text-sm text-gray-400">ประเมินทุกครั้งที่มาตรวจ</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Score Cards Grid -->
+    <section class="max-w-6xl mx-auto px-4 py-8 mb-12">
+        <h2 class="text-2xl font-bold text-center mb-10 text-gray-800">เกณฑ์การให้คะแนน (Scale 1-5)</h2>
+        
+        <div class="space-y-6">
+
+            <!-- BCS 1 -->
+            <div class="score-card bg-white rounded-xl shadow-sm border-l-8 border-score-red overflow-hidden flex flex-col md:flex-row">
+                <div class="p-6 md:w-1/4 bg-red-50 flex flex-col justify-center items-center text-center border-r border-gray-100">
+                    <span class="text-sm font-bold text-score-red tracking-wider">THIN</span>
+                    <h3 class="text-4xl font-extrabold text-score-red my-2">1/5</h3>
+                    <p class="text-xs text-gray-500">(เทียบเท่า 1-2/9)</p>
+                    <div class="mt-3 px-3 py-1 bg-white rounded-full text-xs font-bold shadow-sm text-gray-600">Fat &lt; 5%</div>
+                </div>
+                <div class="p-6 md:w-3/4">
+                    <h4 class="text-xl font-bold text-gray-800 mb-2">ผอมมาก</h4>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-bone mt-1 text-score-red"></i>
+                            <span><strong>มองเห็น:</strong> ซี่โครง ปุ่มกระดูกสะโพก และกระดูกสันหลังชัดเจนมาก</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-hand mt-1 text-score-red"></i>
+                            <span><strong>การคลำ:</strong> เจอแต่กระดูก ไม่พบไขมันใต้ผิวหนังเลย</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- BCS 2 -->
+            <div class="score-card bg-white rounded-xl shadow-sm border-l-8 border-score-orange overflow-hidden flex flex-col md:flex-row">
+                <div class="p-6 md:w-1/4 bg-orange-50 flex flex-col justify-center items-center text-center border-r border-gray-100">
+                    <span class="text-sm font-bold text-score-orange tracking-wider">UNDERWEIGHT</span>
+                    <h3 class="text-4xl font-extrabold text-score-orange my-2">2/5</h3>
+                    <p class="text-xs text-gray-500">(เทียบเท่า 3/9)</p>
+                    <div class="mt-3 px-3 py-1 bg-white rounded-full text-xs font-bold shadow-sm text-gray-600">Fat ~ 10%</div>
+                </div>
+                <div class="p-6 md:w-3/4">
+                    <h4 class="text-xl font-bold text-gray-800 mb-2">น้ำหนักต่ำกว่าเกณฑ์</h4>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-eye mt-1 text-score-orange"></i>
+                            <span><strong>มองเห็น:</strong> เห็นเอวคอดชัดมาก และปุ่มกระดูกยังพอมองเห็นได้</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-hand mt-1 text-score-orange"></i>
+                            <span><strong>การคลำ:</strong> คลำซี่โครงได้ง่าย มีไขมันบางๆ ปกคลุมเล็กน้อย</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- BCS 3 (Ideal) -->
+            <div class="score-card bg-white rounded-xl shadow-md border-l-8 border-score-green overflow-hidden flex flex-col md:flex-row ring-2 ring-score-green/20 relative">
+                <div class="absolute top-0 right-0 bg-score-green text-white text-xs font-bold px-3 py-1 rounded-bl-lg">RECOMMENDED</div>
+                <div class="p-6 md:w-1/4 bg-green-50 flex flex-col justify-center items-center text-center border-r border-gray-100">
+                    <span class="text-sm font-bold text-score-green tracking-wider">IDEAL</span>
+                    <h3 class="text-4xl font-extrabold text-score-green my-2">3/5</h3>
+                    <p class="text-xs text-gray-500">(เทียบเท่า 4-5/9)</p>
+                    <div class="mt-3 px-3 py-1 bg-white rounded-full text-xs font-bold shadow-sm text-gray-600">Fat ~ 20%</div>
+                </div>
+                <div class="p-6 md:w-3/4">
+                    <h4 class="text-xl font-bold text-gray-800 mb-2 flex items-center gap-2">
+                        น้ำหนักตามเกณฑ์ (สมส่วน)
+                        <i class="fa-solid fa-circle-check text-score-green"></i>
+                    </h4>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-eye mt-1 text-score-green"></i>
+                            <span><strong>มองเห็น:</strong> ไม่เห็นซี่โครงด้วยตาเปล่า เห็นเอวคอดสวยงามเมื่อมองจากด้านบน</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-hand mt-1 text-score-green"></i>
+                            <span><strong>การคลำ:</strong> คลำซี่โครงเจอโดยไม่ต้องกดแรง มีไขมันปกคลุมพอดีๆ</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-dog mt-1 text-score-green"></i>
+                            <span><strong>รูปทรง:</strong> ท้องยกกระชับ (Abdominal Tuck) เมื่อมองจากด้านข้าง</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- BCS 4 -->
+            <div class="score-card bg-white rounded-xl shadow-sm border-l-8 border-score-yellow overflow-hidden flex flex-col md:flex-row">
+                <div class="p-6 md:w-1/4 bg-yellow-50 flex flex-col justify-center items-center text-center border-r border-gray-100">
+                    <span class="text-sm font-bold text-score-yellow tracking-wider text-yellow-700">OVERWEIGHT</span>
+                    <h3 class="text-4xl font-extrabold text-score-yellow my-2">4/5</h3>
+                    <p class="text-xs text-gray-500">(เทียบเท่า 6-7/9)</p>
+                    <div class="mt-3 px-3 py-1 bg-white rounded-full text-xs font-bold shadow-sm text-gray-600">Fat ~ 30%</div>
+                </div>
+                <div class="p-6 md:w-3/4">
+                    <h4 class="text-xl font-bold text-gray-800 mb-2">น้ำหนักเกิน</h4>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-eye mt-1 text-score-yellow"></i>
+                            <span><strong>มองเห็น:</strong> เอวเริ่มหายไป หน้าท้องเริ่มห้อย หรือไม่ยกตัวขึ้น</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-hand mt-1 text-score-yellow"></i>
+                            <span><strong>การคลำ:</strong> ต้องออกแรงกดถึงจะเจอซี่โครง มีชั้นไขมันหนาคลุม</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- BCS 5 -->
+            <div class="score-card bg-white rounded-xl shadow-sm border-l-8 border-score-red overflow-hidden flex flex-col md:flex-row">
+                <div class="p-6 md:w-1/4 bg-red-50 flex flex-col justify-center items-center text-center border-r border-gray-100">
+                    <span class="text-sm font-bold text-score-red tracking-wider">OBESE</span>
+                    <h3 class="text-4xl font-extrabold text-score-red my-2">5/5</h3>
+                    <p class="text-xs text-gray-500">(เทียบเท่า 8-9/9)</p>
+                    <div class="mt-3 px-3 py-1 bg-white rounded-full text-xs font-bold shadow-sm text-gray-600">Fat ≥ 40%</div>
+                </div>
+                <div class="p-6 md:w-3/4">
+                    <h4 class="text-xl font-bold text-gray-800 mb-2">อ้วนมาก (โรคอ้วน)</h4>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-ban mt-1 text-score-red"></i>
+                            <span><strong>การคลำ:</strong> คลำไม่เจอซี่โครงเลย ไขมันหนามาก</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-shapes mt-1 text-score-red"></i>
+                            <span><strong>รูปทรง:</strong> ท้องกางออกชัดเจน ไม่มีเอวเลย มีไขมันสะสมตามคอและโคนหาง</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Summary Box -->
+    <section class="max-w-4xl mx-auto px-4 mb-16">
+        <div class="bg-gradient-to-br from-vet-blue to-blue-800 rounded-2xl p-8 text-white text-center shadow-lg">
+            <h3 class="text-2xl font-bold mb-4">สรุปเกณฑ์ปกติ</h3>
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-6 mb-6">
+                <div class="bg-white/10 px-6 py-3 rounded-lg backdrop-blur-sm">
+                    <span class="block text-sm text-blue-200">ระบบ 5 คะแนน</span>
+                    <span class="text-3xl font-bold">2.5 - 3.5</span>
+                </div>
+                <span class="text-xl font-light opacity-50">หรือ</span>
+                <div class="bg-white/10 px-6 py-3 rounded-lg backdrop-blur-sm">
+                    <span class="block text-sm text-blue-200">ระบบ 9 คะแนน</span>
+                    <span class="text-3xl font-bold">4 - 6</span>
+                </div>
+            </div>
+            <p class="text-blue-100 max-w-2xl mx-auto">
+                หากสัตว์เลี้ยงมีคะแนนต่ำกว่าหรือสูงกว่าเกณฑ์นี้ ควรปรึกษาสัตวแพทย์เพื่อหาสาเหตุ ไม่ว่าจะเป็นเรื่องโภชนาการ โรคระบบเผาผลาญ หรือพฤติกรรม
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-400 py-12">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <h4 class="text-white text-lg font-bold mb-4">โรงพยาบาลสัตว์สุราษฎร์ธานี</h4>
+            <div class="flex justify-center gap-6 mb-8">
+                <a href="#" class="hover:text-white transition"><i class="fa-brands fa-line text-2xl"></i></a>
+                <a href="#" class="hover:text-white transition"><i class="fa-brands fa-facebook text-2xl"></i></a>
+                <a href="#" class="hover:text-white transition"><i class="fa-solid fa-phone text-2xl"></i></a>
+            </div>
+            <p class="text-sm">Line: @SRNANIMALCARE | Tel: 063-446-1952</p>
+            <p class="text-xs mt-4 text-gray-600">© 2024 SRN Animal Care. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
