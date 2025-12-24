@@ -10,6 +10,8 @@
     
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Chart.js Annotation Plugin (Added) -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
     
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -482,23 +484,88 @@
                         label: 'อุณหภูมิ (°C)',
                         data: dataPoints,
                         borderColor: '#3b82f6',
-                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        backgroundColor: 'rgba(59, 130, 246, 0.4)', // Slightly darker
+                        borderWidth: 2,
                         pointBackgroundColor: pointColors,
                         pointBorderColor: '#fff',
-                        pointRadius: 6,
-                        pointHoverRadius: 8,
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
                         tension: 0.3,
-                        fill: true
+                        fill: false
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {
-                        y: { beginAtZero: false, min: 34, max: 42, grid: { color: '#e5e7eb' } },
-                        x: { display: true, ticks: { maxRotation: 45, minRotation: 45, font: { size: 10 } } }
+                        y: { 
+                            beginAtZero: false, 
+                            min: 34, 
+                            max: 42, 
+                            grid: { color: 'rgba(0,0,0,0.05)' } 
+                        },
+                        x: { 
+                            display: true, 
+                            ticks: { maxRotation: 45, minRotation: 45, font: { size: 10 } } 
+                        }
                     },
-                    plugins: { legend: { display: false } }
+                    plugins: { 
+                        legend: { display: false },
+                        // Background Annotation Configuration
+                        annotation: {
+                            annotations: {
+                                veryHighFever: {
+                                    type: 'box',
+                                    yMin: 40,
+                                    yMax: 42.5,
+                                    backgroundColor: 'rgba(239, 68, 68, 0.1)', // Red
+                                    borderWidth: 0,
+                                    label: { content: 'สูงมาก', display: true, position: 'start', color: 'rgba(239, 68, 68, 0.5)', font: {size:10} }
+                                },
+                                highFever: {
+                                    type: 'box',
+                                    yMin: 38.5,
+                                    yMax: 40,
+                                    backgroundColor: 'rgba(249, 115, 22, 0.1)', // Orange
+                                    borderWidth: 0
+                                },
+                                lowFever: {
+                                    type: 'box',
+                                    yMin: 37.5,
+                                    yMax: 38.5,
+                                    backgroundColor: 'rgba(250, 204, 21, 0.1)', // Yellow
+                                    borderWidth: 0
+                                },
+                                normal: {
+                                    type: 'box',
+                                    yMin: 35.4,
+                                    yMax: 37.5,
+                                    backgroundColor: 'rgba(34, 197, 94, 0.1)', // Green
+                                    borderWidth: 0
+                                },
+                                low: {
+                                    type: 'box',
+                                    yMin: 33,
+                                    yMax: 35.4,
+                                    backgroundColor: 'rgba(147, 197, 253, 0.1)', // Blue
+                                    borderWidth: 0
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) label += ': ';
+                                    if (context.parsed.y !== null) {
+                                        const status = analyzeTemp(context.parsed.y).status;
+                                        label += context.parsed.y + ' °C (' + status + ')';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
                 }
             });
         }
