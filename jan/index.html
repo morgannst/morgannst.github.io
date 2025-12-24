@@ -3,132 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>บันทึกสุขภาพ</title>
+    <title>บันทึกสุขภาพ (Edit/Delete)</title>
     
     <!-- PWA Settings -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Health Tracker">
     <meta name="theme-color" content="#2563eb">
-    <meta name="description" content="แอปบันทึกอุณหภูมิและยา">
 
-    <!-- App Icon (ใช้ CDN เพื่อความสะดวก) -->
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2966/2966327.png">
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2966/2966327.png">
-
-    <!-- Web App Manifest (Data URI for Single File) -->
     <link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoi4Lia4Lix4LiZ4LiX4Li24LiB4Liq4Li44LiC4Lig4Liy4LieIiwiYHNob3J0X25hbWUiOiJIZWFsdGgiLCJzdGFydF91cmwiOiIuIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiI2YzZjRmNiIsInRoZW1lX2NvbG9yIjoiIzI1NjNlYiIsImljb25zIjpbeyJzcmMiOiJodHRwczovL2Nkbi1pY29ucy1wbmcuZmxhdGljb24uY29tLzUxMi8yOTY2LzI5NjYzMjcucG5nIiwic2l6ZXMiOiI1MTJ4NTEyIiwidHlwZSI6ImltYWdlL3BuZyJ9XX0=">
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Chart.js Annotation Plugin -->
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
-    
-    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     <style>
-        body {
-            font-family: 'Sarabun', sans-serif;
-            background-color: #f3f4f6;
-            /* Prevent pull-to-refresh on mobile app mode */
-            overscroll-behavior-y: contain; 
-        }
-        .card {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        /* Loading Overlay */
-        #loadingOverlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.8);
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(2px);
-        }
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3b82f6;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-        }
+        body { font-family: 'Sarabun', sans-serif; background-color: #f3f4f6; overscroll-behavior-y: contain; }
+        .card { background: white; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        #loadingOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(2px); }
+        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #3b82f6; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        /* Install Button Animation */
-        #installBtn {
-            animation: bounce 2s infinite;
-        }
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-5px);}
-            60% {transform: translateY(-3px);}
-        }
+        /* Edit Mode Highlight */
+        .editing-mode { border: 2px solid #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.2); }
     </style>
 </head>
 <body class="text-gray-700 pb-20 safe-area-inset-bottom">
 
-    <!-- Loading Overlay -->
     <div id="loadingOverlay">
         <div class="spinner mb-2"></div>
         <div class="text-blue-600 font-semibold animate-pulse">กำลังทำงาน...</div>
     </div>
 
-    <!-- Toast Container -->
     <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-3 pointer-events-none"></div>
 
     <!-- Header -->
     <div class="bg-blue-600 text-white p-6 pb-8 rounded-b-3xl shadow-lg mb-6 sticky top-0 z-40 pt-safe-top">
         <div class="flex justify-between items-center max-w-lg mx-auto mt-2">
             <div>
-                <h1 class="text-2xl font-bold flex items-center">
-                    <i class="fas fa-heartbeat mr-2"></i>Health Tracker
-                </h1>
+                <h1 class="text-2xl font-bold flex items-center"><i class="fas fa-heartbeat mr-2"></i>Health Tracker</h1>
                 <p class="text-blue-100 text-sm">ข้อมูลจาก Google Sheets</p>
             </div>
             <div class="flex gap-2">
-                <!-- Install Button (Hidden by default) -->
-                <button id="installBtn" class="hidden bg-white text-blue-600 px-3 py-1 rounded-full text-xs font-bold shadow-md hover:bg-gray-100 transition">
-                    <i class="fas fa-download mr-1"></i> ติดตั้ง
-                </button>
-                <button onclick="fetchData(false)" class="bg-blue-700 hover:bg-blue-800 text-white px-3 py-1 rounded-full transition shadow-md flex items-center gap-1 text-xs">
-                    <i class="fas fa-sync-alt"></i> รีเฟรช
-                </button>
+                <button id="installBtn" class="hidden bg-white text-blue-600 px-3 py-1 rounded-full text-xs font-bold shadow-md hover:bg-gray-100 transition"><i class="fas fa-download mr-1"></i> ติดตั้ง</button>
+                <button onclick="fetchData(false)" class="bg-blue-700 hover:bg-blue-800 text-white px-3 py-1 rounded-full transition shadow-md flex items-center gap-1 text-xs"><i class="fas fa-sync-alt"></i> รีเฟรช</button>
             </div>
         </div>
     </div>
 
     <div class="max-w-lg mx-auto px-4 space-y-6">
 
-        <!-- Config Alert -->
         <div id="configAlert" class="hidden bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-md text-sm mb-4">
             <b>ตั้งค่าไม่สมบูรณ์:</b> กรุณาตรวจสอบ URL ของ Google Apps Script ในโค้ด
         </div>
 
         <!-- Section 1: Temperature Input -->
-        <div class="card p-5">
-            <h2 class="text-lg font-semibold mb-4 flex items-center text-blue-600">
-                <i class="fas fa-thermometer-half mr-2"></i> วัดอุณหภูมิร่างกาย
+        <div id="tempSection" class="card p-5 transition-all duration-300">
+            <h2 class="text-lg font-semibold mb-4 flex items-center justify-between text-blue-600">
+                <span><i class="fas fa-thermometer-half mr-2"></i> วัดอุณหภูมิร่างกาย</span>
+                <span id="tempModeBadge" class="hidden text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full">แก้ไขข้อมูล</span>
             </h2>
             <form id="tempForm" class="space-y-4">
+                <input type="hidden" id="tempId"> <!-- Hidden ID for Edit -->
+                
                 <div>
                     <label class="block text-sm font-medium text-gray-500 mb-1">อุณหภูมิ (°C)</label>
                     <input type="number" id="tempInput" step="0.1" min="30" max="45" placeholder="เช่น 37.5" required
@@ -147,15 +89,20 @@
                             class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-center text-sm">
                     </div>
                 </div>
-                <!-- Note Field -->
                 <div>
                     <label class="block text-sm font-medium text-gray-500 mb-1">อาการร่วม (ถ้ามี)</label>
                     <input type="text" id="tempNote" placeholder="เช่น เจ็บคอ, หนาวสั่น, ปวดหัว"
                         class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
                 </div>
-                <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-xl transition shadow-md active:scale-95 flex justify-center items-center gap-2">
-                    <i class="fas fa-save"></i> บันทึกข้อมูล
-                </button>
+                
+                <div class="flex gap-2">
+                    <button type="submit" id="tempSubmitBtn" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-xl transition shadow-md active:scale-95 flex justify-center items-center gap-2">
+                        <i class="fas fa-save"></i> บันทึกข้อมูล
+                    </button>
+                    <button type="button" id="tempCancelBtn" onclick="resetTempForm()" class="hidden w-20 bg-gray-200 hover:bg-gray-300 text-gray-600 font-semibold py-3 rounded-xl transition shadow-md active:scale-95">
+                        ยกเลิก
+                    </button>
+                </div>
             </form>
         </div>
 
@@ -177,11 +124,14 @@
         </div>
 
         <!-- Section 3: Medication Input -->
-        <div class="card p-5 border-t-4 border-teal-500">
-            <h2 class="text-lg font-semibold mb-4 flex items-center text-teal-600">
-                <i class="fas fa-pills mr-2"></i> บันทึกการกินยา
+        <div id="medSection" class="card p-5 border-t-4 border-teal-500 transition-all duration-300">
+            <h2 class="text-lg font-semibold mb-4 flex items-center justify-between text-teal-600">
+                <span><i class="fas fa-pills mr-2"></i> บันทึกการกินยา</span>
+                <span id="medModeBadge" class="hidden text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full">แก้ไขข้อมูล</span>
             </h2>
             <form id="medForm" class="space-y-4">
+                <input type="hidden" id="medId"> <!-- Hidden ID -->
+
                 <div>
                     <label class="block text-sm font-medium text-gray-500 mb-1">ชื่อยา / อาการ</label>
                     <input type="text" id="medName" placeholder="เช่น พาราเซตามอล, ยาแก้ไอ" required
@@ -204,9 +154,15 @@
                             class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 text-center text-sm">
                     </div>
                 </div>
-                <button type="submit" class="w-full bg-teal-500 hover:bg-teal-600 text-white font-semibold py-3 rounded-xl transition shadow-md active:scale-95 flex justify-center items-center gap-2">
-                    <i class="fas fa-save"></i> บันทึกการกินยา
-                </button>
+                
+                <div class="flex gap-2">
+                    <button type="submit" id="medSubmitBtn" class="flex-1 bg-teal-500 hover:bg-teal-600 text-white font-semibold py-3 rounded-xl transition shadow-md active:scale-95 flex justify-center items-center gap-2">
+                        <i class="fas fa-save"></i> บันทึกการกินยา
+                    </button>
+                    <button type="button" id="medCancelBtn" onclick="resetMedForm()" class="hidden w-20 bg-gray-200 hover:bg-gray-300 text-gray-600 font-semibold py-3 rounded-xl transition shadow-md active:scale-95">
+                        ยกเลิก
+                    </button>
+                </div>
             </form>
         </div>
 
@@ -215,7 +171,7 @@
             <!-- Recent Temperature List -->
             <div>
                 <h3 class="font-semibold text-gray-500 mb-2 ml-1 flex items-center gap-2">
-                    <i class="fas fa-history text-blue-400"></i> ประวัติอุณหภูมิ (จาก Google Sheet)
+                    <i class="fas fa-history text-blue-400"></i> ประวัติอุณหภูมิ
                 </h3>
                 <div id="tempList" class="space-y-2 max-h-60 overflow-y-auto no-scrollbar">
                     <div class="text-center text-gray-400 py-4 text-sm">กำลังโหลดข้อมูล...</div>
@@ -225,7 +181,7 @@
             <!-- Recent Medication List -->
             <div>
                 <h3 class="font-semibold text-gray-500 mb-2 ml-1 flex items-center gap-2">
-                    <i class="fas fa-history text-teal-400"></i> ประวัติการกินยา (จาก Google Sheet)
+                    <i class="fas fa-history text-teal-400"></i> ประวัติการกินยา
                 </h3>
                 <div id="medList" class="space-y-2 max-h-60 overflow-y-auto no-scrollbar">
                     <div class="text-center text-gray-400 py-4 text-sm">กำลังโหลดข้อมูล...</div>
@@ -240,83 +196,54 @@
         // --- Configuration ---
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbztwV7M9REVEVmFG2FwlvWeAfgDf7UfqwsZBQDWWIVBzZOhrTV5GAennLHwh_7YuznbIw/exec'; 
         
-        // --- PWA Installer Logic ---
+        // --- Helpers ---
+        // Generate Unique ID
+        function generateUUID() {
+            return 'id-' + Date.now().toString(36) + '-' + Math.random().toString(36).substr(2, 9);
+        }
+
+        // PWA & UI Helpers
         let deferredPrompt;
         const installBtn = document.getElementById('installBtn');
+        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; installBtn.classList.remove('hidden'); });
+        installBtn.addEventListener('click', () => { installBtn.classList.add('hidden'); if(deferredPrompt) deferredPrompt.prompt(); });
 
-        window.addEventListener('beforeinstallprompt', (e) => {
-            // Prevent Chrome 67 and earlier from automatically showing the prompt
-            e.preventDefault();
-            // Stash the event so it can be triggered later.
-            deferredPrompt = e;
-            // Update UI to notify the user they can add to home screen
-            installBtn.classList.remove('hidden');
-        });
-
-        installBtn.addEventListener('click', (e) => {
-            // Hide the app provided install promotion
-            installBtn.classList.add('hidden');
-            // Show the install prompt
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                // Wait for the user to respond to the prompt
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('User accepted the A2HS prompt');
-                    } else {
-                        console.log('User dismissed the A2HS prompt');
-                    }
-                    deferredPrompt = null;
-                });
-            }
-        });
-
-        // --- State (In-Memory Only) ---
         let globalTemps = [];
         let globalMeds = [];
 
-        // --- Helpers: Toast Notification ---
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
-            
             const isSuccess = type === 'success';
             const borderClass = isSuccess ? 'border-green-500' : 'border-red-500';
             const iconClass = isSuccess ? 'fa-check-circle text-green-500' : 'fa-exclamation-circle text-red-500';
             
             toast.className = `bg-white border-l-4 ${borderClass} px-4 py-3 rounded shadow-lg flex items-center gap-3 min-w-[280px] max-w-sm transform transition-all duration-300 translate-x-full opacity-0 pointer-events-auto`;
-            
-            toast.innerHTML = `
-                <i class="fas ${iconClass} text-lg"></i>
-                <span class="font-medium text-gray-700 text-sm">${message}</span>
-            `;
+            toast.innerHTML = `<i class="fas ${iconClass} text-lg"></i><span class="font-medium text-gray-700 text-sm">${message}</span>`;
             
             container.appendChild(toast);
             requestAnimationFrame(() => toast.classList.remove('translate-x-full', 'opacity-0'));
-            setTimeout(() => {
-                toast.classList.add('translate-x-full', 'opacity-0');
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
+            setTimeout(() => { toast.classList.add('translate-x-full', 'opacity-0'); setTimeout(() => toast.remove(), 300); }, 3000);
         }
 
-        // --- Helpers: Defaults & UI ---
         function setNowDefaults() {
             const now = new Date();
-            const timeString = now.toTimeString().slice(0, 5);
-            const dateString = now.toISOString().split('T')[0];
+            const timeStr = now.toTimeString().slice(0, 5);
+            const dateStr = now.toISOString().split('T')[0];
             
-            document.getElementById('tempTime').value = timeString;
-            document.getElementById('tempDate').value = dateString;
-            document.getElementById('medTime').value = timeString;
-            document.getElementById('medDate').value = dateString;
+            if(!document.getElementById('tempId').value) { // Only set defaults if not editing
+                document.getElementById('tempTime').value = timeStr;
+                document.getElementById('tempDate').value = dateStr;
+            }
+            if(!document.getElementById('medId').value) {
+                document.getElementById('medTime').value = timeStr;
+                document.getElementById('medDate').value = dateStr;
+            }
         }
 
-        function toggleLoading(show) {
-            const overlay = document.getElementById('loadingOverlay');
-            overlay.style.display = show ? 'flex' : 'none';
-        }
+        function toggleLoading(show) { document.getElementById('loadingOverlay').style.display = show ? 'flex' : 'none'; }
 
-        // --- Core: Fetch Data from Google Sheet ---
+        // --- Core: Fetch Data ---
         async function fetchData(silent = false) {
             if (!GOOGLE_SCRIPT_URL.startsWith('http')) {
                 document.getElementById('configAlert').classList.remove('hidden');
@@ -330,34 +257,22 @@
                 const data = await response.json();
                 
                 if (data.temps) {
-                    globalTemps = data.temps.map((t) => ({
-                        ...t,
-                        val: parseFloat(t.val),
-                        sortTime: parseDateStr(t.date) + parseTimeStr(t.time)
-                    }));
+                    globalTemps = data.temps.map((t) => ({ ...t, val: parseFloat(t.val), sortTime: parseDateStr(t.date) + parseTimeStr(t.time) }));
                     globalTemps.sort((a, b) => a.sortTime - b.sortTime);
                 }
-
                 if (data.meds) {
-                    globalMeds = data.meds.map((m) => ({
-                        ...m,
-                        sortTime: parseDateStr(m.date) + parseTimeStr(m.time)
-                    }));
+                    globalMeds = data.meds.map((m) => ({ ...m, sortTime: parseDateStr(m.date) + parseTimeStr(m.time) }));
                     globalMeds.sort((a, b) => a.sortTime - b.sortTime);
                 }
-
                 updateUI();
                 if (!silent) showToast("โหลดข้อมูลล่าสุดแล้ว");
-
             } catch (error) {
                 console.error("Fetch error:", error);
                 if (!silent) showToast("เกิดข้อผิดพลาดในการโหลดข้อมูล", "error");
-            } finally {
-                toggleLoading(false);
-            }
+            } finally { toggleLoading(false); }
         }
 
-        // --- Core: Send Data to Google Sheet ---
+        // --- Core: Send Data ---
         async function sendData(payload) {
             toggleLoading(true);
             try {
@@ -368,10 +283,12 @@
                     body: JSON.stringify(payload)
                 });
                 
-                // Automatic reload without 'OK' button
                 setTimeout(() => {
-                    fetchData(true); // Silent reload
-                    showToast("บันทึกข้อมูลเรียบร้อย!", "success");
+                    fetchData(true); 
+                    const msg = payload.action === 'delete' ? 'ลบข้อมูลเรียบร้อย' : 'บันทึกข้อมูลเรียบร้อย';
+                    showToast(msg, "success");
+                    if(payload.type === 'temp') resetTempForm();
+                    else resetMedForm();
                 }, 1000);
 
             } catch (error) {
@@ -381,21 +298,158 @@
             }
         }
 
-        // --- Logic: Sorting Helpers ---
-        function parseDateStr(dStr) {
-            if (!dStr) return 0;
-            if (dStr.includes('/')) {
+        // --- Logic: EDIT & DELETE Functions ---
+        
+        // --- Temperature Logic ---
+        function startEditTemp(id) {
+            const item = globalTemps.find(t => t.id === id);
+            if(!item) return;
+
+            // Fill Form
+            document.getElementById('tempId').value = item.id;
+            document.getElementById('tempInput').value = item.val;
+            document.getElementById('tempNote').value = item.note || '';
+            
+            // Handle Date/Time (Assuming format is DD/MM/YYYY or YYYY-MM-DD)
+            // Need to convert to YYYY-MM-DD for input[type="date"]
+            let dStr = item.date;
+            if(dStr.includes('/')) {
                 const p = dStr.split('/');
-                return new Date(`${p[2]}-${p[1]}-${p[0]}`).getTime();
+                dStr = `${p[2]}-${p[1]}-${p[0]}`;
             }
-            return new Date(dStr).getTime();
-        }
-        function parseTimeStr(tStr) {
-            if (!tStr) return 0;
-            return parseInt(tStr.replace(':', ''));
+            document.getElementById('tempDate').value = dStr;
+            document.getElementById('tempTime').value = item.time;
+
+            // Change UI
+            document.getElementById('tempSection').classList.add('editing-mode');
+            document.getElementById('tempModeBadge').classList.remove('hidden');
+            document.getElementById('tempSubmitBtn').innerHTML = '<i class="fas fa-edit"></i> อัปเดตข้อมูล';
+            document.getElementById('tempSubmitBtn').classList.replace('bg-blue-500', 'bg-yellow-500');
+            document.getElementById('tempSubmitBtn').classList.replace('hover:bg-blue-600', 'hover:bg-yellow-600');
+            document.getElementById('tempCancelBtn').classList.remove('hidden');
+            
+            // Scroll to form
+            document.getElementById('tempSection').scrollIntoView({behavior: 'smooth'});
         }
 
-        // --- Logic: Analysis ---
+        function resetTempForm() {
+            document.getElementById('tempId').value = '';
+            document.getElementById('tempInput').value = '';
+            document.getElementById('tempNote').value = '';
+            setNowDefaults();
+
+            // Reset UI
+            document.getElementById('tempSection').classList.remove('editing-mode');
+            document.getElementById('tempModeBadge').classList.add('hidden');
+            document.getElementById('tempSubmitBtn').innerHTML = '<i class="fas fa-save"></i> บันทึกข้อมูล';
+            document.getElementById('tempSubmitBtn').classList.replace('bg-yellow-500', 'bg-blue-500');
+            document.getElementById('tempSubmitBtn').classList.replace('hover:bg-yellow-600', 'hover:bg-blue-600');
+            document.getElementById('tempCancelBtn').classList.add('hidden');
+        }
+
+        function deleteTemp(id) {
+            if(!confirm('ยืนยันที่จะลบรายการนี้?')) return;
+            sendData({ type: 'temp', action: 'delete', id: id });
+        }
+
+        document.getElementById('tempForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = document.getElementById('tempId').value;
+            const val = parseFloat(document.getElementById('tempInput').value);
+            const time = document.getElementById('tempTime').value;
+            const dateVal = document.getElementById('tempDate').value;
+            const note = document.getElementById('tempNote').value;
+            
+            if (val < 30 || val > 45) { showToast("กรุณากรอกอุณหภูมิระหว่าง 30 - 45 องศา", "error"); return; }
+
+            const analysis = analyzeTemp(val);
+            const dateStr = new Date(dateVal).toLocaleDateString('th-TH');
+
+            const payload = { 
+                type: 'temp', 
+                action: id ? 'edit' : 'add', // Decide Action
+                id: id || generateUUID(),    // Use existing ID or New one
+                val: val, 
+                time: time, 
+                date: dateStr, 
+                status: analysis.status,
+                note: note 
+            };
+            sendData(payload);
+        });
+
+        // --- Medication Logic ---
+        function startEditMed(id) {
+            const item = globalMeds.find(m => m.id === id);
+            if(!item) return;
+
+            document.getElementById('medId').value = item.id;
+            document.getElementById('medName').value = item.name;
+            document.getElementById('medDose').value = item.dose;
+            
+            let dStr = item.date;
+            if(dStr.includes('/')) {
+                const p = dStr.split('/');
+                dStr = `${p[2]}-${p[1]}-${p[0]}`;
+            }
+            document.getElementById('medDate').value = dStr;
+            document.getElementById('medTime').value = item.time;
+
+            document.getElementById('medSection').classList.add('editing-mode');
+            document.getElementById('medModeBadge').classList.remove('hidden');
+            document.getElementById('medSubmitBtn').innerHTML = '<i class="fas fa-edit"></i> อัปเดตข้อมูล';
+            document.getElementById('medSubmitBtn').classList.replace('bg-teal-500', 'bg-yellow-500');
+            document.getElementById('medSubmitBtn').classList.replace('hover:bg-teal-600', 'hover:bg-yellow-600');
+            document.getElementById('medCancelBtn').classList.remove('hidden');
+
+            document.getElementById('medSection').scrollIntoView({behavior: 'smooth'});
+        }
+
+        function resetMedForm() {
+            document.getElementById('medId').value = '';
+            document.getElementById('medName').value = '';
+            document.getElementById('medDose').value = '';
+            setNowDefaults();
+
+            document.getElementById('medSection').classList.remove('editing-mode');
+            document.getElementById('medModeBadge').classList.add('hidden');
+            document.getElementById('medSubmitBtn').innerHTML = '<i class="fas fa-save"></i> บันทึกการกินยา';
+            document.getElementById('medSubmitBtn').classList.replace('bg-yellow-500', 'bg-teal-500');
+            document.getElementById('medSubmitBtn').classList.replace('hover:bg-yellow-600', 'hover:bg-teal-600');
+            document.getElementById('medCancelBtn').classList.add('hidden');
+        }
+
+        function deleteMed(id) {
+            if(!confirm('ยืนยันที่จะลบรายการนี้?')) return;
+            sendData({ type: 'med', action: 'delete', id: id });
+        }
+
+        document.getElementById('medForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = document.getElementById('medId').value;
+            const name = document.getElementById('medName').value;
+            const dose = document.getElementById('medDose').value;
+            const time = document.getElementById('medTime').value;
+            const dateVal = document.getElementById('medDate').value;
+
+            const dateStr = new Date(dateVal).toLocaleDateString('th-TH');
+
+            const payload = { 
+                type: 'med', 
+                action: id ? 'edit' : 'add',
+                id: id || generateUUID(),
+                name: name, dose: dose, time: time, date: dateStr 
+            };
+            sendData(payload);
+        });
+
+        // --- Common Helpers ---
+        function parseDateStr(dStr) {
+            if (!dStr) return 0;
+            if (dStr.includes('/')) { const p = dStr.split('/'); return new Date(`${p[2]}-${p[1]}-${p[0]}`).getTime(); }
+            return new Date(dStr).getTime();
+        }
+        function parseTimeStr(tStr) { return tStr ? parseInt(tStr.replace(':', '')) : 0; }
         function analyzeTemp(temp) {
             if (temp >= 40.0) return { status: 'ไข้สูงมาก', color: 'bg-red-500', text: 'text-red-600', code: 'very_high' };
             if (temp >= 38.5) return { status: 'ไข้สูง', color: 'bg-orange-500', text: 'text-orange-600', code: 'high' };
@@ -404,67 +458,12 @@
             return { status: 'ต่ำกว่าปกติ', color: 'bg-blue-300', text: 'text-blue-500', code: 'hypo' };
         }
 
-        // --- Event Listeners ---
-        document.getElementById('tempForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const tempVal = parseFloat(document.getElementById('tempInput').value);
-            const timeVal = document.getElementById('tempTime').value;
-            const dateVal = document.getElementById('tempDate').value;
-            const noteVal = document.getElementById('tempNote').value;
-            
-            if (tempVal < 30 || tempVal > 45) {
-                showToast("กรุณากรอกอุณหภูมิระหว่าง 30 - 45 องศา", "error");
-                return;
-            }
-
-            const analysis = analyzeTemp(tempVal);
-            const dObj = new Date(dateVal);
-            const dateStr = dObj.toLocaleDateString('th-TH');
-
-            const payload = { 
-                type: 'temp', 
-                val: tempVal, 
-                time: timeVal, 
-                date: dateStr, 
-                status: analysis.status,
-                note: noteVal 
-            };
-
-            sendData(payload);
-            document.getElementById('tempInput').value = '';
-            document.getElementById('tempNote').value = '';
-        });
-
-        document.getElementById('medForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = document.getElementById('medName').value;
-            const dose = document.getElementById('medDose').value;
-            const timeVal = document.getElementById('medTime').value;
-            const dateVal = document.getElementById('medDate').value;
-
-            const dObj = new Date(dateVal);
-            const dateStr = dObj.toLocaleDateString('th-TH');
-
-            const payload = { type: 'med', name: name, dose: dose, time: timeVal, date: dateStr };
-
-            sendData(payload);
-            document.getElementById('medName').value = '';
-            document.getElementById('medDose').value = '';
-        });
-
         // --- Rendering ---
-        function updateUI() {
-            renderTempList();
-            renderMedList();
-            renderChart();
-        }
+        function updateUI() { renderTempList(); renderMedList(); renderChart(); }
 
         function renderTempList() {
             const container = document.getElementById('tempList');
-            if (globalTemps.length === 0) {
-                container.innerHTML = '<div class="text-center text-gray-400 text-sm py-4">ไม่พบข้อมูล</div>';
-                return;
-            }
+            if (globalTemps.length === 0) { container.innerHTML = '<div class="text-center text-gray-400 text-sm py-4">ไม่พบข้อมูล</div>'; return; }
             container.innerHTML = '';
             
             [...globalTemps].reverse().forEach(t => {
@@ -473,8 +472,16 @@
                 item.className = "flex justify-between items-start bg-white p-3 rounded-lg shadow-sm border-l-4 " + analysis.text.replace('text', 'border');
                 const noteHtml = t.note ? `<div class="text-xs text-gray-500 mt-1 italic"><i class="fas fa-sticky-note mr-1 text-blue-300"></i>${t.note}</div>` : '';
                 
+                // Add Edit/Delete Buttons if ID exists
+                const actionsHtml = t.id ? `
+                    <div class="flex justify-end gap-3 mt-1">
+                        <button onclick="startEditTemp('${t.id}')" class="text-gray-400 hover:text-blue-500 transition"><i class="fas fa-edit"></i></button>
+                        <button onclick="deleteTemp('${t.id}')" class="text-gray-400 hover:text-red-500 transition"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                ` : '';
+
                 item.innerHTML = `
-                    <div>
+                    <div class="flex-1">
                         <div class="flex items-baseline">
                             <span class="text-2xl font-bold ${analysis.text}">${t.val}</span>
                             <span class="text-xs text-gray-400 ml-1">°C</span>
@@ -482,9 +489,10 @@
                         </div>
                         ${noteHtml}
                     </div>
-                    <div class="text-right">
+                    <div class="text-right min-w-[80px]">
                         <div class="text-sm font-semibold text-gray-700">${t.time} น.</div>
                         <div class="text-xs text-gray-400">${t.date}</div>
+                        ${actionsHtml}
                     </div>
                 `;
                 container.appendChild(item);
@@ -493,23 +501,29 @@
 
         function renderMedList() {
             const container = document.getElementById('medList');
-            if (globalMeds.length === 0) {
-                container.innerHTML = '<div class="text-center text-gray-400 text-sm py-4">ไม่พบข้อมูล</div>';
-                return;
-            }
+            if (globalMeds.length === 0) { container.innerHTML = '<div class="text-center text-gray-400 text-sm py-4">ไม่พบข้อมูล</div>'; return; }
             container.innerHTML = '';
 
             [...globalMeds].reverse().forEach(m => {
                 const item = document.createElement('div');
                 item.className = "flex justify-between items-center bg-white p-3 rounded-lg shadow-sm border-l-4 border-teal-400";
+                
+                const actionsHtml = m.id ? `
+                    <div class="flex justify-end gap-3 mt-1">
+                        <button onclick="startEditMed('${m.id}')" class="text-gray-400 hover:text-teal-500 transition"><i class="fas fa-edit"></i></button>
+                        <button onclick="deleteMed('${m.id}')" class="text-gray-400 hover:text-red-500 transition"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                ` : '';
+
                 item.innerHTML = `
-                    <div>
+                    <div class="flex-1">
                         <div class="font-bold text-gray-700">${m.name}</div>
                         <div class="text-sm text-gray-500">${m.dose ? 'จำนวน: ' + m.dose : ''}</div>
                     </div>
-                    <div class="text-right">
+                    <div class="text-right min-w-[80px]">
                         <div class="text-sm font-semibold text-teal-600">${m.time} น.</div>
                         <div class="text-xs text-gray-400">${m.date}</div>
+                        ${actionsHtml}
                     </div>
                 `;
                 container.appendChild(item);
@@ -537,7 +551,6 @@
             });
 
             if (myChart) myChart.destroy();
-
             myChart = new Chart(ctx, {
                 type: 'line',
                 data: {
@@ -559,10 +572,7 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    scales: {
-                        y: { beginAtZero: false, min: 34, max: 42, grid: { color: 'rgba(0,0,0,0.05)' } },
-                        x: { display: true, ticks: { maxRotation: 45, minRotation: 45, font: { size: 10 } } }
-                    },
+                    scales: { y: { beginAtZero: false, min: 34, max: 42, grid: { color: 'rgba(0,0,0,0.05)' } }, x: { display: true, ticks: { maxRotation: 45, minRotation: 45, font: { size: 10 } } } },
                     plugins: { 
                         legend: { display: false },
                         annotation: {
@@ -579,10 +589,7 @@
                                 label: function(context) {
                                     let label = context.dataset.label || '';
                                     if (label) label += ': ';
-                                    if (context.parsed.y !== null) {
-                                        const status = analyzeTemp(context.parsed.y).status;
-                                        label += context.parsed.y + ' °C (' + status + ')';
-                                    }
+                                    if (context.parsed.y !== null) { const status = analyzeTemp(context.parsed.y).status; label += context.parsed.y + ' °C (' + status + ')'; }
                                     return label;
                                 },
                                 afterLabel: function(context) {
@@ -600,12 +607,7 @@
 
         // --- Init ---
         setNowDefaults();
-        window.addEventListener('load', () => {
-             if (GOOGLE_SCRIPT_URL.startsWith('http')) {
-                // Fetch silently on initial load
-                fetchData(true);
-             }
-        });
+        window.addEventListener('load', () => { if (GOOGLE_SCRIPT_URL.startsWith('http')) fetchData(true); });
 
     </script>
 </body>
