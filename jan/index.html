@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>บันทึกสุขภาพ: ไข้และยา + Google Sheets</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Font Awesome & Google Fonts -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* Loading Spinner */
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 3px solid #3498db;
+            width: 20px;
+            height: 20px;
+            -webkit-animation: spin 1s linear infinite; /* Safari */
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="text-gray-700 pb-10">
+
+    <!-- Header -->
+    <div class="bg-blue-600 text-white p-6 rounded-b-3xl shadow-lg mb-6 sticky top-0 z-50">
+        <div class="flex justify-between items-center max-w-lg mx-auto">
+            <div>
+                <h1 class="text-2xl font-bold"><i class="fas fa-heartbeat mr-2"></i>บันทึกสุขภาพ</h1>
+                <p class="text-blue-100 text-sm">บันทึกอัตโนมัติลง Google Sheets</p>
+            </div>
+            <div class="flex items-center gap-2">
+                <div id="syncStatus" class="text-xs px-2 py-1 bg-blue-800 rounded-full text-blue-200 hidden">
+                    <span class="loader inline-block mr-1 align-middle"></span> กำลังบันทึก...
+                </div>
+                <button onclick="clearAllData()" class="text-xs bg-blue-700 hover:bg-blue-800 px-3 py-1 rounded-full transition">
+                    ล้างเครื่อง
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-lg mx-auto px-4 space-y-6">
+
+        <!-- Config Alert (Shown if URL is missing) -->
+        <div id="configAlert" class="hidden bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-md" role="alert">
+            <p class="font-bold">แจ้งเตือน</p>
+            <p>กรุณาใส่ Google Apps Script URL ในโค้ด JavaScript (บรรทัด 185) เพื่อให้บันทึกข้อมูลลง Sheet ได้</p>
+        </div>
+
+        <!-- Section 1: Temperature Input -->
+        <div class="card p-5">
+            <h2 class="text-lg font-semibold mb-4 flex items-center text-blue-600">
+                <i class="fas fa-thermometer-half mr-2"></i> วัดอุณหภูมิร่างกาย
+            </h2>
+            <form id="tempForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-500 mb-1">อุณหภูมิ (°C)</label>
+                    <input type="number" id="tempInput" step="0.1" placeholder="เช่น 37.5" required
+                        class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg font-bold text-center">
+                </div>
+                <div class="flex space-x-2">
+                    <div class="flex-1">
+                        <label class="block text-sm font-medium text-gray-500 mb-1">วันที่</label>
+                        <input type="date" id="tempDate" required
+                            class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-center text-sm">
+                    </div>
+                    <div class="flex-1">
+                        <label class="block text-sm font-medium text-gray-500 mb-1">เวลา</label>
+                        <input type="time" id="tempTime" required
+                            class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-center text-sm">
+                    </div>
+                </div>
+                <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-xl transition shadow-md active:scale-95">
+                    บันทึกอุณหภูมิ
+                </button>
+            </form>
+        </div>
+
+        <!-- Section 2: Chart -->
+        <div class="card p-5">
+            <h2 class="text-lg font-semibold mb-2 text-gray-800">กราฟแสดงผล</h2>
+            <div class="h-64 w-full relative">
+                <canvas id="tempChart"></canvas>
+            </div>
+            <!-- Legend -->
+            <div class="flex flex-wrap gap-2 mt-4 text-xs justify-center">
+                <span class="px-2 py-1 rounded-full bg-green-100 text-green-700">● ปกติ (35.4-37.4)</span>
+                <span class="px-2 py-1 rounded-full bg-yellow-100 text-yellow-700">● ไข้ต่ำ (37.5-38.4)</span>
+                <span class="px-2 py-1 rounded-full bg-orange-100 text-orange-700">● ไข้สูง (38.5-39.9)</span>
+                <span class="px-2 py-1 rounded-full bg-red-100 text-red-700">● สูงมาก (>40)</span>
+            </div>
+        </div>
+
+        <!-- Section 3: Medication Input -->
+        <div class="card p-5 border-t-4 border-teal-500">
+            <h2 class="text-lg font-semibold mb-4 flex items-center text-teal-600">
+                <i class="fas fa-pills mr-2"></i> บันทึกการกินยา
+            </h2>
+            <form id="medForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-500 mb-1">ชื่อยา / อาการ</label>
+                    <input type="text" id="medName" placeholder="เช่น พาราเซตามอล, ยาแก้ไอ" required
+                        class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-500 mb-1">จำนวน/โดส</label>
+                    <input type="text" id="medDose" placeholder="1 เม็ด" 
+                        class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500">
+                </div>
+                <div class="flex space-x-2">
+                    <div class="flex-1">
+                        <label class="block text-sm font-medium text-gray-500 mb-1">วันที่</label>
+                        <input type="date" id="medDate" required
+                            class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 text-center text-sm">
+                    </div>
+                    <div class="flex-1">
+                        <label class="block text-sm font-medium text-gray-500 mb-1">เวลา</label>
+                        <input type="time" id="medTime" required
+                            class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 text-center text-sm">
+                    </div>
+                </div>
+                <button type="submit" class="w-full bg-teal-500 hover:bg-teal-600 text-white font-semibold py-3 rounded-xl transition shadow-md active:scale-95">
+                    บันทึกการกินยา
+                </button>
+            </form>
+        </div>
+
+        <!-- Section 4: History Lists -->
+        <div class="grid grid-cols-1 gap-6">
+            <!-- Recent Temperature List -->
+            <div>
+                <h3 class="font-semibold text-gray-500 mb-2 ml-1">ประวัติอุณหภูมิ (ในเครื่อง)</h3>
+                <div id="tempList" class="space-y-2 max-h-60 overflow-y-auto no-scrollbar">
+                    <!-- Dynamic Content -->
+                </div>
+            </div>
+
+            <!-- Recent Medication List -->
+            <div>
+                <h3 class="font-semibold text-gray-500 mb-2 ml-1">ประวัติการกินยา (ในเครื่อง)</h3>
+                <div id="medList" class="space-y-2 max-h-60 overflow-y-auto no-scrollbar">
+                    <!-- Dynamic Content -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- Configuration & Initialization ---
+        // !!! สำคัญ: เอา URL จาก Google Apps Script มาใส่ตรงนี้ !!!
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbztwV7M9REVEVmFG2FwlvWeAfgDf7UfqwsZBQDWWIVBzZOhrTV5GAennLHwh_7YuznbIw/exec'; 
+        
+        const TEMP_KEY = 'healthApp_temps';
+        const MED_KEY = 'healthApp_meds';
+        
+        // Initialize Default Date & Time inputs to current
+        function setNowDefaults() {
+            const now = new Date();
+            const timeString = now.toTimeString().slice(0, 5);
+            const dateString = now.toISOString().split('T')[0];
+            
+            document.getElementById('tempTime').value = timeString;
+            document.getElementById('tempDate').value = dateString;
+            
+            document.getElementById('medTime').value = timeString;
+            document.getElementById('medDate').value = dateString;
+        }
+        
+        setNowDefaults();
+
+        // Check if URL is configured
+        if (GOOGLE_SCRIPT_URL === 'วาง_URL_ของ_APPS_SCRIPT_ที่นี่' || GOOGLE_SCRIPT_URL === '') {
+            document.getElementById('configAlert').classList.remove('hidden');
+        }
+
+        // --- Data Management (Local Storage) ---
+        function getTemps() { return JSON.parse(localStorage.getItem(TEMP_KEY)) || []; }
+        function getMeds() { return JSON.parse(localStorage.getItem(MED_KEY)) || []; }
+        function saveTemps(data) { localStorage.setItem(TEMP_KEY, JSON.stringify(data)); updateUI(); }
+        function saveMeds(data) { localStorage.setItem(MED_KEY, JSON.stringify(data)); updateUI(); }
+
+        // --- Google Sheet Sync Logic ---
+        function showSyncStatus(isLoading) {
+            const el = document.getElementById('syncStatus');
+            const loader = el.querySelector('.loader');
+            if (isLoading) {
+                el.classList.remove('hidden');
+                loader.style.display = 'inline-block';
+                el.innerHTML = '<span class="loader inline-block mr-1 align-middle" style="display:inline-block"></span> กำลังบันทึก...';
+            } else {
+                el.innerHTML = '<i class="fas fa-check-circle"></i> บันทึกแล้ว';
+                setTimeout(() => el.classList.add('hidden'), 3000);
+            }
+        }
+
+        function sendToGoogleSheet(data) {
+            if (GOOGLE_SCRIPT_URL === 'วาง_URL_ของ_APPS_SCRIPT_ที่นี่' || GOOGLE_SCRIPT_URL === '') return;
+
+            showSyncStatus(true);
+            
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors', 
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(() => {
+                console.log('Sent to Sheet');
+                showSyncStatus(false);
+            })
+            .catch(err => {
+                console.error('Error:', err);
+                document.getElementById('syncStatus').innerHTML = '<i class="fas fa-exclamation-circle"></i> ผิดพลาด';
+            });
+        }
+
+        // --- Logic: Fever Analysis & Helpers ---
+        function analyzeTemp(temp) {
+            if (temp >= 40.0) return { status: 'ไข้สูงมาก', color: 'bg-red-500', text: 'text-red-600', code: 'very_high' };
+            if (temp >= 38.5) return { status: 'ไข้สูง', color: 'bg-orange-500', text: 'text-orange-600', code: 'high' };
+            if (temp >= 37.5) return { status: 'ไข้ต่ำ', color: 'bg-yellow-400', text: 'text-yellow-600', code: 'low' };
+            if (temp >= 35.4) return { status: 'ปกติ', color: 'bg-green-500', text: 'text-green-600', code: 'normal' };
+            return { status: 'ต่ำกว่าปกติ', color: 'bg-blue-300', text: 'text-blue-500', code: 'hypo' };
+        }
+
+        // Format Date from "YYYY-MM-DD" to Thai format "D/M/YYYY" for display
+        function formatThaiDate(dateInputStr) {
+            const d = new Date(dateInputStr);
+            return d.toLocaleDateString('th-TH');
+        }
+
+        // --- Event Listeners ---
+        document.getElementById('tempForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const tempVal = parseFloat(document.getElementById('tempInput').value);
+            const timeVal = document.getElementById('tempTime').value;
+            const dateVal = document.getElementById('tempDate').value; // YYYY-MM-DD
+            
+            if(!tempVal || !dateVal || !timeVal) return;
+
+            const analysis = analyzeTemp(tempVal);
+            
+            // Create timestamp from the INPUT date/time, not current time
+            const recordDateTime = new Date(`${dateVal}T${timeVal}`);
+            const dateStr = recordDateTime.toLocaleDateString('th-TH');
+
+            const newRecord = {
+                id: Date.now(), // Unique ID based on creation time
+                val: tempVal,
+                time: timeVal,
+                date: dateStr,
+                timestamp: recordDateTime.getTime() // Sort by input time
+            };
+
+            // 1. Save Local
+            const temps = getTemps();
+            temps.push(newRecord);
+            // Sort by timestamp (Oldest -> Newest)
+            temps.sort((a, b) => a.timestamp - b.timestamp);
+            saveTemps(temps);
+
+            // 2. Send to Google Sheet
+            sendToGoogleSheet({
+                type: 'temp',
+                val: tempVal,
+                time: timeVal,
+                date: dateStr,
+                status: analysis.status
+            });
+
+            // Reset only value, keep time/date for convenience or reset to now?
+            // Usually reseting value is enough, but let's reset to now
+            document.getElementById('tempInput').value = '';
+            setNowDefaults();
+        });
+
+        document.getElementById('medForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('medName').value;
+            const dose = document.getElementById('medDose').value;
+            const timeVal = document.getElementById('medTime').value;
+            const dateVal = document.getElementById('medDate').value;
+
+            const recordDateTime = new Date(`${dateVal}T${timeVal}`);
+            const dateStr = recordDateTime.toLocaleDateString('th-TH');
+
+            const newRecord = {
+                id: Date.now(),
+                name: name,
+                dose: dose,
+                time: timeVal,
+                date: dateStr,
+                timestamp: recordDateTime.getTime()
+            };
+
+            // 1. Save Local
+            const meds = getMeds();
+            meds.push(newRecord); // Push then sort
+            // Sort Newest -> Oldest for meds list usually, but let's keep consistent
+            // Meds usually we want to see what we just took at top. 
+            // Local storage stores array. We will sort when rendering or storing.
+            meds.sort((a, b) => b.timestamp - a.timestamp); // Sort Newest First for array storage?
+            // Actually let's keep array sorted by time (Old -> New) and reverse on render like Temp
+            meds.sort((a, b) => a.timestamp - b.timestamp);
+            
+            saveMeds(meds);
+            
+            // 2. Send to Google Sheet
+            sendToGoogleSheet({
+                type: 'med',
+                name: name,
+                dose: dose,
+                time: timeVal,
+                date: dateStr
+            });
+
+            document.getElementById('medName').value = '';
+            document.getElementById('medDose').value = '';
+            setNowDefaults();
+        });
+
+        // --- UI Rendering ---
+        function renderTempList(temps) {
+            const container = document.getElementById('tempList');
+            container.innerHTML = '';
+            
+            // Show Newest First (Reverse the chronological array)
+            [...temps].reverse().forEach(t => {
+                const analysis = analyzeTemp(t.val);
+                const item = document.createElement('div');
+                item.className = "flex justify-between items-center bg-white p-3 rounded-lg shadow-sm border-l-4 " + analysis.text.replace('text', 'border');
+                item.innerHTML = `
+                    <div>
+                        <span class="text-2xl font-bold ${analysis.text}">${t.val}</span>
+                        <span class="text-xs text-gray-400 ml-1">°C</span>
+                        <span class="ml-2 text-sm font-medium text-gray-600">${analysis.status}</span>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-sm font-semibold text-gray-700">${t.time} น.</div>
+                        <div class="text-xs text-gray-400">${t.date}</div>
+                        <button onclick="deleteTemp(${t.id})" class="text-xs text-red-300 hover:text-red-500 mt-1">ลบ</button>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function renderMedList(meds) {
+            const container = document.getElementById('medList');
+            container.innerHTML = '';
+
+            // Show Newest First
+            [...meds].reverse().forEach(m => {
+                const item = document.createElement('div');
+                item.className = "flex justify-between items-center bg-white p-3 rounded-lg shadow-sm border-l-4 border-teal-400";
+                item.innerHTML = `
+                    <div>
+                        <div class="font-bold text-gray-700">${m.name}</div>
+                        <div class="text-sm text-gray-500">${m.dose ? 'จำนวน: ' + m.dose : ''}</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-sm font-semibold text-teal-600">${m.time} น.</div>
+                        <div class="text-xs text-gray-400">${m.date}</div>
+                        <button onclick="deleteMed(${m.id})" class="text-xs text-red-300 hover:text-red-500 mt-1">ลบ</button>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        // --- Chart Logic ---
+        let myChart = null;
+
+        function renderChart(temps) {
+            const ctx = document.getElementById('tempChart').getContext('2d');
+            
+            // Use chronologically sorted array for Chart (Old -> New)
+            // Take last 15 records
+            const recentTemps = temps.slice(-15);
+            
+            const labels = recentTemps.map(t => {
+                // Shorten date for chart (e.g., 24/12)
+                const shortDate = t.date.split('/').slice(0, 2).join('/');
+                return `${shortDate} ${t.time}`;
+            });
+            const dataPoints = recentTemps.map(t => t.val);
+            
+            const pointColors = dataPoints.map(val => {
+                const analysis = analyzeTemp(val);
+                if (analysis.code === 'very_high') return '#ef4444';
+                if (analysis.code === 'high') return '#f97316';
+                if (analysis.code === 'low') return '#facc15';
+                if (analysis.code === 'normal') return '#22c55e';
+                return '#93c5fd';
+            });
+
+            if (myChart) {
+                myChart.destroy();
+            }
+
+            myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'อุณหภูมิ (°C)',
+                        data: dataPoints,
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        pointBackgroundColor: pointColors,
+                        pointBorderColor: '#fff',
+                        pointRadius: 6,
+                        pointHoverRadius: 8,
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 34,
+                            max: 42,
+                            grid: { color: '#e5e7eb' }
+                        },
+                        x: { 
+                            display: true, // Show X labels now that we have dates
+                            ticks: {
+                                maxRotation: 45,
+                                minRotation: 45,
+                                font: { size: 10 }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) label += ': ';
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y + ' °C';
+                                        const status = analyzeTemp(context.parsed.y).status;
+                                        label += ` (${status})`;
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // --- Helpers ---
+        function deleteTemp(id) {
+            if(!confirm('ลบรายการนี้จากเครื่อง? (รายการใน Google Sheets จะไม่ถูกลบ)')) return;
+            const temps = getTemps().filter(t => t.id !== id);
+            saveTemps(temps);
+        }
+
+        function deleteMed(id) {
+            if(!confirm('ลบรายการนี้จากเครื่อง? (รายการใน Google Sheets จะไม่ถูกลบ)')) return;
+            const meds = getMeds().filter(m => m.id !== id);
+            saveMeds(meds);
+        }
+
+        function clearAllData() {
+            if(confirm('ลบข้อมูลในเครื่องทั้งหมด?')) {
+                localStorage.removeItem(TEMP_KEY);
+                localStorage.removeItem(MED_KEY);
+                updateUI();
+            }
+        }
+
+        function updateUI() {
+            const temps = getTemps();
+            const meds = getMeds();
+            renderTempList(temps);
+            renderMedList(meds);
+            renderChart(temps);
+        }
+
+        // Initial Load
+        updateUI();
+
+    </script>
+</body>
+</html>
