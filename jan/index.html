@@ -10,7 +10,7 @@
     
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Chart.js Annotation Plugin (Added) -->
+    <!-- Chart.js Annotation Plugin -->
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
     
     <!-- Font Awesome -->
@@ -62,13 +62,11 @@
     <!-- Loading Overlay -->
     <div id="loadingOverlay">
         <div class="spinner mb-2"></div>
-        <div class="text-blue-600 font-semibold animate-pulse">กำลังโหลดข้อมูลจาก Google Sheets...</div>
+        <div class="text-blue-600 font-semibold animate-pulse">กำลังทำงาน...</div>
     </div>
 
-    <!-- Toast Container (Added) -->
-    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-3 pointer-events-none">
-        <!-- Toasts will be injected here -->
-    </div>
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-3 pointer-events-none"></div>
 
     <!-- Header -->
     <div class="bg-blue-600 text-white p-6 rounded-b-3xl shadow-lg mb-6 sticky top-0 z-40">
@@ -77,7 +75,7 @@
                 <h1 class="text-2xl font-bold"><i class="fas fa-cloud mr-2"></i>Health Tracker</h1>
                 <p class="text-blue-100 text-sm">ข้อมูลจาก Google Sheets โดยตรง</p>
             </div>
-            <button onclick="fetchData()" class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-full transition shadow-md flex items-center gap-2 text-sm">
+            <button onclick="fetchData(false)" class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-full transition shadow-md flex items-center gap-2 text-sm">
                 <i class="fas fa-sync-alt"></i> รีเฟรช
             </button>
         </div>
@@ -178,7 +176,6 @@
                     <i class="fas fa-history text-blue-400"></i> ประวัติอุณหภูมิ (จาก Google Sheet)
                 </h3>
                 <div id="tempList" class="space-y-2 max-h-60 overflow-y-auto no-scrollbar">
-                    <!-- Dynamic Content -->
                     <div class="text-center text-gray-400 py-4 text-sm">กำลังโหลดข้อมูล...</div>
                 </div>
             </div>
@@ -189,7 +186,6 @@
                     <i class="fas fa-history text-teal-400"></i> ประวัติการกินยา (จาก Google Sheet)
                 </h3>
                 <div id="medList" class="space-y-2 max-h-60 overflow-y-auto no-scrollbar">
-                    <!-- Dynamic Content -->
                     <div class="text-center text-gray-400 py-4 text-sm">กำลังโหลดข้อมูล...</div>
                 </div>
             </div>
@@ -209,16 +205,12 @@
         // --- Helpers: Toast Notification ---
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
-            
-            // Create Toast Element
             const toast = document.createElement('div');
             
-            // Config based on Type
             const isSuccess = type === 'success';
             const borderClass = isSuccess ? 'border-green-500' : 'border-red-500';
             const iconClass = isSuccess ? 'fa-check-circle text-green-500' : 'fa-exclamation-circle text-red-500';
             
-            // Styles
             toast.className = `bg-white border-l-4 ${borderClass} px-4 py-3 rounded shadow-lg flex items-center gap-3 min-w-[280px] max-w-sm transform transition-all duration-300 translate-x-full opacity-0 pointer-events-auto`;
             
             toast.innerHTML = `
@@ -227,21 +219,14 @@
             `;
             
             container.appendChild(toast);
-            
-            // Trigger Animation (Slide In)
-            requestAnimationFrame(() => {
-                toast.classList.remove('translate-x-full', 'opacity-0');
-            });
-            
-            // Auto hide after 3 seconds
+            requestAnimationFrame(() => toast.classList.remove('translate-x-full', 'opacity-0'));
             setTimeout(() => {
-                toast.classList.add('translate-x-full', 'opacity-0'); // Slide Out
-                // Remove from DOM after animation
+                toast.classList.add('translate-x-full', 'opacity-0');
                 setTimeout(() => toast.remove(), 300);
             }, 3000);
         }
 
-        // --- Helpers: Date & Time Defaults ---
+        // --- Helpers: Defaults & UI ---
         function setNowDefaults() {
             const now = new Date();
             const timeString = now.toTimeString().slice(0, 5);
@@ -259,7 +244,7 @@
         }
 
         // --- Core: Fetch Data from Google Sheet ---
-        async function fetchData() {
+        async function fetchData(silent = false) {
             if (!GOOGLE_SCRIPT_URL.startsWith('http')) {
                 document.getElementById('configAlert').classList.remove('hidden');
                 toggleLoading(false);
@@ -271,9 +256,8 @@
                 const response = await fetch(GOOGLE_SCRIPT_URL);
                 const data = await response.json();
                 
-                // Process Temps
                 if (data.temps) {
-                    globalTemps = data.temps.map((t, index) => ({
+                    globalTemps = data.temps.map((t) => ({
                         ...t,
                         val: parseFloat(t.val),
                         sortTime: parseDateStr(t.date) + parseTimeStr(t.time)
@@ -281,9 +265,8 @@
                     globalTemps.sort((a, b) => a.sortTime - b.sortTime);
                 }
 
-                // Process Meds
                 if (data.meds) {
-                    globalMeds = data.meds.map((m, index) => ({
+                    globalMeds = data.meds.map((m) => ({
                         ...m,
                         sortTime: parseDateStr(m.date) + parseTimeStr(m.time)
                     }));
@@ -291,11 +274,11 @@
                 }
 
                 updateUI();
-                showToast("โหลดข้อมูลล่าสุดแล้ว");
+                if (!silent) showToast("โหลดข้อมูลล่าสุดแล้ว");
 
             } catch (error) {
                 console.error("Fetch error:", error);
-                showToast("เกิดข้อผิดพลาดในการโหลดข้อมูล", "error");
+                if (!silent) showToast("เกิดข้อผิดพลาดในการโหลดข้อมูล", "error");
             } finally {
                 toggleLoading(false);
             }
@@ -312,11 +295,12 @@
                     body: JSON.stringify(payload)
                 });
                 
-                // Wait a bit for Sheet to process, then refresh
+                // Automatic reload without 'OK' button
+                // Reduced delay to 1000ms for snappier feel
                 setTimeout(() => {
-                    fetchData(); // Reload all data
+                    fetchData(true); // Silent reload (no "Loaded" toast)
                     showToast("บันทึกข้อมูลเรียบร้อย!", "success");
-                }, 1500);
+                }, 1000);
 
             } catch (error) {
                 console.error("Send error:", error);
@@ -359,13 +343,7 @@
             const dObj = new Date(dateVal);
             const dateStr = dObj.toLocaleDateString('th-TH');
 
-            const payload = {
-                type: 'temp',
-                val: tempVal,
-                time: timeVal,
-                date: dateStr,
-                status: analysis.status
-            };
+            const payload = { type: 'temp', val: tempVal, time: timeVal, date: dateStr, status: analysis.status };
 
             sendData(payload);
             document.getElementById('tempInput').value = '';
@@ -381,13 +359,7 @@
             const dObj = new Date(dateVal);
             const dateStr = dObj.toLocaleDateString('th-TH');
 
-            const payload = {
-                type: 'med',
-                name: name,
-                dose: dose,
-                time: timeVal,
-                date: dateStr
-            };
+            const payload = { type: 'med', name: name, dose: dose, time: timeVal, date: dateStr };
 
             sendData(payload);
             document.getElementById('medName').value = '';
@@ -409,7 +381,6 @@
             }
             container.innerHTML = '';
             
-            // Show Newest First (Reverse the chronological array)
             [...globalTemps].reverse().forEach(t => {
                 const analysis = analyzeTemp(t.val);
                 const item = document.createElement('div');
@@ -458,7 +429,7 @@
         let myChart = null;
         function renderChart() {
             const ctx = document.getElementById('tempChart').getContext('2d');
-            const recentTemps = globalTemps.slice(-15); // Last 15 records
+            const recentTemps = globalTemps.slice(-15); 
             
             const labels = recentTemps.map(t => {
                 const dPart = t.date.includes('/') ? t.date.split('/').slice(0,2).join('/') : t.date;
@@ -484,7 +455,7 @@
                         label: 'อุณหภูมิ (°C)',
                         data: dataPoints,
                         borderColor: '#3b82f6',
-                        backgroundColor: 'rgba(59, 130, 246, 0.4)', // Slightly darker
+                        backgroundColor: 'rgba(59, 130, 246, 0.4)',
                         borderWidth: 2,
                         pointBackgroundColor: pointColors,
                         pointBorderColor: '#fff',
@@ -498,58 +469,18 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {
-                        y: { 
-                            beginAtZero: false, 
-                            min: 34, 
-                            max: 42, 
-                            grid: { color: 'rgba(0,0,0,0.05)' } 
-                        },
-                        x: { 
-                            display: true, 
-                            ticks: { maxRotation: 45, minRotation: 45, font: { size: 10 } } 
-                        }
+                        y: { beginAtZero: false, min: 34, max: 42, grid: { color: 'rgba(0,0,0,0.05)' } },
+                        x: { display: true, ticks: { maxRotation: 45, minRotation: 45, font: { size: 10 } } }
                     },
                     plugins: { 
                         legend: { display: false },
-                        // Background Annotation Configuration
                         annotation: {
                             annotations: {
-                                veryHighFever: {
-                                    type: 'box',
-                                    yMin: 40,
-                                    yMax: 42.5,
-                                    backgroundColor: 'rgba(239, 68, 68, 0.1)', // Red
-                                    borderWidth: 0,
-                                    label: { content: 'สูงมาก', display: true, position: 'start', color: 'rgba(239, 68, 68, 0.5)', font: {size:10} }
-                                },
-                                highFever: {
-                                    type: 'box',
-                                    yMin: 38.5,
-                                    yMax: 40,
-                                    backgroundColor: 'rgba(249, 115, 22, 0.1)', // Orange
-                                    borderWidth: 0
-                                },
-                                lowFever: {
-                                    type: 'box',
-                                    yMin: 37.5,
-                                    yMax: 38.5,
-                                    backgroundColor: 'rgba(250, 204, 21, 0.1)', // Yellow
-                                    borderWidth: 0
-                                },
-                                normal: {
-                                    type: 'box',
-                                    yMin: 35.4,
-                                    yMax: 37.5,
-                                    backgroundColor: 'rgba(34, 197, 94, 0.1)', // Green
-                                    borderWidth: 0
-                                },
-                                low: {
-                                    type: 'box',
-                                    yMin: 33,
-                                    yMax: 35.4,
-                                    backgroundColor: 'rgba(147, 197, 253, 0.1)', // Blue
-                                    borderWidth: 0
-                                }
+                                veryHighFever: { type: 'box', yMin: 40, yMax: 42.5, backgroundColor: 'rgba(239, 68, 68, 0.1)', borderWidth: 0, label: { content: 'สูงมาก', display: true, position: 'start', color: 'rgba(239, 68, 68, 0.5)', font: {size:10} } },
+                                highFever: { type: 'box', yMin: 38.5, yMax: 40, backgroundColor: 'rgba(249, 115, 22, 0.1)', borderWidth: 0 },
+                                lowFever: { type: 'box', yMin: 37.5, yMax: 38.5, backgroundColor: 'rgba(250, 204, 21, 0.1)', borderWidth: 0 },
+                                normal: { type: 'box', yMin: 35.4, yMax: 37.5, backgroundColor: 'rgba(34, 197, 94, 0.1)', borderWidth: 0 },
+                                low: { type: 'box', yMin: 33, yMax: 35.4, backgroundColor: 'rgba(147, 197, 253, 0.1)', borderWidth: 0 }
                             }
                         },
                         tooltip: {
@@ -572,22 +503,10 @@
 
         // --- Init ---
         setNowDefaults();
-        // Auto-fetch on load (but wait slightly for styles to apply)
         window.addEventListener('load', () => {
-            // Initial fetch without toast
              if (GOOGLE_SCRIPT_URL.startsWith('http')) {
-                toggleLoading(true);
-                fetch(GOOGLE_SCRIPT_URL).then(r=>r.json()).then(data => {
-                    if (data.temps) {
-                        globalTemps = data.temps.map((t) => ({...t, val: parseFloat(t.val), sortTime: parseDateStr(t.date)+parseTimeStr(t.time)}));
-                        globalTemps.sort((a,b)=>a.sortTime-b.sortTime);
-                    }
-                    if (data.meds) {
-                        globalMeds = data.meds.map((m) => ({...m, sortTime: parseDateStr(m.date)+parseTimeStr(m.time)}));
-                        globalMeds.sort((a,b)=>a.sortTime-b.sortTime);
-                    }
-                    updateUI();
-                }).catch(e=>console.error(e)).finally(()=>toggleLoading(false));
+                // Fetch silently on initial load
+                fetchData(true);
              }
         });
 
