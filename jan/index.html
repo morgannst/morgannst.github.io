@@ -63,8 +63,13 @@
         <div class="text-blue-600 font-semibold animate-pulse">กำลังโหลดข้อมูลจาก Google Sheets...</div>
     </div>
 
+    <!-- Toast Container (Added) -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-3 pointer-events-none">
+        <!-- Toasts will be injected here -->
+    </div>
+
     <!-- Header -->
-    <div class="bg-blue-600 text-white p-6 rounded-b-3xl shadow-lg mb-6 sticky top-0 z-50">
+    <div class="bg-blue-600 text-white p-6 rounded-b-3xl shadow-lg mb-6 sticky top-0 z-40">
         <div class="flex justify-between items-center max-w-lg mx-auto">
             <div>
                 <h1 class="text-2xl font-bold"><i class="fas fa-cloud mr-2"></i>Health Tracker</h1>
@@ -199,6 +204,41 @@
         let globalTemps = [];
         let globalMeds = [];
 
+        // --- Helpers: Toast Notification ---
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            
+            // Create Toast Element
+            const toast = document.createElement('div');
+            
+            // Config based on Type
+            const isSuccess = type === 'success';
+            const borderClass = isSuccess ? 'border-green-500' : 'border-red-500';
+            const iconClass = isSuccess ? 'fa-check-circle text-green-500' : 'fa-exclamation-circle text-red-500';
+            
+            // Styles
+            toast.className = `bg-white border-l-4 ${borderClass} px-4 py-3 rounded shadow-lg flex items-center gap-3 min-w-[280px] max-w-sm transform transition-all duration-300 translate-x-full opacity-0 pointer-events-auto`;
+            
+            toast.innerHTML = `
+                <i class="fas ${iconClass} text-lg"></i>
+                <span class="font-medium text-gray-700 text-sm">${message}</span>
+            `;
+            
+            container.appendChild(toast);
+            
+            // Trigger Animation (Slide In)
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-x-full', 'opacity-0');
+            });
+            
+            // Auto hide after 3 seconds
+            setTimeout(() => {
+                toast.classList.add('translate-x-full', 'opacity-0'); // Slide Out
+                // Remove from DOM after animation
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
         // --- Helpers: Date & Time Defaults ---
         function setNowDefaults() {
             const now = new Date();
@@ -234,10 +274,8 @@
                     globalTemps = data.temps.map((t, index) => ({
                         ...t,
                         val: parseFloat(t.val),
-                        // Create a sortable timestamp (Simple Parse)
                         sortTime: parseDateStr(t.date) + parseTimeStr(t.time)
                     }));
-                    // Sort Oldest -> Newest (Chart logic needs this)
                     globalTemps.sort((a, b) => a.sortTime - b.sortTime);
                 }
 
@@ -251,9 +289,11 @@
                 }
 
                 updateUI();
+                showToast("โหลดข้อมูลล่าสุดแล้ว");
+
             } catch (error) {
                 console.error("Fetch error:", error);
-                alert("เกิดข้อผิดพลาดในการดึงข้อมูล กรุณาลองใหม่อีกครั้ง");
+                showToast("เกิดข้อผิดพลาดในการโหลดข้อมูล", "error");
             } finally {
                 toggleLoading(false);
             }
@@ -265,27 +305,26 @@
             try {
                 await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
-                    mode: 'no-cors', // Important for GAS
+                    mode: 'no-cors', 
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
                 
                 // Wait a bit for Sheet to process, then refresh
                 setTimeout(() => {
-                    fetchData(); // Reload all data to ensure sync
-                    alert("บันทึกข้อมูลเรียบร้อย!");
+                    fetchData(); // Reload all data
+                    showToast("บันทึกข้อมูลเรียบร้อย!", "success");
                 }, 1500);
 
             } catch (error) {
                 console.error("Send error:", error);
-                alert("เกิดข้อผิดพลาดในการส่งข้อมูล");
+                showToast("เกิดข้อผิดพลาดในการส่งข้อมูล", "error");
                 toggleLoading(false);
             }
         }
 
         // --- Logic: Sorting Helpers ---
         function parseDateStr(dStr) {
-            // Support YYYY-MM-DD or DD/MM/YYYY
             if (!dStr) return 0;
             if (dStr.includes('/')) {
                 const p = dStr.split('/');
@@ -315,9 +354,6 @@
             const dateVal = document.getElementById('tempDate').value;
             
             const analysis = analyzeTemp(tempVal);
-            // Format Date for Sheet (Optional: keep as ISO YYYY-MM-DD or convert)
-            // Let's send Thai format string if preferred, or keep standard.
-            // Using DD/MM/YYYY for readability in Sheet
             const dObj = new Date(dateVal);
             const dateStr = dObj.toLocaleDateString('th-TH');
 
@@ -469,9 +505,23 @@
 
         // --- Init ---
         setNowDefaults();
-        // Auto-fetch on load
+        // Auto-fetch on load (but wait slightly for styles to apply)
         window.addEventListener('load', () => {
-            fetchData();
+            // Initial fetch without toast
+             if (GOOGLE_SCRIPT_URL.startsWith('http')) {
+                toggleLoading(true);
+                fetch(GOOGLE_SCRIPT_URL).then(r=>r.json()).then(data => {
+                    if (data.temps) {
+                        globalTemps = data.temps.map((t) => ({...t, val: parseFloat(t.val), sortTime: parseDateStr(t.date)+parseTimeStr(t.time)}));
+                        globalTemps.sort((a,b)=>a.sortTime-b.sortTime);
+                    }
+                    if (data.meds) {
+                        globalMeds = data.meds.map((m) => ({...m, sortTime: parseDateStr(m.date)+parseTimeStr(m.time)}));
+                        globalMeds.sort((a,b)=>a.sortTime-b.sortTime);
+                    }
+                    updateUI();
+                }).catch(e=>console.error(e)).finally(()=>toggleLoading(false));
+             }
         });
 
     </script>
