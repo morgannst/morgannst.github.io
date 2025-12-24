@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>บันทึกสุขภาพ: ไข้และยา + Google Sheets</title>
+    <title>บันทึกสุขภาพ: เชื่อมต่อ Google Sheets</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -11,7 +11,7 @@
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
-    <!-- Font Awesome & Google Fonts -->
+    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
 
@@ -32,54 +32,55 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
-        /* Loading Spinner */
-        .loader {
-            border: 3px solid #f3f3f3;
+        /* Loading Overlay */
+        #loadingOverlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.8);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(2px);
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3b82f6;
             border-radius: 50%;
-            border-top: 3px solid #3498db;
-            width: 20px;
-            height: 20px;
-            -webkit-animation: spin 1s linear infinite; /* Safari */
+            width: 40px;
+            height: 40px;
             animation: spin 1s linear infinite;
-            display: none;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="text-gray-700 pb-10">
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay">
+        <div class="spinner mb-2"></div>
+        <div class="text-blue-600 font-semibold animate-pulse">กำลังโหลดข้อมูลจาก Google Sheets...</div>
+    </div>
 
     <!-- Header -->
     <div class="bg-blue-600 text-white p-6 rounded-b-3xl shadow-lg mb-6 sticky top-0 z-50">
         <div class="flex justify-between items-center max-w-lg mx-auto">
             <div>
-                <h1 class="text-2xl font-bold"><i class="fas fa-heartbeat mr-2"></i>บันทึกสุขภาพ</h1>
-                <p class="text-blue-100 text-sm">ระบบซิงค์ Google Sheets</p>
+                <h1 class="text-2xl font-bold"><i class="fas fa-cloud mr-2"></i>Health Tracker</h1>
+                <p class="text-blue-100 text-sm">ข้อมูลจาก Google Sheets โดยตรง</p>
             </div>
-            <div class="flex flex-col items-end gap-1">
-                 <div id="syncStatus" class="text-xs px-2 py-1 bg-blue-800 rounded-full text-blue-200 hidden">
-                    <span class="loader inline-block mr-1 align-middle"></span> <span id="syncText">กำลังทำงาน...</span>
-                </div>
-                <div class="flex gap-2">
-                    <button onclick="syncFromCloud()" class="text-xs bg-white text-blue-600 hover:bg-gray-100 px-3 py-1 rounded-full transition shadow font-medium">
-                        <i class="fas fa-cloud-download-alt mr-1"></i> ดึงข้อมูล
-                    </button>
-                    <button onclick="clearAllData()" class="text-xs bg-blue-700 hover:bg-blue-800 px-3 py-1 rounded-full transition text-white">
-                        ล้างเครื่อง
-                    </button>
-                </div>
-            </div>
+            <button onclick="fetchData()" class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-full transition shadow-md flex items-center gap-2 text-sm">
+                <i class="fas fa-sync-alt"></i> รีเฟรช
+            </button>
         </div>
     </div>
 
     <div class="max-w-lg mx-auto px-4 space-y-6">
 
-        <!-- Config Alert (Shown if URL is missing) -->
-        <div id="configAlert" class="hidden bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-md" role="alert">
-            <p class="font-bold">แจ้งเตือน</p>
-            <p>กรุณาใส่ Google Apps Script URL ในโค้ด JavaScript (บรรทัด 200+) เพื่อให้ใช้งานได้</p>
+        <!-- Config Alert -->
+        <div id="configAlert" class="hidden bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-md text-sm mb-4">
+            <b>ตั้งค่าไม่สมบูรณ์:</b> กรุณาตรวจสอบ URL ของ Google Apps Script ในโค้ด
         </div>
 
         <!-- Section 1: Temperature Input -->
@@ -105,24 +106,26 @@
                             class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-center text-sm">
                     </div>
                 </div>
-                <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-xl transition shadow-md active:scale-95">
-                    บันทึกอุณหภูมิ
+                <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-xl transition shadow-md active:scale-95 flex justify-center items-center gap-2">
+                    <i class="fas fa-save"></i> บันทึกข้อมูล
                 </button>
             </form>
         </div>
 
         <!-- Section 2: Chart -->
         <div class="card p-5">
-            <h2 class="text-lg font-semibold mb-2 text-gray-800">กราฟแสดงผล</h2>
+            <div class="flex justify-between items-center mb-2">
+                <h2 class="text-lg font-semibold text-gray-800">กราฟอุณหภูมิ</h2>
+                <span class="text-xs text-gray-400">15 รายการล่าสุด</span>
+            </div>
             <div class="h-64 w-full relative">
                 <canvas id="tempChart"></canvas>
             </div>
-            <!-- Legend -->
             <div class="flex flex-wrap gap-2 mt-4 text-xs justify-center">
-                <span class="px-2 py-1 rounded-full bg-green-100 text-green-700">● ปกติ (35.4-37.4)</span>
-                <span class="px-2 py-1 rounded-full bg-yellow-100 text-yellow-700">● ไข้ต่ำ (37.5-38.4)</span>
-                <span class="px-2 py-1 rounded-full bg-orange-100 text-orange-700">● ไข้สูง (38.5-39.9)</span>
-                <span class="px-2 py-1 rounded-full bg-red-100 text-red-700">● สูงมาก (>40)</span>
+                <span class="px-2 py-1 rounded-full bg-green-100 text-green-700">● ปกติ</span>
+                <span class="px-2 py-1 rounded-full bg-yellow-100 text-yellow-700">● ไข้ต่ำ</span>
+                <span class="px-2 py-1 rounded-full bg-orange-100 text-orange-700">● ไข้สูง</span>
+                <span class="px-2 py-1 rounded-full bg-red-100 text-red-700">● สูงมาก</span>
             </div>
         </div>
 
@@ -154,8 +157,8 @@
                             class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 text-center text-sm">
                     </div>
                 </div>
-                <button type="submit" class="w-full bg-teal-500 hover:bg-teal-600 text-white font-semibold py-3 rounded-xl transition shadow-md active:scale-95">
-                    บันทึกการกินยา
+                <button type="submit" class="w-full bg-teal-500 hover:bg-teal-600 text-white font-semibold py-3 rounded-xl transition shadow-md active:scale-95 flex justify-center items-center gap-2">
+                    <i class="fas fa-save"></i> บันทึกการกินยา
                 </button>
             </form>
         </div>
@@ -164,17 +167,23 @@
         <div class="grid grid-cols-1 gap-6">
             <!-- Recent Temperature List -->
             <div>
-                <h3 class="font-semibold text-gray-500 mb-2 ml-1">ประวัติอุณหภูมิ (จากเครื่อง + Cloud)</h3>
+                <h3 class="font-semibold text-gray-500 mb-2 ml-1 flex items-center gap-2">
+                    <i class="fas fa-history text-blue-400"></i> ประวัติอุณหภูมิ (จาก Google Sheet)
+                </h3>
                 <div id="tempList" class="space-y-2 max-h-60 overflow-y-auto no-scrollbar">
                     <!-- Dynamic Content -->
+                    <div class="text-center text-gray-400 py-4 text-sm">กำลังโหลดข้อมูล...</div>
                 </div>
             </div>
 
             <!-- Recent Medication List -->
             <div>
-                <h3 class="font-semibold text-gray-500 mb-2 ml-1">ประวัติการกินยา (จากเครื่อง + Cloud)</h3>
+                <h3 class="font-semibold text-gray-500 mb-2 ml-1 flex items-center gap-2">
+                    <i class="fas fa-history text-teal-400"></i> ประวัติการกินยา (จาก Google Sheet)
+                </h3>
                 <div id="medList" class="space-y-2 max-h-60 overflow-y-auto no-scrollbar">
                     <!-- Dynamic Content -->
+                    <div class="text-center text-gray-400 py-4 text-sm">กำลังโหลดข้อมูล...</div>
                 </div>
             </div>
         </div>
@@ -183,12 +192,14 @@
 
     <!-- JavaScript Logic -->
     <script>
-        // --- Configuration & Initialization ---
+        // --- Configuration ---
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbztwV7M9REVEVmFG2FwlvWeAfgDf7UfqwsZBQDWWIVBzZOhrTV5GAennLHwh_7YuznbIw/exec'; 
         
-        const TEMP_KEY = 'healthApp_temps';
-        const MED_KEY = 'healthApp_meds';
-        
+        // --- State (In-Memory Only) ---
+        let globalTemps = [];
+        let globalMeds = [];
+
+        // --- Helpers: Date & Time Defaults ---
         function setNowDefaults() {
             const now = new Date();
             const timeString = now.toTimeString().slice(0, 5);
@@ -199,179 +210,95 @@
             document.getElementById('medTime').value = timeString;
             document.getElementById('medDate').value = dateString;
         }
-        
-        setNowDefaults();
 
-        if (GOOGLE_SCRIPT_URL === '' || !GOOGLE_SCRIPT_URL.startsWith('http')) {
-            document.getElementById('configAlert').classList.remove('hidden');
+        function toggleLoading(show) {
+            const overlay = document.getElementById('loadingOverlay');
+            overlay.style.display = show ? 'flex' : 'none';
         }
 
-        // --- Data Management (Local Storage) ---
-        function getTemps() { return JSON.parse(localStorage.getItem(TEMP_KEY)) || []; }
-        function getMeds() { return JSON.parse(localStorage.getItem(MED_KEY)) || []; }
-        function saveTemps(data) { localStorage.setItem(TEMP_KEY, JSON.stringify(data)); updateUI(); }
-        function saveMeds(data) { localStorage.setItem(MED_KEY, JSON.stringify(data)); updateUI(); }
-
-        // --- Google Sheet Sync Logic ---
-        function showSyncStatus(isLoading, text = 'กำลังบันทึก...') {
-            const el = document.getElementById('syncStatus');
-            const txt = document.getElementById('syncText');
-            const loader = el.querySelector('.loader');
-            
-            if (isLoading) {
-                el.classList.remove('hidden');
-                loader.style.display = 'inline-block';
-                txt.textContent = text;
-            } else {
-                txt.textContent = text;
-                loader.style.display = 'none';
-                setTimeout(() => el.classList.add('hidden'), 3000);
-            }
-        }
-
-        // Send Data (POST)
-        function sendToGoogleSheet(data) {
-            if (!GOOGLE_SCRIPT_URL) return;
-
-            showSyncStatus(true, 'กำลังส่งข้อมูล...');
-            
-            fetch(GOOGLE_SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors', 
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            })
-            .then(() => showSyncStatus(false, 'บันทึกเรียบร้อย'))
-            .catch(err => {
-                console.error(err);
-                showSyncStatus(false, 'เกิดข้อผิดพลาดในการส่ง');
-            });
-        }
-
-        // Fetch Data (GET)
-        async function syncFromCloud() {
-            if (!GOOGLE_SCRIPT_URL) {
-                alert('กรุณาตั้งค่า URL ของ Google Apps Script ก่อน');
+        // --- Core: Fetch Data from Google Sheet ---
+        async function fetchData() {
+            if (!GOOGLE_SCRIPT_URL.startsWith('http')) {
+                document.getElementById('configAlert').classList.remove('hidden');
+                toggleLoading(false);
                 return;
             }
 
-            if(!confirm('การดึงข้อมูลจะนำข้อมูลจาก Google Sheet มาเพิ่มในเครื่อง\n\nยืนยันหรือไม่?')) return;
-
+            toggleLoading(true);
             try {
-                showSyncStatus(true, 'กำลังโหลดข้อมูล...');
                 const response = await fetch(GOOGLE_SCRIPT_URL);
                 const data = await response.json();
                 
-                // Process Temperature Data
-                let localTemps = getTemps();
-                if (data.temps && data.temps.length > 0) {
-                    const cloudTemps = data.temps.map(t => {
-                        // Create a timestamp from date string if needed, or use row timestamp
-                        // We use date+time string as unique key check
-                        const dt = new Date(t.date + 'T' + t.time); // Approximation
-                        // Handle date format from sheet which might be D/M/YYYY or YYYY-MM-DD
-                        // If standard ISO, fine. If not, be careful. 
-                        // Assuming the script returns what we sent (Thai Date string or ISO).
-                        // To be safe, we just store it as strings mostly for display.
-                        return {
-                            id: Date.now() + Math.random(), // Generate pseudo ID
-                            val: parseFloat(t.val),
-                            time: t.time,
-                            date: t.date,
-                            timestamp: new Date().getTime(), // Just for sorting, ideally parse the date
-                            isCloud: true // Marker
-                        };
-                    });
-                    
-                    // Simple Merge: Combine and Deduplicate based on Date+Time+Val
-                    const mergedTemps = [...localTemps];
-                    cloudTemps.forEach(cloudItem => {
-                        const exists = localTemps.some(localItem => 
-                            localItem.date === cloudItem.date && 
-                            localItem.time === cloudItem.time && 
-                            localItem.val === cloudItem.val
-                        );
-                        if (!exists) mergedTemps.push(cloudItem);
-                    });
-                    
-                    // Sort
-                    // Helper to parse Thai date DD/MM/YYYY or YYYY-MM-DD
-                    const parseDateStr = (dStr) => {
-                        if(dStr.includes('/')) {
-                            const p = dStr.split('/');
-                            // Assume D/M/Y
-                            return new Date(`${p[2]}-${p[1]}-${p[0]}`).getTime();
-                        }
-                        return new Date(dStr).getTime();
-                    }
-                    
-                    mergedTemps.sort((a, b) => {
-                         // Combine Date + Time for sort
-                         const timeA = a.time.replace(':','');
-                         const timeB = b.time.replace(':','');
-                         const dateA = parseDateStr(a.date);
-                         const dateB = parseDateStr(b.date);
-                         
-                         if(dateA !== dateB) return dateA - dateB;
-                         return timeA - timeB;
-                    });
-                    
-                    saveTemps(mergedTemps);
-                }
-
-                // Process Medication Data
-                let localMeds = getMeds();
-                if (data.meds && data.meds.length > 0) {
-                    const cloudMeds = data.meds.map(m => ({
-                        id: Date.now() + Math.random(),
-                        name: m.name,
-                        dose: m.dose,
-                        time: m.time,
-                        date: m.date,
-                        timestamp: new Date().getTime()
+                // Process Temps
+                if (data.temps) {
+                    globalTemps = data.temps.map((t, index) => ({
+                        ...t,
+                        val: parseFloat(t.val),
+                        // Create a sortable timestamp (Simple Parse)
+                        sortTime: parseDateStr(t.date) + parseTimeStr(t.time)
                     }));
-
-                    const mergedMeds = [...localMeds];
-                    cloudMeds.forEach(cloudItem => {
-                        const exists = localMeds.some(localItem => 
-                            localItem.date === cloudItem.date && 
-                            localItem.time === cloudItem.time && 
-                            localItem.name === cloudItem.name
-                        );
-                        if (!exists) mergedMeds.push(cloudItem);
-                    });
-                    
-                    // Sort (Logic similar to Temps)
-                    const parseDateStr = (dStr) => {
-                        if(dStr.includes('/')) {
-                            const p = dStr.split('/');
-                            return new Date(`${p[2]}-${p[1]}-${p[0]}`).getTime();
-                        }
-                        return new Date(dStr).getTime();
-                    }
-
-                    mergedMeds.sort((a, b) => {
-                         const timeA = a.time.replace(':','');
-                         const timeB = b.time.replace(':','');
-                         const dateA = parseDateStr(a.date);
-                         const dateB = parseDateStr(b.date);
-                         if(dateA !== dateB) return dateA - dateB;
-                         return timeA - timeB;
-                    });
-
-                    saveMeds(mergedMeds);
+                    // Sort Oldest -> Newest (Chart logic needs this)
+                    globalTemps.sort((a, b) => a.sortTime - b.sortTime);
                 }
 
-                showSyncStatus(false, 'ดึงข้อมูลสำเร็จ!');
+                // Process Meds
+                if (data.meds) {
+                    globalMeds = data.meds.map((m, index) => ({
+                        ...m,
+                        sortTime: parseDateStr(m.date) + parseTimeStr(m.time)
+                    }));
+                    globalMeds.sort((a, b) => a.sortTime - b.sortTime);
+                }
 
-            } catch (err) {
-                console.error(err);
-                showSyncStatus(false, 'ดึงข้อมูลล้มเหลว (ตรวจสอบ Apps Script)');
-                alert('ไม่สามารถดึงข้อมูลได้ \nกรุณาตรวจสอบว่าคุณได้อัปเดตโค้ดใน Google Apps Script ให้รองรับ doGet แล้วหรือยัง');
+                updateUI();
+            } catch (error) {
+                console.error("Fetch error:", error);
+                alert("เกิดข้อผิดพลาดในการดึงข้อมูล กรุณาลองใหม่อีกครั้ง");
+            } finally {
+                toggleLoading(false);
             }
         }
 
-        // --- Logic: Fever Analysis & Helpers ---
+        // --- Core: Send Data to Google Sheet ---
+        async function sendData(payload) {
+            toggleLoading(true);
+            try {
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Important for GAS
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                // Wait a bit for Sheet to process, then refresh
+                setTimeout(() => {
+                    fetchData(); // Reload all data to ensure sync
+                    alert("บันทึกข้อมูลเรียบร้อย!");
+                }, 1500);
+
+            } catch (error) {
+                console.error("Send error:", error);
+                alert("เกิดข้อผิดพลาดในการส่งข้อมูล");
+                toggleLoading(false);
+            }
+        }
+
+        // --- Logic: Sorting Helpers ---
+        function parseDateStr(dStr) {
+            // Support YYYY-MM-DD or DD/MM/YYYY
+            if (!dStr) return 0;
+            if (dStr.includes('/')) {
+                const p = dStr.split('/');
+                return new Date(`${p[2]}-${p[1]}-${p[0]}`).getTime();
+            }
+            return new Date(dStr).getTime();
+        }
+        function parseTimeStr(tStr) {
+            if (!tStr) return 0;
+            return parseInt(tStr.replace(':', ''));
+        }
+
+        // --- Logic: Analysis ---
         function analyzeTemp(temp) {
             if (temp >= 40.0) return { status: 'ไข้สูงมาก', color: 'bg-red-500', text: 'text-red-600', code: 'very_high' };
             if (temp >= 38.5) return { status: 'ไข้สูง', color: 'bg-orange-500', text: 'text-orange-600', code: 'high' };
@@ -385,37 +312,25 @@
             e.preventDefault();
             const tempVal = parseFloat(document.getElementById('tempInput').value);
             const timeVal = document.getElementById('tempTime').value;
-            const dateVal = document.getElementById('tempDate').value; 
+            const dateVal = document.getElementById('tempDate').value;
             
-            if(!tempVal || !dateVal || !timeVal) return;
-
             const analysis = analyzeTemp(tempVal);
-            const recordDateTime = new Date(`${dateVal}T${timeVal}`);
-            const dateStr = recordDateTime.toLocaleDateString('th-TH');
+            // Format Date for Sheet (Optional: keep as ISO YYYY-MM-DD or convert)
+            // Let's send Thai format string if preferred, or keep standard.
+            // Using DD/MM/YYYY for readability in Sheet
+            const dObj = new Date(dateVal);
+            const dateStr = dObj.toLocaleDateString('th-TH');
 
-            const newRecord = {
-                id: Date.now(),
-                val: tempVal,
-                time: timeVal,
-                date: dateStr,
-                timestamp: recordDateTime.getTime()
-            };
-
-            const temps = getTemps();
-            temps.push(newRecord);
-            temps.sort((a, b) => a.timestamp - b.timestamp);
-            saveTemps(temps);
-
-            sendToGoogleSheet({
+            const payload = {
                 type: 'temp',
                 val: tempVal,
                 time: timeVal,
                 date: dateStr,
                 status: analysis.status
-            });
+            };
 
+            sendData(payload);
             document.getElementById('tempInput').value = '';
-            setNowDefaults();
         });
 
         document.getElementById('medForm').addEventListener('submit', (e) => {
@@ -425,43 +340,39 @@
             const timeVal = document.getElementById('medTime').value;
             const dateVal = document.getElementById('medDate').value;
 
-            const recordDateTime = new Date(`${dateVal}T${timeVal}`);
-            const dateStr = recordDateTime.toLocaleDateString('th-TH');
+            const dObj = new Date(dateVal);
+            const dateStr = dObj.toLocaleDateString('th-TH');
 
-            const newRecord = {
-                id: Date.now(),
-                name: name,
-                dose: dose,
-                time: timeVal,
-                date: dateStr,
-                timestamp: recordDateTime.getTime()
-            };
-
-            const meds = getMeds();
-            meds.push(newRecord); 
-            meds.sort((a, b) => a.timestamp - b.timestamp);
-            saveMeds(meds);
-            
-            sendToGoogleSheet({
+            const payload = {
                 type: 'med',
                 name: name,
                 dose: dose,
                 time: timeVal,
                 date: dateStr
-            });
+            };
 
+            sendData(payload);
             document.getElementById('medName').value = '';
             document.getElementById('medDose').value = '';
-            setNowDefaults();
         });
 
-        // --- UI Rendering ---
-        function renderTempList(temps) {
+        // --- Rendering ---
+        function updateUI() {
+            renderTempList();
+            renderMedList();
+            renderChart();
+        }
+
+        function renderTempList() {
             const container = document.getElementById('tempList');
+            if (globalTemps.length === 0) {
+                container.innerHTML = '<div class="text-center text-gray-400 text-sm py-4">ไม่พบข้อมูล</div>';
+                return;
+            }
             container.innerHTML = '';
             
-            // Show Newest First (Reverse render)
-            [...temps].reverse().forEach(t => {
+            // Show Newest First (Reverse the chronological array)
+            [...globalTemps].reverse().forEach(t => {
                 const analysis = analyzeTemp(t.val);
                 const item = document.createElement('div');
                 item.className = "flex justify-between items-center bg-white p-3 rounded-lg shadow-sm border-l-4 " + analysis.text.replace('text', 'border');
@@ -474,18 +385,21 @@
                     <div class="text-right">
                         <div class="text-sm font-semibold text-gray-700">${t.time} น.</div>
                         <div class="text-xs text-gray-400">${t.date}</div>
-                        <button onclick="deleteTemp(${t.id})" class="text-xs text-red-300 hover:text-red-500 mt-1">ลบ</button>
                     </div>
                 `;
                 container.appendChild(item);
             });
         }
 
-        function renderMedList(meds) {
+        function renderMedList() {
             const container = document.getElementById('medList');
+            if (globalMeds.length === 0) {
+                container.innerHTML = '<div class="text-center text-gray-400 text-sm py-4">ไม่พบข้อมูล</div>';
+                return;
+            }
             container.innerHTML = '';
 
-            [...meds].reverse().forEach(m => {
+            [...globalMeds].reverse().forEach(m => {
                 const item = document.createElement('div');
                 item.className = "flex justify-between items-center bg-white p-3 rounded-lg shadow-sm border-l-4 border-teal-400";
                 item.innerHTML = `
@@ -496,38 +410,33 @@
                     <div class="text-right">
                         <div class="text-sm font-semibold text-teal-600">${m.time} น.</div>
                         <div class="text-xs text-gray-400">${m.date}</div>
-                        <button onclick="deleteMed(${m.id})" class="text-xs text-red-300 hover:text-red-500 mt-1">ลบ</button>
                     </div>
                 `;
                 container.appendChild(item);
             });
         }
 
-        // --- Chart Logic ---
+        // --- Chart ---
         let myChart = null;
-
-        function renderChart(temps) {
+        function renderChart() {
             const ctx = document.getElementById('tempChart').getContext('2d');
-            const recentTemps = temps.slice(-15);
+            const recentTemps = globalTemps.slice(-15); // Last 15 records
             
             const labels = recentTemps.map(t => {
-                const shortDate = t.date.split('/').slice(0, 2).join('/');
-                return `${shortDate} ${t.time}`;
+                const dPart = t.date.includes('/') ? t.date.split('/').slice(0,2).join('/') : t.date;
+                return `${dPart} ${t.time}`;
             });
             const dataPoints = recentTemps.map(t => t.val);
-            
             const pointColors = dataPoints.map(val => {
-                const analysis = analyzeTemp(val);
-                if (analysis.code === 'very_high') return '#ef4444';
-                if (analysis.code === 'high') return '#f97316';
-                if (analysis.code === 'low') return '#facc15';
-                if (analysis.code === 'normal') return '#22c55e';
+                const a = analyzeTemp(val);
+                if (a.code === 'very_high') return '#ef4444';
+                if (a.code === 'high') return '#f97316';
+                if (a.code === 'low') return '#facc15';
+                if (a.code === 'normal') return '#22c55e';
                 return '#93c5fd';
             });
 
-            if (myChart) {
-                myChart.destroy();
-            }
+            if (myChart) myChart.destroy();
 
             myChart = new Chart(ctx, {
                 type: 'line',
@@ -550,67 +459,20 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {
-                        y: {
-                            beginAtZero: false,
-                            min: 34,
-                            max: 42,
-                            grid: { color: '#e5e7eb' }
-                        },
-                        x: { 
-                            display: true, 
-                            ticks: { maxRotation: 45, minRotation: 45, font: { size: 10 } }
-                        }
+                        y: { beginAtZero: false, min: 34, max: 42, grid: { color: '#e5e7eb' } },
+                        x: { display: true, ticks: { maxRotation: 45, minRotation: 45, font: { size: 10 } } }
                     },
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    let label = context.dataset.label || '';
-                                    if (label) label += ': ';
-                                    if (context.parsed.y !== null) {
-                                        const status = analyzeTemp(context.parsed.y).status;
-                                        label += context.parsed.y + ' °C (' + status + ')';
-                                    }
-                                    return label;
-                                }
-                            }
-                        }
-                    }
+                    plugins: { legend: { display: false } }
                 }
             });
         }
 
-        // --- Helpers ---
-        function deleteTemp(id) {
-            if(!confirm('ลบรายการนี้จากเครื่อง? (รายการใน Google Sheets จะไม่ถูกลบ)')) return;
-            const temps = getTemps().filter(t => t.id !== id);
-            saveTemps(temps);
-        }
-
-        function deleteMed(id) {
-            if(!confirm('ลบรายการนี้จากเครื่อง? (รายการใน Google Sheets จะไม่ถูกลบ)')) return;
-            const meds = getMeds().filter(m => m.id !== id);
-            saveMeds(meds);
-        }
-
-        function clearAllData() {
-            if(confirm('ลบข้อมูลในเครื่องทั้งหมด?')) {
-                localStorage.removeItem(TEMP_KEY);
-                localStorage.removeItem(MED_KEY);
-                updateUI();
-            }
-        }
-
-        function updateUI() {
-            const temps = getTemps();
-            const meds = getMeds();
-            renderTempList(temps);
-            renderMedList(meds);
-            renderChart(temps);
-        }
-
-        updateUI();
+        // --- Init ---
+        setNowDefaults();
+        // Auto-fetch on load
+        window.addEventListener('load', () => {
+            fetchData();
+        });
 
     </script>
 </body>
