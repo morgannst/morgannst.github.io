@@ -56,15 +56,20 @@
         <div class="flex justify-between items-center max-w-lg mx-auto">
             <div>
                 <h1 class="text-2xl font-bold"><i class="fas fa-heartbeat mr-2"></i>บันทึกสุขภาพ</h1>
-                <p class="text-blue-100 text-sm">บันทึกอัตโนมัติลง Google Sheets</p>
+                <p class="text-blue-100 text-sm">ระบบซิงค์ Google Sheets</p>
             </div>
-            <div class="flex items-center gap-2">
-                <div id="syncStatus" class="text-xs px-2 py-1 bg-blue-800 rounded-full text-blue-200 hidden">
-                    <span class="loader inline-block mr-1 align-middle"></span> กำลังบันทึก...
+            <div class="flex flex-col items-end gap-1">
+                 <div id="syncStatus" class="text-xs px-2 py-1 bg-blue-800 rounded-full text-blue-200 hidden">
+                    <span class="loader inline-block mr-1 align-middle"></span> <span id="syncText">กำลังทำงาน...</span>
                 </div>
-                <button onclick="clearAllData()" class="text-xs bg-blue-700 hover:bg-blue-800 px-3 py-1 rounded-full transition">
-                    ล้างเครื่อง
-                </button>
+                <div class="flex gap-2">
+                    <button onclick="syncFromCloud()" class="text-xs bg-white text-blue-600 hover:bg-gray-100 px-3 py-1 rounded-full transition shadow font-medium">
+                        <i class="fas fa-cloud-download-alt mr-1"></i> ดึงข้อมูล
+                    </button>
+                    <button onclick="clearAllData()" class="text-xs bg-blue-700 hover:bg-blue-800 px-3 py-1 rounded-full transition text-white">
+                        ล้างเครื่อง
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -74,7 +79,7 @@
         <!-- Config Alert (Shown if URL is missing) -->
         <div id="configAlert" class="hidden bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-md" role="alert">
             <p class="font-bold">แจ้งเตือน</p>
-            <p>กรุณาใส่ Google Apps Script URL ในโค้ด JavaScript (บรรทัด 185) เพื่อให้บันทึกข้อมูลลง Sheet ได้</p>
+            <p>กรุณาใส่ Google Apps Script URL ในโค้ด JavaScript (บรรทัด 200+) เพื่อให้ใช้งานได้</p>
         </div>
 
         <!-- Section 1: Temperature Input -->
@@ -159,7 +164,7 @@
         <div class="grid grid-cols-1 gap-6">
             <!-- Recent Temperature List -->
             <div>
-                <h3 class="font-semibold text-gray-500 mb-2 ml-1">ประวัติอุณหภูมิ (ในเครื่อง)</h3>
+                <h3 class="font-semibold text-gray-500 mb-2 ml-1">ประวัติอุณหภูมิ (จากเครื่อง + Cloud)</h3>
                 <div id="tempList" class="space-y-2 max-h-60 overflow-y-auto no-scrollbar">
                     <!-- Dynamic Content -->
                 </div>
@@ -167,7 +172,7 @@
 
             <!-- Recent Medication List -->
             <div>
-                <h3 class="font-semibold text-gray-500 mb-2 ml-1">ประวัติการกินยา (ในเครื่อง)</h3>
+                <h3 class="font-semibold text-gray-500 mb-2 ml-1">ประวัติการกินยา (จากเครื่อง + Cloud)</h3>
                 <div id="medList" class="space-y-2 max-h-60 overflow-y-auto no-scrollbar">
                     <!-- Dynamic Content -->
                 </div>
@@ -179,13 +184,11 @@
     <!-- JavaScript Logic -->
     <script>
         // --- Configuration & Initialization ---
-        // !!! สำคัญ: เอา URL จาก Google Apps Script มาใส่ตรงนี้ !!!
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbztwV7M9REVEVmFG2FwlvWeAfgDf7UfqwsZBQDWWIVBzZOhrTV5GAennLHwh_7YuznbIw/exec'; 
         
         const TEMP_KEY = 'healthApp_temps';
         const MED_KEY = 'healthApp_meds';
         
-        // Initialize Default Date & Time inputs to current
         function setNowDefaults() {
             const now = new Date();
             const timeString = now.toTimeString().slice(0, 5);
@@ -193,15 +196,13 @@
             
             document.getElementById('tempTime').value = timeString;
             document.getElementById('tempDate').value = dateString;
-            
             document.getElementById('medTime').value = timeString;
             document.getElementById('medDate').value = dateString;
         }
         
         setNowDefaults();
 
-        // Check if URL is configured
-        if (GOOGLE_SCRIPT_URL === 'วาง_URL_ของ_APPS_SCRIPT_ที่นี่' || GOOGLE_SCRIPT_URL === '') {
+        if (GOOGLE_SCRIPT_URL === '' || !GOOGLE_SCRIPT_URL.startsWith('http')) {
             document.getElementById('configAlert').classList.remove('hidden');
         }
 
@@ -212,40 +213,162 @@
         function saveMeds(data) { localStorage.setItem(MED_KEY, JSON.stringify(data)); updateUI(); }
 
         // --- Google Sheet Sync Logic ---
-        function showSyncStatus(isLoading) {
+        function showSyncStatus(isLoading, text = 'กำลังบันทึก...') {
             const el = document.getElementById('syncStatus');
+            const txt = document.getElementById('syncText');
             const loader = el.querySelector('.loader');
+            
             if (isLoading) {
                 el.classList.remove('hidden');
                 loader.style.display = 'inline-block';
-                el.innerHTML = '<span class="loader inline-block mr-1 align-middle" style="display:inline-block"></span> กำลังบันทึก...';
+                txt.textContent = text;
             } else {
-                el.innerHTML = '<i class="fas fa-check-circle"></i> บันทึกแล้ว';
+                txt.textContent = text;
+                loader.style.display = 'none';
                 setTimeout(() => el.classList.add('hidden'), 3000);
             }
         }
 
+        // Send Data (POST)
         function sendToGoogleSheet(data) {
-            if (GOOGLE_SCRIPT_URL === 'วาง_URL_ของ_APPS_SCRIPT_ที่นี่' || GOOGLE_SCRIPT_URL === '') return;
+            if (!GOOGLE_SCRIPT_URL) return;
 
-            showSyncStatus(true);
+            showSyncStatus(true, 'กำลังส่งข้อมูล...');
             
             fetch(GOOGLE_SCRIPT_URL, {
                 method: 'POST',
                 mode: 'no-cors', 
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             })
-            .then(() => {
-                console.log('Sent to Sheet');
-                showSyncStatus(false);
-            })
+            .then(() => showSyncStatus(false, 'บันทึกเรียบร้อย'))
             .catch(err => {
-                console.error('Error:', err);
-                document.getElementById('syncStatus').innerHTML = '<i class="fas fa-exclamation-circle"></i> ผิดพลาด';
+                console.error(err);
+                showSyncStatus(false, 'เกิดข้อผิดพลาดในการส่ง');
             });
+        }
+
+        // Fetch Data (GET)
+        async function syncFromCloud() {
+            if (!GOOGLE_SCRIPT_URL) {
+                alert('กรุณาตั้งค่า URL ของ Google Apps Script ก่อน');
+                return;
+            }
+
+            if(!confirm('การดึงข้อมูลจะนำข้อมูลจาก Google Sheet มาเพิ่มในเครื่อง\n\nยืนยันหรือไม่?')) return;
+
+            try {
+                showSyncStatus(true, 'กำลังโหลดข้อมูล...');
+                const response = await fetch(GOOGLE_SCRIPT_URL);
+                const data = await response.json();
+                
+                // Process Temperature Data
+                let localTemps = getTemps();
+                if (data.temps && data.temps.length > 0) {
+                    const cloudTemps = data.temps.map(t => {
+                        // Create a timestamp from date string if needed, or use row timestamp
+                        // We use date+time string as unique key check
+                        const dt = new Date(t.date + 'T' + t.time); // Approximation
+                        // Handle date format from sheet which might be D/M/YYYY or YYYY-MM-DD
+                        // If standard ISO, fine. If not, be careful. 
+                        // Assuming the script returns what we sent (Thai Date string or ISO).
+                        // To be safe, we just store it as strings mostly for display.
+                        return {
+                            id: Date.now() + Math.random(), // Generate pseudo ID
+                            val: parseFloat(t.val),
+                            time: t.time,
+                            date: t.date,
+                            timestamp: new Date().getTime(), // Just for sorting, ideally parse the date
+                            isCloud: true // Marker
+                        };
+                    });
+                    
+                    // Simple Merge: Combine and Deduplicate based on Date+Time+Val
+                    const mergedTemps = [...localTemps];
+                    cloudTemps.forEach(cloudItem => {
+                        const exists = localTemps.some(localItem => 
+                            localItem.date === cloudItem.date && 
+                            localItem.time === cloudItem.time && 
+                            localItem.val === cloudItem.val
+                        );
+                        if (!exists) mergedTemps.push(cloudItem);
+                    });
+                    
+                    // Sort
+                    // Helper to parse Thai date DD/MM/YYYY or YYYY-MM-DD
+                    const parseDateStr = (dStr) => {
+                        if(dStr.includes('/')) {
+                            const p = dStr.split('/');
+                            // Assume D/M/Y
+                            return new Date(`${p[2]}-${p[1]}-${p[0]}`).getTime();
+                        }
+                        return new Date(dStr).getTime();
+                    }
+                    
+                    mergedTemps.sort((a, b) => {
+                         // Combine Date + Time for sort
+                         const timeA = a.time.replace(':','');
+                         const timeB = b.time.replace(':','');
+                         const dateA = parseDateStr(a.date);
+                         const dateB = parseDateStr(b.date);
+                         
+                         if(dateA !== dateB) return dateA - dateB;
+                         return timeA - timeB;
+                    });
+                    
+                    saveTemps(mergedTemps);
+                }
+
+                // Process Medication Data
+                let localMeds = getMeds();
+                if (data.meds && data.meds.length > 0) {
+                    const cloudMeds = data.meds.map(m => ({
+                        id: Date.now() + Math.random(),
+                        name: m.name,
+                        dose: m.dose,
+                        time: m.time,
+                        date: m.date,
+                        timestamp: new Date().getTime()
+                    }));
+
+                    const mergedMeds = [...localMeds];
+                    cloudMeds.forEach(cloudItem => {
+                        const exists = localMeds.some(localItem => 
+                            localItem.date === cloudItem.date && 
+                            localItem.time === cloudItem.time && 
+                            localItem.name === cloudItem.name
+                        );
+                        if (!exists) mergedMeds.push(cloudItem);
+                    });
+                    
+                    // Sort (Logic similar to Temps)
+                    const parseDateStr = (dStr) => {
+                        if(dStr.includes('/')) {
+                            const p = dStr.split('/');
+                            return new Date(`${p[2]}-${p[1]}-${p[0]}`).getTime();
+                        }
+                        return new Date(dStr).getTime();
+                    }
+
+                    mergedMeds.sort((a, b) => {
+                         const timeA = a.time.replace(':','');
+                         const timeB = b.time.replace(':','');
+                         const dateA = parseDateStr(a.date);
+                         const dateB = parseDateStr(b.date);
+                         if(dateA !== dateB) return dateA - dateB;
+                         return timeA - timeB;
+                    });
+
+                    saveMeds(mergedMeds);
+                }
+
+                showSyncStatus(false, 'ดึงข้อมูลสำเร็จ!');
+
+            } catch (err) {
+                console.error(err);
+                showSyncStatus(false, 'ดึงข้อมูลล้มเหลว (ตรวจสอบ Apps Script)');
+                alert('ไม่สามารถดึงข้อมูลได้ \nกรุณาตรวจสอบว่าคุณได้อัปเดตโค้ดใน Google Apps Script ให้รองรับ doGet แล้วหรือยัง');
+            }
         }
 
         // --- Logic: Fever Analysis & Helpers ---
@@ -257,43 +380,32 @@
             return { status: 'ต่ำกว่าปกติ', color: 'bg-blue-300', text: 'text-blue-500', code: 'hypo' };
         }
 
-        // Format Date from "YYYY-MM-DD" to Thai format "D/M/YYYY" for display
-        function formatThaiDate(dateInputStr) {
-            const d = new Date(dateInputStr);
-            return d.toLocaleDateString('th-TH');
-        }
-
         // --- Event Listeners ---
         document.getElementById('tempForm').addEventListener('submit', (e) => {
             e.preventDefault();
             const tempVal = parseFloat(document.getElementById('tempInput').value);
             const timeVal = document.getElementById('tempTime').value;
-            const dateVal = document.getElementById('tempDate').value; // YYYY-MM-DD
+            const dateVal = document.getElementById('tempDate').value; 
             
             if(!tempVal || !dateVal || !timeVal) return;
 
             const analysis = analyzeTemp(tempVal);
-            
-            // Create timestamp from the INPUT date/time, not current time
             const recordDateTime = new Date(`${dateVal}T${timeVal}`);
             const dateStr = recordDateTime.toLocaleDateString('th-TH');
 
             const newRecord = {
-                id: Date.now(), // Unique ID based on creation time
+                id: Date.now(),
                 val: tempVal,
                 time: timeVal,
                 date: dateStr,
-                timestamp: recordDateTime.getTime() // Sort by input time
+                timestamp: recordDateTime.getTime()
             };
 
-            // 1. Save Local
             const temps = getTemps();
             temps.push(newRecord);
-            // Sort by timestamp (Oldest -> Newest)
             temps.sort((a, b) => a.timestamp - b.timestamp);
             saveTemps(temps);
 
-            // 2. Send to Google Sheet
             sendToGoogleSheet({
                 type: 'temp',
                 val: tempVal,
@@ -302,8 +414,6 @@
                 status: analysis.status
             });
 
-            // Reset only value, keep time/date for convenience or reset to now?
-            // Usually reseting value is enough, but let's reset to now
             document.getElementById('tempInput').value = '';
             setNowDefaults();
         });
@@ -327,19 +437,11 @@
                 timestamp: recordDateTime.getTime()
             };
 
-            // 1. Save Local
             const meds = getMeds();
-            meds.push(newRecord); // Push then sort
-            // Sort Newest -> Oldest for meds list usually, but let's keep consistent
-            // Meds usually we want to see what we just took at top. 
-            // Local storage stores array. We will sort when rendering or storing.
-            meds.sort((a, b) => b.timestamp - a.timestamp); // Sort Newest First for array storage?
-            // Actually let's keep array sorted by time (Old -> New) and reverse on render like Temp
+            meds.push(newRecord); 
             meds.sort((a, b) => a.timestamp - b.timestamp);
-            
             saveMeds(meds);
             
-            // 2. Send to Google Sheet
             sendToGoogleSheet({
                 type: 'med',
                 name: name,
@@ -358,7 +460,7 @@
             const container = document.getElementById('tempList');
             container.innerHTML = '';
             
-            // Show Newest First (Reverse the chronological array)
+            // Show Newest First (Reverse render)
             [...temps].reverse().forEach(t => {
                 const analysis = analyzeTemp(t.val);
                 const item = document.createElement('div');
@@ -383,7 +485,6 @@
             const container = document.getElementById('medList');
             container.innerHTML = '';
 
-            // Show Newest First
             [...meds].reverse().forEach(m => {
                 const item = document.createElement('div');
                 item.className = "flex justify-between items-center bg-white p-3 rounded-lg shadow-sm border-l-4 border-teal-400";
@@ -407,13 +508,9 @@
 
         function renderChart(temps) {
             const ctx = document.getElementById('tempChart').getContext('2d');
-            
-            // Use chronologically sorted array for Chart (Old -> New)
-            // Take last 15 records
             const recentTemps = temps.slice(-15);
             
             const labels = recentTemps.map(t => {
-                // Shorten date for chart (e.g., 24/12)
                 const shortDate = t.date.split('/').slice(0, 2).join('/');
                 return `${shortDate} ${t.time}`;
             });
@@ -460,12 +557,8 @@
                             grid: { color: '#e5e7eb' }
                         },
                         x: { 
-                            display: true, // Show X labels now that we have dates
-                            ticks: {
-                                maxRotation: 45,
-                                minRotation: 45,
-                                font: { size: 10 }
-                            }
+                            display: true, 
+                            ticks: { maxRotation: 45, minRotation: 45, font: { size: 10 } }
                         }
                     },
                     plugins: {
@@ -476,9 +569,8 @@
                                     let label = context.dataset.label || '';
                                     if (label) label += ': ';
                                     if (context.parsed.y !== null) {
-                                        label += context.parsed.y + ' °C';
                                         const status = analyzeTemp(context.parsed.y).status;
-                                        label += ` (${status})`;
+                                        label += context.parsed.y + ' °C (' + status + ')';
                                     }
                                     return label;
                                 }
@@ -518,7 +610,6 @@
             renderChart(temps);
         }
 
-        // Initial Load
         updateUI();
 
     </script>
