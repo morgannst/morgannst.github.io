@@ -31,6 +31,13 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         /* Edit Mode Highlight */
         .editing-mode { border: 2px solid #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.2); }
+        
+        /* Radio Button Styling */
+        .timing-radio:checked + div {
+            background-color: #14b8a6; /* teal-500 */
+            color: white;
+            border-color: #14b8a6;
+        }
     </style>
 </head>
 <body class="text-gray-700 pb-20 safe-area-inset-bottom">
@@ -137,11 +144,44 @@
                     <input type="text" id="medName" placeholder="เช่น พาราเซตามอล, ยาแก้ไอ" required
                         class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500">
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-500 mb-1">จำนวน/โดส</label>
-                    <input type="text" id="medDose" placeholder="1 เม็ด" 
-                        class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500">
+                
+                <!-- Medication Dose & Unit -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-500 mb-1">จำนวน</label>
+                        <input type="number" id="medAmount" step="0.5" placeholder="0" required
+                            class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 text-center">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-500 mb-1">หน่วย</label>
+                        <select id="medUnit" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500">
+                            <option value="เม็ด">เม็ด</option>
+                            <option value="ซี.ซี.">ซี.ซี.</option>
+                            <option value="ช้อนชา">ช้อนชา</option>
+                            <option value="ช้อนโต๊ะ">ช้อนโต๊ะ</option>
+                        </select>
+                    </div>
                 </div>
+
+                <!-- Medication Timing -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-500 mb-2">ช่วงเวลา</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="medTiming" value="ก่อนอาหาร" class="hidden timing-radio">
+                            <div class="border border-gray-200 rounded-lg p-2 text-center text-xs font-medium text-gray-600 hover:bg-teal-50 transition">ก่อนอาหาร</div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="medTiming" value="หลังอาหาร" class="hidden timing-radio" checked>
+                            <div class="border border-gray-200 rounded-lg p-2 text-center text-xs font-medium text-gray-600 hover:bg-teal-50 transition">หลังอาหาร</div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="medTiming" value="ก่อนนอน" class="hidden timing-radio">
+                            <div class="border border-gray-200 rounded-lg p-2 text-center text-xs font-medium text-gray-600 hover:bg-teal-50 transition">ก่อนนอน</div>
+                        </label>
+                    </div>
+                </div>
+
                 <div class="flex space-x-2">
                     <div class="flex-1">
                         <label class="block text-sm font-medium text-gray-500 mb-1">วันที่</label>
@@ -367,8 +407,8 @@
 
             const payload = { 
                 type: 'temp', 
-                action: id ? 'edit' : 'add', // Decide Action
-                id: id || generateUUID(),    // Use existing ID or New one
+                action: id ? 'edit' : 'add', 
+                id: id || generateUUID(),
                 val: val, 
                 time: time, 
                 date: dateStr, 
@@ -385,7 +425,27 @@
 
             document.getElementById('medId').value = item.id;
             document.getElementById('medName').value = item.name;
-            document.getElementById('medDose').value = item.dose;
+            
+            // Try to parse existing Dose string: "1 เม็ด (หลังอาหาร)"
+            const doseStr = item.dose;
+            // Regex to match "Amount Unit (Timing)" or just "Amount Unit"
+            // Example matches: "1 เม็ด (หลังอาหาร)", "2.5 ซี.ซี. (ก่อนอาหาร)"
+            const parts = doseStr.match(/^([\d\.]+)\s+(.+?)(?:\s+\((.+)\))?$/);
+
+            if (parts) {
+                document.getElementById('medAmount').value = parts[1];
+                document.getElementById('medUnit').value = parts[2];
+                if(parts[3]) {
+                    const radios = document.getElementsByName('medTiming');
+                    for(const radio of radios) {
+                        if(radio.value === parts[3]) radio.checked = true;
+                    }
+                }
+            } else {
+                // Fallback for legacy data
+                document.getElementById('medAmount').value = '';
+                // Try to guess unit from string if possible or default
+            }
             
             let dStr = item.date;
             if(dStr.includes('/')) {
@@ -408,7 +468,8 @@
         function resetMedForm() {
             document.getElementById('medId').value = '';
             document.getElementById('medName').value = '';
-            document.getElementById('medDose').value = '';
+            document.getElementById('medAmount').value = '';
+            document.querySelector('input[name="medTiming"][value="หลังอาหาร"]').checked = true;
             setNowDefaults();
 
             document.getElementById('medSection').classList.remove('editing-mode');
@@ -428,17 +489,24 @@
             e.preventDefault();
             const id = document.getElementById('medId').value;
             const name = document.getElementById('medName').value;
-            const dose = document.getElementById('medDose').value;
+            
+            const amount = document.getElementById('medAmount').value;
+            const unit = document.getElementById('medUnit').value;
+            const timing = document.querySelector('input[name="medTiming"]:checked').value;
+            const fullDose = `${amount} ${unit} (${timing})`;
+
             const time = document.getElementById('medTime').value;
             const dateVal = document.getElementById('medDate').value;
-
             const dateStr = new Date(dateVal).toLocaleDateString('th-TH');
 
             const payload = { 
                 type: 'med', 
                 action: id ? 'edit' : 'add',
                 id: id || generateUUID(),
-                name: name, dose: dose, time: time, date: dateStr 
+                name: name, 
+                dose: fullDose, // Combined String for compatibility
+                time: time, 
+                date: dateStr 
             };
             sendData(payload);
         });
@@ -518,7 +586,7 @@
                 item.innerHTML = `
                     <div class="flex-1">
                         <div class="font-bold text-gray-700">${m.name}</div>
-                        <div class="text-sm text-gray-500">${m.dose ? 'จำนวน: ' + m.dose : ''}</div>
+                        <div class="text-sm text-gray-500">${m.dose ? m.dose : '-'}</div>
                     </div>
                     <div class="text-right min-w-[80px]">
                         <div class="text-sm font-semibold text-teal-600">${m.time} น.</div>
