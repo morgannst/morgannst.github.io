@@ -2,8 +2,23 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>บันทึกสุขภาพ: เชื่อมต่อ Google Sheets</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>บันทึกสุขภาพ</title>
+    
+    <!-- PWA Settings -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Health Tracker">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="description" content="แอปบันทึกอุณหภูมิและยา">
+
+    <!-- App Icon (ใช้ CDN เพื่อความสะดวก) -->
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2966/2966327.png">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2966/2966327.png">
+
+    <!-- Web App Manifest (Data URI for Single File) -->
+    <link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoi4Lia4Lix4LiZ4LiX4Li24LiB4Liq4Li44LiC4Lig4Liy4LieIiwiYHNob3J0X25hbWUiOiJIZWFsdGgiLCJzdGFydF91cmwiOiIuIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiI2YzZjRmNiIsInRoZW1lX2NvbG9yIjoiIzI1NjNlYiIsImljb25zIjpbeyJzcmMiOiJodHRwczovL2Nkbi1pY29ucy1wbmcuZmxhdGljb24uY29tLzUxMi8yOTY2LzI5NjYzMjcucG5nIiwic2l6ZXMiOiI1MTJ4NTEyIiwidHlwZSI6ImltYWdlL3BuZyJ9XX0=">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -21,6 +36,8 @@
         body {
             font-family: 'Sarabun', sans-serif;
             background-color: #f3f4f6;
+            /* Prevent pull-to-refresh on mobile app mode */
+            overscroll-behavior-y: contain; 
         }
         .card {
             background: white;
@@ -55,9 +72,19 @@
             animation: spin 1s linear infinite;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Install Button Animation */
+        #installBtn {
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-5px);}
+            60% {transform: translateY(-3px);}
+        }
     </style>
 </head>
-<body class="text-gray-700 pb-10">
+<body class="text-gray-700 pb-20 safe-area-inset-bottom">
 
     <!-- Loading Overlay -->
     <div id="loadingOverlay">
@@ -69,15 +96,23 @@
     <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-3 pointer-events-none"></div>
 
     <!-- Header -->
-    <div class="bg-blue-600 text-white p-6 rounded-b-3xl shadow-lg mb-6 sticky top-0 z-40">
-        <div class="flex justify-between items-center max-w-lg mx-auto">
+    <div class="bg-blue-600 text-white p-6 pb-8 rounded-b-3xl shadow-lg mb-6 sticky top-0 z-40 pt-safe-top">
+        <div class="flex justify-between items-center max-w-lg mx-auto mt-2">
             <div>
-                <h1 class="text-2xl font-bold"><i class="fas fa-cloud mr-2"></i>Health Tracker</h1>
-                <p class="text-blue-100 text-sm">ข้อมูลจาก Google Sheets โดยตรง</p>
+                <h1 class="text-2xl font-bold flex items-center">
+                    <i class="fas fa-heartbeat mr-2"></i>Health Tracker
+                </h1>
+                <p class="text-blue-100 text-sm">ข้อมูลจาก Google Sheets</p>
             </div>
-            <button onclick="fetchData(false)" class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-full transition shadow-md flex items-center gap-2 text-sm">
-                <i class="fas fa-sync-alt"></i> รีเฟรช
-            </button>
+            <div class="flex gap-2">
+                <!-- Install Button (Hidden by default) -->
+                <button id="installBtn" class="hidden bg-white text-blue-600 px-3 py-1 rounded-full text-xs font-bold shadow-md hover:bg-gray-100 transition">
+                    <i class="fas fa-download mr-1"></i> ติดตั้ง
+                </button>
+                <button onclick="fetchData(false)" class="bg-blue-700 hover:bg-blue-800 text-white px-3 py-1 rounded-full transition shadow-md flex items-center gap-1 text-xs">
+                    <i class="fas fa-sync-alt"></i> รีเฟรช
+                </button>
+            </div>
         </div>
     </div>
 
@@ -96,8 +131,9 @@
             <form id="tempForm" class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-500 mb-1">อุณหภูมิ (°C)</label>
-                    <input type="number" id="tempInput" step="0.1" placeholder="เช่น 37.5" required
+                    <input type="number" id="tempInput" step="0.1" min="30" max="45" placeholder="เช่น 37.5" required
                         class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg font-bold text-center">
+                    <p class="text-xs text-gray-400 mt-1 text-center">กรุณากรอกค่าระหว่าง 30 - 45 °C</p>
                 </div>
                 <div class="flex space-x-2">
                     <div class="flex-1">
@@ -110,6 +146,12 @@
                         <input type="time" id="tempTime" required
                             class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-center text-sm">
                     </div>
+                </div>
+                <!-- Note Field -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-500 mb-1">อาการร่วม (ถ้ามี)</label>
+                    <input type="text" id="tempNote" placeholder="เช่น เจ็บคอ, หนาวสั่น, ปวดหัว"
+                        class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
                 </div>
                 <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-xl transition shadow-md active:scale-95 flex justify-center items-center gap-2">
                     <i class="fas fa-save"></i> บันทึกข้อมูล
@@ -198,6 +240,37 @@
         // --- Configuration ---
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbztwV7M9REVEVmFG2FwlvWeAfgDf7UfqwsZBQDWWIVBzZOhrTV5GAennLHwh_7YuznbIw/exec'; 
         
+        // --- PWA Installer Logic ---
+        let deferredPrompt;
+        const installBtn = document.getElementById('installBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent Chrome 67 and earlier from automatically showing the prompt
+            e.preventDefault();
+            // Stash the event so it can be triggered later.
+            deferredPrompt = e;
+            // Update UI to notify the user they can add to home screen
+            installBtn.classList.remove('hidden');
+        });
+
+        installBtn.addEventListener('click', (e) => {
+            // Hide the app provided install promotion
+            installBtn.classList.add('hidden');
+            // Show the install prompt
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                // Wait for the user to respond to the prompt
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the A2HS prompt');
+                    } else {
+                        console.log('User dismissed the A2HS prompt');
+                    }
+                    deferredPrompt = null;
+                });
+            }
+        });
+
         // --- State (In-Memory Only) ---
         let globalTemps = [];
         let globalMeds = [];
@@ -296,9 +369,8 @@
                 });
                 
                 // Automatic reload without 'OK' button
-                // Reduced delay to 1000ms for snappier feel
                 setTimeout(() => {
-                    fetchData(true); // Silent reload (no "Loaded" toast)
+                    fetchData(true); // Silent reload
                     showToast("บันทึกข้อมูลเรียบร้อย!", "success");
                 }, 1000);
 
@@ -338,15 +410,29 @@
             const tempVal = parseFloat(document.getElementById('tempInput').value);
             const timeVal = document.getElementById('tempTime').value;
             const dateVal = document.getElementById('tempDate').value;
+            const noteVal = document.getElementById('tempNote').value;
             
+            if (tempVal < 30 || tempVal > 45) {
+                showToast("กรุณากรอกอุณหภูมิระหว่าง 30 - 45 องศา", "error");
+                return;
+            }
+
             const analysis = analyzeTemp(tempVal);
             const dObj = new Date(dateVal);
             const dateStr = dObj.toLocaleDateString('th-TH');
 
-            const payload = { type: 'temp', val: tempVal, time: timeVal, date: dateStr, status: analysis.status };
+            const payload = { 
+                type: 'temp', 
+                val: tempVal, 
+                time: timeVal, 
+                date: dateStr, 
+                status: analysis.status,
+                note: noteVal 
+            };
 
             sendData(payload);
             document.getElementById('tempInput').value = '';
+            document.getElementById('tempNote').value = '';
         });
 
         document.getElementById('medForm').addEventListener('submit', (e) => {
@@ -384,12 +470,17 @@
             [...globalTemps].reverse().forEach(t => {
                 const analysis = analyzeTemp(t.val);
                 const item = document.createElement('div');
-                item.className = "flex justify-between items-center bg-white p-3 rounded-lg shadow-sm border-l-4 " + analysis.text.replace('text', 'border');
+                item.className = "flex justify-between items-start bg-white p-3 rounded-lg shadow-sm border-l-4 " + analysis.text.replace('text', 'border');
+                const noteHtml = t.note ? `<div class="text-xs text-gray-500 mt-1 italic"><i class="fas fa-sticky-note mr-1 text-blue-300"></i>${t.note}</div>` : '';
+                
                 item.innerHTML = `
                     <div>
-                        <span class="text-2xl font-bold ${analysis.text}">${t.val}</span>
-                        <span class="text-xs text-gray-400 ml-1">°C</span>
-                        <span class="ml-2 text-sm font-medium text-gray-600">${analysis.status}</span>
+                        <div class="flex items-baseline">
+                            <span class="text-2xl font-bold ${analysis.text}">${t.val}</span>
+                            <span class="text-xs text-gray-400 ml-1">°C</span>
+                            <span class="ml-2 text-sm font-medium text-gray-600">${analysis.status}</span>
+                        </div>
+                        ${noteHtml}
                     </div>
                     <div class="text-right">
                         <div class="text-sm font-semibold text-gray-700">${t.time} น.</div>
@@ -493,6 +584,12 @@
                                         label += context.parsed.y + ' °C (' + status + ')';
                                     }
                                     return label;
+                                },
+                                afterLabel: function(context) {
+                                    const index = context.dataIndex;
+                                    const note = recentTemps[index].note;
+                                    if(note) return `อาการ: ${note}`;
+                                    return '';
                                 }
                             }
                         }
