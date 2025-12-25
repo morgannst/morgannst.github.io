@@ -26,97 +26,108 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            // ปรับใหม่: พื้นหลังสว่าง / ตัวหนังสือเข้มจัด
-                        dark: '#f1f5f9',      // พื้นหลังหลัก (Slate 100 - ขาวควันบุหรี่)
-                        card: '#ffffff',      // พื้นหลังการ์ด (White - ขาวล้วน)
-                        text: '#0f172a',      // สีตัวอักษรหลัก (Slate 900 - ดำเกือบสนิท) **แก้จุดที่จม**
-                        light: '#334155',     // สีตัวอักษรรอง (Slate 700 - เทาเข้ม) **แก้จุดที่จม**
-                        accent: '#0ea5e9',    // สีฟ้า Sky Blue
-                        primary: '#0d9488',   // สีเขียว Teal (สีชุดผ่าตัด)
-                        gold: '#d97706'       // สีส้มทอง (เข้มขึ้นให้อ่านง่าย)
-                        }
+tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    brand: {
+                        // --- ส่วนสำคัญที่แก้ไข ---
+                        // สลับขั้วสี: ชื่อยังเหมือนเดิม แต่เปลี่ยนค่าสีข้างในให้เหมาะกับพื้นขาว
+                        
+                        // dark: พื้นหลัง (เปลี่ยนจากดำ เป็น ขาวควันบุหรี่)
+                        dark: '#f8fafc',      
+
+                        // card: พื้นหลังการ์ด (เปลี่ยนจากเทา เป็น ขาวล้วน)
+                        card: '#ffffff',      
+
+                        // text: สีข้อความรอง (เปลี่ยนจากเทา เป็น เทาเข้ม)
+                        text: '#475569',      
+                        
+                        // light: **ตัวต้นเหตุ** (เดิมคือสีขาว) -> เปลี่ยนเป็น "สีน้ำเงินดำเข้ม" (Slate 900)
+                        light: '#0f172a',     
+
+                        // accent: สีฟ้าการแพทย์
+                        accent: '#0284c7',    
+                        
+                        // primary: สีเขียวเข้ม (Teal) สำหรับหัวข้อสำคัญ
+                        primary: '#0f766e', 
+                        
+                        gold: '#d97706'
+                    }
+                },
+                animation: {
+                    'fade-in': 'fadeIn 0.5s ease-out',
+                    'slide-up': 'slideUp 0.5s ease-out',
+                },
+                keyframes: {
+                    fadeIn: {
+                        '0%': { opacity: '0' },
+                        '100%': { opacity: '1' },
                     },
-                    animation: {
-                        'fade-in': 'fadeIn 0.5s ease-out',
-                        'slide-up': 'slideUp 0.5s ease-out',
-                    },
-                    keyframes: {
-                        fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' },
-                        },
-                        slideUp: {
-                            '0%': { transform: 'translateY(20px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' },
-                        }
+                    slideUp: {
+                        '0%': { transform: 'translateY(20px)', opacity: '0' },
+                        '100%': { transform: 'translateY(0)', opacity: '1' },
                     }
                 }
             }
         }
-    </script>
+    }
+</script>
 
-    <style>
-       /* บังคับสีตัวอักษรเริ่มต้นให้เข้มขึ้นทันที */
+<style>
+    /* บังคับค่าเริ่มต้นของทั้งหน้าเว็บ */
     body {
-        background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-        color: #0f172a !important; /* บังคับให้เป็นสีดำเข้ม */
+        background: #f8fafc; /* พื้นหลังสีขาวควันบุหรี่ สบายตา */
+        color: #0f172a;      /* บังคับสีตัวอักษรหลักเป็น ดำเข้ม (Slate 900) */
         font-family: 'Prompt', sans-serif;
         min-height: 100vh;
     }
 
-    /* แก้ไขส่วนที่เป็นข้อความหัวข้อ หรือลิงก์ ให้เข้มขึ้น */
-    h1, h2, h3, h4, h5, h6, p, span, div, a {
-        color: inherit; /* ให้ใช้น้ำหนักสีจาก body ยกเว้นมีคลาสกำหนด */
-    }
-
-    /* การ์ดเน้นความสะอาด ตัดขอบให้ชัดขึ้น */
-    .glass-card {
-        background: rgba(255, 255, 255, 0.95); /* เพิ่มความทึบแสงให้อ่านง่ายขึ้น */
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid #cbd5e1; /* ขอบสีเทาชัดเจน */
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        border-radius: 16px;
+    /* CSS Class Override: เขียนทับ Class เดิมที่อาจจะตกค้าง */
+    .text-brand-light {
+        color: #0f172a !important; /* บังคับให้ class นี้เป็นสีดำเข้มเสมอ */
     }
     
-    /* กรณีมีข้อความที่ใช้ class text-brand-text หรือ text-brand-light โดยตรง */
-    .text-brand-text { color: #0f172a !important; }
-    .text-brand-light { color: #334155 !important; }
-    .text-brand-primary { color: #0f766e !important; } /* ปรับ Teal ให้เข้มขึ้น */
+    .text-brand-text {
+        color: #334155 !important; /* บังคับให้ class นี้เป็นสีเทาเข้มเสมอ */
+    }
 
-    /* Status Colors - ปรับให้อ่านง่ายบนพื้นขาว */
-    .status-pending { background-color: #fffbeb; color: #92400e; border: 1px solid #fcd34d; }
-    .status-assigned { background-color: #eff6ff; color: #1e40af; border: 1px solid #60a5fa; }
-    .status-in_progress { background-color: #eef2ff; color: #3730a3; border: 1px solid #818cf8; }
-    .status-completed { background-color: #ecfdf5; color: #065f46; border: 1px solid #34d399; }
-    .status-cancelled { background-color: #fef2f2; color: #991b1b; border: 1px solid #f87171; }
-    .status-closed { background-color: #f8fafc; color: #334155; border: 1px solid #94a3b8; }
+    /* สไตล์การ์ดแบบ Medical Clean */
+    .glass-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0; /* เส้นขอบสีเทาอ่อนชัดเจน */
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        border-radius: 16px;
+        color: #0f172a; /* บังคับตัวอักษรในการ์ดให้เข้ม */
+    }
 
+    /* Status Labels */
+    .status-pending { background-color: #fff7ed; color: #9a3412; border: 1px solid #fed7aa; }
+    .status-assigned { background-color: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+    .status-in_progress { background-color: #eef2ff; color: #3730a3; border: 1px solid #c7d2fe; }
+    .status-completed { background-color: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+    .status-cancelled { background-color: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+    .status-closed { background-color: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
+
+    /* Other UI Elements */
     .rate-star { cursor: pointer; color: #cbd5e1; transition: color 0.2s; }
     .rate-star.active { color: #f59e0b; }
 
     #loading-overlay {
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(241, 245, 249, 0.98); /* พื้นหลัง Loading ทึบขึ้น */
+        background: #f8fafc; /* พื้นหลังโหลดสีขาว */
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         z-index: 9999;
-        transition: opacity 0.3s ease;
     }
 
     .loading-text {
         margin-top: 20px;
-        font-weight: 600; /* ตัวหนาขึ้น */
-        letter-spacing: 1px;
-        color: #0f766e;
+        font-weight: 600;
+        color: #0f766e; /* ตัวหนังสือ Loading สีเขียวเข้ม */
         animation: pulse 1.5s infinite;
     }
 
