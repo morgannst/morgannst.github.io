@@ -31,14 +31,14 @@
                 extend: {
                     colors: {
                         brand: {
-                             // ปรับ mapping สีใหม่สำหรับธีมสว่าง (Medical Light Theme)
-                        dark: '#f0f9ff',      // พื้นหลังหลัก (Ice Blue)
-                        card: '#ffffff',      // พื้นหลังการ์ด (White)
-                        text: '#334155',      // สีตัวอักษรหลัก (Slate 700) - อ่านง่ายสบายตา
-                        light: '#64748b',     // สีตัวอักษรรอง (Slate 500)
-                        accent: '#0ea5e9',    // สีตกแต่งหลัก (Sky Blue) - สื่อถึงเทคโนโลยีและความสะอาด
-                        primary: '#0d9488',   // สีหลัก (Teal) - สีเขียวชุดแพทย์ สื่อถึงการรักษา
-                        gold: '#f59e0b'       // สีทอง/ส้ม สำหรับดาวหรือการแจ้งเตือน
+                            // ปรับใหม่: พื้นหลังสว่าง / ตัวหนังสือเข้มจัด
+                        dark: '#f1f5f9',      // พื้นหลังหลัก (Slate 100 - ขาวควันบุหรี่)
+                        card: '#ffffff',      // พื้นหลังการ์ด (White - ขาวล้วน)
+                        text: '#0f172a',      // สีตัวอักษรหลัก (Slate 900 - ดำเกือบสนิท) **แก้จุดที่จม**
+                        light: '#334155',     // สีตัวอักษรรอง (Slate 700 - เทาเข้ม) **แก้จุดที่จม**
+                        accent: '#0ea5e9',    // สีฟ้า Sky Blue
+                        primary: '#0d9488',   // สีเขียว Teal (สีชุดผ่าตัด)
+                        gold: '#d97706'       // สีส้มทอง (เข้มขึ้นให้อ่านง่าย)
                         }
                     },
                     animation: {
@@ -61,47 +61,49 @@
     </script>
 
     <style>
-        body {
-           /* พื้นหลัง Gradient สีขาวอมฟ้า-เขียว ดูสะอาด สบายตา */
-        background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-        color: #334155; /* Slate 700 */
+       /* บังคับสีตัวอักษรเริ่มต้นให้เข้มขึ้นทันที */
+    body {
+        background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+        color: #0f172a !important; /* บังคับให้เป็นสีดำเข้ม */
         font-family: 'Prompt', sans-serif;
         min-height: 100vh;
-        }
+    }
 
-     /* การ์ดแบบกระจกฝ้า สีขาว (Frosted Glass - White) */
-        .glass-card {
-        background: rgba(255, 255, 255, 0.75);
+    /* แก้ไขส่วนที่เป็นข้อความหัวข้อ หรือลิงก์ ให้เข้มขึ้น */
+    h1, h2, h3, h4, h5, h6, p, span, div, a {
+        color: inherit; /* ให้ใช้น้ำหนักสีจาก body ยกเว้นมีคลาสกำหนด */
+    }
+
+    /* การ์ดเน้นความสะอาด ตัดขอบให้ชัดขึ้น */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.95); /* เพิ่มความทึบแสงให้อ่านง่ายขึ้น */
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(14, 165, 233, 0.15); /* ขอบสีฟ้าจางๆ */
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        border: 1px solid #cbd5e1; /* ขอบสีเทาชัดเจน */
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         border-radius: 16px;
-        }
+    }
+    
+    /* กรณีมีข้อความที่ใช้ class text-brand-text หรือ text-brand-light โดยตรง */
+    .text-brand-text { color: #0f172a !important; }
+    .text-brand-light { color: #334155 !important; }
+    .text-brand-primary { color: #0f766e !important; } /* ปรับ Teal ให้เข้มขึ้น */
 
-       /* ปรับสีสถานะให้อ่านง่ายบนพื้นขาว และดูเป็นทางการแพทย์ */
-    .status-pending { background-color: #fef3c7; color: #92400e; border: 1px solid #fcd34d; } /* Amber */
-    .status-assigned { background-color: #dbeafe; color: #1e40af; border: 1px solid #93c5fd; } /* Blue */
-    .status-in_progress { background-color: #e0e7ff; color: #3730a3; border: 1px solid #a5b4fc; } /* Indigo */
-    .status-completed { background-color: #d1fae5; color: #065f46; border: 1px solid #6ee7b7; } /* Emerald - สีเขียวการแพทย์ */
-    .status-cancelled { background-color: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; } /* Red */
-    .status-closed { background-color: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; } /* Slate */
+    /* Status Colors - ปรับให้อ่านง่ายบนพื้นขาว */
+    .status-pending { background-color: #fffbeb; color: #92400e; border: 1px solid #fcd34d; }
+    .status-assigned { background-color: #eff6ff; color: #1e40af; border: 1px solid #60a5fa; }
+    .status-in_progress { background-color: #eef2ff; color: #3730a3; border: 1px solid #818cf8; }
+    .status-completed { background-color: #ecfdf5; color: #065f46; border: 1px solid #34d399; }
+    .status-cancelled { background-color: #fef2f2; color: #991b1b; border: 1px solid #f87171; }
+    .status-closed { background-color: #f8fafc; color: #334155; border: 1px solid #94a3b8; }
 
-        
-        .rate-star {
-        cursor: pointer;
-        color: #cbd5e1; /* สีเทาอ่อนเมื่อยังไม่เลือก */
-        transition: color 0.2s;
-        }
-        .rate-star.active {
-            color: #f59e0b; /* สีทอง */
-        }
+    .rate-star { cursor: pointer; color: #cbd5e1; transition: color 0.2s; }
+    .rate-star.active { color: #f59e0b; }
 
-    /* Loading Overlay สีขาวสะอาด */
     #loading-overlay {
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(240, 249, 255, 0.95); /* สี Ice Blue จางๆ */
+        background: rgba(241, 245, 249, 0.98); /* พื้นหลัง Loading ทึบขึ้น */
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -112,20 +114,18 @@
 
     .loading-text {
         margin-top: 20px;
-        font-weight: 500;
+        font-weight: 600; /* ตัวหนาขึ้น */
         letter-spacing: 1px;
-        color: #0d9488; /* สี Teal เข้ม */
+        color: #0f766e;
         animation: pulse 1.5s infinite;
     }
 
     .panel-hidden { display: none; }
     .panel-visible { display: block; animation: fadeIn 0.3s ease-out; }
     
-    /* Scrollbar ปรับให้เข้ากับธีมสว่าง */
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: #f1f5f9; }
-    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
     </style>
 </head>
 <body class="antialiased overflow-x-hidden">
