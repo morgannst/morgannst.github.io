@@ -26,17 +26,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <script>
-        tailwind.config = {
+tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         brand: {
-                            dark: '#323031',
-                            card: '#3d3b3c',
-                            text: '#7f7979',
-                            light: '#c1bdb3',
-                            accent: '#5f5b6b',
-                            primary: '#c1bdb3', 
+                            // พื้นหลังหลัก ปรับให้เข้มและมีความอมเขียวเล็กน้อยเพื่อรับกับโลโก้
+                            dark: '#1a1d1c', 
+                            // สีการ์ด ปรับให้สว่างกว่าพื้นหลังเล็กน้อย
+                            card: '#272e2c',
+                            // สีข้อความ เปลี่ยนเป็นสีขาวนวลเพื่อให้อ่านง่ายบนพื้นเข้ม
+                            text: '#e5e7eb',
+                            // สีข้อความรอง
+                            light: '#9ca3af',
+                            // สี Accent สำหรับ Hover หรือจุดรอง ใช้สีเขียวที่สว่างขึ้น
+                            accent: '#54998a',
+                            // สีหลัก (Primary) ดึงมาจากสีเขียวในโลโก้ (Sage Green)
+                            primary: '#3e7c6f', 
+                            // สีทองสำหรับดาว/สถานะ (เก็บไว้เพราะเข้ากันได้ดีกับสีเขียว)
                             gold: '#fbbf24'
                         }
                     },
@@ -61,30 +68,35 @@
 
     <style>
         body {
-            background: linear-gradient(135deg, #323031 0%, #1a1919 100%);
-            color: #c1bdb3;
+            /* ปรับ Gradient พื้นหลังให้เป็นโทน Deep Green/Black เพื่อคุมโทนโรงพยาบาล */
+            background: linear-gradient(135deg, #1a1d1c 0%, #0f1211 100%);
+            color: #e5e7eb;
             font-family: 'Prompt', sans-serif;
             min-height: 100vh;
         }
 
-     
         .glass-card {
-            background: rgba(61, 59, 60, 0.7);
+            /* ปรับสีกระจกให้มีความอมเขียวจางๆ เข้ากับธีม */
+            background: rgba(39, 46, 44, 0.7); 
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(193, 189, 179, 0.1);
+            /* เส้นขอบใช้สีเขียวโลโก้แต่จางมาก */
+            border: 1px solid rgba(62, 124, 111, 0.2);
             border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
         }
 
-       
+        /* Status Colors - ปรับให้ดู Soft ขึ้นเล็กน้อยแต่ยังสื่อความหมายเดิม */
         .status-pending { background-color: #fbbf24; color: #451a03; }
         .status-assigned { background-color: #3b82f6; color: #1e3a8a; }
         .status-in_progress { background-color: #8b5cf6; color: #2e1065; }
-        .status-completed { background-color: #10b981; color: #064e3b; }
+        
+        /* Completed ใช้สีเขียวที่ใกล้เคียงโลโก้ แต่สดกว่าเล็กน้อย */
+        .status-completed { background-color: #34d399; color: #064e3b; } 
+        
         .status-cancelled { background-color: #ef4444; color: #450a0a; }
         .status-closed { background-color: #4b5563; color: #e5e7eb; border: 1px solid #6b7280; }
 
-        
         .rate-star {
             cursor: pointer;
             color: #4b5563; 
@@ -94,11 +106,11 @@
             color: #fbbf24; 
         }
 
-       
         #loading-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(50, 48, 49, 0.95);
+            /* Overlay สีเขียวเข้มจัดเกือบดำ */
+            background: rgba(26, 29, 28, 0.95);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -112,15 +124,17 @@
             font-weight: 500;
             letter-spacing: 1px;
             animation: pulse 1.5s infinite;
+            /* สีข้อความ Loading ให้เป็นสีแบรนด์ */
+            color: #3e7c6f; 
         }
 
         .panel-hidden { display: none; }
         .panel-visible { display: block; animation: fadeIn 0.3s ease-out; }
         
-       
         ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #323031; }
-        ::-webkit-scrollbar-thumb { background: #5f5b6b; border-radius: 3px; }
+        ::-webkit-scrollbar-track { background: #1a1d1c; }
+        /* Scrollbar สีเขียวแบรนด์ */
+        ::-webkit-scrollbar-thumb { background: #3e7c6f; border-radius: 3px; }
     </style>
 </head>
 <body class="antialiased overflow-x-hidden">
