@@ -5,65 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>ระบบบัญชี - โรงพยาบาลสัตว์สุราษฎร์ธานี</title>
   
-  <!-- Tailwind CSS -->
+  <!-- Libraries -->
   <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
-  
-  <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-  <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
+    /* --- Global Styles --- */
     body { font-family: 'Prompt', sans-serif; background-color: #f8fafc; font-size: 14px; }
     
-    .blob { position: absolute; filter: blur(40px); z-index: -1; opacity: 0.5; }
-    
-    /* Animation Utilities */
+    /* --- Animations --- */
     .fade-in { animation: fadeIn 0.3s ease-in-out; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-    /* Skeleton Loading Animation */
-    @keyframes pulse-fast {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
-    .skeleton-pulse {
-      animation: pulse-fast 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    }
+    @keyframes pulse-fast { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    .skeleton-pulse { animation: pulse-fast 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
 
-    /* Mock Dashboard Animations */
-    @keyframes bar-grow {
-        0% { height: 0; opacity: 0; }
-        100% { opacity: 1; }
-    }
-    .bar-anim {
-        animation: bar-grow 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-        transform-origin: bottom;
-    }
+    @keyframes bar-grow { 0% { height: 0; opacity: 0; } 100% { opacity: 1; } }
+    .bar-anim { animation: bar-grow 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; transform-origin: bottom; }
 
+    .blob { position: absolute; filter: blur(40px); z-index: -1; opacity: 0.5; }
+
+    /* --- Responsive Tweaks --- */
     @media (max-width: 640px) {
-      .mobile-hide { display: none; }
       .container { padding-left: 10px; padding-right: 10px; }
     }
   </style>
 </head>
 <body class="text-slate-700 antialiased bg-slate-50 overflow-x-hidden">
 
-  <!-- ================= LANDING PAGE (หน้าหลัก) ================= -->
+  <!-- ================= LANDING PAGE ================= -->
   <div id="landingPage" class="min-h-screen flex flex-col relative overflow-hidden fade-in">
-    
-    <!-- Background Elements -->
     <div class="blob bg-blue-300 w-64 h-64 rounded-full top-0 left-0 -translate-x-1/2 -translate-y-1/2"></div>
     <div class="blob bg-purple-300 w-64 h-64 rounded-full bottom-0 right-0 translate-x-1/3 translate-y-1/3"></div>
 
-    <!-- Navbar -->
     <nav class="w-full py-4 px-6 flex justify-between items-center backdrop-blur-sm bg-white/70 sticky top-0 z-50 shadow-sm">
         <div class="flex items-center gap-2">
             <div class="bg-gradient-to-tr from-blue-600 to-purple-600 text-white w-10 h-10 flex items-center justify-center rounded-xl shadow-lg shadow-blue-500/30">
@@ -79,7 +56,6 @@
         </button>
     </nav>
 
-    <!-- Hero Section -->
     <div class="flex-1 flex flex-col items-center justify-center text-center p-6 container mx-auto">
         <span class="inline-block py-1 px-3 rounded-full bg-blue-100 text-blue-600 text-[10px] font-bold tracking-wide mb-4 border border-blue-200">
             DIGITAL TRANSFORMATION
@@ -92,7 +68,7 @@
             ติดตามสถานะทางการเงินของโรงพยาบาลสัตว์ได้ทุกที่ทุกเวลา ด้วยระบบ Real-time Dashboard ที่แม่นยำ ปลอดภัย และใช้งานง่ายบนทุกอุปกรณ์
         </p>
 
-        <!-- Mock Dashboard Visual -->
+        <!-- Mock Dashboard -->
         <div class="w-full max-w-4xl bg-white rounded-2xl shadow-2xl border border-slate-100 p-4 md:p-6 transform rotate-1 hover:rotate-0 transition duration-500 mb-10">
             <div class="flex justify-between items-center mb-6 border-b border-slate-50 pb-4">
                 <div class="flex gap-2">
@@ -118,42 +94,30 @@
                 </div>
             </div>
             
-            <!-- Animated Bar Chart -->
             <div class="h-32 bg-slate-50 rounded-lg border border-dashed border-slate-300 p-4 flex items-end justify-around gap-2 relative overflow-hidden">
                 <div class="w-full bg-blue-200 rounded-t-md bar-anim" style="height: 40%; animation-delay: 0.1s"></div>
                 <div class="w-full bg-blue-300 rounded-t-md bar-anim" style="height: 70%; animation-delay: 0.2s"></div>
                 <div class="w-full bg-blue-400 rounded-t-md bar-anim" style="height: 50%; animation-delay: 0.3s"></div>
                 <div class="w-full bg-blue-500 rounded-t-md bar-anim" style="height: 85%; animation-delay: 0.4s"></div>
                 <div class="w-full bg-blue-600 rounded-t-md bar-anim" style="height: 60%; animation-delay: 0.5s"></div>
-                
-                <div class="absolute top-2 left-2 text-xs text-slate-400 font-medium">
-                    <i class="fa-solid fa-chart-simple mr-1"></i> สถิติรายเดือน
-                </div>
+                <div class="absolute top-2 left-2 text-xs text-slate-400 font-medium"><i class="fa-solid fa-chart-simple mr-1"></i> สถิติรายเดือน</div>
             </div>
         </div>
 
-        <!-- Features Section -->
+        <!-- Features -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl mb-12 px-4">
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center hover:shadow-md transition hover:-translate-y-1 duration-300">
-                <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-4 text-2xl shadow-sm">
-                    <i class="fa-solid fa-chart-pie"></i>
-                </div>
+            <div class="feature-card bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center hover:shadow-md transition hover:-translate-y-1 duration-300">
+                <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-4 text-2xl shadow-sm"><i class="fa-solid fa-chart-pie"></i></div>
                 <h3 class="font-bold text-slate-800 text-lg mb-2">Real-time Analytics</h3>
                 <p class="text-xs text-slate-500 leading-relaxed">วิเคราะห์สถานะการเงินทันทีที่บันทึก ดูยอดรับ-จ่ายแบบเรียลไทม์ แม่นยำทุกตัวเลข</p>
             </div>
-            
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center hover:shadow-md transition hover:-translate-y-1 duration-300">
-                <div class="w-14 h-14 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center mb-4 text-2xl shadow-sm">
-                    <i class="fa-solid fa-cloud-shield"></i>
-                </div>
+            <div class="feature-card bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center hover:shadow-md transition hover:-translate-y-1 duration-300">
+                <div class="w-14 h-14 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center mb-4 text-2xl shadow-sm"><i class="fa-solid fa-cloud-shield"></i></div>
                 <h3 class="font-bold text-slate-800 text-lg mb-2">Secure Cloud</h3>
                 <p class="text-xs text-slate-500 leading-relaxed">ข้อมูลปลอดภัยบน Google Cloud Platform สำรองข้อมูลอัตโนมัติ เข้าถึงได้ทุกที่ทั่วโลก</p>
             </div>
-            
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center hover:shadow-md transition hover:-translate-y-1 duration-300">
-                <div class="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mb-4 text-2xl shadow-sm">
-                    <i class="fa-solid fa-file-invoice"></i>
-                </div>
+            <div class="feature-card bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center hover:shadow-md transition hover:-translate-y-1 duration-300">
+                <div class="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mb-4 text-2xl shadow-sm"><i class="fa-solid fa-file-invoice"></i></div>
                 <h3 class="font-bold text-slate-800 text-lg mb-2">Paperless</h3>
                 <p class="text-xs text-slate-500 leading-relaxed">ลดการใช้กระดาษและค้นหาเอกสารง่าย ช่วยประหยัดพื้นที่และรักษาสิ่งแวดล้อม</p>
             </div>
@@ -163,9 +127,7 @@
             <i class="fa-solid fa-user-lock"></i> เข้าสู่ระบบเจ้าหน้าที่
         </button>
 
-        <footer class="text-slate-400 text-[10px] mt-auto pb-4">
-            &copy; 2025 Surat Thani Animal Hospital. All rights reserved.
-        </footer>
+        <footer class="text-slate-400 text-[10px] mt-auto pb-4">&copy; 2025 Surat Thani Animal Hospital. All rights reserved.</footer>
     </div>
   </div>
 
@@ -178,9 +140,7 @@
     <div class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-sm border border-slate-200 relative overflow-hidden">
       <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-500"></div>
       <div class="text-center mb-6">
-        <div class="inline-block bg-blue-600 text-white p-3 rounded-xl mb-3 shadow-md">
-            <i class="fa-solid fa-paw text-2xl"></i>
-        </div>
+        <div class="inline-block bg-blue-600 text-white p-3 rounded-xl mb-3 shadow-md"><i class="fa-solid fa-paw text-2xl"></i></div>
         <h2 class="text-xl font-bold text-slate-800">เข้าสู่ระบบ</h2>
         <p class="text-slate-500 text-sm">สำหรับเจ้าหน้าที่เท่านั้น</p>
       </div>
@@ -210,19 +170,15 @@
   <!-- ================= APP CONTENT ================= -->
   <div id="appContent" class="hidden min-h-screen pb-20 fade-in">
     
-    <!-- Navbar App -->
     <nav class="bg-white shadow-sm sticky top-0 z-30 border-b border-slate-100">
       <div class="container mx-auto py-3 flex justify-between items-center">
         <div class="flex items-center gap-2">
-          <div class="bg-blue-600 text-white w-8 h-8 flex items-center justify-center rounded-lg shadow-sm">
-            <i class="fa-solid fa-paw text-sm"></i>
-          </div>
+          <div class="bg-blue-600 text-white w-8 h-8 flex items-center justify-center rounded-lg shadow-sm"><i class="fa-solid fa-paw text-sm"></i></div>
           <div class="leading-tight">
             <h1 class="font-bold text-slate-800 text-sm md:text-base">รพ.สัตว์สุราษฎร์ฯ</h1>
             <p class="text-[10px] text-slate-500" id="userDisplayRole">Loading...</p>
           </div>
         </div>
-        
         <div class="flex items-center gap-3">
            <div class="hidden md:flex flex-col items-end">
                <span class="text-xs font-bold text-slate-700" id="userDisplayName">User</span>
@@ -236,7 +192,6 @@
     </nav>
 
     <div class="container mx-auto mt-4 max-w-5xl">
-      
       <!-- Filter Bar -->
       <div class="mb-4 bg-white p-3 rounded-xl shadow-sm border border-slate-100 flex flex-col md:flex-row gap-3 items-start md:items-center">
         <div class="flex items-center gap-2 w-full md:w-auto">
@@ -251,7 +206,6 @@
                 <option value="year">ปีนี้</option>
                 <option value="custom">กำหนดเอง</option>
             </select>
-            
             <div id="customDateInputs" class="hidden flex flex-wrap gap-2 items-center animate-[fadeIn_0.2s_ease-out]">
                 <input type="date" id="filterStartDate" class="bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2" onchange="FilterController.apply()">
                 <span class="text-slate-400 text-xs">ถึง</span>
@@ -277,7 +231,7 @@
         </div>
       </div>
 
-      <!-- Action Bar & Search -->
+      <!-- Action Bar -->
       <div class="flex gap-2 mb-4">
         <div class="relative flex-1">
           <i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-400 text-xs"></i>
@@ -288,7 +242,7 @@
         </button>
       </div>
 
-      <!-- List View with Lazy Loading -->
+      <!-- List View -->
       <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden min-h-[300px] flex flex-col">
         <div class="p-3 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
           <h3 class="font-bold text-slate-700 text-sm"><i class="fa-solid fa-list-ul mr-1 text-slate-400"></i> รายการ</h3>
@@ -297,15 +251,12 @@
         
         <div id="listViewContainer" class="divide-y divide-slate-50"></div>
         
-        <!-- Load More Sentinel -->
         <div id="loadMoreTrigger" class="h-10 w-full flex items-center justify-center p-2 opacity-0">
              <i class="fa-solid fa-circle-notch fa-spin text-blue-500"></i>
         </div>
 
         <div id="emptyState" class="p-8 text-center text-slate-400 text-xs hidden flex flex-col items-center justify-center h-full mt-10">
-          <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-3">
-             <i class="fa-solid fa-inbox text-2xl opacity-30"></i>
-          </div>
+          <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-3"><i class="fa-solid fa-inbox text-2xl opacity-30"></i></div>
           <p>ไม่มีรายการในช่วงเวลานี้</p>
           <button onclick="ModalController.open()" class="mt-2 text-blue-500 hover:underline">เพิ่มรายการใหม่</button>
         </div>
@@ -313,12 +264,9 @@
 
       <!-- Chart -->
       <div class="mt-4 bg-white p-4 rounded-xl shadow-sm border border-slate-100 mb-6">
-         <h3 class="font-bold text-slate-700 text-xs mb-2 flex items-center gap-1"><i class="fa-solid fa-chart-simple text-blue-500"></i> สรุปรายเดือน (ตามช่วงเวลาที่เลือก)</h3>
-         <div class="h-40 w-full relative">
-            <canvas id="financeChart"></canvas>
-         </div>
+         <h3 class="font-bold text-slate-700 text-xs mb-2 flex items-center gap-1"><i class="fa-solid fa-chart-simple text-blue-500"></i> สรุปรายเดือน</h3>
+         <div class="h-40 w-full relative"><canvas id="financeChart"></canvas></div>
       </div>
-
     </div>
   </div>
 
@@ -340,17 +288,25 @@
             <!-- Type Toggle -->
             <div class="grid grid-cols-2 gap-2 bg-slate-100 p-1 rounded-lg">
                <label class="cursor-pointer">
-                 <input type="radio" name="type" value="รายรับ" class="peer sr-only" checked>
+                 <input type="radio" name="type" value="รายรับ" class="peer sr-only" onchange="ModalController.onTypeChange()" checked>
                  <div class="text-center py-2 rounded-md text-xs font-bold text-slate-500 peer-checked:bg-white peer-checked:text-emerald-600 peer-checked:shadow-sm transition-all flex items-center justify-center gap-1">
                     <i class="fa-solid fa-arrow-up"></i> รายรับ
                  </div>
                </label>
                <label class="cursor-pointer">
-                 <input type="radio" name="type" value="รายจ่าย" class="peer sr-only">
+                 <input type="radio" name="type" value="รายจ่าย" class="peer sr-only" onchange="ModalController.onTypeChange()">
                  <div class="text-center py-2 rounded-md text-xs font-bold text-slate-500 peer-checked:bg-white peer-checked:text-rose-600 peer-checked:shadow-sm transition-all flex items-center justify-center gap-1">
                     <i class="fa-solid fa-arrow-down"></i> รายจ่าย
                  </div>
                </label>
+            </div>
+
+            <!-- Category & Payment -->
+            <div class="grid grid-cols-2 gap-3">
+                <div class="col-span-2">
+                    <label class="block text-slate-500 text-[10px] font-bold mb-1">หมวดหมู่</label>
+                    <select id="category" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:border-blue-500 focus:outline-none transition appearance-none"></select>
+                </div>
             </div>
 
             <div class="grid grid-cols-2 gap-3">
@@ -360,7 +316,6 @@
                 </div>
                 <div>
                     <label class="block text-slate-500 text-[10px] font-bold mb-1">วันที่และเวลา</label>
-                    <!-- เปลี่ยน input type เป็น datetime-local เพื่อรับค่าเวลา -->
                     <input type="datetime-local" id="date" required class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:border-blue-500 focus:outline-none transition">
                 </div>
                 <div>
@@ -370,20 +325,21 @@
                         <span class="absolute right-2 top-2 text-slate-400 text-xs">฿</span>
                     </div>
                 </div>
+                <div class="col-span-2">
+                    <label class="block text-slate-500 text-[10px] font-bold mb-1">ช่องทางชำระเงิน</label>
+                    <select id="paymentMethod" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:border-blue-500 focus:outline-none transition"></select>
+                </div>
             </div>
 
+            <!-- File Upload -->
             <div>
               <label class="block text-slate-500 text-[10px] font-bold mb-1">รูปภาพ/ไฟล์</label>
               <label class="flex flex-col items-center px-4 py-6 bg-slate-50 border border-dashed border-slate-300 rounded-lg cursor-pointer hover:bg-slate-100 transition relative group">
                   <div id="uploadContent" class="text-center group-hover:scale-105 transition-transform">
-                      <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2 text-blue-500">
-                          <i class="fa-solid fa-camera"></i>
-                      </div>
+                      <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2 text-blue-500"><i class="fa-solid fa-camera"></i></div>
                       <span class="text-[10px] text-slate-500 block">แตะเพื่ออัปโหลดใบเสร็จ</span>
                   </div>
                   <input type='file' id="fileInput" class="hidden" accept="image/*,.pdf" onchange="FileHandler.handleSelect(event)" />
-                  
-                  <!-- Preview -->
                   <div id="previewBox" class="hidden absolute inset-0 bg-white rounded-lg p-2 flex items-center justify-center border border-slate-200">
                       <div id="previewInner" class="w-full h-full flex items-center justify-center overflow-hidden rounded"></div>
                       <button type="button" onclick="FileHandler.clear(event)" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs shadow-md hover:bg-red-600 transition z-10"><i class="fa-solid fa-times"></i></button>
@@ -399,20 +355,31 @@
   </div>
 
   <script>
-    // --- CONFIGURATION ---
-    const APP_CONFIG = {
+    // --- CONSTANTS & CONFIG ---
+    const CONSTANTS = {
         API_URL: "https://script.google.com/macros/s/AKfycbxRNiK8lOstCv7kjCXEuEuAUaJgP3q_51g0_Q8i9iihj-SqyQkIIWO1Clw2xRh1kwxE/exec",
-        ITEMS_PER_PAGE: 20
+        ITEMS_PER_PAGE: 20,
+        CATEGORIES: {
+            'รายรับ': ['ค่ารักษาพยาบาล', 'ค่ายา', 'ค่าอาบน้ำ/ตัดขน', 'ค่าฝากเลี้ยง', 'อาหารสัตว์/อุปกรณ์', 'วัคซีน', 'อื่นๆ'],
+            'รายจ่าย': ['ค่ายา/เวชภัณฑ์', 'ค่าสาธารณูปโภค (น้ำ/ไฟ)', 'เงินเดือนพนักงาน', 'ค่าวัสดุสิ้นเปลือง', 'ค่าซ่อมบำรุง', 'อื่นๆ']
+        },
+        PAYMENT_METHODS: ['เงินสด', 'โอนเงิน (QR)', 'บัตรเครดิต', 'อื่นๆ'],
+        COLORS: {
+            INCOME: { TEXT: 'text-emerald-600', BG_BADGE: 'bg-emerald-100 text-emerald-600', BTN: 'bg-emerald-600' },
+            EXPENSE: { TEXT: 'text-rose-600', BG_BADGE: 'bg-rose-100 text-rose-600', BTN: 'bg-rose-600' },
+            HOVER_INCOME: 'hover:bg-emerald-700',
+            HOVER_EXPENSE: 'hover:bg-rose-700'
+        }
     };
 
     // --- GLOBAL STATE ---
     const State = {
         currentUser: null,
-        allData: [],        // Raw data from server
-        filteredData: [],   // Data after filtering
+        allData: [],        // All loaded data
+        filteredData: [],   // Data matching filters
         fileDataObj: null,
         myChart: null,
-        visibleCount: 0     // For lazy loading
+        visibleCount: 0     // Lazy load cursor
     };
 
     // --- UTILITIES ---
@@ -420,11 +387,7 @@
         formatCurrency: (num) => new Intl.NumberFormat('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(num),
         formatDate: (dateStr) => {
             const d = new Date(dateStr);
-            // แสดงผลรูปแบบ วันที่ เดือน ปี เวลา hh:mm (24hr)
-            return d.toLocaleDateString('th-TH', { 
-                day: 'numeric', month: 'short', year: '2-digit', 
-                hour: '2-digit', minute: '2-digit', hour12: false 
-            });
+            return d.toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false });
         },
         Toast: Swal.mixin({
             toast: true, position: 'top-end', showConfirmButton: false,
@@ -436,498 +399,397 @@
         })
     };
 
-    // --- VIEW CONTROLLER ---
-    const ViewManager = {
-        hideAll: () => {
-            ['landingPage', 'loginScreen', 'appContent'].forEach(id => {
-                document.getElementById(id).classList.add('hidden');
-            });
+    // --- DATA HELPERS (Logic Encapsulation) ---
+    const DataHelper = {
+        // Parses "[Category] Description (Payment)" format
+        parseDescription: (fullDesc) => {
+            let category = 'ทั่วไป', desc = fullDesc, payment = 'ไม่ระบุ';
+            
+            if(fullDesc.startsWith('[')) {
+                const closeIdx = fullDesc.indexOf(']');
+                if(closeIdx > 0) {
+                    category = fullDesc.substring(1, closeIdx);
+                    desc = fullDesc.substring(closeIdx + 1).trim();
+                }
+            }
+            if(desc.endsWith(')')) {
+                const openIdx = desc.lastIndexOf('(');
+                if(openIdx > 0) {
+                    payment = desc.substring(openIdx + 1, desc.length - 1);
+                    desc = desc.substring(0, openIdx).trim();
+                }
+            }
+            return { category, desc, payment };
         },
+        // Formats inputs back to string
+        formatDescription: (cat, desc, pay) => `[${cat}] ${desc} (${pay})`
+    };
+
+    // --- VIEW MANAGER ---
+    const ViewManager = {
+        hideAll: () => ['landingPage', 'loginScreen', 'appContent'].forEach(id => document.getElementById(id).classList.add('hidden')),
+        
         showLanding: () => {
             ViewManager.hideAll();
             document.getElementById('landingPage').classList.remove('hidden');
-            // Trigger count up for mock numbers
-            document.querySelectorAll('.mock-count').forEach(el => {
-                const target = parseInt(el.getAttribute('data-target'));
-                ViewManager.animateValue(el, 0, target, 2000);
-            });
+            // Animate Mock Numbers
+            document.querySelectorAll('.mock-count').forEach(el => ViewManager.animateValue(el, 0, parseInt(el.getAttribute('data-target')), 2000));
         },
+        
         showLogin: () => {
             ViewManager.hideAll();
             document.getElementById('loginScreen').classList.remove('hidden');
         },
+        
         showApp: () => {
             ViewManager.hideAll();
             document.getElementById('appContent').classList.remove('hidden');
-            
             document.getElementById('userDisplayName').innerText = State.currentUser.name;
             document.getElementById('userDisplayRole').innerText = State.currentUser.role === 'admin' ? 'ผู้ดูแลระบบ' : 'ผู้ใช้งานทั่วไป';
-            
             DataController.fetch();
         },
+
         animateValue: (obj, start, end, duration) => {
             let startTimestamp = null;
             const step = (timestamp) => {
                 if (!startTimestamp) startTimestamp = timestamp;
                 const progress = Math.min((timestamp - startTimestamp) / duration, 1);
                 obj.innerHTML = Math.floor(progress * (end - start) + start).toLocaleString();
-                if (progress < 1) {
-                    window.requestAnimationFrame(step);
-                } else {
-                    obj.innerHTML = end.toLocaleString();
-                }
+                if (progress < 1) window.requestAnimationFrame(step);
+                else obj.innerHTML = end.toLocaleString();
             };
             window.requestAnimationFrame(step);
         }
     };
 
-    // --- API HELPER ---
+    // --- API HANDLER ---
     const Api = {
         call: async (action, payload = {}) => {
             if (State.currentUser && action !== 'login') {
                 payload.username = State.currentUser.username;
                 payload.password = State.currentUser.password;
             }
-            const response = await fetch(APP_CONFIG.API_URL, {
-                method: 'POST',
-                body: JSON.stringify({ action, ...payload })
+            const response = await fetch(CONSTANTS.API_URL, {
+                method: 'POST', body: JSON.stringify({ action, ...payload })
             });
             return await response.json();
         }
     };
 
-    // --- FILTER CONTROLLER ---
+    // --- CONTROLLERS ---
+    
+    // 1. Filter Controller
     const FilterController = {
         handleModeChange: () => {
             const mode = document.getElementById('filterMode').value;
-            const customInput = document.getElementById('customDateInputs');
-            
-            if(mode === 'custom') {
-                customInput.classList.remove('hidden');
-                customInput.classList.add('flex');
-            } else {
-                customInput.classList.add('hidden');
-                customInput.classList.remove('flex');
-            }
+            const inputs = document.getElementById('customDateInputs');
+            mode === 'custom' ? (inputs.classList.remove('hidden'), inputs.classList.add('flex')) : (inputs.classList.add('hidden'), inputs.classList.remove('flex'));
             FilterController.apply();
         },
-        
         apply: () => {
             const mode = document.getElementById('filterMode').value;
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const term = document.getElementById('searchInput').value.toLowerCase();
             let filtered = State.allData;
+            const now = new Date(); now.setHours(0,0,0,0);
 
-            // 1. Filter by Date
-            const now = new Date();
-            now.setHours(0,0,0,0);
-
+            // Date Filter
             if (mode !== 'all') {
                 filtered = filtered.filter(item => {
-                    const itemDate = new Date(item.date);
-                    itemDate.setHours(0,0,0,0);
-
-                    if (mode === 'today') {
-                        return itemDate.getTime() === now.getTime();
-                    } else if (mode === 'month') {
-                        return itemDate.getMonth() === now.getMonth() && itemDate.getFullYear() === now.getFullYear();
-                    } else if (mode === 'year') {
-                        return itemDate.getFullYear() === now.getFullYear();
-                    } else if (mode === 'custom') {
-                        const startVal = document.getElementById('filterStartDate').value;
-                        const endVal = document.getElementById('filterEndDate').value;
-                        
-                        if(!startVal && !endVal) return true;
-                        
-                        const start = startVal ? new Date(startVal) : new Date('1900-01-01');
-                        const end = endVal ? new Date(endVal) : new Date('2100-12-31');
-                        start.setHours(0,0,0,0);
-                        end.setHours(0,0,0,0);
-
-                        return itemDate >= start && itemDate <= end;
+                    const d = new Date(item.date); d.setHours(0,0,0,0);
+                    if (mode === 'today') return d.getTime() === now.getTime();
+                    if (mode === 'month') return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+                    if (mode === 'year') return d.getFullYear() === now.getFullYear();
+                    if (mode === 'custom') {
+                        const s = document.getElementById('filterStartDate').value ? new Date(document.getElementById('filterStartDate').value) : new Date('1900-01-01');
+                        const e = document.getElementById('filterEndDate').value ? new Date(document.getElementById('filterEndDate').value) : new Date('2100-12-31');
+                        return d >= s && d <= e;
                     }
                     return true;
                 });
             }
+            // Text Search
+            if (term) filtered = filtered.filter(x => x.description.toLowerCase().includes(term) || x.amount.toString().includes(term));
 
-            // 2. Filter by Search Term
-            if (searchTerm) {
-                filtered = filtered.filter(x => 
-                    x.description.toLowerCase().includes(searchTerm) || x.amount.toString().includes(searchTerm)
-                );
-            }
-
-            // Store filtered results and reset lazy load
             State.filteredData = filtered;
-            State.visibleCount = APP_CONFIG.ITEMS_PER_PAGE;
+            State.visibleCount = CONSTANTS.ITEMS_PER_PAGE;
             
-            // Render first batch
-            const initialBatch = State.filteredData.slice(0, State.visibleCount);
-            UI.renderList(initialBatch, true); // true = reset container
+            UI.renderList(State.filteredData.slice(0, State.visibleCount), true);
             UI.updateDashboard(State.filteredData);
-            
-            // Manage Load More Sentinel
             InfiniteScroll.check();
         }
     };
 
-    // --- INFINITE SCROLL CONTROLLER ---
+    // 2. Infinite Scroll
     const InfiniteScroll = {
         observer: null,
         init: () => {
             const sentinel = document.getElementById('loadMoreTrigger');
             InfiniteScroll.observer = new IntersectionObserver((entries) => {
-                if(entries[0].isIntersecting) {
-                    InfiniteScroll.loadMore();
-                }
+                if(entries[0].isIntersecting) InfiniteScroll.loadMore();
             }, { rootMargin: '50px' });
-            
             InfiniteScroll.observer.observe(sentinel);
         },
         loadMore: () => {
             if (State.visibleCount >= State.filteredData.length) return;
-
-            // Show loading spinner
             document.getElementById('loadMoreTrigger').classList.remove('opacity-0');
-
-            setTimeout(() => { // Small timeout for smoother feel
-                const nextCount = State.visibleCount + APP_CONFIG.ITEMS_PER_PAGE;
-                const nextBatch = State.filteredData.slice(State.visibleCount, nextCount);
-                
+            setTimeout(() => {
+                const nextCount = State.visibleCount + CONSTANTS.ITEMS_PER_PAGE;
                 State.visibleCount = nextCount;
-                UI.renderList(nextBatch, false); // false = append
-                
+                UI.renderList(State.filteredData.slice(0, nextCount), true);
                 document.getElementById('loadMoreTrigger').classList.add('opacity-0');
                 InfiniteScroll.check();
             }, 300);
         },
         check: () => {
             const sentinel = document.getElementById('loadMoreTrigger');
-            if (State.visibleCount >= State.filteredData.length) {
-                sentinel.style.display = 'none'; // Hide if no more data
-            } else {
-                sentinel.style.display = 'flex'; // Show sentinel
-            }
+            sentinel.style.display = (State.visibleCount >= State.filteredData.length) ? 'none' : 'flex';
         }
     };
 
-    // --- AUTH CONTROLLER ---
+    // 3. Auth Controller
     const AuthController = {
         login: (e) => {
             e.preventDefault();
             const u = document.getElementById('loginUsername').value.trim();
             const p = document.getElementById('loginPassword').value.trim();
             const btn = document.getElementById('btnLogin');
-            
-            if(!u || !p) return Swal.fire('แจ้งเตือน', 'กรุณากรอกข้อมูลให้ครบ', 'warning');
+            if(!u || !p) return Swal.fire('แจ้งเตือน', 'กรอกข้อมูลให้ครบ', 'warning');
 
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> กำลังตรวจสอบ...';
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> ตรวจสอบ...';
             btn.disabled = true;
 
-            Api.call('login', { username: u, password: p })
-                .then(res => {
-                    btn.innerHTML = 'ยืนยันตัวตน';
-                    btn.disabled = false;
-                    
-                    if(res.success) {
-                        State.currentUser = { ...res.user, password: p };
-                        Utils.Toast.fire({ icon: 'success', title: 'ยินดีต้อนรับคุณ ' + State.currentUser.name });
-                        ViewManager.showApp();
-                        InfiniteScroll.init(); // Init scroll listener
-                    } else {
-                        Swal.fire({ icon: 'error', title: 'เข้าสู่ระบบไม่สำเร็จ', text: res.message, confirmButtonColor: '#3b82f6' });
-                    }
-                })
-                .catch(err => {
-                    btn.innerHTML = 'ยืนยันตัวตน';
-                    btn.disabled = false;
-                    AuthController.mockLogin(u, p);
-                });
+            Api.call('login', { username: u, password: p }).then(res => {
+                btn.innerHTML = 'ยืนยันตัวตน'; btn.disabled = false;
+                if(res.success) {
+                    State.currentUser = { ...res.user, password: p };
+                    Utils.Toast.fire({ icon: 'success', title: `ยินดีต้อนรับ ${State.currentUser.name}` });
+                    ViewManager.showApp();
+                    InfiniteScroll.init();
+                } else Swal.fire('Error', res.message, 'error');
+            }).catch(() => {
+                btn.innerHTML = 'ยืนยันตัวตน'; btn.disabled = false;
+                AuthController.mockLogin(u, p);
+            });
         },
         logout: () => {
             Swal.fire({
-                title: 'ออกจากระบบ?', text: "คุณต้องการกลับไปหน้าหลักหรือไม่", icon: 'question',
-                showCancelButton: true, confirmButtonColor: '#3b82f6', cancelButtonColor: '#94a3b8',
-                confirmButtonText: 'ใช่, ออกจากระบบ', cancelButtonText: 'ยกเลิก'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Utils.Toast.fire({ icon: 'info', title: 'ออกจากระบบเรียบร้อยแล้ว' });
-                    State.currentUser = null;
-                    State.allData = [];
+                title: 'ออกจากระบบ?', icon: 'question', showCancelButton: true, confirmButtonColor: '#3b82f6', cancelButtonColor: '#94a3b8', confirmButtonText: 'ยืนยัน'
+            }).then((r) => {
+                if (r.isConfirmed) {
+                    State.currentUser = null; State.allData = [];
                     ViewManager.showLanding();
                 }
             });
         },
         mockLogin: (u, p) => {
+            // Mock credentials for offline/preview
             if((u === 'admin' && p === '1234') || (u === 'user1' && p === '1234')) {
-                State.currentUser = { 
-                    username: u, 
-                    role: u === 'admin' ? 'admin' : 'user', 
-                    name: u === 'admin' ? 'Admin (Mock)' : 'User1 (Mock)', 
-                    password: p 
-                };
-                Utils.Toast.fire({ icon: 'success', title: 'ยินดีต้อนรับ (Mock Mode)' });
+                State.currentUser = { username: u, role: u === 'admin'?'admin':'user', name: u==='admin'?'Admin (Mock)':'User1 (Mock)', password: p };
+                Utils.Toast.fire({ icon: 'success', title: 'Login Success (Mock Mode)' });
                 ViewManager.showApp();
                 InfiniteScroll.init();
                 DataController.mockOfflineMode();
-            } else {
-                Swal.fire('Error', 'Cannot connect to server', 'error');
-            }
+            } else Swal.fire('Error', 'Connection Failed', 'error');
         }
     };
 
-    // --- DATA CONTROLLER ---
+    // 4. Data Controller
     const DataController = {
         fetch: () => {
-            UI.renderSkeleton(); // Show Skeleton
-            Api.call('getData')
-                .then(data => {
-                    State.allData = data;
-                    FilterController.apply(); // This will clear skeleton and render list
-                })
-                .catch(err => console.log('Using mock data logic if already loaded'));
+            UI.renderSkeleton();
+            Api.call('getData').then(data => {
+                State.allData = data;
+                FilterController.apply();
+            }).catch(() => console.log('Using mock data (fetch failed)'));
         },
         submitForm: (e) => {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
             const oldTxt = btn.innerText;
-            btn.innerText = 'กำลังบันทึก...';
-            btn.disabled = true;
+            btn.innerText = 'กำลังบันทึก...'; btn.disabled = true;
+
+            const type = document.querySelector('input[name="type"]:checked').value;
+            const fullDesc = DataHelper.formatDescription(
+                document.getElementById('category').value,
+                document.getElementById('description').value,
+                document.getElementById('paymentMethod').value
+            );
 
             const formData = {
                 recId: document.getElementById('recId').value,
                 date: document.getElementById('date').value,
-                type: document.querySelector('input[name="type"]:checked').value,
-                description: document.getElementById('description').value,
-                amount: document.getElementById('amount').value,
+                type: type, description: fullDesc, amount: document.getElementById('amount').value,
                 currentImageUrl: document.getElementById('currentImageUrl').value,
                 currentFileId: document.getElementById('currentFileId').value,
                 fileData: State.fileDataObj
             };
 
-            Api.call('saveData', { data: formData })
-                .then(res => {
-                    btn.innerText = oldTxt; btn.disabled = false;
-                    ModalController.close();
-                    if(res.success) {
-                        Utils.Toast.fire({ icon: 'success', title: 'บันทึกข้อมูลเรียบร้อยแล้ว' });
-                        DataController.fetch();
-                    } else {
-                        Swal.fire('Error', res.message, 'error');
-                    }
-                })
-                .catch(err => {
-                    btn.innerText = oldTxt; btn.disabled = false; ModalController.close();
-                    Utils.Toast.fire({ icon: 'success', title: 'บันทึกข้อมูลแล้ว (Mock Mode)' });
-                    
-                    const newItem = {
-                        id: formData.recId || Date.now().toString(),
-                        date: formData.date,
-                        type: formData.type,
-                        description: formData.description,
-                        amount: parseFloat(formData.amount),
-                        imageUrl: formData.currentImageUrl,
-                        createdBy: State.currentUser.username
-                    };
-                    
-                    if(formData.recId) {
-                        const idx = State.allData.findIndex(x => x.id == formData.recId);
-                        if(idx > -1) State.allData[idx] = newItem;
-                    } else {
-                        State.allData.unshift(newItem);
-                    }
-                    FilterController.apply();
-                });
+            Api.call('saveData', { data: formData }).then(res => {
+                btn.innerText = oldTxt; btn.disabled = false; ModalController.close();
+                if(res.success) { Utils.Toast.fire({ icon: 'success', title: 'บันทึกสำเร็จ' }); DataController.fetch(); }
+                else Swal.fire('Error', res.message, 'error');
+            }).catch(() => {
+                btn.innerText = oldTxt; btn.disabled = false; ModalController.close();
+                // Mock Save Update
+                const newItem = {
+                    id: formData.recId || Date.now().toString(),
+                    date: formData.date, type: formData.type, description: formData.description,
+                    amount: parseFloat(formData.amount), imageUrl: formData.currentImageUrl, createdBy: State.currentUser.username
+                };
+                if(formData.recId) {
+                    const idx = State.allData.findIndex(x => x.id == formData.recId);
+                    if(idx > -1) State.allData[idx] = newItem;
+                } else State.allData.unshift(newItem);
+                
+                Utils.Toast.fire({ icon: 'success', title: 'บันทึกสำเร็จ (Mock Mode)' });
+                FilterController.apply();
+            });
         },
         delete: (id, fileId) => {
             Swal.fire({
-                title: 'ลบรายการ?', icon: 'warning',
-                showCancelButton: true, confirmButtonColor: '#f43f5e',
-                cancelButtonText: 'ยกเลิก', confirmButtonText: 'ลบ'
+                title: 'ลบรายการ?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#f43f5e', confirmButtonText: 'ลบ'
             }).then((r) => {
                 if(r.isConfirmed) {
-                    Swal.showLoading();
-                    Api.call('deleteData', { id, fileId })
-                        .then(res => {
-                            if(res.success) {
-                                Utils.Toast.fire({ icon: 'success', title: 'ลบข้อมูลเรียบร้อยแล้ว' });
-                                DataController.fetch();
-                            } else {
-                                Swal.fire('Error', res.message, 'error');
-                            }
-                        })
-                        .catch(err => {
-                            Utils.Toast.fire({ icon: 'success', title: 'ลบข้อมูลแล้ว (Mock Mode)' });
-                            State.allData = State.allData.filter(x => x.id != id);
-                            FilterController.apply();
-                        });
+                    Api.call('deleteData', { id, fileId }).then(res => {
+                        if(res.success) { Utils.Toast.fire({ icon: 'success', title: 'ลบสำเร็จ' }); DataController.fetch(); }
+                        else Swal.fire('Error', res.message, 'error');
+                    }).catch(() => {
+                        State.allData = State.allData.filter(x => x.id != id);
+                        Utils.Toast.fire({ icon: 'success', title: 'ลบสำเร็จ (Mock Mode)' });
+                        FilterController.apply();
+                    });
                 }
             });
         },
         mockOfflineMode: () => {
-            // Generate dummy data with time included
+            // Enhanced Mock Data Generation
             const mock = [];
+            const users = ['admin', 'user1'];
+            
             for(let i=1; i<=50; i++) {
-                // Mock format yyyy-MM-ddTHH:mm
+                const type = i % 2 === 0 ? 'รายจ่าย' : 'รายรับ';
+                const cats = CONSTANTS.CATEGORIES[type];
+                const cat = cats[Math.floor(Math.random() * cats.length)];
+                const pay = CONSTANTS.PAYMENT_METHODS[Math.floor(Math.random() * CONSTANTS.PAYMENT_METHODS.length)];
+                const amt = Math.floor(Math.random() * 5000) + 100;
+                
                 mock.push({ 
                     id: i.toString(), 
                     date: `2025-05-01T${10 + (i % 12)}:30`, 
-                    type: i % 2 === 0 ? 'รายจ่าย' : 'รายรับ', 
-                    description: `รายการทดสอบที่ ${i}`, 
-                    amount: Math.floor(Math.random() * 1000) + 100, 
-                    createdBy: i % 3 === 0 ? 'admin' : 'user1' 
+                    type: type,
+                    description: `[${cat}] รายการจำลองที่ ${i} (${pay})`, 
+                    amount: amt, 
+                    createdBy: users[i % 2]
                 });
             }
-            
-            if(State.currentUser.role === 'admin') {
-                State.allData = mock;
-            } else {
-                State.allData = mock.filter(x => x.createdBy === State.currentUser.username);
-            }
+            State.allData = State.currentUser.role === 'admin' ? mock : mock.filter(x => x.createdBy === State.currentUser.username);
             FilterController.apply();
         }
     };
 
-    // --- UI RENDERER ---
+    // 5. UI Renderer
     const UI = {
         renderSkeleton: () => {
             const container = document.getElementById('listViewContainer');
-            const countEl = document.getElementById('recordCount');
-            countEl.innerText = "...";
+            document.getElementById('recordCount').innerText = "...";
             container.innerHTML = '';
-            
-            for(let i=0; i<6; i++) {
-                const skel = document.createElement('div');
-                skel.className = "p-3 flex items-center justify-between border-b border-slate-50 skeleton-pulse";
-                skel.innerHTML = `
-                  <div class="flex items-center gap-3 flex-1">
-                    <div class="w-10 h-10 rounded-lg bg-slate-200"></div>
-                    <div class="flex-1 space-y-2">
-                      <div class="h-4 bg-slate-200 rounded w-3/4"></div>
-                      <div class="flex justify-between w-full">
-                         <div class="h-3 bg-slate-200 rounded w-1/4"></div>
-                         <div class="h-3 bg-slate-200 rounded w-1/4"></div>
+            for(let i=0; i<5; i++) {
+                container.innerHTML += `
+                  <div class="p-3 flex items-center justify-between border-b border-slate-50 skeleton-pulse">
+                    <div class="flex items-center gap-3 flex-1">
+                      <div class="w-10 h-10 rounded-lg bg-slate-200"></div>
+                      <div class="flex-1 space-y-2">
+                        <div class="h-4 bg-slate-200 rounded w-3/4"></div>
+                        <div class="flex justify-between w-1/2"><div class="h-3 bg-slate-200 rounded w-10"></div></div>
                       </div>
                     </div>
-                  </div>
-                `;
-                container.appendChild(skel);
+                  </div>`;
             }
         },
         renderList: (data, reset = false) => {
             const container = document.getElementById('listViewContainer');
-            const countEl = document.getElementById('recordCount');
-            const emptyEl = document.getElementById('emptyState');
-            
             if (reset) {
                 container.innerHTML = '';
-                countEl.innerText = State.filteredData.length;
+                document.getElementById('recordCount').innerText = State.filteredData.length;
             }
-
-            if(State.filteredData.length === 0) {
-                emptyEl.classList.remove('hidden');
-                return;
-            }
-            emptyEl.classList.add('hidden');
+            document.getElementById('emptyState').classList.toggle('hidden', State.filteredData.length > 0);
 
             data.forEach(item => {
                 const isInc = item.type === 'รายรับ';
-                const colorClass = isInc ? 'text-emerald-600' : 'text-rose-600';
+                const style = isInc ? CONSTANTS.COLORS.INCOME : CONSTANTS.COLORS.EXPENSE;
                 const sign = isInc ? '+' : '-';
-                const dateStr = Utils.formatDate(item.date);
+                
+                // Parse Logic moved to DataHelper
+                const { category, desc, payment } = DataHelper.parseDescription(item.description);
+                let creator = (State.currentUser && State.currentUser.username === item.createdBy) ? State.currentUser.name : (item.createdBy==='admin'?'Administrator':item.createdBy);
 
-                let creatorName = item.createdBy || 'Unknown';
-                if (State.currentUser && State.currentUser.username === item.createdBy) {
-                    creatorName = State.currentUser.name;
-                } else if (item.createdBy === 'admin') { 
-                    creatorName = 'Administrator';
-                }
-
-                const div = document.createElement('div');
-                div.className = "p-3 flex items-center justify-between hover:bg-slate-50 transition active:bg-slate-100 cursor-pointer group animate-[fadeIn_0.3s_ease-out]";
-
-                let imgEl = `<div class="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-300 flex-shrink-0 group-hover:bg-white transition"><i class="fa-solid fa-image"></i></div>`;
-                if(item.imageUrl) {
-                    imgEl = `<div class="w-10 h-10 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0 border border-slate-200 shadow-sm" onclick="window.open('${item.imageUrl}', '_blank'); event.stopPropagation();">
-                       <img src="${item.imageUrl}" class="w-full h-full object-cover transition transform hover:scale-110">
-                    </div>`;
-                }
-
-                let actions = '';
-                if(State.currentUser.role === 'admin' || item.createdBy === State.currentUser.username) {
-                    actions = `
-                    <div class="flex gap-2 ml-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
-                        <button onclick='ModalController.edit(${JSON.stringify(item)})' class="w-7 h-7 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-xs hover:bg-blue-100"><i class="fa-solid fa-pen"></i></button>
-                        <button onclick="DataController.delete('${item.id}', '${item.fileId}')" class="w-7 h-7 rounded-full bg-red-50 text-red-600 flex items-center justify-center text-xs hover:bg-red-100"><i class="fa-solid fa-trash"></i></button>
-                    </div>`;
-                } else {
-                     actions = `<div class="w-2"></div>`;
-                }
-
-                div.innerHTML = `
+                const html = `
+                <div class="p-3 flex items-center justify-between hover:bg-slate-50 transition active:bg-slate-100 cursor-pointer group animate-[fadeIn_0.3s_ease-out]">
                     <div class="flex items-center gap-3 flex-1 min-w-0">
-                        ${imgEl}
+                        ${item.imageUrl ? 
+                          `<div class="w-10 h-10 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0 border border-slate-200 shadow-sm" onclick="window.open('${item.imageUrl}', '_blank'); event.stopPropagation();"><img src="${item.imageUrl}" class="w-full h-full object-cover"></div>` : 
+                          `<div class="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-300 flex-shrink-0"><i class="fa-solid fa-image"></i></div>`
+                        }
                         <div class="min-w-0 flex-1">
                             <div class="flex justify-between items-baseline">
-                               <h4 class="font-medium text-slate-700 text-sm truncate pr-2">${item.description}</h4>
-                               <span class="font-bold text-sm ${colorClass} whitespace-nowrap font-mono">${sign}${Utils.formatCurrency(item.amount)}</span>
+                               <h4 class="font-medium text-slate-700 text-sm truncate pr-2">
+                                 <span class="text-[10px] ${style.BG_BADGE} px-1.5 py-0.5 rounded font-bold mr-1">${category}</span>${desc}
+                               </h4>
+                               <span class="font-bold text-sm ${style.TEXT} whitespace-nowrap font-mono">${sign}${Utils.formatCurrency(item.amount)}</span>
                             </div>
                             <div class="flex justify-between items-center mt-0.5">
-                               <span class="text-[10px] text-slate-400 flex items-center gap-1"><i class="fa-regular fa-calendar"></i> ${dateStr}</span>
-                               <span class="text-[10px] text-slate-500 font-medium truncate max-w-[100px] bg-slate-100 px-1.5 rounded flex items-center gap-1">
-                                  <i class="fa-solid fa-user text-[8px] text-slate-400"></i> ${creatorName}
-                               </span>
+                               <span class="text-[10px] text-slate-400 flex items-center gap-1"><i class="fa-regular fa-calendar"></i> ${Utils.formatDate(item.date)}</span>
+                               <div class="flex gap-1">
+                                   <span class="text-[10px] text-slate-400 bg-slate-100 px-1.5 rounded">${payment}</span>
+                                   <span class="text-[10px] text-slate-500 bg-slate-100 px-1.5 rounded flex items-center gap-1"><i class="fa-solid fa-user text-[8px]"></i> ${creator}</span>
+                               </div>
                             </div>
                         </div>
                     </div>
-                    ${actions}
-                `;
-                container.appendChild(div);
+                    ${(State.currentUser.role === 'admin' || item.createdBy === State.currentUser.username) ? 
+                      `<div class="flex gap-2 ml-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+                        <button onclick='ModalController.edit(${JSON.stringify(item)})' class="w-7 h-7 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-xs hover:bg-blue-100"><i class="fa-solid fa-pen"></i></button>
+                        <button onclick="DataController.delete('${item.id}', '${item.fileId}')" class="w-7 h-7 rounded-full bg-red-50 text-red-600 flex items-center justify-center text-xs hover:bg-red-100"><i class="fa-solid fa-trash"></i></button>
+                       </div>` : `<div class="w-2"></div>`}
+                </div>`;
+                container.insertAdjacentHTML('beforeend', html);
             });
         },
         updateDashboard: (data) => {
             let inc = 0, exp = 0;
             const monthly = {};
-
             data.forEach(x => {
                 const v = parseFloat(x.amount);
-                if(x.type === 'รายรับ') inc += v; else exp += v;
-                
                 const m = x.date.substring(0, 7);
                 if(!monthly[m]) monthly[m] = { inc:0, exp:0 };
-                if(x.type === 'รายรับ') monthly[m].inc += v; else monthly[m].exp += v;
+                
+                if(x.type === 'รายรับ') { inc += v; monthly[m].inc += v; }
+                else { exp += v; monthly[m].exp += v; }
             });
 
             document.getElementById('totalIncome').innerText = Utils.formatCurrency(inc);
             document.getElementById('totalExpense').innerText = Utils.formatCurrency(exp);
             document.getElementById('balance').innerText = Utils.formatCurrency(inc - exp);
 
+            // Chart Update
             const ctx = document.getElementById('financeChart').getContext('2d');
             const keys = Object.keys(monthly).sort().slice(-6);
-            const labels = keys.map(k => {
-                 const d = new Date(k+'-01');
-                 return d.toLocaleDateString('th-TH', { month:'short' });
-            });
-
             if(State.myChart) State.myChart.destroy();
             State.myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: labels,
+                    labels: keys.map(k => new Date(k+'-01').toLocaleDateString('th-TH', { month:'short' })),
                     datasets: [
-                        { label: 'รับ', data: keys.map(k=>monthly[k].inc), backgroundColor: '#10b981', borderRadius: 4, barPercentage: 0.6 },
-                        { label: 'จ่าย', data: keys.map(k=>monthly[k].exp), backgroundColor: '#f43f5e', borderRadius: 4, barPercentage: 0.6 }
+                        { label: 'รับ', data: keys.map(k=>monthly[k].inc), backgroundColor: '#10b981', borderRadius: 4 },
+                        { label: 'จ่าย', data: keys.map(k=>monthly[k].exp), backgroundColor: '#f43f5e', borderRadius: 4 }
                     ]
                 },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { position:'bottom', labels:{ boxWidth: 10, font:{size:10}, usePointStyle: true } } },
-                    scales: { y: { display: false }, x: { grid: { display: false }, ticks: { font: { size: 10 } } } }
-                }
+                options: { responsive: true, maintainAspectRatio: false, scales: { x: { grid: { display: false } }, y: { display: false } } }
             });
         }
     };
 
-    // --- FILE HANDLER & MODAL CONTROLLER ---
+    // 6. Modal & File Handlers
     const FileHandler = {
         handleSelect: (e) => {
             const file = e.target.files[0];
@@ -937,11 +799,8 @@
                 State.fileDataObj = { name: file.name, data: evt.target.result };
                 document.getElementById('uploadContent').classList.add('hidden');
                 document.getElementById('previewBox').classList.remove('hidden');
-                if(file.type.startsWith('image/')) {
-                    document.getElementById('previewInner').innerHTML = `<img src="${evt.target.result}" class="h-full object-contain rounded">`;
-                } else {
-                    document.getElementById('previewInner').innerHTML = `<i class="fa-solid fa-file-pdf text-red-500 text-2xl"></i>`;
-                }
+                const isImg = file.type.startsWith('image/');
+                document.getElementById('previewInner').innerHTML = isImg ? `<img src="${evt.target.result}" class="h-full object-contain rounded">` : `<i class="fa-solid fa-file-pdf text-red-500 text-2xl"></i>`;
             };
             reader.readAsDataURL(file);
         },
@@ -960,32 +819,59 @@
             document.getElementById('dataForm').reset();
             document.getElementById('recId').value = "";
             document.getElementById('modalTitle').innerText = "เพิ่มรายการ";
-            
-            // Set current datetime for new entry
-            const now = new Date();
-            now.setMinutes(now.getMinutes() - now.getTimezoneOffset()); // Adjust to local
+            const now = new Date(); now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
             document.getElementById('date').value = now.toISOString().slice(0, 16);
             
+            // Populate Payment Options if empty
+            const paySelect = document.getElementById('paymentMethod');
+            if(paySelect.options.length === 0) {
+                CONSTANTS.PAYMENT_METHODS.forEach(p => {
+                    const opt = document.createElement('option'); opt.value = p; opt.innerText = p; paySelect.appendChild(opt);
+                });
+            }
+            ModalController.onTypeChange();
             FileHandler.clear();
             document.getElementById('entryModal').classList.remove('hidden');
         },
-        close: () => {
-            document.getElementById('entryModal').classList.add('hidden');
+        close: () => document.getElementById('entryModal').classList.add('hidden'),
+        onTypeChange: () => {
+            const type = document.querySelector('input[name="type"]:checked').value;
+            const catSelect = document.getElementById('category');
+            const btn = document.getElementById('submitBtn');
+            const style = type === 'รายรับ' ? CONSTANTS.COLORS.INCOME : CONSTANTS.COLORS.EXPENSE;
+            const hover = type === 'รายรับ' ? CONSTANTS.COLORS.HOVER_INCOME : CONSTANTS.COLORS.HOVER_EXPENSE;
+
+            catSelect.innerHTML = '';
+            CONSTANTS.CATEGORIES[type].forEach(c => {
+                const opt = document.createElement('option'); opt.value = c; opt.innerText = c; catSelect.appendChild(opt);
+            });
+            
+            // Apply Dynamic Classes
+            btn.className = `w-full text-white font-bold py-3 rounded-xl shadow-lg text-sm mt-2 transition transform active:scale-95 ${style.BTN} ${hover}`;
         },
         edit: (item) => {
             ModalController.open();
             document.getElementById('modalTitle').innerText = "แก้ไขรายการ";
             document.getElementById('recId').value = item.id;
-            
-            // item.date is likely ISO string from backend, works directly with datetime-local if formatted correctly
             document.getElementById('date').value = item.date;
             
-            document.getElementById('description').value = item.description;
+            const { category, desc, payment } = DataHelper.parseDescription(item.description);
+            
+            // Wait for DOM to populate options
+            setTimeout(() => {
+                document.getElementById('category').value = category;
+                document.getElementById('paymentMethod').value = payment;
+            }, 50);
+
+            document.getElementById('description').value = desc;
             document.getElementById('amount').value = item.amount;
             document.getElementById('currentImageUrl').value = item.imageUrl;
             document.getElementById('currentFileId').value = item.fileId;
+            
+            // Set Radio
             const radios = document.getElementsByName('type');
-            for(let r of radios) { if(r.value === item.type) r.checked = true; }
+            for(let r of radios) { if(r.value === item.type) { r.checked = true; ModalController.onTypeChange(); } }
+            
             if(item.imageUrl) {
                 document.getElementById('uploadContent').classList.add('hidden');
                 document.getElementById('previewBox').classList.remove('hidden');
@@ -994,14 +880,9 @@
         }
     };
 
-    // Initialize mock numbers on landing
-    window.addEventListener('load', () => {
-        ViewManager.showLanding();
-    });
-
-    document.getElementById('searchInput').addEventListener('keyup', () => {
-        FilterController.apply();
-    });
+    // Init
+    window.addEventListener('load', ViewManager.showLanding);
+    document.getElementById('searchInput').addEventListener('keyup', FilterController.apply);
 
   </script>
 </body>
