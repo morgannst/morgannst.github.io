@@ -22,14 +22,21 @@
 
   <style>
     body { font-family: 'Prompt', sans-serif; background-color: #f8fafc; font-size: 14px; }
-    .loader { border-top-color: #3b82f6; animation: spinner 1.5s linear infinite; }
-    @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     
     .blob { position: absolute; filter: blur(40px); z-index: -1; opacity: 0.5; }
     
     /* Animation Utilities */
     .fade-in { animation: fadeIn 0.3s ease-in-out; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    /* Skeleton Loading Animation */
+    @keyframes pulse-fast {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    .skeleton-pulse {
+      animation: pulse-fast 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
 
     @media (max-width: 640px) {
       .mobile-hide { display: none; }
@@ -186,6 +193,29 @@
 
     <div class="container mx-auto mt-4 max-w-5xl">
       
+      <!-- Filter Bar -->
+      <div class="mb-4 bg-white p-3 rounded-xl shadow-sm border border-slate-100 flex flex-col md:flex-row gap-3 items-start md:items-center">
+        <div class="flex items-center gap-2 w-full md:w-auto">
+             <i class="fa-solid fa-calendar-days text-slate-400"></i>
+             <span class="text-sm font-bold text-slate-700 whitespace-nowrap">ช่วงเวลา:</span>
+        </div>
+        <div class="flex flex-wrap gap-2 w-full md:w-auto items-center">
+            <select id="filterMode" onchange="FilterController.handleModeChange()" class="bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2">
+                <option value="all">ทั้งหมด</option>
+                <option value="today">วันนี้</option>
+                <option value="month" selected>เดือนนี้</option>
+                <option value="year">ปีนี้</option>
+                <option value="custom">กำหนดเอง</option>
+            </select>
+            
+            <div id="customDateInputs" class="hidden flex flex-wrap gap-2 items-center animate-[fadeIn_0.2s_ease-out]">
+                <input type="date" id="filterStartDate" class="bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2" onchange="FilterController.apply()">
+                <span class="text-slate-400 text-xs">ถึง</span>
+                <input type="date" id="filterEndDate" class="bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2" onchange="FilterController.apply()">
+            </div>
+        </div>
+      </div>
+
       <!-- Dashboard Stats -->
       <div class="grid grid-cols-3 gap-2 md:gap-4 mb-4">
         <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-100 flex flex-col justify-between hover:shadow-md transition">
@@ -214,27 +244,32 @@
         </button>
       </div>
 
-      <!-- List View -->
-      <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden min-h-[300px]">
+      <!-- List View with Lazy Loading -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden min-h-[300px] flex flex-col">
         <div class="p-3 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
-          <h3 class="font-bold text-slate-700 text-sm"><i class="fa-solid fa-list-ul mr-1 text-slate-400"></i> รายการล่าสุด</h3>
+          <h3 class="font-bold text-slate-700 text-sm"><i class="fa-solid fa-list-ul mr-1 text-slate-400"></i> รายการ</h3>
           <span class="text-[10px] bg-white px-2 py-0.5 rounded border text-slate-500 font-mono" id="recordCount">0</span>
         </div>
         
         <div id="listViewContainer" class="divide-y divide-slate-50"></div>
         
+        <!-- Load More Sentinel -->
+        <div id="loadMoreTrigger" class="h-10 w-full flex items-center justify-center p-2 opacity-0">
+             <i class="fa-solid fa-circle-notch fa-spin text-blue-500"></i>
+        </div>
+
         <div id="emptyState" class="p-8 text-center text-slate-400 text-xs hidden flex flex-col items-center justify-center h-full mt-10">
           <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-3">
              <i class="fa-solid fa-inbox text-2xl opacity-30"></i>
           </div>
-          <p>ยังไม่มีข้อมูลรายการ</p>
-          <button onclick="ModalController.open()" class="mt-2 text-blue-500 hover:underline">เพิ่มรายการแรก</button>
+          <p>ไม่มีรายการในช่วงเวลานี้</p>
+          <button onclick="ModalController.open()" class="mt-2 text-blue-500 hover:underline">เพิ่มรายการใหม่</button>
         </div>
       </div>
 
       <!-- Chart -->
       <div class="mt-4 bg-white p-4 rounded-xl shadow-sm border border-slate-100 mb-6">
-         <h3 class="font-bold text-slate-700 text-xs mb-2 flex items-center gap-1"><i class="fa-solid fa-chart-simple text-blue-500"></i> สรุปรายเดือน</h3>
+         <h3 class="font-bold text-slate-700 text-xs mb-2 flex items-center gap-1"><i class="fa-solid fa-chart-simple text-blue-500"></i> สรุปรายเดือน (ตามช่วงเวลาที่เลือก)</h3>
          <div class="h-40 w-full relative">
             <canvas id="financeChart"></canvas>
          </div>
@@ -321,15 +356,18 @@
   <script>
     // --- CONFIGURATION ---
     const APP_CONFIG = {
-        API_URL: "https://script.google.com/macros/s/AKfycbxRNiK8lOstCv7kjCXEuEuAUaJgP3q_51g0_Q8i9iihj-SqyQkIIWO1Clw2xRh1kwxE/exec"
+        API_URL: "https://script.google.com/macros/s/AKfycbxRNiK8lOstCv7kjCXEuEuAUaJgP3q_51g0_Q8i9iihj-SqyQkIIWO1Clw2xRh1kwxE/exec",
+        ITEMS_PER_PAGE: 20
     };
 
     // --- GLOBAL STATE ---
     const State = {
-        currentUser: null, // { username, role, name }
-        allData: [],
+        currentUser: null,
+        allData: [],        // Raw data from server
+        filteredData: [],   // Data after filtering
         fileDataObj: null,
-        myChart: null
+        myChart: null,
+        visibleCount: 0     // For lazy loading
     };
 
     // --- UTILITIES ---
@@ -359,9 +397,6 @@
         showLanding: () => {
             ViewManager.hideAll();
             document.getElementById('landingPage').classList.remove('hidden');
-            // Clear login form
-            document.getElementById('loginUsername').value = '';
-            document.getElementById('loginPassword').value = '';
         },
         showLogin: () => {
             ViewManager.hideAll();
@@ -371,7 +406,6 @@
             ViewManager.hideAll();
             document.getElementById('appContent').classList.remove('hidden');
             
-            // Update UI info
             document.getElementById('userDisplayName').innerText = State.currentUser.name;
             document.getElementById('userDisplayRole').innerText = State.currentUser.role === 'admin' ? 'ผู้ดูแลระบบ' : 'ผู้ใช้งานทั่วไป';
             
@@ -391,6 +425,120 @@
                 body: JSON.stringify({ action, ...payload })
             });
             return await response.json();
+        }
+    };
+
+    // --- FILTER CONTROLLER ---
+    const FilterController = {
+        handleModeChange: () => {
+            const mode = document.getElementById('filterMode').value;
+            const customInput = document.getElementById('customDateInputs');
+            
+            if(mode === 'custom') {
+                customInput.classList.remove('hidden');
+                customInput.classList.add('flex');
+            } else {
+                customInput.classList.add('hidden');
+                customInput.classList.remove('flex');
+            }
+            FilterController.apply();
+        },
+        
+        apply: () => {
+            const mode = document.getElementById('filterMode').value;
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            let filtered = State.allData;
+
+            // 1. Filter by Date
+            const now = new Date();
+            now.setHours(0,0,0,0);
+
+            if (mode !== 'all') {
+                filtered = filtered.filter(item => {
+                    const itemDate = new Date(item.date);
+                    itemDate.setHours(0,0,0,0);
+
+                    if (mode === 'today') {
+                        return itemDate.getTime() === now.getTime();
+                    } else if (mode === 'month') {
+                        return itemDate.getMonth() === now.getMonth() && itemDate.getFullYear() === now.getFullYear();
+                    } else if (mode === 'year') {
+                        return itemDate.getFullYear() === now.getFullYear();
+                    } else if (mode === 'custom') {
+                        const startVal = document.getElementById('filterStartDate').value;
+                        const endVal = document.getElementById('filterEndDate').value;
+                        
+                        if(!startVal && !endVal) return true;
+                        
+                        const start = startVal ? new Date(startVal) : new Date('1900-01-01');
+                        const end = endVal ? new Date(endVal) : new Date('2100-12-31');
+                        start.setHours(0,0,0,0);
+                        end.setHours(0,0,0,0);
+
+                        return itemDate >= start && itemDate <= end;
+                    }
+                    return true;
+                });
+            }
+
+            // 2. Filter by Search Term
+            if (searchTerm) {
+                filtered = filtered.filter(x => 
+                    x.description.toLowerCase().includes(searchTerm) || x.amount.toString().includes(searchTerm)
+                );
+            }
+
+            // Store filtered results and reset lazy load
+            State.filteredData = filtered;
+            State.visibleCount = APP_CONFIG.ITEMS_PER_PAGE;
+            
+            // Render first batch
+            const initialBatch = State.filteredData.slice(0, State.visibleCount);
+            UI.renderList(initialBatch, true); // true = reset container
+            UI.updateDashboard(State.filteredData);
+            
+            // Manage Load More Sentinel
+            InfiniteScroll.check();
+        }
+    };
+
+    // --- INFINITE SCROLL CONTROLLER ---
+    const InfiniteScroll = {
+        observer: null,
+        init: () => {
+            const sentinel = document.getElementById('loadMoreTrigger');
+            InfiniteScroll.observer = new IntersectionObserver((entries) => {
+                if(entries[0].isIntersecting) {
+                    InfiniteScroll.loadMore();
+                }
+            }, { rootMargin: '50px' });
+            
+            InfiniteScroll.observer.observe(sentinel);
+        },
+        loadMore: () => {
+            if (State.visibleCount >= State.filteredData.length) return;
+
+            // Show loading spinner
+            document.getElementById('loadMoreTrigger').classList.remove('opacity-0');
+
+            setTimeout(() => { // Small timeout for smoother feel
+                const nextCount = State.visibleCount + APP_CONFIG.ITEMS_PER_PAGE;
+                const nextBatch = State.filteredData.slice(State.visibleCount, nextCount);
+                
+                State.visibleCount = nextCount;
+                UI.renderList(nextBatch, false); // false = append
+                
+                document.getElementById('loadMoreTrigger').classList.add('opacity-0');
+                InfiniteScroll.check();
+            }, 300);
+        },
+        check: () => {
+            const sentinel = document.getElementById('loadMoreTrigger');
+            if (State.visibleCount >= State.filteredData.length) {
+                sentinel.style.display = 'none'; // Hide if no more data
+            } else {
+                sentinel.style.display = 'flex'; // Show sentinel
+            }
         }
     };
 
@@ -416,6 +564,7 @@
                         State.currentUser = { ...res.user, password: p };
                         Utils.Toast.fire({ icon: 'success', title: 'ยินดีต้อนรับคุณ ' + State.currentUser.name });
                         ViewManager.showApp();
+                        InfiniteScroll.init(); // Init scroll listener
                     } else {
                         Swal.fire({ icon: 'error', title: 'เข้าสู่ระบบไม่สำเร็จ', text: res.message, confirmButtonColor: '#3b82f6' });
                     }
@@ -423,7 +572,6 @@
                 .catch(err => {
                     btn.innerHTML = 'ยืนยันตัวตน';
                     btn.disabled = false;
-                    // Mock Offline Logic
                     AuthController.mockLogin(u, p);
                 });
         },
@@ -451,6 +599,7 @@
                 };
                 Utils.Toast.fire({ icon: 'success', title: 'ยินดีต้อนรับ (Mock Mode)' });
                 ViewManager.showApp();
+                InfiniteScroll.init();
                 DataController.mockOfflineMode();
             } else {
                 Swal.fire('Error', 'Cannot connect to server', 'error');
@@ -461,11 +610,11 @@
     // --- DATA CONTROLLER ---
     const DataController = {
         fetch: () => {
+            UI.renderSkeleton(); // Show Skeleton
             Api.call('getData')
                 .then(data => {
                     State.allData = data;
-                    UI.renderList(data);
-                    UI.updateDashboard(data);
+                    FilterController.apply(); // This will clear skeleton and render list
                 })
                 .catch(err => console.log('Using mock data logic if already loaded'));
         },
@@ -499,7 +648,6 @@
                     }
                 })
                 .catch(err => {
-                    // Mock Save
                     btn.innerText = oldTxt; btn.disabled = false; ModalController.close();
                     Utils.Toast.fire({ icon: 'success', title: 'บันทึกข้อมูลแล้ว (Mock Mode)' });
                     
@@ -519,8 +667,7 @@
                     } else {
                         State.allData.unshift(newItem);
                     }
-                    UI.renderList(State.allData);
-                    UI.updateDashboard(State.allData);
+                    FilterController.apply();
                 });
         },
         delete: (id, fileId) => {
@@ -543,40 +690,73 @@
                         .catch(err => {
                             Utils.Toast.fire({ icon: 'success', title: 'ลบข้อมูลแล้ว (Mock Mode)' });
                             State.allData = State.allData.filter(x => x.id != id);
-                            UI.renderList(State.allData);
-                            UI.updateDashboard(State.allData);
+                            FilterController.apply();
                         });
                 }
             });
         },
         mockOfflineMode: () => {
-            const mock = [
-                { id:'1', date:'2025-05-01', type:'รายรับ', description:'ค่ารักษา (Mock)', amount:1500, createdBy:'user1' },
-                { id:'2', date:'2025-05-02', type:'รายจ่าย', description:'ค่าน้ำ (Mock)', amount:200, createdBy:'admin' },
-                { id:'3', date:'2025-05-05', type:'รายรับ', description:'วัคซีน (Mock)', amount:600, createdBy:'user1' }
-            ];
+            // Generate dummy data
+            const mock = [];
+            for(let i=1; i<=50; i++) {
+                mock.push({ 
+                    id: i.toString(), 
+                    date: '2025-05-01', 
+                    type: i % 2 === 0 ? 'รายจ่าย' : 'รายรับ', 
+                    description: `รายการทดสอบที่ ${i}`, 
+                    amount: Math.floor(Math.random() * 1000) + 100, 
+                    createdBy: i % 3 === 0 ? 'admin' : 'user1' 
+                });
+            }
             
             if(State.currentUser.role === 'admin') {
                 State.allData = mock;
             } else {
                 State.allData = mock.filter(x => x.createdBy === State.currentUser.username);
             }
-            UI.renderList(State.allData);
-            UI.updateDashboard(State.allData);
+            FilterController.apply();
         }
     };
 
     // --- UI RENDERER ---
     const UI = {
-        renderList: (data) => {
+        renderSkeleton: () => {
+            const container = document.getElementById('listViewContainer');
+            const countEl = document.getElementById('recordCount');
+            countEl.innerText = "...";
+            container.innerHTML = '';
+            
+            // Generate 5 skeleton rows
+            for(let i=0; i<6; i++) {
+                const skel = document.createElement('div');
+                skel.className = "p-3 flex items-center justify-between border-b border-slate-50 skeleton-pulse";
+                skel.innerHTML = `
+                  <div class="flex items-center gap-3 flex-1">
+                    <div class="w-10 h-10 rounded-lg bg-slate-200"></div>
+                    <div class="flex-1 space-y-2">
+                      <div class="h-4 bg-slate-200 rounded w-3/4"></div>
+                      <div class="flex justify-between w-full">
+                         <div class="h-3 bg-slate-200 rounded w-1/4"></div>
+                         <div class="h-3 bg-slate-200 rounded w-1/4"></div>
+                      </div>
+                    </div>
+                  </div>
+                `;
+                container.appendChild(skel);
+            }
+        },
+        renderList: (data, reset = false) => {
             const container = document.getElementById('listViewContainer');
             const countEl = document.getElementById('recordCount');
             const emptyEl = document.getElementById('emptyState');
             
-            container.innerHTML = '';
-            countEl.innerText = data.length;
+            if (reset) {
+                container.innerHTML = '';
+                // Update total count shown based on FILTERED data length, not just this batch
+                countEl.innerText = State.filteredData.length;
+            }
 
-            if(data.length === 0) {
+            if(State.filteredData.length === 0) {
                 emptyEl.classList.remove('hidden');
                 return;
             }
@@ -589,7 +769,7 @@
                 const dateStr = Utils.formatDate(item.date);
 
                 const div = document.createElement('div');
-                div.className = "p-3 flex items-center justify-between hover:bg-slate-50 transition active:bg-slate-100 cursor-pointer group";
+                div.className = "p-3 flex items-center justify-between hover:bg-slate-50 transition active:bg-slate-100 cursor-pointer group animate-[fadeIn_0.3s_ease-out]";
 
                 // Image Thumbnail
                 let imgEl = `<div class="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-300 flex-shrink-0 group-hover:bg-white transition"><i class="fa-solid fa-image"></i></div>`;
@@ -631,6 +811,7 @@
             });
         },
         updateDashboard: (data) => {
+            // Dashboard calculations should use ALL filtered data, not just the currently rendered page
             let inc = 0, exp = 0;
             const monthly = {};
 
@@ -674,12 +855,11 @@
         }
     };
 
-    // --- FILE HANDLER ---
+    // --- FILE HANDLER & MODAL CONTROLLER (Same as before) ---
     const FileHandler = {
         handleSelect: (e) => {
             const file = e.target.files[0];
             if(!file) return;
-            
             const reader = new FileReader();
             reader.onload = (evt) => {
                 State.fileDataObj = { name: file.name, data: evt.target.result };
@@ -703,7 +883,6 @@
         }
     };
 
-    // --- MODAL CONTROLLER ---
     const ModalController = {
         open: () => {
             document.getElementById('dataForm').reset();
@@ -725,10 +904,8 @@
             document.getElementById('amount').value = item.amount;
             document.getElementById('currentImageUrl').value = item.imageUrl;
             document.getElementById('currentFileId').value = item.fileId;
-            
             const radios = document.getElementsByName('type');
             for(let r of radios) { if(r.value === item.type) r.checked = true; }
-
             if(item.imageUrl) {
                 document.getElementById('uploadContent').classList.add('hidden');
                 document.getElementById('previewBox').classList.remove('hidden');
@@ -737,13 +914,8 @@
         }
     };
 
-    // --- INIT SEARCH ---
-    document.getElementById('searchInput').addEventListener('keyup', (e) => {
-        const term = e.target.value.toLowerCase();
-        const filtered = State.allData.filter(x => 
-            x.description.toLowerCase().includes(term) || x.amount.toString().includes(term)
-        );
-        UI.renderList(filtered);
+    document.getElementById('searchInput').addEventListener('keyup', () => {
+        FilterController.apply();
     });
 
   </script>
