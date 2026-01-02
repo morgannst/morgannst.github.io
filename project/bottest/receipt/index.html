@@ -315,8 +315,9 @@
                     <input type="text" id="description" required class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:border-blue-500 focus:outline-none transition">
                 </div>
                 <div>
-                    <label class="block text-slate-500 text-[10px] font-bold mb-1">วันที่</label>
-                    <input type="date" id="date" required class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:border-blue-500 focus:outline-none transition">
+                    <label class="block text-slate-500 text-[10px] font-bold mb-1">วันที่และเวลา</label>
+                    <!-- เปลี่ยน input type เป็น datetime-local เพื่อรับค่าเวลา -->
+                    <input type="datetime-local" id="date" required class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:border-blue-500 focus:outline-none transition">
                 </div>
                 <div>
                     <label class="block text-slate-500 text-[10px] font-bold mb-1">จำนวนเงิน</label>
@@ -375,7 +376,11 @@
         formatCurrency: (num) => new Intl.NumberFormat('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(num),
         formatDate: (dateStr) => {
             const d = new Date(dateStr);
-            return d.toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: '2-digit' });
+            // แสดงผลรูปแบบ วันที่ เดือน ปี เวลา hh:mm (24hr)
+            return d.toLocaleDateString('th-TH', { 
+                day: 'numeric', month: 'short', year: '2-digit', 
+                hour: '2-digit', minute: '2-digit', hour12: false 
+            });
         },
         Toast: Swal.mixin({
             toast: true, position: 'top-end', showConfirmButton: false,
@@ -696,12 +701,13 @@
             });
         },
         mockOfflineMode: () => {
-            // Generate dummy data
+            // Generate dummy data with time included
             const mock = [];
             for(let i=1; i<=50; i++) {
+                // Mock format yyyy-MM-ddTHH:mm
                 mock.push({ 
                     id: i.toString(), 
-                    date: '2025-05-01', 
+                    date: `2025-05-01T${10 + (i % 12)}:30`, 
                     type: i % 2 === 0 ? 'รายจ่าย' : 'รายรับ', 
                     description: `รายการทดสอบที่ ${i}`, 
                     amount: Math.floor(Math.random() * 1000) + 100, 
@@ -726,7 +732,6 @@
             countEl.innerText = "...";
             container.innerHTML = '';
             
-            // Generate 5 skeleton rows
             for(let i=0; i<6; i++) {
                 const skel = document.createElement('div');
                 skel.className = "p-3 flex items-center justify-between border-b border-slate-50 skeleton-pulse";
@@ -752,7 +757,6 @@
             
             if (reset) {
                 container.innerHTML = '';
-                // Update total count shown based on FILTERED data length, not just this batch
                 countEl.innerText = State.filteredData.length;
             }
 
@@ -768,9 +772,7 @@
                 const sign = isInc ? '+' : '-';
                 const dateStr = Utils.formatDate(item.date);
 
-                // --- Display Name Logic (Updated) ---
                 let creatorName = item.createdBy || 'Unknown';
-                // ถ้า user ที่ล็อกอินเป็นเจ้าของรายการ ให้แสดงชื่อจริง
                 if (State.currentUser && State.currentUser.username === item.createdBy) {
                     creatorName = State.currentUser.name;
                 } else if (item.createdBy === 'admin') { 
@@ -780,7 +782,6 @@
                 const div = document.createElement('div');
                 div.className = "p-3 flex items-center justify-between hover:bg-slate-50 transition active:bg-slate-100 cursor-pointer group animate-[fadeIn_0.3s_ease-out]";
 
-                // Image Thumbnail
                 let imgEl = `<div class="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-300 flex-shrink-0 group-hover:bg-white transition"><i class="fa-solid fa-image"></i></div>`;
                 if(item.imageUrl) {
                     imgEl = `<div class="w-10 h-10 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0 border border-slate-200 shadow-sm" onclick="window.open('${item.imageUrl}', '_blank'); event.stopPropagation();">
@@ -788,7 +789,6 @@
                     </div>`;
                 }
 
-                // Actions
                 let actions = '';
                 if(State.currentUser.role === 'admin' || item.createdBy === State.currentUser.username) {
                     actions = `
@@ -822,7 +822,6 @@
             });
         },
         updateDashboard: (data) => {
-            // Dashboard calculations should use ALL filtered data, not just the currently rendered page
             let inc = 0, exp = 0;
             const monthly = {};
 
@@ -839,7 +838,6 @@
             document.getElementById('totalExpense').innerText = Utils.formatCurrency(exp);
             document.getElementById('balance').innerText = Utils.formatCurrency(inc - exp);
 
-            // Chart
             const ctx = document.getElementById('financeChart').getContext('2d');
             const keys = Object.keys(monthly).sort().slice(-6);
             const labels = keys.map(k => {
@@ -866,7 +864,7 @@
         }
     };
 
-    // --- FILE HANDLER & MODAL CONTROLLER (Same as before) ---
+    // --- FILE HANDLER & MODAL CONTROLLER ---
     const FileHandler = {
         handleSelect: (e) => {
             const file = e.target.files[0];
@@ -899,7 +897,12 @@
             document.getElementById('dataForm').reset();
             document.getElementById('recId').value = "";
             document.getElementById('modalTitle').innerText = "เพิ่มรายการ";
-            document.getElementById('date').valueAsDate = new Date();
+            
+            // Set current datetime for new entry
+            const now = new Date();
+            now.setMinutes(now.getMinutes() - now.getTimezoneOffset()); // Adjust to local
+            document.getElementById('date').value = now.toISOString().slice(0, 16);
+            
             FileHandler.clear();
             document.getElementById('entryModal').classList.remove('hidden');
         },
@@ -910,7 +913,10 @@
             ModalController.open();
             document.getElementById('modalTitle').innerText = "แก้ไขรายการ";
             document.getElementById('recId').value = item.id;
+            
+            // item.date is likely ISO string from backend, works directly with datetime-local if formatted correctly
             document.getElementById('date').value = item.date;
+            
             document.getElementById('description').value = item.description;
             document.getElementById('amount').value = item.amount;
             document.getElementById('currentImageUrl').value = item.imageUrl;
