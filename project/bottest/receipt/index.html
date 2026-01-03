@@ -369,6 +369,12 @@
             EXPENSE: { TEXT: 'text-rose-600', BG_BADGE: 'bg-rose-100 text-rose-600', BTN: 'bg-rose-600' },
             HOVER_INCOME: 'hover:bg-emerald-700',
             HOVER_EXPENSE: 'hover:bg-rose-700'
+        },
+        // NEW: User Mapping for Display
+        USER_MAP: {
+            'admin': 'Administrator',
+            'yuyyuy': 'วรรณรวี',
+            'aunpun': 'บุปผาทิพย์'
         }
     };
 
@@ -399,9 +405,8 @@
         })
     };
 
-    // --- DATA HELPERS (Logic Encapsulation) ---
+    // --- DATA HELPERS ---
     const DataHelper = {
-        // Parses "[Category] Description (Payment)" format
         parseDescription: (fullDesc) => {
             let category = 'ทั่วไป', desc = fullDesc, payment = 'ไม่ระบุ';
             
@@ -421,7 +426,6 @@
             }
             return { category, desc, payment };
         },
-        // Formats inputs back to string
         formatDescription: (cat, desc, pay) => `[${cat}] ${desc} (${pay})`
     };
 
@@ -432,7 +436,6 @@
         showLanding: () => {
             ViewManager.hideAll();
             document.getElementById('landingPage').classList.remove('hidden');
-            // Animate Mock Numbers
             document.querySelectorAll('.mock-count').forEach(el => ViewManager.animateValue(el, 0, parseInt(el.getAttribute('data-target')), 2000));
         },
         
@@ -478,7 +481,7 @@
 
     // --- CONTROLLERS ---
     
-    // 1. Filter Controller
+    // 1. Filter
     const FilterController = {
         handleModeChange: () => {
             const mode = document.getElementById('filterMode').value;
@@ -492,7 +495,6 @@
             let filtered = State.allData;
             const now = new Date(); now.setHours(0,0,0,0);
 
-            // Date Filter
             if (mode !== 'all') {
                 filtered = filtered.filter(item => {
                     const d = new Date(item.date); d.setHours(0,0,0,0);
@@ -507,7 +509,6 @@
                     return true;
                 });
             }
-            // Text Search
             if (term) filtered = filtered.filter(x => x.description.toLowerCase().includes(term) || x.amount.toString().includes(term));
 
             State.filteredData = filtered;
@@ -546,7 +547,7 @@
         }
     };
 
-    // 3. Auth Controller
+    // 3. Auth
     const AuthController = {
         login: (e) => {
             e.preventDefault();
@@ -582,9 +583,15 @@
             });
         },
         mockLogin: (u, p) => {
-            // Mock credentials for offline/preview
-            if((u === 'admin' && p === '1234') || (u === 'user1' && p === '1234')) {
-                State.currentUser = { username: u, role: u === 'admin'?'admin':'user', name: u==='admin'?'Admin (Mock)':'User1 (Mock)', password: p };
+            // Updated Mock Credentials
+            const mockUsers = {
+                'admin': { role: 'admin', name: 'Admin (Mock)' },
+                'yuyyuy': { role: 'user', name: 'วรรณรวี (Mock)' },
+                'aunpun': { role: 'user', name: 'บุปผาทิพย์ (Mock)' }
+            };
+
+            if(mockUsers[u] && p === '1234') {
+                State.currentUser = { username: u, ...mockUsers[u], password: p };
                 Utils.Toast.fire({ icon: 'success', title: 'Login Success (Mock Mode)' });
                 ViewManager.showApp();
                 InfiniteScroll.init();
@@ -593,7 +600,7 @@
         }
     };
 
-    // 4. Data Controller
+    // 4. Data
     const DataController = {
         fetch: () => {
             UI.renderSkeleton();
@@ -630,7 +637,6 @@
                 else Swal.fire('Error', res.message, 'error');
             }).catch(() => {
                 btn.innerText = oldTxt; btn.disabled = false; ModalController.close();
-                // Mock Save Update
                 const newItem = {
                     id: formData.recId || Date.now().toString(),
                     date: formData.date, type: formData.type, description: formData.description,
@@ -662,23 +668,19 @@
             });
         },
         mockOfflineMode: () => {
-            // Enhanced Mock Data Generation
             const mock = [];
-            const users = ['admin', 'user1'];
-            
+            const users = ['yuyyuy', 'aunpun']; // Updated mock users
             for(let i=1; i<=50; i++) {
                 const type = i % 2 === 0 ? 'รายจ่าย' : 'รายรับ';
                 const cats = CONSTANTS.CATEGORIES[type];
                 const cat = cats[Math.floor(Math.random() * cats.length)];
                 const pay = CONSTANTS.PAYMENT_METHODS[Math.floor(Math.random() * CONSTANTS.PAYMENT_METHODS.length)];
-                const amt = Math.floor(Math.random() * 5000) + 100;
-                
                 mock.push({ 
                     id: i.toString(), 
                     date: `2025-05-01T${10 + (i % 12)}:30`, 
                     type: type,
                     description: `[${cat}] รายการจำลองที่ ${i} (${pay})`, 
-                    amount: amt, 
+                    amount: Math.floor(Math.random() * 5000) + 100, 
                     createdBy: users[i % 2]
                 });
             }
@@ -719,9 +721,13 @@
                 const style = isInc ? CONSTANTS.COLORS.INCOME : CONSTANTS.COLORS.EXPENSE;
                 const sign = isInc ? '+' : '-';
                 
-                // Parse Logic moved to DataHelper
                 const { category, desc, payment } = DataHelper.parseDescription(item.description);
-                let creator = (State.currentUser && State.currentUser.username === item.createdBy) ? State.currentUser.name : (item.createdBy==='admin'?'Administrator':item.createdBy);
+                
+                // MAPPING LOGIC HERE
+                let creator = CONSTANTS.USER_MAP[item.createdBy] || item.createdBy;
+                if (State.currentUser && State.currentUser.username === item.createdBy) {
+                    creator = State.currentUser.name;
+                }
 
                 const html = `
                 <div class="p-3 flex items-center justify-between hover:bg-slate-50 transition active:bg-slate-100 cursor-pointer group animate-[fadeIn_0.3s_ease-out]">
@@ -762,7 +768,6 @@
                 const v = parseFloat(x.amount);
                 const m = x.date.substring(0, 7);
                 if(!monthly[m]) monthly[m] = { inc:0, exp:0 };
-                
                 if(x.type === 'รายรับ') { inc += v; monthly[m].inc += v; }
                 else { exp += v; monthly[m].exp += v; }
             });
@@ -771,7 +776,6 @@
             document.getElementById('totalExpense').innerText = Utils.formatCurrency(exp);
             document.getElementById('balance').innerText = Utils.formatCurrency(inc - exp);
 
-            // Chart Update
             const ctx = document.getElementById('financeChart').getContext('2d');
             const keys = Object.keys(monthly).sort().slice(-6);
             if(State.myChart) State.myChart.destroy();
@@ -789,7 +793,7 @@
         }
     };
 
-    // 6. Modal & File Handlers
+    // 6. Handlers
     const FileHandler = {
         handleSelect: (e) => {
             const file = e.target.files[0];
@@ -822,7 +826,6 @@
             const now = new Date(); now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
             document.getElementById('date').value = now.toISOString().slice(0, 16);
             
-            // Populate Payment Options if empty
             const paySelect = document.getElementById('paymentMethod');
             if(paySelect.options.length === 0) {
                 CONSTANTS.PAYMENT_METHODS.forEach(p => {
@@ -845,8 +848,6 @@
             CONSTANTS.CATEGORIES[type].forEach(c => {
                 const opt = document.createElement('option'); opt.value = c; opt.innerText = c; catSelect.appendChild(opt);
             });
-            
-            // Apply Dynamic Classes
             btn.className = `w-full text-white font-bold py-3 rounded-xl shadow-lg text-sm mt-2 transition transform active:scale-95 ${style.BTN} ${hover}`;
         },
         edit: (item) => {
@@ -856,8 +857,6 @@
             document.getElementById('date').value = item.date;
             
             const { category, desc, payment } = DataHelper.parseDescription(item.description);
-            
-            // Wait for DOM to populate options
             setTimeout(() => {
                 document.getElementById('category').value = category;
                 document.getElementById('paymentMethod').value = payment;
@@ -867,11 +866,8 @@
             document.getElementById('amount').value = item.amount;
             document.getElementById('currentImageUrl').value = item.imageUrl;
             document.getElementById('currentFileId').value = item.fileId;
-            
-            // Set Radio
             const radios = document.getElementsByName('type');
             for(let r of radios) { if(r.value === item.type) { r.checked = true; ModalController.onTypeChange(); } }
-            
             if(item.imageUrl) {
                 document.getElementById('uploadContent').classList.add('hidden');
                 document.getElementById('previewBox').classList.remove('hidden');
@@ -880,7 +876,6 @@
         }
     };
 
-    // Init
     window.addEventListener('load', ViewManager.showLanding);
     document.getElementById('searchInput').addEventListener('keyup', FilterController.apply);
 
