@@ -370,7 +370,7 @@
             HOVER_INCOME: 'hover:bg-emerald-700',
             HOVER_EXPENSE: 'hover:bg-rose-700'
         },
-        // NEW: User Mapping for Display
+        // Mapped Usernames to Real Names
         USER_MAP: {
             'admin': 'Administrator',
             'yuyyuy': 'วรรณรวี',
@@ -407,6 +407,7 @@
 
     // --- DATA HELPERS ---
     const DataHelper = {
+        // [Category] Description (Payment)
         parseDescription: (fullDesc) => {
             let category = 'ทั่วไป', desc = fullDesc, payment = 'ไม่ระบุ';
             
@@ -447,7 +448,9 @@
         showApp: () => {
             ViewManager.hideAll();
             document.getElementById('appContent').classList.remove('hidden');
-            document.getElementById('userDisplayName').innerText = State.currentUser.name;
+            // Show real name if available in map, otherwise username
+            const name = CONSTANTS.USER_MAP[State.currentUser.username] || State.currentUser.name;
+            document.getElementById('userDisplayName').innerText = name;
             document.getElementById('userDisplayRole').innerText = State.currentUser.role === 'admin' ? 'ผู้ดูแลระบบ' : 'ผู้ใช้งานทั่วไป';
             DataController.fetch();
         },
@@ -563,7 +566,9 @@
                 btn.innerHTML = 'ยืนยันตัวตน'; btn.disabled = false;
                 if(res.success) {
                     State.currentUser = { ...res.user, password: p };
-                    Utils.Toast.fire({ icon: 'success', title: `ยินดีต้อนรับ ${State.currentUser.name}` });
+                    // Map name for display
+                    const displayName = CONSTANTS.USER_MAP[u] || res.user.name;
+                    Utils.Toast.fire({ icon: 'success', title: `ยินดีต้อนรับ ${displayName}` });
                     ViewManager.showApp();
                     InfiniteScroll.init();
                 } else Swal.fire('Error', res.message, 'error');
@@ -583,7 +588,6 @@
             });
         },
         mockLogin: (u, p) => {
-            // Updated Mock Credentials
             const mockUsers = {
                 'admin': { role: 'admin', name: 'Admin (Mock)' },
                 'yuyyuy': { role: 'user', name: 'วรรณรวี (Mock)' },
@@ -592,7 +596,8 @@
 
             if(mockUsers[u] && p === '1234') {
                 State.currentUser = { username: u, ...mockUsers[u], password: p };
-                Utils.Toast.fire({ icon: 'success', title: 'Login Success (Mock Mode)' });
+                const displayName = CONSTANTS.USER_MAP[u] || mockUsers[u].name;
+                Utils.Toast.fire({ icon: 'success', title: `ยินดีต้อนรับ ${displayName}` });
                 ViewManager.showApp();
                 InfiniteScroll.init();
                 DataController.mockOfflineMode();
@@ -669,7 +674,7 @@
         },
         mockOfflineMode: () => {
             const mock = [];
-            const users = ['yuyyuy', 'aunpun']; // Updated mock users
+            const users = ['yuyyuy', 'aunpun']; 
             for(let i=1; i<=50; i++) {
                 const type = i % 2 === 0 ? 'รายจ่าย' : 'รายรับ';
                 const cats = CONSTANTS.CATEGORIES[type];
@@ -723,11 +728,8 @@
                 
                 const { category, desc, payment } = DataHelper.parseDescription(item.description);
                 
-                // MAPPING LOGIC HERE
+                // MAPPING LOGIC: Map username to real name
                 let creator = CONSTANTS.USER_MAP[item.createdBy] || item.createdBy;
-                if (State.currentUser && State.currentUser.username === item.createdBy) {
-                    creator = State.currentUser.name;
-                }
 
                 const html = `
                 <div class="p-3 flex items-center justify-between hover:bg-slate-50 transition active:bg-slate-100 cursor-pointer group animate-[fadeIn_0.3s_ease-out]">
@@ -747,7 +749,7 @@
                                <span class="text-[10px] text-slate-400 flex items-center gap-1"><i class="fa-regular fa-calendar"></i> ${Utils.formatDate(item.date)}</span>
                                <div class="flex gap-1">
                                    <span class="text-[10px] text-slate-400 bg-slate-100 px-1.5 rounded">${payment}</span>
-                                   <span class="text-[10px] text-slate-500 bg-slate-100 px-1.5 rounded flex items-center gap-1"><i class="fa-solid fa-user text-[8px]"></i> ${creator}</span>
+                                   <span class="text-[10px] text-slate-500 bg-slate-100 px-1.5 rounded flex items-center gap-1"><i class="fa-solid fa-user-pen text-[8px]"></i> ${creator}</span>
                                </div>
                             </div>
                         </div>
