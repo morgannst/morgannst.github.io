@@ -69,11 +69,22 @@
                 </div>
                 <div class="text-xs text-slate-400 font-mono">dashboard_preview.exe</div>
             </div>
+            
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 p-4 rounded-xl border border-emerald-200 text-left"><p class="text-emerald-600 text-xs font-bold mb-1"><i class="fa-solid fa-arrow-trend-up"></i> รายรับ</p><h3 class="text-2xl font-bold text-emerald-700">฿<span class="mock-count" data-target="125400">0</span></h3></div>
-                <div class="bg-gradient-to-br from-rose-50 to-rose-100 p-4 rounded-xl border border-rose-200 text-left"><p class="text-rose-600 text-xs font-bold mb-1"><i class="fa-solid fa-arrow-trend-down"></i> รายจ่าย</p><h3 class="text-2xl font-bold text-rose-700">฿<span class="mock-count" data-target="42150">0</span></h3></div>
-                <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl border border-blue-200 text-left"><p class="text-blue-600 text-xs font-bold mb-1"><i class="fa-solid fa-wallet"></i> คงเหลือ</p><h3 class="text-2xl font-bold text-blue-700">฿<span class="mock-count" data-target="83250">0</span></h3></div>
+                <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 p-4 rounded-xl border border-emerald-200 text-left">
+                    <p class="text-emerald-600 text-xs font-bold mb-1"><i class="fa-solid fa-arrow-trend-up"></i> รายรับ (ตัวอย่าง)</p>
+                    <h3 class="text-2xl font-bold text-emerald-700">฿<span class="mock-count" data-target="125400">0</span></h3>
+                </div>
+                <div class="bg-gradient-to-br from-rose-50 to-rose-100 p-4 rounded-xl border border-rose-200 text-left">
+                    <p class="text-rose-600 text-xs font-bold mb-1"><i class="fa-solid fa-arrow-trend-down"></i> รายจ่าย (ตัวอย่าง)</p>
+                    <h3 class="text-2xl font-bold text-rose-700">฿<span class="mock-count" data-target="42150">0</span></h3>
+                </div>
+                <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl border border-blue-200 text-left">
+                    <p class="text-blue-600 text-xs font-bold mb-1"><i class="fa-solid fa-wallet"></i> คงเหลือ (ตัวอย่าง)</p>
+                    <h3 class="text-2xl font-bold text-blue-700">฿<span class="mock-count" data-target="83250">0</span></h3>
+                </div>
             </div>
+            
             <div class="h-32 bg-slate-50 rounded-lg border border-dashed border-slate-300 p-4 flex items-end justify-around gap-2 relative overflow-hidden">
                 <div class="w-full bg-blue-200 rounded-t-md bar-anim" style="height: 40%; animation-delay: 0.1s"></div>
                 <div class="w-full bg-blue-300 rounded-t-md bar-anim" style="height: 70%; animation-delay: 0.2s"></div>
@@ -217,7 +228,6 @@
           <i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-400 text-xs"></i>
           <input type="text" id="searchInput" placeholder="ค้นหา..." class="w-full pl-8 pr-3 py-2 bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm transition focus:shadow-sm">
         </div>
-        <!-- Refresh Button (Added) -->
         <button onclick="DataController.fetch()" class="bg-white hover:bg-slate-50 text-slate-600 px-3.5 py-2 rounded-lg shadow-sm border border-slate-200 text-sm transition active:scale-95" title="รีเฟรชข้อมูล">
             <i class="fa-solid fa-rotate-right" id="refreshIcon"></i>
         </button>
@@ -235,7 +245,6 @@
         
         <div id="listViewContainer" class="divide-y divide-slate-50"></div>
         
-        <!-- Load More Sentinel -->
         <div id="loadMoreTrigger" class="h-10 w-full flex items-center justify-center p-2 opacity-0">
              <i class="fa-solid fa-circle-notch fa-spin text-blue-500"></i>
         </div>
@@ -341,13 +350,12 @@
                 </div>
             </div>
 
+            <!-- File Upload -->
             <div>
               <label class="block text-slate-500 text-[10px] font-bold mb-1">รูปภาพ/ไฟล์</label>
               <label class="flex flex-col items-center px-4 py-6 bg-slate-50 border border-dashed border-slate-300 rounded-lg cursor-pointer hover:bg-slate-100 transition relative group">
                   <div id="uploadContent" class="text-center group-hover:scale-105 transition-transform">
-                      <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2 text-blue-500">
-                          <i class="fa-solid fa-camera"></i>
-                      </div>
+                      <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2 text-blue-500"><i class="fa-solid fa-camera"></i></div>
                       <span class="text-[10px] text-slate-500 block">แตะเพื่ออัปโหลดใบเสร็จ</span>
                   </div>
                   <input type='file' id="fileInput" class="hidden" accept="image/*,.pdf" onchange="FileHandler.handleSelect(event)" />
@@ -366,14 +374,14 @@
   </div>
 
   <script>
-    // --- CONSTANTS ---
+    // --- CONSTANTS & CONFIG ---
     const CONSTANTS = {
         // ⚠️⚠️ อย่าลืมเปลี่ยน URL เป็นของ Web App ท่านเอง ⚠️⚠️
         API_URL: "https://script.google.com/macros/s/AKfycbxRNiK8lOstCv7kjCXEuEuAUaJgP3q_51g0_Q8i9iihj-SqyQkIIWO1Clw2xRh1kwxE/exec",
         ITEMS_PER_PAGE: 20,
         CATEGORIES: {
-           'รายรับ': ['รับจากพี่หมอ', 'รับจากพี่จุ๊', 'อื่นๆ'],
-           'รายจ่าย': ['ค่าอาหาร', 'ค่าสาธารณูปโภค (น้ำ/ไฟ/น้ำมัน)', 'ค่าวัสดุสิ้นเปลือง', 'ค่าซ่อมบำรุง', 'อื่นๆ']
+            'รายรับ': ['พี่หมอ', 'พี่จุ๊', 'อื่นๆ'],
+            'รายจ่าย': ['ค่าสาธารณูปโภค (น้ำ/ไฟ/น้ำมัน)', 'ค่าวัสดุสิ้นเปลือง', 'ค่าซ่อมบำรุง', 'อื่นๆ']
         },
         PAYMENT_METHODS: ['เงินสด', 'โอนเงิน (QR)', 'บัตรเครดิต', 'อื่นๆ'],
         COLORS: {
@@ -382,16 +390,16 @@
             HOVER_INCOME: 'hover:bg-emerald-700',
             HOVER_EXPENSE: 'hover:bg-rose-700'
         },
-        // MAP Username -> Real Name (ถ้าไม่มีในนี้จะแสดงชื่อเดิม)
         USER_MAP: {
+            'admin': 'Administrator',
             'morgan': 'ยิ่งยศ',
-            'ju' : 'จุฑามาศ',
+            'ju': 'จุฑามาศ',
             'yuyyuy': 'วรรณรวี',
             'aunpun': 'บุปผาทิพย์'
         }
     };
 
-    // --- STATE ---
+    // --- GLOBAL STATE ---
     const State = {
         currentUser: null,
         allData: [],
@@ -420,6 +428,7 @@
 
     // --- DATA HELPERS ---
     const DataHelper = {
+        // [Category] Description (Payment)
         parseDescription: (fullDesc) => {
             let category = 'ทั่วไป', desc = fullDesc, payment = 'ไม่ระบุ';
             if(fullDesc.startsWith('[')) {
@@ -506,7 +515,7 @@
     const FilterController = {
         handleModeChange: () => {
             const mode = document.getElementById('filterMode').value;
-            const customInput = document.getElementById('customDateInputs');
+            const inputs = document.getElementById('customDateInputs');
             
             if(mode === 'custom') {
                 customInput.classList.remove('hidden');
@@ -522,10 +531,7 @@
             const mode = document.getElementById('filterMode').value;
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             let filtered = State.allData;
-
-            // 1. Filter by Date
-            const now = new Date();
-            now.setHours(0,0,0,0);
+            const now = new Date(); now.setHours(0,0,0,0);
 
             if (mode !== 'all') {
                 filtered = filtered.filter(item => {
@@ -623,8 +629,7 @@
             const u = document.getElementById('loginUsername').value.trim();
             const p = document.getElementById('loginPassword').value.trim();
             const btn = document.getElementById('btnLogin');
-            
-            if(!u || !p) return Swal.fire('แจ้งเตือน', 'กรุณากรอกข้อมูลให้ครบ', 'warning');
+            if(!u || !p) return Swal.fire('แจ้งเตือน', 'กรอกข้อมูลให้ครบ', 'warning');
 
             btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> ตรวจสอบ...';
             btn.disabled = true;
@@ -665,16 +670,18 @@
             });
         },
         mockLogin: (u, p) => {
-            if((u === 'admin' && p === '1234') || (u === 'yuyyuy' && p === '1234') || (u === 'aunpun' && p === '1234')) {
-                const role = u === 'admin' ? 'admin' : 'user';
-                const name = CONSTANTS.USER_MAP[u] || 'Mock User';
-                State.currentUser = { 
-                    username: u, 
-                    role: role, 
-                    name: name + ' (Mock)', 
-                    password: p 
-                };
-                Utils.Toast.fire({ icon: 'success', title: 'ยินดีต้อนรับ (Mock Mode)' });
+            const mockUsers = {
+                'admin': { role: 'admin', name: 'Admin (Mock)' },
+                'yuyyuy': { role: 'user', name: 'วรรณรวี (Mock)' },
+                'aunpun': { role: 'user', name: 'บุปผาทิพย์ (Mock)' },
+                'morgan': { role: 'user', name: 'ยิ่งยศ (Mock)' },
+                'ju': { role: 'user', name: 'จุฑามาศ (Mock)' }
+            };
+
+            if(mockUsers[u] && p === '1234') {
+                State.currentUser = { username: u, ...mockUsers[u], password: p };
+                const displayName = CONSTANTS.USER_MAP[u] || mockUsers[u].name;
+                Utils.Toast.fire({ icon: 'success', title: `ยินดีต้อนรับ ${displayName}` });
                 ViewManager.showApp();
                 InfiniteScroll.init();
                 DataController.mockOfflineMode();
@@ -687,17 +694,13 @@
     // --- DATA CONTROLLER ---
     const DataController = {
         fetch: () => {
-            // Add spin animation to refresh icon
             const icon = document.getElementById('refreshIcon');
             if(icon) icon.classList.add('fa-spin');
-
             UI.renderSkeleton();
             Api.call('getData').then(data => {
                 State.allData = data;
                 FilterController.apply();
-            })
-            .catch(() => console.log('Using mock data logic if already loaded'))
-            .finally(() => {
+            }).catch(() => console.log('Using mock data')).finally(() => {
                 if(icon) setTimeout(() => icon.classList.remove('fa-spin'), 500);
             });
         },
@@ -767,7 +770,6 @@
                 cancelButtonText: 'ยกเลิก', confirmButtonText: 'ลบ'
             }).then((r) => {
                 if(r.isConfirmed) {
-                    Swal.showLoading();
                     Api.call('deleteData', { id, fileId })
                         .then(res => {
                             if(res.success) {
@@ -786,9 +788,8 @@
             });
         },
         mockOfflineMode: () => {
-            // Generate dummy data with time included
             const mock = [];
-            const users = ['yuyyuy', 'aunpun'];
+            const users = ['yuyyuy', 'aunpun', 'morgan', 'ju'];
             for(let i=1; i<=50; i++) {
                 const type = i % 2 === 0 ? 'รายจ่าย' : 'รายรับ';
                 const cats = CONSTANTS.CATEGORIES[type];
@@ -801,10 +802,9 @@
                     type: type,
                     description: `[${cat}] รายการจำลองที่ ${i} (${pay})`, 
                     amount: Math.floor(Math.random() * 5000) + 100, 
-                    createdBy: users[i % 2]
+                    createdBy: users[i % 4]
                 });
             }
-            
             if(State.currentUser.role === 'admin') {
                 State.allData = mock;
             } else {
@@ -818,8 +818,7 @@
     const UI = {
         renderSkeleton: () => {
             const container = document.getElementById('listViewContainer');
-            const countEl = document.getElementById('recordCount');
-            countEl.innerText = "...";
+            document.getElementById('recordCount').innerText = "...";
             container.innerHTML = '';
             
             for(let i=0; i<6; i++) {
@@ -842,19 +841,11 @@
         },
         renderList: (data, reset = false) => {
             const container = document.getElementById('listViewContainer');
-            const countEl = document.getElementById('recordCount');
-            const emptyEl = document.getElementById('emptyState');
-            
             if (reset) {
                 container.innerHTML = '';
-                countEl.innerText = State.filteredData.length;
+                document.getElementById('recordCount').innerText = State.filteredData.length;
             }
-
-            if(State.filteredData.length === 0) {
-                emptyEl.classList.remove('hidden');
-                return;
-            }
-            emptyEl.classList.add('hidden');
+            document.getElementById('emptyState').classList.toggle('hidden', State.filteredData.length > 0);
 
             data.forEach(item => {
                 const isInc = item.type === 'รายรับ';
@@ -970,11 +961,8 @@
                 State.fileDataObj = { name: file.name, data: evt.target.result };
                 document.getElementById('uploadContent').classList.add('hidden');
                 document.getElementById('previewBox').classList.remove('hidden');
-                if(file.type.startsWith('image/')) {
-                    document.getElementById('previewInner').innerHTML = `<img src="${evt.target.result}" class="h-full object-contain rounded">`;
-                } else {
-                    document.getElementById('previewInner').innerHTML = `<i class="fa-solid fa-file-pdf text-red-500 text-2xl"></i>`;
-                }
+                const isImg = file.type.startsWith('image/');
+                document.getElementById('previewInner').innerHTML = isImg ? `<img src="${evt.target.result}" class="h-full object-contain rounded">` : `<i class="fa-solid fa-file-pdf text-red-500 text-2xl"></i>`;
             };
             reader.readAsDataURL(file);
         },
