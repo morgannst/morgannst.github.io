@@ -86,17 +86,17 @@
 
         <!-- Features -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl mb-12 px-4">
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center hover:shadow-md transition hover:-translate-y-1 duration-300">
+            <div class="feature-card bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center hover:shadow-md transition hover:-translate-y-1 duration-300">
                 <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-4 text-2xl shadow-sm"><i class="fa-solid fa-chart-pie"></i></div>
                 <h3 class="font-bold text-slate-800 text-lg mb-2">Real-time Analytics</h3>
                 <p class="text-xs text-slate-500 leading-relaxed">วิเคราะห์สถานะการเงินทันทีที่บันทึก ดูยอดรับ-จ่ายแบบเรียลไทม์ แม่นยำทุกตัวเลข</p>
             </div>
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center hover:shadow-md transition hover:-translate-y-1 duration-300">
+            <div class="feature-card bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center hover:shadow-md transition hover:-translate-y-1 duration-300">
                 <div class="w-14 h-14 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center mb-4 text-2xl shadow-sm"><i class="fa-solid fa-cloud-shield"></i></div>
                 <h3 class="font-bold text-slate-800 text-lg mb-2">Secure Cloud</h3>
                 <p class="text-xs text-slate-500 leading-relaxed">ข้อมูลปลอดภัยบน Google Cloud Platform สำรองข้อมูลอัตโนมัติ เข้าถึงได้ทุกที่ทั่วโลก</p>
             </div>
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center hover:shadow-md transition hover:-translate-y-1 duration-300">
+            <div class="feature-card bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center hover:shadow-md transition hover:-translate-y-1 duration-300">
                 <div class="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mb-4 text-2xl shadow-sm"><i class="fa-solid fa-file-invoice"></i></div>
                 <h3 class="font-bold text-slate-800 text-lg mb-2">Paperless</h3>
                 <p class="text-xs text-slate-500 leading-relaxed">ลดการใช้กระดาษและค้นหาเอกสารง่าย ช่วยประหยัดพื้นที่และรักษาสิ่งแวดล้อม</p>
@@ -217,6 +217,10 @@
           <i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-400 text-xs"></i>
           <input type="text" id="searchInput" placeholder="ค้นหา..." class="w-full pl-8 pr-3 py-2 bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm transition focus:shadow-sm">
         </div>
+        <!-- Refresh Button (Added) -->
+        <button onclick="DataController.fetch()" class="bg-white hover:bg-slate-50 text-slate-600 px-3.5 py-2 rounded-lg shadow-sm border border-slate-200 text-sm transition active:scale-95" title="รีเฟรชข้อมูล">
+            <i class="fa-solid fa-rotate-right" id="refreshIcon"></i>
+        </button>
         <button onclick="ModalController.open()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm text-sm font-medium whitespace-nowrap transition transform active:scale-95 flex items-center gap-1">
           <i class="fa-solid fa-plus"></i> <span class="hidden md:inline">เพิ่มรายการ</span>
         </button>
@@ -368,8 +372,8 @@
         API_URL: "https://script.google.com/macros/s/AKfycbxRNiK8lOstCv7kjCXEuEuAUaJgP3q_51g0_Q8i9iihj-SqyQkIIWO1Clw2xRh1kwxE/exec",
         ITEMS_PER_PAGE: 20,
         CATEGORIES: {
-            'รายรับ': ['รับจากพี่หมอ', 'รับจากพี่จุ๊', 'อื่นๆ'],
-            'รายจ่าย': ['ค่าอาหาร', 'ค่าสาธารณูปโภค (น้ำ/ไฟ/น้ำมัน)', 'ค่าวัสดุสิ้นเปลือง', 'ค่าซ่อมบำรุง', 'อื่นๆ']
+           'รายรับ': ['รับจากพี่หมอ', 'รับจากพี่จุ๊', 'อื่นๆ'],
+           'รายจ่าย': ['ค่าอาหาร', 'ค่าสาธารณูปโภค (น้ำ/ไฟ/น้ำมัน)', 'ค่าวัสดุสิ้นเปลือง', 'ค่าซ่อมบำรุง', 'อื่นๆ']
         },
         PAYMENT_METHODS: ['เงินสด', 'โอนเงิน (QR)', 'บัตรเครดิต', 'อื่นๆ'],
         COLORS: {
@@ -380,8 +384,7 @@
         },
         // MAP Username -> Real Name (ถ้าไม่มีในนี้จะแสดงชื่อเดิม)
         USER_MAP: {
-            'morgan': 'ยิ่งยศ',
-            'ju' : 'จุฑามาศ',
+            'admin': 'Administrator',
             'yuyyuy': 'วรรณรวี',
             'aunpun': 'บุปผาทิพย์'
         }
@@ -661,20 +664,16 @@
             });
         },
         mockLogin: (u, p) => {
-            const mockUsers = {
-                'admin': { role: 'admin', name: 'Admin (Mock)' },
-                'yuyyuy': { role: 'user', name: 'วรรณรวี (Mock)' },
-                'aunpun': { role: 'user', name: 'บุปผาทิพย์ (Mock)' }
-            };
-
-            if(mockUsers[u] && p === '1234') {
+            if((u === 'admin' && p === '1234') || (u === 'yuyyuy' && p === '1234') || (u === 'aunpun' && p === '1234')) {
+                const role = u === 'admin' ? 'admin' : 'user';
+                const name = CONSTANTS.USER_MAP[u] || 'Mock User';
                 State.currentUser = { 
                     username: u, 
-                    ...mockUsers[u], 
+                    role: role, 
+                    name: name + ' (Mock)', 
                     password: p 
                 };
-                const name = CONSTANTS.USER_MAP[u] || mockUsers[u].name;
-                Utils.Toast.fire({ icon: 'success', title: `ยินดีต้อนรับ ${name} (Mock Mode)` });
+                Utils.Toast.fire({ icon: 'success', title: 'ยินดีต้อนรับ (Mock Mode)' });
                 ViewManager.showApp();
                 InfiniteScroll.init();
                 DataController.mockOfflineMode();
@@ -687,13 +686,19 @@
     // --- DATA CONTROLLER ---
     const DataController = {
         fetch: () => {
-            UI.renderSkeleton(); // Show Skeleton
-            Api.call('getData')
-                .then(data => {
-                    State.allData = data;
-                    FilterController.apply(); // This will clear skeleton and render list
-                })
-                .catch(err => console.log('Using mock data logic if already loaded'));
+            // Add spin animation to refresh icon
+            const icon = document.getElementById('refreshIcon');
+            if(icon) icon.classList.add('fa-spin');
+
+            UI.renderSkeleton();
+            Api.call('getData').then(data => {
+                State.allData = data;
+                FilterController.apply();
+            })
+            .catch(() => console.log('Using mock data logic if already loaded'))
+            .finally(() => {
+                if(icon) setTimeout(() => icon.classList.remove('fa-spin'), 500);
+            });
         },
         submitForm: (e) => {
             e.preventDefault();
@@ -1024,6 +1029,7 @@
             document.getElementById('modalTitle').innerText = "แก้ไขรายการ";
             document.getElementById('recId').value = item.id;
             
+            // item.date is likely ISO string from backend, works directly with datetime-local if formatted correctly
             document.getElementById('date').value = item.date;
             
             const { category, desc, payment } = DataHelper.parseDescription(item.description);
