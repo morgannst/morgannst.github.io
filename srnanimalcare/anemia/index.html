@@ -1,232 +1,334 @@
-import React from 'react';
-import { HeartPulse, Droplet, AlertTriangle, ShieldAlert, Activity, Stethoscope, Search, Pill, Skull, Phone, MessageCircle, Info } from 'lucide-react';
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ภาวะโลหิตจางในสุนัข - โรงพยาบาลสัตว์สุราษฏร์ธานี</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Kanit', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #f0f9ff 0%, #cbebff 100%);
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+        }
+        /* Hide scrollbar for chrome/safari/opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-700 leading-relaxed">
 
-const AnemiaInfographic = () => {
-  return (
-    <div className="min-h-screen bg-slate-50 p-4 md:p-10 font-sans text-slate-700">
-      {/* Main Container / Canvas */}
-      <div className="max-w-5xl mx-auto bg-white shadow-[0_20px_50px_rgba(8,_112,_184,_0.07)] rounded-[2.5rem] overflow-hidden border border-slate-100 ring-1 ring-slate-100/50">
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md fixed w-full z-50 top-0">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-paw text-blue-600 text-2xl"></i>
+                <div>
+                    <h1 class="text-xl font-bold text-gray-800 leading-none">โรงพยาบาลสัตว์สุราษฏร์ธานี</h1>
+                    <span class="text-xs text-gray-500">Suratthani Animal Hospital</span>
+                </div>
+            </div>
+            
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-6 text-sm font-medium">
+                <a href="#intro" class="hover:text-blue-600 transition">บทนำ</a>
+                <a href="#symptoms" class="hover:text-blue-600 transition">อาการ/วินิจฉัย</a>
+                <a href="#types" class="hover:text-blue-600 transition">ประเภทโลหิตจาง</a>
+                <a href="#contact" class="px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition shadow-lg">ติดต่อเรา</a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-gray-600 focus:outline-none">
+                <i class="fa-solid fa-bars text-2xl"></i>
+            </button>
+        </div>
         
-        {/* Header Section */}
-        <div className="bg-gradient-to-br from-rose-500 via-red-500 to-pink-600 p-12 text-center text-white relative overflow-hidden">
-          {/* Decorative Elements */}
-          <div className="absolute top-0 left-0 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl -translate-x-20 -translate-y-20"></div>
-          <div className="absolute bottom-0 right-0 w-80 h-80 bg-rose-300 opacity-20 rounded-full blur-3xl translate-x-20 translate-y-20 mix-blend-overlay"></div>
-          <div className="absolute top-10 right-20 w-12 h-12 border-2 border-white/20 rounded-full"></div>
-          
-          <div className="relative z-10">
-            <h1 className="text-4xl md:text-6xl font-extrabold mb-3 tracking-tight drop-shadow-sm">
-              ภาวะโลหิตจางในสุนัข
-            </h1>
-            <p className="text-rose-100 text-xl md:text-2xl font-light tracking-wide mb-6">(Anemia in Dogs)</p>
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-6 py-2 rounded-full border border-white/20 shadow-lg">
-              <span className="w-2 h-2 bg-rose-200 rounded-full animate-pulse"></span>
-              <span className="text-white font-medium text-sm">ภัยเงียบที่เจ้าของต้องรู้</span>
-            </div>
-          </div>
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t p-4 absolute w-full shadow-lg">
+            <a href="#intro" class="block py-2 text-gray-700 hover:text-blue-600">บทนำ</a>
+            <a href="#symptoms" class="block py-2 text-gray-700 hover:text-blue-600">อาการและการวินิจฉัย</a>
+            <a href="#types" class="block py-2 text-gray-700 hover:text-blue-600">ประเภทและการรักษา</a>
+            <a href="#contact" class="block py-2 mt-2 text-blue-600 font-bold">ติดต่อโรงพยาบาล</a>
         </div>
+    </nav>
 
-        {/* Content Wrapper */}
-        <div className="p-6 md:p-12 space-y-12">
-          
-          {/* Definition Section */}
-          <div className="bg-rose-50/50 rounded-3xl p-8 border border-rose-100 shadow-sm relative overflow-hidden">
-             <div className="absolute top-0 right-0 w-32 h-32 bg-rose-100 rounded-full blur-3xl -translate-y-16 translate-x-8"></div>
-             <div className="relative z-10 flex flex-col md:flex-row items-start gap-6">
-              <div className="bg-white p-4 rounded-2xl shadow-md border border-rose-100 text-rose-500 shrink-0">
-                <Info className="w-8 h-8" />
-              </div>
-              <div>
-                <h3 className="text-2xl font-bold text-gray-800 mb-3">คืออะไร?</h3>
-                <p className="text-slate-600 text-lg leading-relaxed">
-                  ภาวะที่จำนวน <strong className="text-rose-600">เม็ดเลือดแดง</strong> หรือ <strong className="text-rose-600">ฮีโมโกลบิน</strong> ลดลง ทำให้ร่างกายได้รับออกซิเจนไม่เพียงพอ แบ่งเป็น 2 ประเภทหลัก คือ 
-                  <span className="inline-block bg-emerald-100 text-emerald-700 font-semibold px-3 py-1 rounded-lg mx-1 text-sm border border-emerald-200">แบบสร้างทดแทนได้</span> และ 
-                  <span className="inline-block bg-slate-200 text-slate-600 font-semibold px-3 py-1 rounded-lg mx-1 text-sm border border-slate-300">แบบสร้างทดแทนไม่ได้</span>
+    <!-- Hero Section -->
+    <header id="intro" class="pt-28 pb-16 gradient-bg relative overflow-hidden">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 z-10">
+                <span class="inline-block py-1 px-3 rounded-full bg-blue-100 text-blue-800 text-sm font-semibold mb-4">Anemia in Dogs</span>
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">ภาวะโลหิตจางในสุนัข <br><span class="text-blue-600">ภัยเงียบที่เจ้าของต้องรู้</span></h2>
+                <p class="text-lg text-gray-600 mb-8">
+                    ภาวะที่จำนวนเม็ดเลือดแดงลดลง ส่งผลต่อสุขภาพของสุนัข เกิดได้จากหลายสาเหตุทั้งการเสียเลือด การถูกทำลายของเม็ดเลือด หรือความผิดปกติของไขกระดูก
                 </p>
-              </div>
+                <div class="flex space-x-4">
+                    <a href="#symptoms" class="px-6 py-3 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600 transition flex items-center">
+                        <i class="fa-solid fa-heart-pulse mr-2"></i> สังเกตอาการ
+                    </a>
+                    <a href="#contact" class="px-6 py-3 bg-white text-blue-600 border border-blue-200 rounded-lg shadow hover:bg-gray-50 transition">
+                        ปรึกษาสัตวแพทย์
+                    </a>
+                </div>
             </div>
-          </div>
-
-          {/* 3 Major Causes Grid */}
-          <div>
-            <h2 className="text-2xl font-bold text-center mb-8 flex items-center justify-center gap-3 text-slate-800">
-              <div className="bg-slate-100 p-2 rounded-lg">
-                <Search className="w-6 h-6 text-slate-600" /> 
-              </div>
-              3 สาเหตุหลัก
-            </h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Cause 1: Blood Loss */}
-              <div className="bg-white rounded-2xl p-1 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group">
-                <div className="bg-gradient-to-b from-white to-orange-50/50 rounded-xl p-6 h-full border border-orange-100">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="bg-orange-100 p-3 rounded-xl text-orange-600 group-hover:bg-orange-500 group-hover:text-white transition-colors">
-                      <Droplet className="w-6 h-6" />
-                    </div>
-                    <h3 className="font-bold text-lg text-slate-800">1. การเสียเลือด</h3>
-                  </div>
-                  <ul className="space-y-3 text-sm text-slate-600">
-                    <li className="flex items-start gap-2">
-                      <span className="mt-1.5 w-1.5 h-1.5 bg-orange-400 rounded-full shrink-0"></span>
-                      <span><strong className="text-orange-700">เฉียบพลัน:</strong> อุบัติเหตุ, ผ่าตัด</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="mt-1.5 w-1.5 h-1.5 bg-orange-400 rounded-full shrink-0"></span>
-                      <span><strong className="text-orange-700">เรื้อรัง:</strong> พยาธิ, แผลในกระเพาะ</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              {/* Cause 2: Destruction */}
-              <div className="bg-white rounded-2xl p-1 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group">
-                <div className="bg-gradient-to-b from-white to-red-50/50 rounded-xl p-6 h-full border border-red-100">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="bg-red-100 p-3 rounded-xl text-red-600 group-hover:bg-red-500 group-hover:text-white transition-colors">
-                      <ShieldAlert className="w-6 h-6" />
-                    </div>
-                    <h3 className="font-bold text-lg text-slate-800">2. เม็ดเลือดแตก</h3>
-                  </div>
-                  <ul className="space-y-3 text-sm text-slate-600">
-                    <li className="flex items-start gap-2">
-                      <span className="mt-1.5 w-1.5 h-1.5 bg-red-500 rounded-full shrink-0"></span>
-                      <span><strong className="text-red-700">ภูมิคุ้มกัน:</strong> ร่างกายทำลายเลือดตัวเอง</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="mt-1.5 w-1.5 h-1.5 bg-red-500 rounded-full shrink-0"></span>
-                      <span><strong className="text-red-700">สารพิษ:</strong> ยาพาราฯ, หัวหอม</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              {/* Cause 3: Non-production */}
-              <div className="bg-white rounded-2xl p-1 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group">
-                <div className="bg-gradient-to-b from-white to-blue-50/50 rounded-xl p-6 h-full border border-blue-100">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="bg-blue-100 p-3 rounded-xl text-blue-600 group-hover:bg-blue-500 group-hover:text-white transition-colors">
-                      <Activity className="w-6 h-6" />
-                    </div>
-                    <h3 className="font-bold text-lg text-slate-800">3. สร้างไม่พอ</h3>
-                  </div>
-                  <ul className="space-y-3 text-sm text-slate-600">
-                    <li className="flex items-start gap-2">
-                      <span className="mt-1.5 w-1.5 h-1.5 bg-blue-500 rounded-full shrink-0"></span>
-                      <span><strong className="text-blue-700">โรคเรื้อรัง:</strong> มะเร็ง, อักเสบ</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="mt-1.5 w-1.5 h-1.5 bg-blue-500 rounded-full shrink-0"></span>
-                      <span><strong className="text-blue-700">โรคไต:</strong> ขาดฮอร์โมน</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
+            <div class="md:w-1/2 mt-10 md:mt-0 relative flex justify-center">
+                 <!-- Decorative Icon Background -->
+                 <div class="absolute w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob"></div>
+                 <div class="absolute w-72 h-72 bg-pink-200 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob animation-delay-2000 top-0 -right-4"></div>
+                 <i class="fa-solid fa-dog text-9xl text-gray-800 relative z-10 drop-shadow-xl"></i>
             </div>
-          </div>
-
-          {/* Symptoms Checklist */}
-          <div className="bg-slate-800 text-white rounded-3xl p-8 md:p-10 relative overflow-hidden shadow-2xl">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-slate-700 rounded-full blur-3xl translate-x-20 -translate-y-20 opacity-50"></div>
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-slate-700 rounded-full blur-3xl -translate-x-10 translate-y-10 opacity-50"></div>
-
-            <h2 className="text-2xl font-bold text-center mb-10 flex items-center justify-center gap-3 relative z-10">
-              <span className="bg-yellow-500/20 p-2 rounded-lg border border-yellow-500/50">
-                <AlertTriangle className="w-6 h-6 text-yellow-400" />
-              </span>
-              อาการต้องสงสัย
-            </h2>
-            
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 relative z-10">
-              <div className="bg-white/10 backdrop-blur-sm p-6 rounded-2xl text-center border border-white/10 hover:bg-white/20 transition-all">
-                <div className="w-14 h-14 bg-slate-200 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-slate-600 shadow-inner">
-                  <div className="w-8 h-8 rounded-full bg-slate-50"></div>
-                </div>
-                <span className="font-semibold text-slate-200 block">เหงือกซีดขาว</span>
-              </div>
-              <div className="bg-white/10 backdrop-blur-sm p-6 rounded-2xl text-center border border-white/10 hover:bg-white/20 transition-all">
-                <div className="w-14 h-14 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <HeartPulse className="w-8 h-8 text-red-400 animate-pulse" />
-                </div>
-                <span className="font-semibold text-slate-200 block">หัวใจเต้นเร็ว</span>
-              </div>
-              <div className="bg-white/10 backdrop-blur-sm p-6 rounded-2xl text-center border border-white/10 hover:bg-white/20 transition-all">
-                <div className="w-14 h-14 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Activity className="w-8 h-8 text-yellow-400" />
-                </div>
-                <span className="font-semibold text-slate-200 block">อ่อนเพลีย</span>
-              </div>
-              <div className="bg-white/10 backdrop-blur-sm p-6 rounded-2xl text-center border border-white/10 hover:bg-white/20 transition-all">
-                <div className="w-14 h-14 bg-amber-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Skull className="w-8 h-8 text-amber-500" />
-                </div>
-                <span className="font-semibold text-slate-200 block">ตัวเหลือง/ดีซ่าน</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Diagnosis & Treatment */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white border border-indigo-100 rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow">
-              <h3 className="font-bold text-indigo-900 text-lg mb-4 flex items-center gap-3">
-                <div className="bg-indigo-100 p-2 rounded-lg">
-                  <Search className="w-5 h-5 text-indigo-600" /> 
-                </div>
-                การวินิจฉัย
-              </h3>
-              <p className="text-slate-600 leading-relaxed pl-2 border-l-4 border-indigo-200">ซักประวัติ, ตรวจเลือด (CBC), ตรวจอุจจาระ/ปัสสาวะ, เอกซเรย์ หรือเจาะไขกระดูก</p>
-            </div>
-            <div className="bg-white border border-emerald-100 rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow">
-              <h3 className="font-bold text-emerald-900 text-lg mb-4 flex items-center gap-3">
-                <div className="bg-emerald-100 p-2 rounded-lg">
-                  <Pill className="w-5 h-5 text-emerald-600" /> 
-                </div>
-                การรักษา
-              </h3>
-              <p className="text-slate-600 leading-relaxed pl-2 border-l-4 border-emerald-200">รักษาที่ต้นเหตุ, ถ่ายเลือด, ให้ออกซิเจน/สารน้ำ, ให้ยาบำรุงหรือยากดภูมิคุ้มกัน</p>
-            </div>
-          </div>
         </div>
+    </header>
 
-        {/* Footer & Contact */}
-        <div className="bg-slate-900 text-white p-10 text-center relative overflow-hidden">
-          {/* Background Pattern */}
-          <div className="absolute inset-0 opacity-10" style={{backgroundImage: 'radial-gradient(#475569 1px, transparent 1px)', backgroundSize: '20px 20px'}}></div>
-          
-          <div className="relative z-10 flex flex-col items-center justify-center gap-4 mb-10">
-            <div className="bg-rose-500 p-4 rounded-full shadow-lg shadow-rose-500/30 mb-2">
-              <Stethoscope className="w-10 h-10 text-white" />
+    <!-- Definition Section -->
+    <section class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto bg-blue-50 border-l-4 border-blue-500 p-6 rounded-r-lg">
+                <h3 class="text-2xl font-bold text-blue-800 mb-3">ภาวะโลหิตจางคืออะไร?</h3>
+                <p class="text-gray-700">
+                    ภาวะโลหิตจางเกิดขึ้นเมื่อมีจำนวนเม็ดเลือดแดงลดลง (Red blood cell count) หรือความเข้มข้นของฮีโมโกลบิน (Hemoglobin concentration) ลดลง โดยแบ่งออกเป็น 2 ประเภทหลัก:
+                </p>
+                <div class="grid md:grid-cols-2 gap-6 mt-6">
+                    <div class="bg-white p-4 rounded shadow-sm">
+                        <div class="flex items-center mb-2">
+                            <span class="w-8 h-8 flex items-center justify-center bg-green-100 text-green-600 rounded-full mr-3"><i class="fa-solid fa-check"></i></span>
+                            <h4 class="font-bold text-gray-800">ชนิดสร้างทดแทน (Regenerative)</h4>
+                        </div>
+                        <p class="text-sm text-gray-600">ไขกระดูกตอบสนองโดยการเพิ่มการผลิตเม็ดเลือดใหม่ มักเกิดจากการเสียเลือด หรือเม็ดเลือดแดงถูกทำลาย</p>
+                    </div>
+                    <div class="bg-white p-4 rounded shadow-sm">
+                        <div class="flex items-center mb-2">
+                            <span class="w-8 h-8 flex items-center justify-center bg-red-100 text-red-600 rounded-full mr-3"><i class="fa-solid fa-xmark"></i></span>
+                            <h4 class="font-bold text-gray-800">ชนิดไม่สร้างทดแทน (Nonregenerative)</h4>
+                        </div>
+                        <p class="text-sm text-gray-600">ไขกระดูกตอบสนองไม่เพียงพอ มักเกิดจากโรคไต, ไขกระดูกผิดปกติ หรือขาดฮอร์โมนกระตุ้น</p>
+                    </div>
+                </div>
             </div>
-            <div>
-              <h3 className="text-2xl font-bold mb-2">พบอาการผิดปกติ รีบปรึกษาสัตวแพทย์ทันที</h3>
-              <p className="text-slate-400">ภาวะโลหิตจางบางชนิดรุนแรงถึงชีวิตได้ในเวลาสั้นๆ</p>
-            </div>
-          </div>
-          
-          <div className="relative z-10 border-t border-slate-800 pt-8 max-w-2xl mx-auto">
-            <h4 className="text-xl font-bold text-rose-400 mb-6 tracking-wide">โรงพยาบาลสัตว์สุราษฎร์ธานี</h4>
-            <div className="flex flex-col md:flex-row justify-center items-center gap-4">
-               {/* Click-to-Call Link */}
-               <a href="tel:0634461952" className="flex items-center gap-3 bg-slate-800 hover:bg-slate-700 transition-all px-6 py-4 rounded-xl border border-slate-700 w-full md:w-auto justify-center group">
-                 <div className="bg-green-500/20 p-2 rounded-full group-hover:bg-green-500 transition-colors">
-                    <Phone className="w-5 h-5 text-green-400 group-hover:text-white" />
-                 </div>
-                 <span className="font-mono text-lg text-slate-200 group-hover:text-white">063-446-1952</span>
-               </a>
-               
-               {/* Click-to-Line Link */}
-               <a href="https://line.me/ti/p/@SRNANIMALCARE" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 bg-slate-800 hover:bg-slate-700 transition-all px-6 py-4 rounded-xl border border-slate-700 w-full md:w-auto justify-center group cursor-pointer">
-                 <div className="bg-green-500/20 p-2 rounded-full group-hover:bg-green-500 transition-colors">
-                    <MessageCircle className="w-5 h-5 text-green-400 group-hover:text-white" />
-                 </div>
-                 <span className="font-mono text-lg text-slate-200 group-hover:text-white">Line: @SRNANIMALCARE</span>
-               </a>
-            </div>
-          </div>
         </div>
-      </div>
-    </div>
-  );
-};
+    </section>
 
-export default AnemiaInfographic;
+    <!-- Symptoms & Diagnosis -->
+    <section id="symptoms" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800">อาการและการวินิจฉัย</h2>
+                <div class="w-20 h-1 bg-red-500 mx-auto mt-4 rounded"></div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Signs -->
+                <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
+                    <h3 class="text-xl font-bold text-red-600 mb-4 flex items-center">
+                        <i class="fa-solid fa-triangle-exclamation mr-2"></i> สัญญาณเตือน
+                    </h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start"><i class="fa-solid fa-circle-dot text-red-400 mt-1.5 mr-3 text-xs"></i> <span><strong>เหงือกซีด</strong> หรือมีสีเหลือง (ดีซ่าน)</span></li>
+                        <li class="flex items-start"><i class="fa-solid fa-circle-dot text-red-400 mt-1.5 mr-3 text-xs"></i> <span><strong>อ่อนแรง</strong> ขาดพลังงาน เบื่ออาหาร</span></li>
+                        <li class="flex items-start"><i class="fa-solid fa-circle-dot text-red-400 mt-1.5 mr-3 text-xs"></i> <span><strong>อัตราการเต้นของหัวใจเพิ่มขึ้น</strong> หรือมีความดันโลหิตต่ำ</span></li>
+                        <li class="flex items-start"><i class="fa-solid fa-circle-dot text-red-400 mt-1.5 mr-3 text-xs"></i> <span>พบม้ามโต หรือเสียงฟู่ของหัวใจ (Heart murmur)</span></li>
+                        <li class="flex items-start"><i class="fa-solid fa-circle-dot text-red-400 mt-1.5 mr-3 text-xs"></i> <span>ในกรณีเฉียบพลัน อาจเกิดภาวะช็อกได้</span></li>
+                    </ul>
+                </div>
+
+                <!-- Diagnosis -->
+                <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
+                    <h3 class="text-xl font-bold text-blue-600 mb-4 flex items-center">
+                        <i class="fa-solid fa-stethoscope mr-2"></i> การวินิจฉัยโดยสัตวแพทย์
+                    </h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start"><i class="fa-solid fa-clipboard-list text-blue-400 mt-1.5 mr-3 text-xs"></i> <span><strong>ซักประวัติ:</strong> ระยะเวลาที่เป็น, ประวัติการสัมผัสสารพิษ/ยา, ประวัติการเดินทาง</span></li>
+                        <li class="flex items-start"><i class="fa-solid fa-vial text-blue-400 mt-1.5 mr-3 text-xs"></i> <span><strong>ตรวจเลือด (CBC):</strong> ดูความรุนแรง รูปร่างเม็ดเลือด และการตอบสนองไขกระดูก</span></li>
+                        <li class="flex items-start"><i class="fa-solid fa-microscope text-blue-400 mt-1.5 mr-3 text-xs"></i> <span><strong>ตรวจอื่นๆ:</strong> ตรวจปัสสาวะ, อุจจาระ, เอกซเรย์หาโรคที่ซ่อนอยู่</span></li>
+                        <li class="flex items-start"><i class="fa-solid fa-bone text-blue-400 mt-1.5 mr-3 text-xs"></i> <span><strong>เจาะไขกระดูก:</strong> ในกรณีที่ไม่ทราบสาเหตุและเป็นชนิดไม่สร้างทดแทน</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detailed Types Section -->
+    <section id="types" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-gray-800 text-center mb-10">สาเหตุและประเภทของภาวะโลหิตจาง</h2>
+            
+            <!-- Type 1: Blood Loss -->
+            <div class="mb-12 border rounded-xl overflow-hidden shadow-sm">
+                <div class="bg-red-50 p-4 border-b border-red-100 flex items-center">
+                    <div class="w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center mr-4 font-bold text-lg">1</div>
+                    <h3 class="text-xl font-bold text-red-800">ภาวะโลหิตจางจากการเสียเลือด (Blood Loss Anemia)</h3>
+                </div>
+                <div class="p-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-2">การเสียเลือดเฉียบพลัน</h4>
+                            <p class="text-sm text-gray-600 mb-2">เกิดจากการบาดเจ็บ ผ่าตัด หรืออุบัติเหตุ หากเสียเลือด >30-40% อาจช็อกและเสียชีวิตได้</p>
+                            <p class="text-sm text-red-600"><i class="fa-solid fa-kit-medical"></i> ต้องรีบให้สารน้ำหรือถ่ายเลือดทันที</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-2">การเสียเลือดเรื้อรัง</h4>
+                            <p class="text-sm text-gray-600">นำไปสู่การขาดธาตุเหล็ก มักเกิดจากพยาธิ (เห็บ หมัด พยาธิปากขอ) หรือแผลในกระเพาะอาหาร/เนื้องอกในสัตว์อายุมาก</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Type 2: Hemolytic -->
+            <div class="mb-12 border rounded-xl overflow-hidden shadow-sm">
+                <div class="bg-yellow-50 p-4 border-b border-yellow-100 flex items-center">
+                    <div class="w-10 h-10 rounded-full bg-yellow-500 text-white flex items-center justify-center mr-4 font-bold text-lg">2</div>
+                    <h3 class="text-xl font-bold text-yellow-800">ภาวะโลหิตจางจากการแตกของเม็ดเลือดแดง (Hemolytic Anemia)</h3>
+                </div>
+                <div class="p-6 bg-white">
+                    <p class="mb-6 text-gray-600">เม็ดเลือดแดงถูกทำลายเร็วกว่าปกติ สาเหตุหลักได้แก่:</p>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <!-- Card: Immune -->
+                        <div class="bg-gray-50 p-4 rounded border border-gray-100">
+                            <h5 class="font-bold text-gray-800 mb-2 text-sm">ภูมิคุ้มกันทำลายตนเอง (IMHA)</h5>
+                            <p class="text-xs text-gray-600">พบบ่อยที่สุด ร่างกายสร้างแอนติบอดีต่อต้านเม็ดเลือดแดงตนเอง สุนัขมักมีอาการดีซ่าน ม้ามโต รักษาโดยการกดภูมิคุ้มกัน</p>
+                        </div>
+                         <!-- Card: Alloimmune -->
+                         <div class="bg-gray-50 p-4 rounded border border-gray-100">
+                            <h5 class="font-bold text-gray-800 mb-2 text-sm">ภูมิคุ้มกันต่อเลือดต่างชนิด</h5>
+                            <p class="text-xs text-gray-600">เช่น ในลูกสุนัขแรกเกิดที่กินนมแม่ที่มีแอนติบอดีไม่เข้ากัน (Neonatal isoerythrolysis) ลูกสุนัขจะอ่อนแอและดีซ่านอย่างรวดเร็ว</p>
+                        </div>
+                         <!-- Card: Toxins/Infections -->
+                         <div class="bg-gray-50 p-4 rounded border border-gray-100">
+                            <h5 class="font-bold text-gray-800 mb-2 text-sm">สารพิษและการติดเชื้อ</h5>
+                            <p class="text-xs text-gray-600">พืช (หอม, ถั่วปากอ้า), ยา (พาราเซตามอล), โลหะหนัก หรือเชื้อพยาธิเม็ดเลือด (Ehrlichia, Babesia)</p>
+                        </div>
+                        <!-- Card: Genetic -->
+                        <div class="bg-gray-50 p-4 rounded border border-gray-100">
+                            <h5 class="font-bold text-gray-800 mb-2 text-sm">โรคทางพันธุกรรม</h5>
+                            <p class="text-xs text-gray-600">การขาดเอนไซม์บางชนิด (Pyruvate kinase deficiency) ในบางสายพันธุ์ ทำให้อายุเม็ดเลือดสั้น</p>
+                        </div>
+                        <!-- Card: Microangiopathic -->
+                        <div class="bg-gray-50 p-4 rounded border border-gray-100">
+                            <h5 class="font-bold text-gray-800 mb-2 text-sm">ความผิดปกติหลอดเลือด</h5>
+                            <p class="text-xs text-gray-600">เกิดจากพยาธิหนอนหัวใจรุนแรง, เนื้องอกหลอดเลือด หรือภาวะลิ่มเลือดกระจาย (DIC)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Type 3: Non-regenerative -->
+            <div class="mb-12 border rounded-xl overflow-hidden shadow-sm">
+                <div class="bg-blue-50 p-4 border-b border-blue-100 flex items-center">
+                    <div class="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center mr-4 font-bold text-lg">3</div>
+                    <h3 class="text-xl font-bold text-blue-800">ภาวะโลหิตจางชนิดไม่มีการสร้างทดแทน (Nonregenerative)</h3>
+                </div>
+                <div class="p-6">
+                    <ul class="space-y-4">
+                        <li class="flex md:items-center flex-col md:flex-row bg-white p-3 rounded shadow-sm border border-gray-100">
+                            <span class="font-bold text-blue-600 w-48 shrink-0">ขาดสารอาหาร</span>
+                            <span class="text-sm text-gray-600">ขาดธาตุเหล็ก (มักเกิดหลังเสียเลือด), วิตามินบี 12, หรือโปรตีนจากการอดอาหาร</span>
+                        </li>
+                        <li class="flex md:items-center flex-col md:flex-row bg-white p-3 rounded shadow-sm border border-gray-100">
+                            <span class="font-bold text-blue-600 w-48 shrink-0">โรคเรื้อรัง</span>
+                            <span class="text-sm text-gray-600">การอักเสบระยะยาว, เนื้องอก หรือโรคตับ ทำให้ร่างกายกักเก็บธาตุเหล็กและสร้างเม็ดเลือดลดลง</span>
+                        </li>
+                        <li class="flex md:items-center flex-col md:flex-row bg-white p-3 rounded shadow-sm border border-gray-100">
+                            <span class="font-bold text-blue-600 w-48 shrink-0">โรคไต (Kidney Disease)</span>
+                            <span class="text-sm text-gray-600">ไตผลิตฮอร์โมน Erythropoietin น้อยลง ทำให้ไขกระดูกไม่ถูกกระตุ้นให้สร้างเม็ดเลือด</span>
+                        </li>
+                        <li class="flex md:items-center flex-col md:flex-row bg-white p-3 rounded shadow-sm border border-gray-100">
+                            <span class="font-bold text-blue-600 w-48 shrink-0">โรคไขกระดูก</span>
+                            <span class="text-sm text-gray-600">เช่น ไขกระดูกฝ่อ (Aplastic anemia), มะเร็งเม็ดเลือดขาว (Leukemia), หรือไขกระดูกเสื่อม (Myelodysplasia)</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 bg-gradient-to-br from-gray-800 to-gray-900 text-white relative">
+        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 via-green-400 to-blue-500"></div>
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-6">ปรึกษาปัญหาสุขภาพสัตว์เลี้ยง</h2>
+            <p class="text-gray-300 mb-10 max-w-2xl mx-auto">หากสัตว์เลี้ยงของคุณมีอาการซึม เหงือกซีด หรืออ่อนแรง ควรรีบนำมาพบสัตวแพทย์เพื่อการวินิจฉัยและรักษาที่ทันท่วงที</p>
+            
+            <div class="bg-white/10 backdrop-blur-md p-8 rounded-2xl max-w-3xl mx-auto border border-white/20 shadow-2xl">
+                <h3 class="text-2xl font-bold text-white mb-2">โรงพยาบาลสัตว์สุราษฏร์ธานี</h3>
+                <p class="text-blue-300 mb-8">Suratthani Animal Care</p>
+                
+                <div class="flex flex-col md:flex-row justify-center items-center gap-6">
+                    <a href="https://line.me/ti/p/~@SRNANIMALCARE" target="_blank" class="w-full md:w-auto flex items-center justify-center space-x-3 bg-[#06C755] hover:bg-[#05b54d] text-white px-8 py-4 rounded-xl transition transform hover:scale-105 shadow-lg">
+                        <i class="fa-brands fa-line text-3xl"></i>
+                        <div class="text-left">
+                            <p class="text-xs font-light opacity-90">แอดไลน์สอบถาม</p>
+                            <p class="text-lg font-bold">@SRNANIMALCARE</p>
+                        </div>
+                    </a>
+
+                    <a href="tel:0634461952" class="w-full md:w-auto flex items-center justify-center space-x-3 bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl transition transform hover:scale-105 shadow-lg">
+                        <i class="fa-solid fa-phone-volume text-2xl"></i>
+                        <div class="text-left">
+                            <p class="text-xs font-light opacity-90">โทรด่วน</p>
+                            <p class="text-lg font-bold">063-446-1952</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-500 py-6 text-center text-sm">
+        <div class="container mx-auto px-4">
+            <p>&copy; 2024 โรงพยาบาลสัตว์สุราษฏร์ธานี. All rights reserved.</p>
+            <p class="mt-2 text-xs">ข้อมูลในเว็บไซต์นี้มีวัตถุประสงค์เพื่อการศึกษาเท่านั้น ไม่สามารถใช้แทนคำแนะนำจากสัตวแพทย์ได้</p>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="fixed bottom-8 right-8 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300 hover:bg-blue-700 z-50">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
+            });
+        });
+
+        // Back to Top Button
+        const backToTopBtn = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.remove('opacity-0');
+            } else {
+                backToTopBtn.classList.add('opacity-0');
+            }
+        });
+
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
