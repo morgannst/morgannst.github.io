@@ -1,1060 +1,696 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>ระบบบัญชี - โรงพยาบาลสัตว์สุราษฎร์ธานี</title>
-  
-  <!-- Libraries -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  <style>
-    /* Global & Utilities */
-    body { font-family: 'Prompt', sans-serif; background-color: #f8fafc; font-size: 14px; }
-    .fade-in { animation: fadeIn 0.3s ease-in-out; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes pulse-fast { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-    .skeleton-pulse { animation: pulse-fast 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-    @keyframes bar-grow { 0% { height: 0; opacity: 0; } 100% { opacity: 1; } }
-    .bar-anim { animation: bar-grow 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; transform-origin: bottom; }
-    .blob { position: absolute; filter: blur(40px); z-index: -1; opacity: 0.5; }
-    @media (max-width: 640px) { .container { padding-left: 10px; padding-right: 10px; } }
-  </style>
-</head>
-<body class="text-slate-700 antialiased bg-slate-50 overflow-x-hidden">
-
-  <!-- ================= LANDING PAGE ================= -->
-  <div id="landingPage" class="min-h-screen flex flex-col relative overflow-hidden fade-in">
-    <div class="blob bg-blue-300 w-64 h-64 rounded-full top-0 left-0 -translate-x-1/2 -translate-y-1/2"></div>
-    <div class="blob bg-purple-300 w-64 h-64 rounded-full bottom-0 right-0 translate-x-1/3 translate-y-1/3"></div>
-
-    <nav class="w-full py-4 px-6 flex justify-between items-center backdrop-blur-sm bg-white/70 sticky top-0 z-50 shadow-sm">
-        <div class="flex items-center gap-2">
-            <div class="bg-gradient-to-tr from-blue-600 to-purple-600 text-white w-10 h-10 flex items-center justify-center rounded-xl shadow-lg shadow-blue-500/30">
-                <i class="fa-solid fa-paw text-lg"></i>
-            </div>
-            <div>
-                <h1 class="font-bold text-slate-800 text-lg leading-none">Surat Animal Hospital</h1>
-                <p class="text-[10px] text-slate-500 font-medium">Accounting System</p>
-            </div>
-        </div>
-        <button onclick="ViewManager.showLogin()" class="bg-slate-800 text-white px-5 py-2 rounded-full text-xs font-bold hover:bg-slate-700 transition shadow-lg transform hover:scale-105">
-            เข้าสู่ระบบ <i class="fa-solid fa-arrow-right ml-1"></i>
-        </button>
-    </nav>
-
-    <div class="flex-1 flex flex-col items-center justify-center text-center p-6 container mx-auto">
-        <span class="inline-block py-1 px-3 rounded-full bg-blue-100 text-blue-600 text-[10px] font-bold tracking-wide mb-4 border border-blue-200">
-            DIGITAL TRANSFORMATION
-        </span>
-        <h2 class="text-3xl md:text-5xl font-bold text-slate-800 mb-4 leading-tight">
-            ระบบบริหารจัดการ<br>
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">รายรับ-รายจ่าย</span> อัจฉริยะ
-        </h2>
-        <p class="text-slate-500 text-sm md:text-base max-w-lg mb-8 leading-relaxed">
-            ติดตามสถานะทางการเงินของโรงพยาบาลสัตว์ได้ทุกที่ทุกเวลา ด้วยระบบ Real-time Dashboard ที่แม่นยำ ปลอดภัย และใช้งานง่ายบนทุกอุปกรณ์
-        </p>
-
-        <!-- Mock Dashboard -->
-        <div class="w-full max-w-4xl bg-white rounded-2xl shadow-2xl border border-slate-100 p-4 md:p-6 transform rotate-1 hover:rotate-0 transition duration-500 mb-10">
-            <div class="flex justify-between items-center mb-6 border-b border-slate-50 pb-4">
-                <div class="flex gap-2">
-                    <div class="w-3 h-3 rounded-full bg-red-400"></div>
-                    <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
-                    <div class="w-3 h-3 rounded-full bg-green-400"></div>
-                </div>
-                <div class="text-xs text-slate-400 font-mono">dashboard_preview.exe</div>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 p-4 rounded-xl border border-emerald-200 text-left">
-                    <p class="text-emerald-600 text-xs font-bold mb-1"><i class="fa-solid fa-arrow-trend-up"></i> รายรับ (ตัวอย่าง)</p>
-                    <h3 class="text-2xl font-bold text-emerald-700">฿<span class="mock-count" data-target="125400">0</span></h3>
-                </div>
-                <div class="bg-gradient-to-br from-rose-50 to-rose-100 p-4 rounded-xl border border-rose-200 text-left">
-                    <p class="text-rose-600 text-xs font-bold mb-1"><i class="fa-solid fa-arrow-trend-down"></i> รายจ่าย (ตัวอย่าง)</p>
-                    <h3 class="text-2xl font-bold text-rose-700">฿<span class="mock-count" data-target="42150">0</span></h3>
-                </div>
-                <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl border border-blue-200 text-left">
-                    <p class="text-blue-600 text-xs font-bold mb-1"><i class="fa-solid fa-wallet"></i> คงเหลือ (ตัวอย่าง)</p>
-                    <h3 class="text-2xl font-bold text-blue-700">฿<span class="mock-count" data-target="83250">0</span></h3>
-                </div>
-            </div>
-            
-            <div class="h-32 bg-slate-50 rounded-lg border border-dashed border-slate-300 p-4 flex items-end justify-around gap-2 relative overflow-hidden">
-                <div class="w-full bg-blue-200 rounded-t-md bar-anim" style="height: 40%; animation-delay: 0.1s"></div>
-                <div class="w-full bg-blue-300 rounded-t-md bar-anim" style="height: 70%; animation-delay: 0.2s"></div>
-                <div class="w-full bg-blue-400 rounded-t-md bar-anim" style="height: 50%; animation-delay: 0.3s"></div>
-                <div class="w-full bg-blue-500 rounded-t-md bar-anim" style="height: 85%; animation-delay: 0.4s"></div>
-                <div class="w-full bg-blue-600 rounded-t-md bar-anim" style="height: 60%; animation-delay: 0.5s"></div>
-                <div class="absolute top-2 left-2 text-xs text-slate-400 font-medium"><i class="fa-solid fa-chart-simple mr-1"></i> สถิติรายเดือน</div>
-            </div>
-        </div>
-
-        <!-- Features -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl mb-12 px-4">
-            <div class="feature-card bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center hover:shadow-md transition hover:-translate-y-1 duration-300">
-                <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-4 text-2xl shadow-sm"><i class="fa-solid fa-chart-pie"></i></div>
-                <h3 class="font-bold text-slate-800 text-lg mb-2">Real-time Analytics</h3>
-                <p class="text-xs text-slate-500 leading-relaxed">วิเคราะห์สถานะการเงินทันทีที่บันทึก ดูยอดรับ-จ่ายแบบเรียลไทม์ แม่นยำทุกตัวเลข</p>
-            </div>
-            <div class="feature-card bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center hover:shadow-md transition hover:-translate-y-1 duration-300">
-                <div class="w-14 h-14 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center mb-4 text-2xl shadow-sm"><i class="fa-solid fa-cloud-shield"></i></div>
-                <h3 class="font-bold text-slate-800 text-lg mb-2">Secure Cloud</h3>
-                <p class="text-xs text-slate-500 leading-relaxed">ข้อมูลปลอดภัยบน Google Cloud Platform สำรองข้อมูลอัตโนมัติ เข้าถึงได้ทุกที่ทั่วโลก</p>
-            </div>
-            <div class="feature-card bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center hover:shadow-md transition hover:-translate-y-1 duration-300">
-                <div class="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mb-4 text-2xl shadow-sm"><i class="fa-solid fa-file-invoice"></i></div>
-                <h3 class="font-bold text-slate-800 text-lg mb-2">Paperless</h3>
-                <p class="text-xs text-slate-500 leading-relaxed">ลดการใช้กระดาษและค้นหาเอกสารง่าย ช่วยประหยัดพื้นที่และรักษาสิ่งแวดล้อม</p>
-            </div>
-        </div>
-        
-        <button onclick="ViewManager.showLogin()" class="w-full md:w-auto bg-blue-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-blue-500/40 hover:bg-blue-700 transition flex items-center justify-center gap-2 mb-8 transform active:scale-95">
-            <i class="fa-solid fa-user-lock"></i> เข้าสู่ระบบเจ้าหน้าที่
-        </button>
-
-        <footer class="text-slate-400 text-[10px] mt-auto pb-4">&copy; 2025 Surat Thani Animal Hospital. All rights reserved.</footer>
-    </div>
-  </div>
-
-  <!-- ================= LOGIN SCREEN ================= -->
-  <div id="loginScreen" class="hidden fixed inset-0 bg-slate-100 z-[100] flex flex-col items-center justify-center p-4 fade-in">
-    <button onclick="ViewManager.showLanding()" class="absolute top-4 left-4 text-slate-500 hover:text-blue-600 flex items-center gap-1 text-sm font-medium transition">
-        <i class="fa-solid fa-chevron-left"></i> กลับหน้าหลัก
-    </button>
-
-    <div class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-sm border border-slate-200 relative overflow-hidden">
-      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-500"></div>
-      <div class="text-center mb-6">
-        <div class="inline-block bg-blue-600 text-white p-3 rounded-xl mb-3 shadow-md"><i class="fa-solid fa-paw text-2xl"></i></div>
-        <h2 class="text-xl font-bold text-slate-800">เข้าสู่ระบบ</h2>
-        <p class="text-slate-500 text-sm">สำหรับเจ้าหน้าที่เท่านั้น</p>
-      </div>
-      
-      <form onsubmit="AuthController.login(event)" class="space-y-4">
-        <div>
-          <label class="block text-slate-600 text-xs font-bold mb-1">ชื่อผู้ใช้</label>
-          <div class="relative">
-              <i class="fa-solid fa-user absolute left-3 top-2.5 text-slate-400 text-xs"></i>
-              <input type="text" id="loginUsername" required class="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm transition">
-          </div>
-        </div>
-        <div>
-          <label class="block text-slate-600 text-xs font-bold mb-1">รหัสผ่าน</label>
-          <div class="relative">
-              <i class="fa-solid fa-lock absolute left-3 top-2.5 text-slate-400 text-xs"></i>
-              <input type="password" id="loginPassword" required class="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm transition">
-          </div>
-        </div>
-        <button type="submit" id="btnLogin" class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-2.5 rounded-lg shadow-md transition text-sm transform active:scale-95">
-          ยืนยันตัวตน
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- ================= APP CONTENT ================= -->
-  <div id="appContent" class="hidden min-h-screen pb-20 fade-in">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบบันทึกรายรับ-รายจ่าย (Real Login)</title>
     
-    <nav class="bg-white shadow-sm sticky top-0 z-30 border-b border-slate-100">
-      <div class="container mx-auto py-3 flex justify-between items-center">
-        <div class="flex items-center gap-2">
-          <div class="bg-blue-600 text-white w-8 h-8 flex items-center justify-center rounded-lg shadow-sm"><i class="fa-solid fa-paw text-sm"></i></div>
-          <div class="leading-tight">
-            <h1 class="font-bold text-slate-800 text-sm md:text-base">รพ.สัตว์สุราษฎร์ฯ</h1>
-            <p class="text-[10px] text-slate-500" id="userDisplayRole">Loading...</p>
-          </div>
-        </div>
-        <div class="flex items-center gap-3">
-           <div class="hidden md:flex flex-col items-end">
-               <span class="text-xs font-bold text-slate-700" id="userDisplayName">User</span>
-               <span class="text-[10px] text-green-500 flex items-center gap-1"><span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span> Online</span>
-           </div>
-           <button onclick="AuthController.logout()" class="text-slate-400 hover:text-red-500 px-2 py-1 transition transform hover:rotate-90">
-             <i class="fa-solid fa-right-from-bracket"></i>
-           </button>
-        </div>
-      </div>
-    </nav>
+    <!-- Google Fonts: Noto Sans Thai -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <div class="container mx-auto mt-4 max-w-5xl">
-      <!-- Filter Bar -->
-      <div class="mb-4 bg-white p-3 rounded-xl shadow-sm border border-slate-100 flex flex-col md:flex-row gap-3 items-start md:items-center">
-        <div class="flex items-center gap-2 w-full md:w-auto">
-             <i class="fa-solid fa-calendar-days text-slate-400"></i>
-             <span class="text-sm font-bold text-slate-700 whitespace-nowrap">ช่วงเวลา:</span>
-        </div>
-        <div class="flex flex-wrap gap-2 w-full md:w-auto items-center">
-            <select id="filterMode" onchange="FilterController.handleModeChange()" class="bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2">
-                <option value="all">ทั้งหมด</option>
-                <option value="today">วันนี้</option>
-                <option value="month" selected>เดือนนี้</option>
-                <option value="year">ปีนี้</option>
-                <option value="custom">กำหนดเอง</option>
-            </select>
-            <div id="customDateInputs" class="hidden flex flex-wrap gap-2 items-center animate-[fadeIn_0.2s_ease-out]">
-                <input type="date" id="filterStartDate" class="bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2" onchange="FilterController.apply()">
-                <span class="text-slate-400 text-xs">ถึง</span>
-                <input type="date" id="filterEndDate" class="bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2" onchange="FilterController.apply()">
-            </div>
-        </div>
-      </div>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-      <!-- Dashboard Stats -->
-      <div class="grid grid-cols-3 gap-2 md:gap-4 mb-4">
-        <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-100 flex flex-col justify-between hover:shadow-md transition">
-          <p class="text-slate-400 text-[10px] font-medium uppercase tracking-wider">รายรับ</p>
-          <h3 class="text-sm md:text-xl font-bold text-emerald-600 truncate" id="totalIncome">0</h3>
-        </div>
-        <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-100 flex flex-col justify-between hover:shadow-md transition">
-          <p class="text-slate-400 text-[10px] font-medium uppercase tracking-wider">รายจ่าย</p>
-          <h3 class="text-sm md:text-xl font-bold text-rose-600 truncate" id="totalExpense">0</h3>
-        </div>
-        <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-100 flex flex-col justify-between relative overflow-hidden hover:shadow-md transition">
-          <div class="absolute right-0 top-0 w-1 h-full bg-blue-500"></div>
-          <p class="text-slate-400 text-[10px] font-medium uppercase tracking-wider">คงเหลือ</p>
-          <h3 class="text-sm md:text-xl font-bold text-blue-600 truncate" id="balance">0</h3>
-        </div>
-      </div>
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-      <!-- Action Bar -->
-      <div class="flex gap-2 mb-4">
-        <div class="relative flex-1">
-          <i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-400 text-xs"></i>
-          <input type="text" id="searchInput" placeholder="ค้นหา..." class="w-full pl-8 pr-3 py-2 bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm transition focus:shadow-sm">
-        </div>
-        <button onclick="DataController.fetch()" class="bg-white hover:bg-slate-50 text-slate-600 px-3.5 py-2 rounded-lg shadow-sm border border-slate-200 text-sm transition active:scale-95" title="รีเฟรชข้อมูล">
-            <i class="fa-solid fa-rotate-right" id="refreshIcon"></i>
-        </button>
-        <button onclick="ModalController.open()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm text-sm font-medium whitespace-nowrap transition transform active:scale-95 flex items-center gap-1">
-          <i class="fa-solid fa-plus"></i> <span class="hidden md:inline">เพิ่มรายการ</span>
-        </button>
-      </div>
-
-      <!-- List View -->
-      <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden min-h-[300px] flex flex-col">
-        <div class="p-3 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
-          <h3 class="font-bold text-slate-700 text-sm"><i class="fa-solid fa-list-ul mr-1 text-slate-400"></i> รายการ</h3>
-          <span class="text-[10px] bg-white px-2 py-0.5 rounded border text-slate-500 font-mono" id="recordCount">0</span>
-        </div>
-        
-        <div id="listViewContainer" class="divide-y divide-slate-50"></div>
-        
-        <div id="loadMoreTrigger" class="h-10 w-full flex items-center justify-center p-2 opacity-0">
-             <i class="fa-solid fa-circle-notch fa-spin text-blue-500"></i>
-        </div>
-
-        <div id="emptyState" class="p-8 text-center text-slate-400 text-xs hidden flex flex-col items-center justify-center h-full mt-10">
-          <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-3">
-             <i class="fa-solid fa-inbox text-2xl opacity-30"></i>
-          </div>
-          <p>ไม่มีรายการในช่วงเวลานี้</p>
-          <button onclick="ModalController.open()" class="mt-2 text-blue-500 hover:underline">เพิ่มรายการใหม่</button>
-        </div>
-      </div>
-
-      <!-- Chart -->
-      <div class="mt-6 bg-white p-5 md:p-6 rounded-2xl shadow-sm border border-slate-100 mb-8 relative overflow-hidden">
-         <div class="absolute top-0 right-0 w-24 h-24 bg-blue-50 rounded-bl-full -mr-8 -mt-8 opacity-50 pointer-events-none"></div>
-         <div class="flex justify-between items-start mb-6 relative z-10">
-             <div>
-                 <h3 class="font-bold text-slate-700 text-base md:text-lg flex items-center gap-2">
-                    <span class="w-8 h-8 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center text-sm shadow-sm"><i class="fa-solid fa-chart-pie"></i></span> สรุปรายเดือน
-                 </h3>
-                 <p class="text-xs text-slate-400 mt-1 ml-10">เปรียบเทียบรายรับ-รายจ่ายย้อนหลัง</p>
-             </div>
-         </div>
-         <div class="h-64 w-full relative z-10">
-            <canvas id="financeChart"></canvas>
-         </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- ================= FORM MODAL ================= -->
-  <div id="entryModal" class="fixed inset-0 z-50 hidden">
-    <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" onclick="ModalController.close()"></div>
-    <div class="flex items-center justify-center min-h-screen p-4">
-      <div class="bg-white rounded-xl shadow-xl w-full max-w-sm relative z-10 flex flex-col max-h-[90vh] animate-[fadeIn_0.2s_ease-out]">
-        <div class="px-5 py-3 border-b border-slate-100 flex justify-between items-center bg-slate-50 rounded-t-xl">
-          <h3 class="text-base font-bold text-slate-800" id="modalTitle">เพิ่มรายการ</h3>
-          <button onclick="ModalController.close()" class="text-slate-400 hover:text-slate-600 p-1 transition"><i class="fa-solid fa-times"></i></button>
-        </div>
-        <div class="px-5 py-4 overflow-y-auto">
-          <form id="dataForm" onsubmit="DataController.submitForm(event)" class="space-y-3">
-            <input type="hidden" id="recId" name="recId">
-            <input type="hidden" id="currentImageUrl" name="currentImageUrl">
-            <input type="hidden" id="currentFileId" name="currentFileId">
-
-            <!-- Type Toggle -->
-            <div class="grid grid-cols-2 gap-2 bg-slate-100 p-1 rounded-lg">
-               <label class="cursor-pointer">
-                 <input type="radio" name="type" value="รายรับ" class="peer sr-only" onchange="ModalController.onTypeChange()" checked>
-                 <div class="text-center py-2 rounded-md text-xs font-bold text-slate-500 peer-checked:bg-white peer-checked:text-emerald-600 peer-checked:shadow-sm transition-all flex items-center justify-center gap-1">
-                    <i class="fa-solid fa-arrow-up"></i> รายรับ
-                 </div>
-               </label>
-               <label class="cursor-pointer">
-                 <input type="radio" name="type" value="รายจ่าย" class="peer sr-only" onchange="ModalController.onTypeChange()">
-                 <div class="text-center py-2 rounded-md text-xs font-bold text-slate-500 peer-checked:bg-white peer-checked:text-rose-600 peer-checked:shadow-sm transition-all flex items-center justify-center gap-1">
-                    <i class="fa-solid fa-arrow-down"></i> รายจ่าย
-                 </div>
-               </label>
-            </div>
-
-            <!-- Category & Payment -->
-            <div class="grid grid-cols-2 gap-3">
-                <div class="col-span-2">
-                    <label class="block text-slate-500 text-[10px] font-bold mb-1">หมวดหมู่</label>
-                    <select id="category" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:border-blue-500 focus:outline-none transition appearance-none"></select>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-3">
-                <div class="col-span-2">
-                    <label class="block text-slate-500 text-[10px] font-bold mb-1">รายละเอียด (ช่วยพิมพ์)</label>
-                    <input type="text" id="description" list="serviceSuggestions" placeholder="พิมพ์เพื่อค้นหารายการ..." required class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:border-blue-500 focus:outline-none transition">
-                    <datalist id="serviceSuggestions">
-                        <option value="วัคซีนพิษสุนัขบ้า">
-                        <option value="วัคซีนรวม 5 โรค">
-                        <option value="ถ่ายพยาธิ">
-                        <option value="ทำหมัน (แมว)">
-                        <option value="ทำหมัน (สุนัข)">
-                        <option value="อาบน้ำตัดขน">
-                        <option value="ตรวจเลือด">
-                        <option value="เอ็กซเรย์ (X-Ray)">
-                        <option value="ผ่าตัดทำคลอด">
-                        <option value="ขูดหินปูน">
-                    </datalist>
-                </div>
-                <div>
-                    <label class="block text-slate-500 text-[10px] font-bold mb-1">วันที่และเวลา</label>
-                    <input type="datetime-local" id="date" required class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:border-blue-500 focus:outline-none transition">
-                </div>
-                <div>
-                    <label class="block text-slate-500 text-[10px] font-bold mb-1">จำนวนเงิน</label>
-                    <div class="relative">
-                        <input type="number" id="amount" step="0.01" required class="w-full pl-3 pr-6 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:border-blue-500 focus:outline-none font-mono text-right transition">
-                        <span class="absolute right-2 top-2 text-slate-400 text-xs">฿</span>
-                    </div>
-                </div>
-                <div class="col-span-2">
-                    <label class="block text-slate-500 text-[10px] font-bold mb-1">ช่องทางชำระเงิน</label>
-                    <select id="paymentMethod" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:border-blue-500 focus:outline-none transition"></select>
-                </div>
-            </div>
-
-            <!-- File Upload -->
-            <div>
-              <label class="block text-slate-500 text-[10px] font-bold mb-1">รูปภาพ/ไฟล์</label>
-              <label class="flex flex-col items-center px-4 py-6 bg-slate-50 border border-dashed border-slate-300 rounded-lg cursor-pointer hover:bg-slate-100 transition relative group">
-                  <div id="uploadContent" class="text-center group-hover:scale-105 transition-transform">
-                      <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2 text-blue-500"><i class="fa-solid fa-camera"></i></div>
-                      <span class="text-[10px] text-slate-500 block">แตะเพื่ออัปโหลดใบเสร็จ</span>
-                  </div>
-                  <input type='file' id="fileInput" class="hidden" accept="image/*,.pdf" onchange="FileHandler.handleSelect(event)" />
-                  <div id="previewBox" class="hidden absolute inset-0 bg-white rounded-lg p-2 flex items-center justify-center border border-slate-200">
-                      <div id="previewInner" class="w-full h-full flex items-center justify-center overflow-hidden rounded"></div>
-                      <button type="button" onclick="FileHandler.clear(event)" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs shadow-md hover:bg-red-600 transition z-10"><i class="fa-solid fa-times"></i></button>
-                  </div>
-              </label>
-            </div>
-            
-            <button type="submit" id="submitBtn" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl shadow-lg shadow-blue-500/30 hover:bg-blue-700 text-sm mt-2 transition transform active:scale-95">บันทึกรายการ</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    // --- CONSTANTS & CONFIG ---
-    const CONSTANTS = {
-        // ⚠️⚠️ อย่าลืมเปลี่ยน URL เป็นของ Web App ท่านเอง ⚠️⚠️
-        API_URL: "https://script.google.com/macros/s/AKfycbxRNiK8lOstCv7kjCXEuEuAUaJgP3q_51g0_Q8i9iihj-SqyQkIIWO1Clw2xRh1kwxE/exec",
-        ITEMS_PER_PAGE: 20,
-        CATEGORIES: {
-            'รายรับ': ['พี่หมอ', 'พี่จุ๊', 'อื่นๆ'],
-            'รายจ่าย': ['ค่าสาธารณูปโภค (น้ำ/ไฟ/น้ำมัน)', 'ค่าวัสดุสิ้นเปลือง', 'ค่าซ่อมบำรุง', 'อื่นๆ']
-        },
-        PAYMENT_METHODS: ['เงินสด', 'โอนเงิน (QR)', 'บัตรเครดิต', 'อื่นๆ'],
-        COLORS: {
-            INCOME: { TEXT: 'text-emerald-600', BG_BADGE: 'bg-emerald-100 text-emerald-600', BTN: 'bg-emerald-600' },
-            EXPENSE: { TEXT: 'text-rose-600', BG_BADGE: 'bg-rose-100 text-rose-600', BTN: 'bg-rose-600' },
-            HOVER_INCOME: 'hover:bg-emerald-700',
-            HOVER_EXPENSE: 'hover:bg-rose-700'
-        },
-        USER_MAP: {
-            'admin': 'Administrator',
-            'morgan': 'ยิ่งยศ',
-            'ju': 'จุฑามาศ',
-            'yuyyuy': 'วรรณรวี',
-            'aunpun': 'บุปผาทิพย์'
-        }
-    };
-
-    // --- GLOBAL STATE ---
-    const State = {
-        currentUser: null,
-        allData: [],
-        filteredData: [],
-        fileDataObj: null,
-        myChart: null,
-        visibleCount: 0
-    };
-
-    // --- UTILITIES ---
-    const Utils = {
-        formatCurrency: (num) => new Intl.NumberFormat('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(num),
-        formatDate: (dateStr) => {
-            const d = new Date(dateStr);
-            return d.toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false });
-        },
-        Toast: Swal.mixin({
-            toast: true, position: 'top-end', showConfirmButton: false,
-            timer: 3000, timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer);
-                toast.addEventListener('mouseleave', Swal.resumeTimer);
-            }
-        })
-    };
-
-    // --- DATA HELPERS ---
-    const DataHelper = {
-        // [Category] Description (Payment)
-        parseDescription: (fullDesc) => {
-            let category = 'ทั่วไป', desc = fullDesc, payment = 'ไม่ระบุ';
-            if(fullDesc.startsWith('[')) {
-                const closeIdx = fullDesc.indexOf(']');
-                if(closeIdx > 0) {
-                    category = fullDesc.substring(1, closeIdx);
-                    desc = fullDesc.substring(closeIdx + 1).trim();
-                }
-            }
-            if(desc.endsWith(')')) {
-                const openIdx = desc.lastIndexOf('(');
-                if(openIdx > 0) {
-                    payment = desc.substring(openIdx + 1, desc.length - 1);
-                    desc = desc.substring(0, openIdx).trim();
-                }
-            }
-            return { category, desc, payment };
-        },
-        formatDescription: (cat, desc, pay) => `[${cat}] ${desc} (${pay})`
-    };
-
-    // --- VIEW MANAGER ---
-    const ViewManager = {
-        hideAll: () => {
-            ['landingPage', 'loginScreen', 'appContent'].forEach(id => {
-                document.getElementById(id).classList.add('hidden');
-            });
-        },
-        showLanding: () => {
-            ViewManager.hideAll();
-            document.getElementById('landingPage').classList.remove('hidden');
-            document.querySelectorAll('.mock-count').forEach(el => {
-                const target = parseInt(el.getAttribute('data-target'));
-                ViewManager.animateValue(el, 0, target, 2000);
-            });
-        },
-        showLogin: () => {
-            ViewManager.hideAll();
-            document.getElementById('loginScreen').classList.remove('hidden');
-        },
-        showApp: () => {
-            ViewManager.hideAll();
-            document.getElementById('appContent').classList.remove('hidden');
-            
-            // Map Name
-            const name = CONSTANTS.USER_MAP[State.currentUser.username] || State.currentUser.name;
-            document.getElementById('userDisplayName').innerText = name;
-            document.getElementById('userDisplayRole').innerText = State.currentUser.role === 'admin' ? 'ผู้ดูแลระบบ' : 'ผู้ใช้งานทั่วไป';
-            
-            DataController.fetch();
-        },
-        animateValue: (obj, start, end, duration) => {
-            let startTimestamp = null;
-            const step = (timestamp) => {
-                if (!startTimestamp) startTimestamp = timestamp;
-                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                obj.innerHTML = Math.floor(progress * (end - start) + start).toLocaleString();
-                if (progress < 1) {
-                    window.requestAnimationFrame(step);
-                } else {
-                    obj.innerHTML = end.toLocaleString();
-                }
-            };
-            window.requestAnimationFrame(step);
-        }
-    };
-
-    // --- API HELPER ---
-    const Api = {
-        call: async (action, payload = {}) => {
-            if (State.currentUser && action !== 'login') {
-                payload.username = State.currentUser.username;
-                payload.password = State.currentUser.password;
-            }
-            const response = await fetch(CONSTANTS.API_URL, {
-                method: 'POST',
-                body: JSON.stringify({ action, ...payload })
-            });
-            return await response.json();
-        }
-    };
-
-    // --- FILTER CONTROLLER ---
-    const FilterController = {
-        handleModeChange: () => {
-            const mode = document.getElementById('filterMode').value;
-            const inputs = document.getElementById('customDateInputs');
-            
-            if(mode === 'custom') {
-                customInput.classList.remove('hidden');
-                customInput.classList.add('flex');
-            } else {
-                customInput.classList.add('hidden');
-                customInput.classList.remove('flex');
-            }
-            FilterController.apply();
-        },
-        
-        apply: () => {
-            const mode = document.getElementById('filterMode').value;
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            let filtered = State.allData;
-            const now = new Date(); now.setHours(0,0,0,0);
-
-            if (mode !== 'all') {
-                filtered = filtered.filter(item => {
-                    const itemDate = new Date(item.date);
-                    itemDate.setHours(0,0,0,0);
-
-                    if (mode === 'today') {
-                        return itemDate.getTime() === now.getTime();
-                    } else if (mode === 'month') {
-                        return itemDate.getMonth() === now.getMonth() && itemDate.getFullYear() === now.getFullYear();
-                    } else if (mode === 'year') {
-                        return itemDate.getFullYear() === now.getFullYear();
-                    } else if (mode === 'custom') {
-                        const startVal = document.getElementById('filterStartDate').value;
-                        const endVal = document.getElementById('filterEndDate').value;
-                        
-                        if(!startVal && !endVal) return true;
-                        
-                        const start = startVal ? new Date(startVal) : new Date('1900-01-01');
-                        const end = endVal ? new Date(endVal) : new Date('2100-12-31');
-                        start.setHours(0,0,0,0);
-                        end.setHours(0,0,0,0);
-
-                        return itemDate >= start && itemDate <= end;
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans Thai"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9', // Sky 500
+                            600: '#0284c7', // Sky 600
+                            900: '#0c4a6e', // Sky 900
+                        }
                     }
-                    return true;
-                });
-            }
-
-            // 2. Filter by Search Term
-            if (searchTerm) {
-                filtered = filtered.filter(x => 
-                    x.description.toLowerCase().includes(searchTerm) || x.amount.toString().includes(searchTerm)
-                );
-            }
-
-            // Store filtered results and reset lazy load
-            State.filteredData = filtered;
-            State.visibleCount = CONSTANTS.ITEMS_PER_PAGE;
-            
-            // Render first batch
-            const initialBatch = State.filteredData.slice(0, State.visibleCount);
-            UI.renderList(initialBatch, true); // true = reset container
-            UI.updateDashboard(State.filteredData);
-            
-            // Manage Load More Sentinel
-            InfiniteScroll.check();
-        }
-    };
-
-    // --- INFINITE SCROLL CONTROLLER ---
-    const InfiniteScroll = {
-        observer: null,
-        init: () => {
-            const sentinel = document.getElementById('loadMoreTrigger');
-            InfiniteScroll.observer = new IntersectionObserver((entries) => {
-                if(entries[0].isIntersecting) {
-                    InfiniteScroll.loadMore();
                 }
-            }, { rootMargin: '50px' });
-            
-            InfiniteScroll.observer.observe(sentinel);
-        },
-        loadMore: () => {
-            if (State.visibleCount >= State.filteredData.length) return;
+            }
+        }
+    </script>
 
-            // Show loading spinner
-            document.getElementById('loadMoreTrigger').classList.remove('opacity-0');
+    <style>
+        body {
+            font-family: 'Noto Sans Thai', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        .slide-up {
+            animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .spinner {
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top: 3px solid #fff;
+            width: 20px;
+            height: 20px;
+            -webkit-animation: spin 1s linear infinite;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 h-screen overflow-hidden">
+    <div id="root"></div>
 
-            setTimeout(() => { // Small timeout for smoother feel
-                const nextCount = State.visibleCount + CONSTANTS.ITEMS_PER_PAGE;
-                const nextBatch = State.filteredData.slice(State.visibleCount, nextCount);
+    <script type="text/babel">
+        const { useState, useMemo, useEffect } = React;
+
+        // ==========================================
+        // ⚙️ ตั้งค่า: URL ของ Google Apps Script
+        // ==========================================
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxRNiK8lOstCv7kjCXEuEuAUaJgP3q_51g0_Q8i9iihj-SqyQkIIWO1Clw2xRh1kwxE/exec"; 
+
+        // --- DATA CONSTANTS ---
+        // ใช้สำหรับแสดงชื่อในหน้า Admin (Fallback)
+        const KNOWN_USERS = [
+            { id: 'userA', name: 'คุณสมชาย (A)' },
+            { id: 'userB', name: 'คุณสมหญิง (B)' },
+            { id: 'userC', name: 'คุณวิชัย (C)' },
+            { id: 'admin', name: 'ผู้ดูแลระบบ' },
+        ];
+
+        // ปรับหมวดหมู่ตามที่ระบุ
+        const CATEGORIES = [
+            { id: 'mor', name: 'พี่หมอ', color: '#8b5cf6' }, // Violet
+            { id: 'ju', name: 'พี่จุ๊', color: '#ec4899' }, // Pink
+            { id: 'food', name: 'ค่ากับข้าว', color: '#f59e0b' }, // Amber
+            { id: 'fuel', name: 'เติมน้ำมัน', color: '#3b82f6' }, // Blue
+        ];
+
+        // --- ICONS ---
+        const Icons = {
+            Wallet: () => <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>,
+            TrendingUp: () => <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+            TrendingDown: () => <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>,
+            Plus: () => <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>,
+            Trash: () => <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>,
+            LogOut: () => <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>,
+            Refresh: ({className}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>,
+            Shield: () => <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+            Cash: () => <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="5" width="20" height="14" rx="2" /><line x1="2" y1="10" x2="22" y2="10" /></svg>,
+            Transfer: () => <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 2.1l4 4-4 4"/><path d="M3 12.2v-2a4 4 0 0 1 4-4h12.8M7 21.9l-4-4 4-4"/><path d="M21 11.8v2a4 4 0 0 1-4 4H4.2"/></svg>,
+            User: () => <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+            Lock: () => <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        };
+
+        const formatCurrency = (amount) => new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB' }).format(amount);
+        const formatDate = (dateStr) => new Date(dateStr).toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' });
+
+        // --- API SERVICE ---
+        const api = {
+            fetchAll: async () => {
+                if (!GOOGLE_SCRIPT_URL) return [];
+                const res = await fetch(GOOGLE_SCRIPT_URL);
+                return await res.json();
+            },
+            login: async (username, password) => {
+                if (!GOOGLE_SCRIPT_URL) return null;
+                try {
+                    const res = await fetch(GOOGLE_SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'no-cors', // ข้อจำกัดของ Google Apps Script
+                        headers: { 'Content-Type': 'application/json' },
+                        // เราต้องใช้ trick เล็กน้อยเพราะ no-cors ไม่ return response body
+                        // แต่สำหรับการ Login เราต้องการ body... 
+                        // *หมายเหตุ* Google Apps Script Web App ปกติรองรับการ return JSON ใน simple GET/POST
+                        // แต่ถ้าติด CORS เรามักจะใช้ redirect. ในที่นี้เราจะลองส่งแบบ text/plain
+                        body: JSON.stringify({ action: 'login', username, password })
+                    });
+                    
+                    // เนื่องจาก no-cors อ่าน body ไม่ได้ เราจึงต้องเปลี่ยนวิธี
+                    // วิธีที่ถูกต้องสำหรับ Apps Script คือใช้ redirect_uri หรือ JSONP แต่ยุ่งยาก
+                    // **วิธีแก้ที่ง่ายที่สุด**: ใช้ fetch แบบปกติ (cors) แต่ต้องมั่นใจว่า Script Deploy เป็น "Anyone"
+                    // ลองเรียกแบบปกติก่อน
+                } catch(e) {
+                   //
+                }
+
+                // *Workaround for Login*:
+                // เนื่องจาก fetch('POST') มักติด CORS กับ Apps Script หากต้องการอ่าน Response
+                // เราจะใช้การส่งข้อมูลผ่าน URL Parameters (GET) แทนสำหรับ Login (ไม่ปลอดภัยที่สุดแต่ใช้ง่ายสุดใน Single File)
+                // หรือใช้ POST แต่ต้องยอมรับว่าอ่าน Response ลำบาก
+                // แต่เดี๋ยวก่อน! เรา Deploy เป็น "Anyone" แล้ว Apps Script จะ return CORS header ให้
+                // ดังนั้นเราสามารถใช้ POST และอ่าน JSON ได้ถ้า script return header ถูกต้อง
                 
-                State.visibleCount = nextCount;
-                UI.renderList(nextBatch, false); // false = append
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                     method: 'POST',
+                     body: JSON.stringify({ action: 'login', username, password })
+                });
+                const data = await response.json();
+                return data;
+            },
+            add: async (transaction) => {
+                const payload = { 
+                    action: 'add', 
+                    ...transaction,
+                    timestamp: new Date().toLocaleString('th-TH')
+                };
+                // ใช้ no-cors สำหรับ write operation เพราะเราไม่สน response body มากนัก (แค่หวังว่ามันจะสำเร็จ)
+                // หรือใช้ POST ปกติถ้า script รองรับ
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                });
+                return true; 
+            },
+            delete: async (id) => {
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'delete', id: id })
+                });
+                return true;
+            }
+        };
+
+        // --- COMPONENTS ---
+
+        const LoginScreen = ({ onLogin }) => {
+            const [username, setUsername] = useState('');
+            const [password, setPassword] = useState('');
+            const [isLoading, setIsLoading] = useState(false);
+            const [error, setError] = useState('');
+
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+                setIsLoading(true);
+                setError('');
                 
-                document.getElementById('loadMoreTrigger').classList.add('opacity-0');
-                InfiniteScroll.check();
-            }, 300);
-        },
-        check: () => {
-            const sentinel = document.getElementById('loadMoreTrigger');
-            if (State.visibleCount >= State.filteredData.length) {
-                sentinel.style.display = 'none'; // Hide if no more data
-            } else {
-                sentinel.style.display = 'flex'; // Show sentinel
-            }
-        }
-    };
-
-    // --- AUTH CONTROLLER ---
-    const AuthController = {
-        login: (e) => {
-            e.preventDefault();
-            const u = document.getElementById('loginUsername').value.trim();
-            const p = document.getElementById('loginPassword').value.trim();
-            const btn = document.getElementById('btnLogin');
-            if(!u || !p) return Swal.fire('แจ้งเตือน', 'กรอกข้อมูลให้ครบ', 'warning');
-
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> ตรวจสอบ...';
-            btn.disabled = true;
-
-            Api.call('login', { username: u, password: p })
-                .then(res => {
-                    btn.innerHTML = 'ยืนยันตัวตน';
-                    btn.disabled = false;
-                    
-                    if(res.success) {
-                        State.currentUser = { ...res.user, password: p };
-                        const name = CONSTANTS.USER_MAP[u] || res.user.name;
-                        Utils.Toast.fire({ icon: 'success', title: 'ยินดีต้อนรับคุณ ' + name });
-                        ViewManager.showApp();
-                        InfiniteScroll.init(); // Init scroll listener
+                try {
+                    const res = await api.login(username, password);
+                    if (res && res.status === 'success') {
+                        onLogin(res.user);
                     } else {
-                        Swal.fire({ icon: 'error', title: 'เข้าสู่ระบบไม่สำเร็จ', text: res.message, confirmButtonColor: '#3b82f6' });
+                        setError(res?.message || 'เข้าสู่ระบบไม่สำเร็จ');
                     }
-                })
-                .catch(err => {
-                    btn.innerHTML = 'ยืนยันตัวตน';
-                    btn.disabled = false;
-                    AuthController.mockLogin(u, p);
-                });
-        },
-        logout: () => {
-            Swal.fire({
-                title: 'ออกจากระบบ?', text: "คุณต้องการกลับไปหน้าหลักหรือไม่", icon: 'question',
-                showCancelButton: true, confirmButtonColor: '#3b82f6', cancelButtonColor: '#94a3b8',
-                confirmButtonText: 'ใช่, ออกจากระบบ', cancelButtonText: 'ยกเลิก'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Utils.Toast.fire({ icon: 'info', title: 'ออกจากระบบเรียบร้อยแล้ว' });
-                    State.currentUser = null;
-                    State.allData = [];
-                    ViewManager.showLanding();
+                } catch (err) {
+                    console.error(err);
+                    setError('เกิดข้อผิดพลาดในการเชื่อมต่อ');
+                } finally {
+                    setIsLoading(false);
                 }
-            });
-        },
-        mockLogin: (u, p) => {
-            const mockUsers = {
-                'admin': { role: 'admin', name: 'Admin (Mock)' },
-                'yuyyuy': { role: 'user', name: 'วรรณรวี (Mock)' },
-                'aunpun': { role: 'user', name: 'บุปผาทิพย์ (Mock)' },
-                'morgan': { role: 'user', name: 'ยิ่งยศ (Mock)' },
-                'ju': { role: 'user', name: 'จุฑามาศ (Mock)' }
             };
 
-            if(mockUsers[u] && p === '1234') {
-                State.currentUser = { username: u, ...mockUsers[u], password: p };
-                const displayName = CONSTANTS.USER_MAP[u] || mockUsers[u].name;
-                Utils.Toast.fire({ icon: 'success', title: `ยินดีต้อนรับ ${displayName}` });
-                ViewManager.showApp();
-                InfiniteScroll.init();
-                DataController.mockOfflineMode();
-            } else {
-                Swal.fire('Error', 'Cannot connect to server', 'error');
-            }
-        }
-    };
-
-    // --- DATA CONTROLLER ---
-    const DataController = {
-        fetch: () => {
-            const icon = document.getElementById('refreshIcon');
-            if(icon) icon.classList.add('fa-spin');
-            UI.renderSkeleton();
-            Api.call('getData').then(data => {
-                State.allData = data;
-                FilterController.apply();
-            }).catch(() => console.log('Using mock data')).finally(() => {
-                if(icon) setTimeout(() => icon.classList.remove('fa-spin'), 500);
-            });
-        },
-        submitForm: (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('submitBtn');
-            const oldTxt = btn.innerText;
-            btn.innerText = 'กำลังบันทึก...';
-            btn.disabled = true;
-
-            const type = document.querySelector('input[name="type"]:checked').value;
-            const fullDesc = DataHelper.formatDescription(
-                document.getElementById('category').value,
-                document.getElementById('description').value,
-                document.getElementById('paymentMethod').value
-            );
-
-            const formData = {
-                recId: document.getElementById('recId').value,
-                date: document.getElementById('date').value,
-                type: type,
-                description: fullDesc, // ส่งข้อมูลรวมไปใน description
-                amount: document.getElementById('amount').value,
-                currentImageUrl: document.getElementById('currentImageUrl').value,
-                currentFileId: document.getElementById('currentFileId').value,
-                fileData: State.fileDataObj
-            };
-
-            Api.call('saveData', { data: formData })
-                .then(res => {
-                    btn.innerText = oldTxt; btn.disabled = false;
-                    ModalController.close();
-                    if(res.success) {
-                        Utils.Toast.fire({ icon: 'success', title: 'บันทึกข้อมูลเรียบร้อยแล้ว' });
-                        DataController.fetch();
-                    } else {
-                        Swal.fire('Error', res.message, 'error');
-                    }
-                })
-                .catch(err => {
-                    btn.innerText = oldTxt; btn.disabled = false; ModalController.close();
-                    Utils.Toast.fire({ icon: 'success', title: 'บันทึกข้อมูลแล้ว (Mock Mode)' });
-                    
-                    const newItem = {
-                        id: formData.recId || Date.now().toString(),
-                        date: formData.date,
-                        type: formData.type,
-                        description: formData.description,
-                        amount: parseFloat(formData.amount),
-                        imageUrl: formData.currentImageUrl,
-                        createdBy: State.currentUser.username
-                    };
-                    
-                    if(formData.recId) {
-                        const idx = State.allData.findIndex(x => x.id == formData.recId);
-                        if(idx > -1) State.allData[idx] = newItem;
-                    } else {
-                        State.allData.unshift(newItem);
-                    }
-                    FilterController.apply();
-                });
-        },
-        delete: (id, fileId) => {
-            Swal.fire({
-                title: 'ลบรายการ?', icon: 'warning',
-                showCancelButton: true, confirmButtonColor: '#f43f5e',
-                cancelButtonText: 'ยกเลิก', confirmButtonText: 'ลบ'
-            }).then((r) => {
-                if(r.isConfirmed) {
-                    Api.call('deleteData', { id, fileId })
-                        .then(res => {
-                            if(res.success) {
-                                Utils.Toast.fire({ icon: 'success', title: 'ลบข้อมูลเรียบร้อยแล้ว' });
-                                DataController.fetch();
-                            } else {
-                                Swal.fire('Error', res.message, 'error');
-                            }
-                        })
-                        .catch(err => {
-                            Utils.Toast.fire({ icon: 'success', title: 'ลบข้อมูลแล้ว (Mock Mode)' });
-                            State.allData = State.allData.filter(x => x.id != id);
-                            FilterController.apply();
-                        });
-                }
-            });
-        },
-        mockOfflineMode: () => {
-            const mock = [];
-            const users = ['yuyyuy', 'aunpun', 'morgan', 'ju'];
-            for(let i=1; i<=50; i++) {
-                const type = i % 2 === 0 ? 'รายจ่าย' : 'รายรับ';
-                const cats = CONSTANTS.CATEGORIES[type];
-                const cat = cats[Math.floor(Math.random() * cats.length)];
-                const pay = CONSTANTS.PAYMENT_METHODS[Math.floor(Math.random() * CONSTANTS.PAYMENT_METHODS.length)];
-                // Mock format yyyy-MM-ddTHH:mm
-                mock.push({ 
-                    id: i.toString(), 
-                    date: `2025-05-01T${10 + (i % 12)}:30`, 
-                    type: type,
-                    description: `[${cat}] รายการจำลองที่ ${i} (${pay})`, 
-                    amount: Math.floor(Math.random() * 5000) + 100, 
-                    createdBy: users[i % 4]
-                });
-            }
-            if(State.currentUser.role === 'admin') {
-                State.allData = mock;
-            } else {
-                State.allData = mock.filter(x => x.createdBy === State.currentUser.username);
-            }
-            FilterController.apply();
-        }
-    };
-
-    // --- UI RENDERER ---
-    const UI = {
-        renderSkeleton: () => {
-            const container = document.getElementById('listViewContainer');
-            document.getElementById('recordCount').innerText = "...";
-            container.innerHTML = '';
-            
-            for(let i=0; i<6; i++) {
-                const skel = document.createElement('div');
-                skel.className = "p-3 flex items-center justify-between border-b border-slate-50 skeleton-pulse";
-                skel.innerHTML = `
-                  <div class="flex items-center gap-3 flex-1">
-                    <div class="w-10 h-10 rounded-lg bg-slate-200"></div>
-                    <div class="flex-1 space-y-2">
-                      <div class="h-4 bg-slate-200 rounded w-3/4"></div>
-                      <div class="flex justify-between w-full">
-                         <div class="h-3 bg-slate-200 rounded w-1/4"></div>
-                         <div class="h-3 bg-slate-200 rounded w-1/4"></div>
-                      </div>
-                    </div>
-                  </div>
-                `;
-                container.appendChild(skel);
-            }
-        },
-        renderList: (data, reset = false) => {
-            const container = document.getElementById('listViewContainer');
-            if (reset) {
-                container.innerHTML = '';
-                document.getElementById('recordCount').innerText = State.filteredData.length;
-            }
-            document.getElementById('emptyState').classList.toggle('hidden', State.filteredData.length > 0);
-
-            data.forEach(item => {
-                const isInc = item.type === 'รายรับ';
-                const style = isInc ? CONSTANTS.COLORS.INCOME : CONSTANTS.COLORS.EXPENSE;
-                const sign = isInc ? '+' : '-';
-                const dateStr = Utils.formatDate(item.date);
-
-                let creatorName = CONSTANTS.USER_MAP[item.createdBy] || item.createdBy;
-                if (State.currentUser && State.currentUser.username === item.createdBy) {
-                    creatorName = State.currentUser.name;
-                } else if (item.createdBy === 'admin') { 
-                    creatorName = 'Administrator';
-                }
-
-                // Check for Category in description (simple parsing)
-                const { category, desc, payment } = DataHelper.parseDescription(item.description);
-
-                const div = document.createElement('div');
-                div.className = "p-3 flex items-center justify-between hover:bg-slate-50 transition active:bg-slate-100 cursor-pointer group animate-[fadeIn_0.3s_ease-out]";
-
-                let imgEl = `<div class="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-300 flex-shrink-0 group-hover:bg-white transition"><i class="fa-solid fa-image"></i></div>`;
-                if(item.imageUrl) {
-                    imgEl = `<div class="w-10 h-10 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0 border border-slate-200 shadow-sm" onclick="window.open('${item.imageUrl}', '_blank'); event.stopPropagation();">
-                       <img src="${item.imageUrl}" class="w-full h-full object-cover transition transform hover:scale-110">
-                    </div>`;
-                }
-
-                let actions = '';
-                if(State.currentUser.role === 'admin' || item.createdBy === State.currentUser.username) {
-                    actions = `
-                    <div class="flex gap-2 ml-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
-                        <button onclick='ModalController.edit(${JSON.stringify(item)})' class="w-7 h-7 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-xs hover:bg-blue-100"><i class="fa-solid fa-pen"></i></button>
-                        <button onclick="DataController.delete('${item.id}', '${item.fileId}')" class="w-7 h-7 rounded-full bg-red-50 text-red-600 flex items-center justify-center text-xs hover:bg-red-100"><i class="fa-solid fa-trash"></i></button>
-                    </div>`;
-                } else {
-                     actions = `<div class="w-2"></div>`;
-                }
-
-                div.innerHTML = `
-                    <div class="flex items-center gap-3 flex-1 min-w-0">
-                        ${imgEl}
-                        <div class="min-w-0 flex-1">
-                            <div class="flex justify-between items-baseline">
-                               <h4 class="font-medium text-slate-700 text-sm truncate pr-2">
-                                 <span class="text-[10px] ${style.BG_BADGE} px-1.5 py-0.5 rounded font-bold mr-1">${category}</span>${desc}
-                               </h4>
-                               <span class="font-bold text-sm ${style.TEXT} whitespace-nowrap font-mono">${sign}${Utils.formatCurrency(item.amount)}</span>
+            return (
+                <div className="min-h-screen bg-slate-100 flex flex-col items-center justify-center p-4">
+                    <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-8 slide-up">
+                        <div className="text-center mb-6">
+                            <div className="bg-indigo-600 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-indigo-200">
+                                <span className="text-white"><Icons.Wallet /></span>
                             </div>
-                            <div class="flex justify-between items-center mt-0.5">
-                               <span class="text-[10px] text-slate-400 flex items-center gap-1"><i class="fa-regular fa-calendar"></i> ${dateStr}</span>
-                               <div class="flex gap-1">
-                                   <span class="text-[10px] text-slate-400 bg-slate-100 px-1.5 rounded">${payment}</span>
-                                   <span class="text-[10px] text-slate-500 bg-slate-100 px-1.5 rounded flex items-center gap-1"><i class="fa-solid fa-user-pen text-[8px]"></i> ${creatorName}</span>
-                               </div>
+                            <h1 className="text-2xl font-bold text-slate-800">เข้าสู่ระบบ</h1>
+                            <p className="text-slate-500 text-sm">ระบบติดตามการเงิน</p>
+                        </div>
+
+                        <form onSubmit={handleSubmit} className="space-y-4">
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 mb-1">ชื่อผู้ใช้</label>
+                                <div className="relative">
+                                    <span className="absolute left-3 top-2.5 text-slate-400"><Icons.User /></span>
+                                    <input 
+                                        type="text" 
+                                        required
+                                        className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+                                        placeholder="Username"
+                                        value={username}
+                                        onChange={(e) => setUsername(e.target.value)}
+                                    />
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 mb-1">รหัสผ่าน</label>
+                                <div className="relative">
+                                    <span className="absolute left-3 top-2.5 text-slate-400"><Icons.Lock /></span>
+                                    <input 
+                                        type="password" 
+                                        required
+                                        className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+                                        placeholder="Password"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                    />
+                                </div>
+                            </div>
+
+                            {error && (
+                                <div className="text-red-500 text-sm text-center bg-red-50 p-2 rounded-lg border border-red-100">
+                                    {error}
+                                </div>
+                            )}
+
+                            <button 
+                                type="submit" 
+                                disabled={isLoading}
+                                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-lg shadow-lg shadow-indigo-500/30 transition-all active:scale-[0.98] flex justify-center items-center gap-2"
+                            >
+                                {isLoading ? <div className="spinner w-5 h-5 border-2"></div> : 'เข้าสู่ระบบ'}
+                            </button>
+                        </form>
+
+                        <div className="mt-6 pt-6 border-t border-slate-100 text-center">
+                            <p className="text-xs text-slate-400 mb-2">รหัสผ่านเริ่มต้นสำหรับทดสอบ</p>
+                            <div className="text-xs text-slate-500 space-y-1">
+                                <div><span className="font-semibold">admin</span> / 1234</div>
+                                <div><span className="font-semibold">userA</span> / 1234</div>
                             </div>
                         </div>
                     </div>
-                    ${actions}
-                `;
-                container.appendChild(div);
-            });
-        },
-        updateDashboard: (data) => {
-            let inc = 0, exp = 0;
-            const monthly = {};
+                </div>
+            );
+        };
 
-            data.forEach(x => {
-                const v = parseFloat(x.amount);
-                if(x.type === 'รายรับ') inc += v; else exp += v;
-                
-                const m = x.date.substring(0, 7);
-                if(!monthly[m]) monthly[m] = { inc:0, exp:0 };
-                if(x.type === 'รายรับ') monthly[m].inc += v; else monthly[m].exp += v;
+        const AddTransactionModal = ({ isOpen, onClose, onAdd, currentUser, isSaving }) => {
+            const [formData, setFormData] = useState({
+                description: '', amount: '', type: 'expense', category: 'food',
+                date: new Date().toISOString().split('T')[0],
+                paymentMethod: 'cash'
             });
 
-            document.getElementById('totalIncome').innerText = Utils.formatCurrency(inc);
-            document.getElementById('totalExpense').innerText = Utils.formatCurrency(exp);
-            document.getElementById('balance').innerText = Utils.formatCurrency(inc - exp);
+            if (!isOpen) return null;
 
-            const ctx = document.getElementById('financeChart').getContext('2d');
-            const keys = Object.keys(monthly).sort().slice(-6);
-            const labels = keys.map(k => {
-                 const d = new Date(k+'-01');
-                 return d.toLocaleDateString('th-TH', { month:'short' });
-            });
-
-            if(State.myChart) State.myChart.destroy();
-            State.myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [
-                        { label: 'รับ', data: keys.map(k=>monthly[k].inc), backgroundColor: '#10b981', borderRadius: 4, barPercentage: 0.6 },
-                        { label: 'จ่าย', data: keys.map(k=>monthly[k].exp), backgroundColor: '#f43f5e', borderRadius: 4, barPercentage: 0.6 }
-                    ]
-                },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { position:'bottom', labels:{ boxWidth: 10, font:{size:10}, usePointStyle: true } } },
-                    scales: { y: { display: false }, x: { grid: { display: false }, ticks: { font: { size: 10 } } } }
-                }
-            });
-        }
-    };
-
-    // --- FILE HANDLER & MODAL CONTROLLER ---
-    const FileHandler = {
-        handleSelect: (e) => {
-            const file = e.target.files[0];
-            if(!file) return;
-            const reader = new FileReader();
-            reader.onload = (evt) => {
-                State.fileDataObj = { name: file.name, data: evt.target.result };
-                document.getElementById('uploadContent').classList.add('hidden');
-                document.getElementById('previewBox').classList.remove('hidden');
-                const isImg = file.type.startsWith('image/');
-                document.getElementById('previewInner').innerHTML = isImg ? `<img src="${evt.target.result}" class="h-full object-contain rounded">` : `<i class="fa-solid fa-file-pdf text-red-500 text-2xl"></i>`;
-            };
-            reader.readAsDataURL(file);
-        },
-        clear: (e) => {
-            if(e) e.preventDefault();
-            document.getElementById('fileInput').value = '';
-            State.fileDataObj = null;
-            document.getElementById('previewBox').classList.add('hidden');
-            document.getElementById('uploadContent').classList.remove('hidden');
-            document.getElementById('currentImageUrl').value = '';
-        }
-    };
-
-    const ModalController = {
-        open: () => {
-            document.getElementById('dataForm').reset();
-            document.getElementById('recId').value = "";
-            document.getElementById('modalTitle').innerText = "เพิ่มรายการ";
-            
-            // Set current datetime for new entry
-            const now = new Date();
-            now.setMinutes(now.getMinutes() - now.getTimezoneOffset()); // Adjust to local
-            document.getElementById('date').value = now.toISOString().slice(0, 16);
-            
-            const paySelect = document.getElementById('paymentMethod');
-            if(paySelect.options.length === 0) {
-                CONSTANTS.PAYMENT_METHODS.forEach(p => {
-                    const opt = document.createElement('option'); opt.value = p; opt.innerText = p; paySelect.appendChild(opt);
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                onAdd({ 
+                    ...formData, 
+                    amount: Number(formData.amount), 
+                    userId: currentUser.id 
                 });
-            }
-            ModalController.onTypeChange();
-            FileHandler.clear();
-            document.getElementById('entryModal').classList.remove('hidden');
-        },
-        close: () => {
-            document.getElementById('entryModal').classList.add('hidden');
-        },
-        onTypeChange: () => {
-            const type = document.querySelector('input[name="type"]:checked').value;
-            const catSelect = document.getElementById('category');
-            const btn = document.getElementById('submitBtn');
-            const style = type === 'รายรับ' ? CONSTANTS.COLORS.INCOME : CONSTANTS.COLORS.EXPENSE;
-            const hover = type === 'รายรับ' ? CONSTANTS.COLORS.HOVER_INCOME : CONSTANTS.COLORS.HOVER_EXPENSE;
+                setFormData({ 
+                    description: '', amount: '', type: 'expense', category: 'food', 
+                    date: new Date().toISOString().split('T')[0],
+                    paymentMethod: 'cash'
+                });
+            };
 
-            catSelect.innerHTML = '';
-            CONSTANTS.CATEGORIES[type].forEach(c => {
-                const opt = document.createElement('option'); opt.value = c; opt.innerText = c; catSelect.appendChild(opt);
-            });
-            btn.className = `w-full text-white font-bold py-3 rounded-xl shadow-lg text-sm mt-2 transition transform active:scale-95 ${style.BTN} ${hover}`;
-        },
-        edit: (item) => {
-            ModalController.open();
-            document.getElementById('modalTitle').innerText = "แก้ไขรายการ";
-            document.getElementById('recId').value = item.id;
-            
-            // item.date is likely ISO string from backend, works directly with datetime-local if formatted correctly
-            document.getElementById('date').value = item.date;
-            
-            const { category, desc, payment } = DataHelper.parseDescription(item.description);
-            setTimeout(() => {
-                document.getElementById('category').value = category;
-                document.getElementById('paymentMethod').value = payment;
-            }, 50);
+            return (
+                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 fade-in">
+                    <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden slide-up">
+                        <div className="bg-indigo-600 p-4 flex justify-between items-center">
+                            <h3 className="text-white font-semibold">เพิ่มรายการใหม่</h3>
+                            <button onClick={onClose} className="text-white/80 hover:text-white">&times;</button>
+                        </div>
+                        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+                            {/* Income / Expense Toggle */}
+                            <div className="flex gap-2 p-1 bg-slate-100 rounded-lg">
+                                {[
+                                    {id: 'income', label: 'รายรับ'}, 
+                                    {id: 'expense', label: 'รายจ่าย'}
+                                ].map((type) => (
+                                    <button type="button" key={type.id} onClick={() => setFormData({...formData, type: type.id})}
+                                        className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${formData.type === type.id 
+                                            ? (type.id === 'income' ? 'bg-emerald-500 text-white shadow' : 'bg-rose-500 text-white shadow')
+                                            : 'text-slate-500 hover:text-slate-700'}`}>
+                                        {type.label}
+                                    </button>
+                                ))}
+                            </div>
 
-            document.getElementById('description').value = desc;
-            document.getElementById('amount').value = item.amount;
-            document.getElementById('currentImageUrl').value = item.imageUrl;
-            document.getElementById('currentFileId').value = item.fileId;
-            const radios = document.getElementsByName('type');
-            for(let r of radios) { 
-                if(r.value === item.type) {
-                    r.checked = true;
-                    ModalController.onTypeChange(); // Update UI
-                } 
-            }
-            if(item.imageUrl) {
-                document.getElementById('uploadContent').classList.add('hidden');
-                document.getElementById('previewBox').classList.remove('hidden');
-                document.getElementById('previewInner').innerHTML = `<img src="${item.imageUrl}" class="h-full object-contain rounded">`;
-            }
-        }
-    };
+                            {/* Payment Method Toggle */}
+                            <div className="flex gap-4">
+                                <label className={`flex-1 cursor-pointer border rounded-xl p-3 flex items-center justify-center gap-2 transition-all ${formData.paymentMethod === 'cash' ? 'border-indigo-500 bg-indigo-50 text-indigo-700 ring-1 ring-indigo-500' : 'border-slate-200 text-slate-500 hover:bg-slate-50'}`}>
+                                    <input type="radio" name="paymentMethod" value="cash" className="hidden" 
+                                        checked={formData.paymentMethod === 'cash'} 
+                                        onChange={() => setFormData({...formData, paymentMethod: 'cash'})}/>
+                                    <Icons.Cash /> <span className="text-sm font-medium">เงินสด</span>
+                                </label>
+                                <label className={`flex-1 cursor-pointer border rounded-xl p-3 flex items-center justify-center gap-2 transition-all ${formData.paymentMethod === 'transfer' ? 'border-indigo-500 bg-indigo-50 text-indigo-700 ring-1 ring-indigo-500' : 'border-slate-200 text-slate-500 hover:bg-slate-50'}`}>
+                                    <input type="radio" name="paymentMethod" value="transfer" className="hidden" 
+                                        checked={formData.paymentMethod === 'transfer'} 
+                                        onChange={() => setFormData({...formData, paymentMethod: 'transfer'})}/>
+                                    <Icons.Transfer /> <span className="text-sm font-medium">เงินโอน</span>
+                                </label>
+                            </div>
 
-    // Initialize mock numbers on landing
-    window.addEventListener('load', () => {
-        ViewManager.showLanding();
-    });
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 mb-1">รายละเอียด</label>
+                                <input required type="text" className="w-full rounded-lg border-slate-300 border p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none" 
+                                    value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} placeholder="เช่น ค่าอาหารกลางวัน" />
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-slate-700 mb-1">จำนวนเงิน</label>
+                                    <input required type="number" min="0" step="0.01" className="w-full rounded-lg border-slate-300 border p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none" 
+                                        value={formData.amount} onChange={e => setFormData({...formData, amount: e.target.value})} placeholder="0.00" />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-slate-700 mb-1">วันที่</label>
+                                    <input required type="date" className="w-full rounded-lg border-slate-300 border p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none" 
+                                        value={formData.date} onChange={e => setFormData({...formData, date: e.target.value})} />
+                                </div>
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 mb-1">หมวดหมู่</label>
+                                <select className="w-full rounded-lg border-slate-300 border p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-white"
+                                    value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})}>
+                                    {CATEGORIES.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                                </select>
+                            </div>
+                            <button type="submit" disabled={isSaving} className="w-full bg-indigo-600 text-white py-3 rounded-xl font-medium hover:bg-indigo-700 active:scale-[0.98] transition-transform disabled:bg-indigo-400 flex justify-center items-center">
+                                {isSaving ? <div className="spinner"></div> : 'บันทึกรายการ'}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            );
+        };
 
-    document.getElementById('searchInput').addEventListener('keyup', () => {
-        FilterController.apply();
-    });
+        const Dashboard = ({ user, onLogout }) => {
+            const [transactions, setTransactions] = useState([]);
+            const [isModalOpen, setIsModalOpen] = useState(false);
+            const [view, setView] = useState('dashboard');
+            const [chartType, setChartType] = useState('bar');
+            const [isLoading, setIsLoading] = useState(false);
+            const [isSaving, setIsSaving] = useState(false);
 
-  </script>
+            // Fetch Data
+            const refreshData = async () => {
+                setIsLoading(true);
+                try {
+                    const data = await api.fetchAll();
+                    setTransactions(data);
+                } catch (err) {
+                    console.error("Fetch error", err);
+                    alert("ไม่สามารถดึงข้อมูลจาก Google Sheet ได้");
+                } finally {
+                    setIsLoading(false);
+                }
+            };
+
+            useEffect(() => {
+                refreshData();
+            }, []);
+
+            const visibleTransactions = useMemo(() => {
+                let data = transactions;
+                if (user.role !== 'admin') {
+                    data = transactions.filter(t => t.userId === user.id);
+                }
+                return data.sort((a, b) => new Date(b.date) - new Date(a.date));
+            }, [user, transactions]);
+
+            const stats = useMemo(() => {
+                const income = visibleTransactions.filter(t => t.type === 'income').reduce((acc, curr) => acc + curr.amount, 0);
+                const expense = visibleTransactions.filter(t => t.type === 'expense').reduce((acc, curr) => acc + curr.amount, 0);
+                return { income, expense, balance: income - expense };
+            }, [visibleTransactions]);
+
+            const categoryData = useMemo(() => {
+                const expenses = visibleTransactions.filter(t => t.type === 'expense');
+                const totalExpense = expenses.reduce((a, c) => a + c.amount, 0) || 1;
+                return CATEGORIES.map(cat => {
+                    const amount = expenses.filter(e => e.category === cat.id).reduce((a, c) => a + c.amount, 0);
+                    const percentage = Math.round((amount / totalExpense) * 100);
+                    return { ...cat, amount, percentage };
+                }).filter(c => c.amount > 0).sort((a, b) => b.amount - a.amount);
+            }, [visibleTransactions]);
+
+            const handleAddTransaction = async (newTx) => {
+                setIsSaving(true);
+                await api.add(newTx);
+                await refreshData(); 
+                setIsSaving(false);
+                setIsModalOpen(false);
+            };
+
+            const handleDeleteTransaction = async (id) => {
+                if(confirm("ต้องการลบรายการนี้ใช่หรือไม่?")) {
+                    const oldData = [...transactions];
+                    setTransactions(transactions.filter(t => t.id !== id));
+                    try {
+                        await api.delete(id);
+                    } catch (e) {
+                        setTransactions(oldData);
+                        alert("ลบข้อมูลล้มเหลว");
+                    }
+                }
+            };
+
+            // ฟังก์ชันช่วยหาชื่อผู้ใช้จาก ID (สำหรับหน้า Admin)
+            const getUserName = (userId) => {
+                const known = KNOWN_USERS.find(u => u.id === userId);
+                return known ? known.name : userId;
+            };
+
+            const navbarClass = user.role === 'admin' ? 'bg-slate-900' : 'bg-indigo-600';
+
+            const renderSummaryCards = () => (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-between">
+                        <span className="text-slate-400 text-sm font-medium uppercase tracking-wider">เงินคงเหลือสุทธิ</span>
+                        <div className="text-3xl font-bold text-slate-800 mt-2">{formatCurrency(stats.balance)}</div>
+                    </div>
+                    <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-between">
+                        <div className="flex justify-between items-start">
+                            <span className="text-emerald-600 text-sm font-medium uppercase tracking-wider">รายรับทั้งหมด</span>
+                            <div className="p-1.5 bg-emerald-100 text-emerald-600 rounded-lg"><Icons.TrendingUp /></div>
+                        </div>
+                        <div className="text-2xl font-bold text-emerald-600 mt-2">+{formatCurrency(stats.income)}</div>
+                    </div>
+                    <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-between">
+                        <div className="flex justify-between items-start">
+                            <span className="text-rose-600 text-sm font-medium uppercase tracking-wider">รายจ่ายทั้งหมด</span>
+                            <div className="p-1.5 bg-rose-100 text-rose-600 rounded-lg"><Icons.TrendingDown /></div>
+                        </div>
+                        <div className="text-2xl font-bold text-rose-600 mt-2">-{formatCurrency(stats.expense)}</div>
+                    </div>
+                </div>
+            );
+
+            const renderTransactionList = (limit = null) => {
+                const data = limit ? visibleTransactions.slice(0, limit) : visibleTransactions;
+                return (
+                    <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+                         <div className="p-6 border-b border-slate-50 flex justify-between items-center">
+                            <h3 className="font-bold text-lg text-slate-700">{limit ? 'รายการล่าสุด' : 'รายการทั้งหมด'}</h3>
+                            {limit && <button onClick={() => setView('list')} className="text-indigo-600 text-sm hover:underline">ดูทั้งหมด</button>}
+                        </div>
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-sm text-left">
+                                <thead className="text-xs text-slate-500 uppercase bg-slate-50">
+                                    <tr>
+                                        <th className="px-6 py-3">วันที่</th>
+                                        <th className="px-6 py-3">รายละเอียด</th>
+                                        <th className="px-6 py-3">หมวดหมู่</th>
+                                        <th className="px-6 py-3">ชำระ</th>
+                                        {user.role === 'admin' && <th className="px-6 py-3">ผู้ใช้</th>}
+                                        <th className="px-6 py-3 text-right">จำนวนเงิน</th>
+                                        <th className="px-6 py-3 text-center">ดำเนินการ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {isLoading ? (
+                                        <tr><td colSpan="7" className="text-center py-8"><div className="spinner border-slate-300 border-t-indigo-600 mx-auto"></div></td></tr>
+                                    ) : data.length === 0 ? (
+                                        <tr><td colSpan="7" className="text-center py-8 text-slate-400">ไม่พบข้อมูลรายการ</td></tr>
+                                    ) : (
+                                        data.map(t => (
+                                            <tr key={t.id} className="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                                                <td className="px-6 py-4 text-slate-500 whitespace-nowrap">{formatDate(t.date)}</td>
+                                                <td className="px-6 py-4 font-medium text-slate-700">{t.description}</td>
+                                                <td className="px-6 py-4">
+                                                    <span className="px-2 py-1 rounded-full text-xs font-semibold" 
+                                                        style={{ backgroundColor: `${CATEGORIES.find(c=>c.id===t.category)?.color}20`, color: CATEGORIES.find(c=>c.id===t.category)?.color }}>
+                                                        {CATEGORIES.find(c=>c.id===t.category)?.name || 'อื่นๆ'}
+                                                    </span>
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    {t.paymentMethod === 'transfer' ? 
+                                                        <span className="flex items-center gap-1 text-xs text-indigo-600 bg-indigo-50 px-2 py-1 rounded border border-indigo-100 w-fit"><Icons.Transfer/> โอน</span> : 
+                                                        <span className="flex items-center gap-1 text-xs text-slate-600 bg-slate-100 px-2 py-1 rounded border border-slate-200 w-fit"><Icons.Cash/> เงินสด</span>
+                                                    }
+                                                </td>
+                                                {user.role === 'admin' && <td className="px-6 py-4 text-slate-500 text-xs">{getUserName(t.userId)}</td>}
+                                                <td className={`px-6 py-4 text-right font-bold ${t.type === 'income' ? 'text-emerald-600' : 'text-slate-700'}`}>
+                                                    {t.type === 'income' ? '+' : '-'} {formatCurrency(t.amount)}
+                                                </td>
+                                                <td className="px-6 py-4 text-center">
+                                                    <button onClick={() => handleDeleteTransaction(t.id)} className="text-slate-400 hover:text-rose-500 transition-colors"><Icons.Trash /></button>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                );
+            };
+
+            const renderCharts = () => {
+                let currentDeg = 0;
+                const gradientParts = categoryData.map(cat => {
+                    const deg = (cat.percentage / 100) * 360;
+                    const str = `${cat.color} ${currentDeg}deg ${currentDeg + deg}deg`;
+                    currentDeg += deg;
+                    return str;
+                });
+                const conicGradient = `conic-gradient(${gradientParts.join(', ') || '#cbd5e1 0deg 360deg'})`;
+
+                return (
+                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 mb-6">
+                        <div className="flex justify-between items-center mb-6">
+                            <h3 className="font-bold text-lg text-slate-700">วิเคราะห์รายจ่าย</h3>
+                            <button onClick={() => setChartType(chartType === 'bar' ? 'doughnut' : 'bar')}
+                                className="text-xs bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-1 rounded-full font-medium transition-colors">
+                                เปลี่ยนเป็น {chartType === 'bar' ? 'กราฟวงกลม' : 'กราฟแท่ง'}
+                            </button>
+                        </div>
+                        {categoryData.length === 0 ? <div className="text-center text-slate-400 py-10">ไม่มีข้อมูลรายจ่าย</div> : (
+                            <div className="flex flex-col md:flex-row gap-8 items-center justify-center">
+                                <div className="w-full md:w-1/2 flex justify-center">
+                                    {chartType === 'bar' ? (
+                                        <div className="w-full space-y-3">
+                                            {categoryData.map(cat => (
+                                                <div key={cat.id}>
+                                                    <div className="flex justify-between text-xs mb-1">
+                                                        <span className="font-medium text-slate-600">{cat.name}</span>
+                                                        <span className="text-slate-500">{cat.percentage}%</span>
+                                                    </div>
+                                                    <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                                                        <div className="h-full rounded-full transition-all duration-500" style={{ width: `${cat.percentage}%`, backgroundColor: cat.color }}></div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div className="relative w-48 h-48 rounded-full shadow-inner" style={{ background: conicGradient }}>
+                                            <div className="absolute inset-0 m-auto w-32 h-32 bg-white rounded-full flex items-center justify-center">
+                                                <span className="text-slate-400 text-xs font-semibold">รายจ่าย</span>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="w-full md:w-1/2 grid grid-cols-2 gap-3">
+                                    {categoryData.map(cat => (
+                                        <div key={cat.id} className="flex items-center gap-2">
+                                            <span className="w-3 h-3 rounded-full" style={{ backgroundColor: cat.color }}></span>
+                                            <div>
+                                                <div className="text-sm font-medium text-slate-700">{cat.name}</div>
+                                                <div className="text-xs text-slate-500">{formatCurrency(cat.amount)}</div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                );
+            };
+
+            return (
+                <div className={`flex h-screen ${user.role === 'admin' ? 'bg-slate-100' : 'bg-slate-50'}`}>
+                    <div className="flex-1 flex flex-col h-full overflow-hidden">
+                        <header className={`${navbarClass} shadow-md z-10 text-white transition-colors duration-300`}>
+                            <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+                                <div className="flex items-center gap-2 cursor-pointer" onClick={() => setView('dashboard')}>
+                                    <div className="bg-white/20 p-1.5 rounded-lg"><Icons.Wallet /></div>
+                                    <h1 className="font-bold text-lg hidden md:block">{user.role === 'admin' ? 'แดชบอร์ดผู้ดูแล' : 'กระเป๋าเงินของฉัน'}</h1>
+                                </div>
+                                <div className="flex items-center gap-4">
+                                    <button onClick={refreshData} title="รีเฟรชข้อมูล" className="p-2 hover:bg-white/10 rounded-full transition-colors"><Icons.Refresh className="w-5 h-5"/></button>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center font-bold text-sm">{user.avatar}</div>
+                                        <span className="text-sm font-medium hidden sm:block">{user.name}</span>
+                                    </div>
+                                    <div className="h-6 w-px bg-white/20"></div>
+                                    <button onClick={onLogout} className="flex items-center gap-1 text-sm text-white/80 hover:text-white transition-colors">
+                                        <Icons.LogOut /><span className="hidden sm:block">ออก</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </header>
+
+                        <main className="flex-1 overflow-y-auto p-4 md:p-6 scroll-smooth">
+                            <div className="max-w-6xl mx-auto fade-in">
+                                {view === 'dashboard' ? (
+                                    <>
+                                        <div className="mb-6">
+                                            <h2 className="text-2xl font-bold text-slate-800">ภาพรวม</h2>
+                                            <p className="text-slate-500">ยินดีต้อนรับกลับ, นี่คือภาพรวมการเงินของคุณ</p>
+                                        </div>
+                                        {renderSummaryCards()}
+                                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                                            <div className="lg:col-span-1">{renderCharts()}</div>
+                                            <div className="lg:col-span-2">{renderTransactionList(5)}</div>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                         <div className="flex items-center gap-2 mb-6">
+                                            <button onClick={() => setView('dashboard')} className="text-slate-500 hover:text-indigo-600">หน้าหลัก</button>
+                                            <span className="text-slate-300">/</span>
+                                            <h2 className="text-2xl font-bold text-slate-800">รายการทั้งหมด</h2>
+                                         </div>
+                                         {renderTransactionList()}
+                                    </>
+                                )}
+                                <div className="h-24"></div>
+                            </div>
+                        </main>
+
+                        <button onClick={() => setIsModalOpen(true)} className="fixed bottom-6 right-6 md:bottom-10 md:right-10 w-14 h-14 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full shadow-lg shadow-indigo-600/30 flex items-center justify-center transition-transform hover:scale-110 active:scale-95 z-40">
+                            <Icons.Plus />
+                        </button>
+                    </div>
+
+                    <AddTransactionModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onAdd={handleAddTransaction} currentUser={user} isSaving={isSaving} />
+                </div>
+            );
+        };
+
+        const App = () => {
+            const [currentUser, setCurrentUser] = useState(null);
+            return (
+                <div className="font-sans antialiased text-slate-900 bg-slate-50 min-h-screen">
+                    {currentUser ? <Dashboard user={currentUser} onLogout={() => setCurrentUser(null)} /> : <LoginScreen onLogin={setCurrentUser} />}
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
 </body>
 </html>
