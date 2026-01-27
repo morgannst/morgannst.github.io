@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบบันทึกรายรับ-รายจ่าย (Real Login)</title>
+    <title>ระบบบันทึกรายรับ-รายจ่าย (Filter & Edit)</title>
     
     <!-- Google Fonts: Noto Sans Thai -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -103,7 +103,6 @@
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxRNiK8lOstCv7kjCXEuEuAUaJgP3q_51g0_Q8i9iihj-SqyQkIIWO1Clw2xRh1kwxE/exec"; 
 
         // --- DATA CONSTANTS ---
-        // ใช้สำหรับแสดงชื่อในหน้า Admin (Fallback)
         const KNOWN_USERS = [
             { id: 'morgan', name: 'ยิ่งยศ' },
             { id: 'ju', name: 'พี่จุ๊' },
@@ -111,12 +110,11 @@
             { id: 'aunpun', name: 'บุปผาทิพย์' },
         ];
 
-        // ปรับหมวดหมู่ตามที่ระบุ
         const CATEGORIES = [
-            { id: 'mor', name: 'พี่หมอ', color: '#8b5cf6' }, // Violet
-            { id: 'ju', name: 'พี่จุ๊', color: '#ec4899' }, // Pink
-            { id: 'food', name: 'ค่ากับข้าว', color: '#f59e0b' }, // Amber
-            { id: 'fuel', name: 'เติมน้ำมัน', color: '#3b82f6' }, // Blue
+            { id: 'mor', name: 'พี่หมอ', color: '#8b5cf6' },
+            { id: 'ju', name: 'พี่จุ๊', color: '#ec4899' },
+            { id: 'food', name: 'ค่ากับข้าว', color: '#f59e0b' },
+            { id: 'fuel', name: 'เติมน้ำมัน', color: '#3b82f6' },
         ];
 
         // --- ICONS ---
@@ -126,6 +124,7 @@
             TrendingDown: () => <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>,
             Plus: () => <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>,
             Trash: () => <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>,
+            Edit: () => <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>,
             LogOut: () => <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>,
             Refresh: ({className}) => <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>,
             Shield: () => <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
@@ -148,38 +147,13 @@
             login: async (username, password) => {
                 if (!GOOGLE_SCRIPT_URL) return null;
                 try {
-                    const res = await fetch(GOOGLE_SCRIPT_URL, {
-                        method: 'POST',
-                        mode: 'no-cors', // ข้อจำกัดของ Google Apps Script
-                        headers: { 'Content-Type': 'application/json' },
-                        // เราต้องใช้ trick เล็กน้อยเพราะ no-cors ไม่ return response body
-                        // แต่สำหรับการ Login เราต้องการ body... 
-                        // *หมายเหตุ* Google Apps Script Web App ปกติรองรับการ return JSON ใน simple GET/POST
-                        // แต่ถ้าติด CORS เรามักจะใช้ redirect. ในที่นี้เราจะลองส่งแบบ text/plain
-                        body: JSON.stringify({ action: 'login', username, password })
+                    const response = await fetch(GOOGLE_SCRIPT_URL, {
+                         method: 'POST',
+                         body: JSON.stringify({ action: 'login', username, password })
                     });
-                    
-                    // เนื่องจาก no-cors อ่าน body ไม่ได้ เราจึงต้องเปลี่ยนวิธี
-                    // วิธีที่ถูกต้องสำหรับ Apps Script คือใช้ redirect_uri หรือ JSONP แต่ยุ่งยาก
-                    // **วิธีแก้ที่ง่ายที่สุด**: ใช้ fetch แบบปกติ (cors) แต่ต้องมั่นใจว่า Script Deploy เป็น "Anyone"
-                    // ลองเรียกแบบปกติก่อน
-                } catch(e) {
-                   //
-                }
-
-                // *Workaround for Login*:
-                // เนื่องจาก fetch('POST') มักติด CORS กับ Apps Script หากต้องการอ่าน Response
-                // เราจะใช้การส่งข้อมูลผ่าน URL Parameters (GET) แทนสำหรับ Login (ไม่ปลอดภัยที่สุดแต่ใช้ง่ายสุดใน Single File)
-                // หรือใช้ POST แต่ต้องยอมรับว่าอ่าน Response ลำบาก
-                // แต่เดี๋ยวก่อน! เรา Deploy เป็น "Anyone" แล้ว Apps Script จะ return CORS header ให้
-                // ดังนั้นเราสามารถใช้ POST และอ่าน JSON ได้ถ้า script return header ถูกต้อง
-                
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
-                     method: 'POST',
-                     body: JSON.stringify({ action: 'login', username, password })
-                });
-                const data = await response.json();
-                return data;
+                    const data = await response.json();
+                    return data;
+                } catch(e) { return null; }
             },
             add: async (transaction) => {
                 const payload = { 
@@ -187,12 +161,16 @@
                     ...transaction,
                     timestamp: new Date().toLocaleString('th-TH')
                 };
-                // ใช้ no-cors สำหรับ write operation เพราะเราไม่สน response body มากนัก (แค่หวังว่ามันจะสำเร็จ)
-                // หรือใช้ POST ปกติถ้า script รองรับ
-                await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(payload)
-                });
+                await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+                return true; 
+            },
+            edit: async (transaction) => {
+                const payload = { 
+                    action: 'edit', 
+                    ...transaction,
+                    timestamp: new Date().toLocaleString('th-TH')
+                };
+                await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
                 return true; 
             },
             delete: async (id) => {
@@ -216,7 +194,6 @@
                 e.preventDefault();
                 setIsLoading(true);
                 setError('');
-                
                 try {
                     const res = await api.login(username, password);
                     if (res && res.status === 'success') {
@@ -225,7 +202,6 @@
                         setError(res?.message || 'เข้าสู่ระบบไม่สำเร็จ');
                     }
                 } catch (err) {
-                    console.error(err);
                     setError('เกิดข้อผิดพลาดในการเชื่อมต่อ');
                 } finally {
                     setIsLoading(false);
@@ -242,53 +218,28 @@
                             <h1 className="text-2xl font-bold text-slate-800">เข้าสู่ระบบ</h1>
                             <p className="text-slate-500 text-sm">ระบบติดตามการเงิน</p>
                         </div>
-
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 mb-1">ชื่อผู้ใช้</label>
                                 <div className="relative">
                                     <span className="absolute left-3 top-2.5 text-slate-400"><Icons.User /></span>
-                                    <input 
-                                        type="text" 
-                                        required
-                                        className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
-                                        placeholder="Username"
-                                        value={username}
-                                        onChange={(e) => setUsername(e.target.value)}
-                                    />
+                                    <input type="text" required className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+                                        placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
                                 </div>
                             </div>
-                            
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 mb-1">รหัสผ่าน</label>
                                 <div className="relative">
                                     <span className="absolute left-3 top-2.5 text-slate-400"><Icons.Lock /></span>
-                                    <input 
-                                        type="password" 
-                                        required
-                                        className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
-                                        placeholder="Password"
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                    />
+                                    <input type="password" required className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+                                        placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
                                 </div>
                             </div>
-
-                            {error && (
-                                <div className="text-red-500 text-sm text-center bg-red-50 p-2 rounded-lg border border-red-100">
-                                    {error}
-                                </div>
-                            )}
-
-                            <button 
-                                type="submit" 
-                                disabled={isLoading}
-                                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-lg shadow-lg shadow-indigo-500/30 transition-all active:scale-[0.98] flex justify-center items-center gap-2"
-                            >
+                            {error && <div className="text-red-500 text-sm text-center bg-red-50 p-2 rounded-lg border border-red-100">{error}</div>}
+                            <button type="submit" disabled={isLoading} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-lg shadow-lg shadow-indigo-500/30 transition-all active:scale-[0.98] flex justify-center items-center gap-2">
                                 {isLoading ? <div className="spinner w-5 h-5 border-2"></div> : 'เข้าสู่ระบบ'}
                             </button>
                         </form>
-
                         <div className="mt-6 pt-6 border-t border-slate-100 text-center">
                             <p className="text-xs text-slate-400">copy right by yingyot</p>
                         </div>
@@ -297,26 +248,45 @@
             );
         };
 
-        const AddTransactionModal = ({ isOpen, onClose, onAdd, currentUser, isSaving }) => {
+        const AddTransactionModal = ({ isOpen, onClose, onSave, currentUser, isSaving, transactionToEdit }) => {
             const [formData, setFormData] = useState({
                 description: '', amount: '', type: 'expense', category: 'food',
                 date: new Date().toISOString().split('T')[0],
                 paymentMethod: 'cash'
             });
 
+            // Effect to reset form or populate with edit data
+            useEffect(() => {
+                if (isOpen) {
+                    if (transactionToEdit) {
+                        setFormData({
+                            description: transactionToEdit.description,
+                            amount: transactionToEdit.amount,
+                            type: transactionToEdit.type,
+                            category: transactionToEdit.category,
+                            date: transactionToEdit.date, // format YYYY-MM-DD
+                            paymentMethod: transactionToEdit.paymentMethod || 'cash'
+                        });
+                    } else {
+                        // Reset for new entry
+                        setFormData({
+                            description: '', amount: '', type: 'expense', category: 'food',
+                            date: new Date().toISOString().split('T')[0],
+                            paymentMethod: 'cash'
+                        });
+                    }
+                }
+            }, [isOpen, transactionToEdit]);
+
             if (!isOpen) return null;
 
             const handleSubmit = (e) => {
                 e.preventDefault();
-                onAdd({ 
+                onSave({ 
                     ...formData, 
                     amount: Number(formData.amount), 
-                    userId: currentUser.id 
-                });
-                setFormData({ 
-                    description: '', amount: '', type: 'expense', category: 'food', 
-                    date: new Date().toISOString().split('T')[0],
-                    paymentMethod: 'cash'
+                    userId: currentUser.id,
+                    id: transactionToEdit ? transactionToEdit.id : undefined // Pass ID if editing
                 });
             };
 
@@ -324,41 +294,29 @@
                 <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 fade-in">
                     <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden slide-up">
                         <div className="bg-indigo-600 p-4 flex justify-between items-center">
-                            <h3 className="text-white font-semibold">เพิ่มรายการใหม่</h3>
+                            <h3 className="text-white font-semibold">{transactionToEdit ? 'แก้ไขรายการ' : 'เพิ่มรายการใหม่'}</h3>
                             <button onClick={onClose} className="text-white/80 hover:text-white">&times;</button>
                         </div>
                         <form onSubmit={handleSubmit} className="p-6 space-y-4">
-                            {/* Income / Expense Toggle */}
                             <div className="flex gap-2 p-1 bg-slate-100 rounded-lg">
-                                {[
-                                    {id: 'income', label: 'รายรับ'}, 
-                                    {id: 'expense', label: 'รายจ่าย'}
-                                ].map((type) => (
+                                {[{id: 'income', label: 'รายรับ'}, {id: 'expense', label: 'รายจ่าย'}].map((type) => (
                                     <button type="button" key={type.id} onClick={() => setFormData({...formData, type: type.id})}
                                         className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${formData.type === type.id 
-                                            ? (type.id === 'income' ? 'bg-emerald-500 text-white shadow' : 'bg-rose-500 text-white shadow')
-                                            : 'text-slate-500 hover:text-slate-700'}`}>
+                                            ? (type.id === 'income' ? 'bg-emerald-500 text-white shadow' : 'bg-rose-500 text-white shadow') : 'text-slate-500 hover:text-slate-700'}`}>
                                         {type.label}
                                     </button>
                                 ))}
                             </div>
-
-                            {/* Payment Method Toggle */}
                             <div className="flex gap-4">
                                 <label className={`flex-1 cursor-pointer border rounded-xl p-3 flex items-center justify-center gap-2 transition-all ${formData.paymentMethod === 'cash' ? 'border-indigo-500 bg-indigo-50 text-indigo-700 ring-1 ring-indigo-500' : 'border-slate-200 text-slate-500 hover:bg-slate-50'}`}>
-                                    <input type="radio" name="paymentMethod" value="cash" className="hidden" 
-                                        checked={formData.paymentMethod === 'cash'} 
-                                        onChange={() => setFormData({...formData, paymentMethod: 'cash'})}/>
+                                    <input type="radio" name="paymentMethod" value="cash" className="hidden" checked={formData.paymentMethod === 'cash'} onChange={() => setFormData({...formData, paymentMethod: 'cash'})}/>
                                     <Icons.Cash /> <span className="text-sm font-medium">เงินสด</span>
                                 </label>
                                 <label className={`flex-1 cursor-pointer border rounded-xl p-3 flex items-center justify-center gap-2 transition-all ${formData.paymentMethod === 'transfer' ? 'border-indigo-500 bg-indigo-50 text-indigo-700 ring-1 ring-indigo-500' : 'border-slate-200 text-slate-500 hover:bg-slate-50'}`}>
-                                    <input type="radio" name="paymentMethod" value="transfer" className="hidden" 
-                                        checked={formData.paymentMethod === 'transfer'} 
-                                        onChange={() => setFormData({...formData, paymentMethod: 'transfer'})}/>
+                                    <input type="radio" name="paymentMethod" value="transfer" className="hidden" checked={formData.paymentMethod === 'transfer'} onChange={() => setFormData({...formData, paymentMethod: 'transfer'})}/>
                                     <Icons.Transfer /> <span className="text-sm font-medium">เงินโอน</span>
                                 </label>
                             </div>
-
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 mb-1">รายละเอียด</label>
                                 <input required type="text" className="w-full rounded-lg border-slate-300 border p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none" 
@@ -384,7 +342,7 @@
                                 </select>
                             </div>
                             <button type="submit" disabled={isSaving} className="w-full bg-indigo-600 text-white py-3 rounded-xl font-medium hover:bg-indigo-700 active:scale-[0.98] transition-transform disabled:bg-indigo-400 flex justify-center items-center">
-                                {isSaving ? <div className="spinner"></div> : 'บันทึกรายการ'}
+                                {isSaving ? <div className="spinner"></div> : (transactionToEdit ? 'บันทึกการแก้ไข' : 'บันทึกรายการ')}
                             </button>
                         </form>
                     </div>
@@ -395,36 +353,40 @@
         const Dashboard = ({ user, onLogout }) => {
             const [transactions, setTransactions] = useState([]);
             const [isModalOpen, setIsModalOpen] = useState(false);
+            const [transactionToEdit, setTransactionToEdit] = useState(null); // State for editing
             const [view, setView] = useState('dashboard');
             const [chartType, setChartType] = useState('bar');
             const [isLoading, setIsLoading] = useState(false);
             const [isSaving, setIsSaving] = useState(false);
 
-            // Fetch Data
+            // Filter State: Default to current month YYYY-MM
+            const [filterMonth, setFilterMonth] = useState(new Date().toISOString().slice(0, 7));
+
             const refreshData = async () => {
                 setIsLoading(true);
                 try {
                     const data = await api.fetchAll();
                     setTransactions(data);
-                } catch (err) {
-                    console.error("Fetch error", err);
-                    alert("ไม่สามารถดึงข้อมูลจาก Google Sheet ได้");
-                } finally {
-                    setIsLoading(false);
-                }
+                } catch (err) { alert("ไม่สามารถดึงข้อมูลได้"); } finally { setIsLoading(false); }
             };
 
-            useEffect(() => {
-                refreshData();
-            }, []);
+            useEffect(() => { refreshData(); }, []);
 
             const visibleTransactions = useMemo(() => {
                 let data = transactions;
+                
+                // 1. Role Filter
                 if (user.role !== 'admin') {
                     data = transactions.filter(t => t.userId === user.id);
                 }
+
+                // 2. Date Filter (Month)
+                if (filterMonth) {
+                    data = data.filter(t => t.date.startsWith(filterMonth));
+                }
+
                 return data.sort((a, b) => new Date(b.date) - new Date(a.date));
-            }, [user, transactions]);
+            }, [user, transactions, filterMonth]);
 
             const stats = useMemo(() => {
                 const income = visibleTransactions.filter(t => t.type === 'income').reduce((acc, curr) => acc + curr.amount, 0);
@@ -442,28 +404,34 @@
                 }).filter(c => c.amount > 0).sort((a, b) => b.amount - a.amount);
             }, [visibleTransactions]);
 
-            const handleAddTransaction = async (newTx) => {
+            const handleSaveTransaction = async (txData) => {
                 setIsSaving(true);
-                await api.add(newTx);
+                if (txData.id) {
+                    // Edit Mode
+                    await api.edit(txData);
+                } else {
+                    // Add Mode
+                    await api.add(txData);
+                }
                 await refreshData(); 
                 setIsSaving(false);
                 setIsModalOpen(false);
+                setTransactionToEdit(null);
+            };
+
+            const handleEditClick = (tx) => {
+                setTransactionToEdit(tx);
+                setIsModalOpen(true);
             };
 
             const handleDeleteTransaction = async (id) => {
                 if(confirm("ต้องการลบรายการนี้ใช่หรือไม่?")) {
                     const oldData = [...transactions];
                     setTransactions(transactions.filter(t => t.id !== id));
-                    try {
-                        await api.delete(id);
-                    } catch (e) {
-                        setTransactions(oldData);
-                        alert("ลบข้อมูลล้มเหลว");
-                    }
+                    try { await api.delete(id); } catch (e) { setTransactions(oldData); alert("ลบข้อมูลล้มเหลว"); }
                 }
             };
 
-            // ฟังก์ชันช่วยหาชื่อผู้ใช้จาก ID (สำหรับหน้า Admin)
             const getUserName = (userId) => {
                 const known = KNOWN_USERS.find(u => u.id === userId);
                 return known ? known.name : userId;
@@ -498,9 +466,22 @@
                 const data = limit ? visibleTransactions.slice(0, limit) : visibleTransactions;
                 return (
                     <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-                         <div className="p-6 border-b border-slate-50 flex justify-between items-center">
-                            <h3 className="font-bold text-lg text-slate-700">{limit ? 'รายการล่าสุด' : 'รายการทั้งหมด'}</h3>
-                            {limit && <button onClick={() => setView('list')} className="text-indigo-600 text-sm hover:underline">ดูทั้งหมด</button>}
+                         <div className="p-6 border-b border-slate-50 flex flex-col md:flex-row justify-between items-center gap-4">
+                            <div className="flex items-center gap-4 w-full md:w-auto">
+                                <h3 className="font-bold text-lg text-slate-700">{limit ? 'รายการล่าสุด' : 'รายการทั้งหมด'}</h3>
+                                {limit && <button onClick={() => setView('list')} className="text-indigo-600 text-sm hover:underline">ดูทั้งหมด</button>}
+                            </div>
+                            
+                            {/* Monthly Filter Input */}
+                            <div className="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200">
+                                <span className="text-xs text-slate-500 font-medium uppercase">เดือน:</span>
+                                <input 
+                                    type="month" 
+                                    value={filterMonth}
+                                    onChange={(e) => setFilterMonth(e.target.value)}
+                                    className="bg-transparent text-sm text-slate-700 font-medium focus:outline-none"
+                                />
+                            </div>
                         </div>
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm text-left">
@@ -519,7 +500,7 @@
                                     {isLoading ? (
                                         <tr><td colSpan="7" className="text-center py-8"><div className="spinner border-slate-300 border-t-indigo-600 mx-auto"></div></td></tr>
                                     ) : data.length === 0 ? (
-                                        <tr><td colSpan="7" className="text-center py-8 text-slate-400">ไม่พบข้อมูลรายการ</td></tr>
+                                        <tr><td colSpan="7" className="text-center py-8 text-slate-400">ไม่พบข้อมูลในเดือนนี้</td></tr>
                                     ) : (
                                         data.map(t => (
                                             <tr key={t.id} className="border-b border-slate-50 hover:bg-slate-50 transition-colors">
@@ -542,7 +523,14 @@
                                                     {t.type === 'income' ? '+' : '-'} {formatCurrency(t.amount)}
                                                 </td>
                                                 <td className="px-6 py-4 text-center">
-                                                    <button onClick={() => handleDeleteTransaction(t.id)} className="text-slate-400 hover:text-rose-500 transition-colors"><Icons.Trash /></button>
+                                                    <div className="flex justify-center gap-2">
+                                                        <button onClick={() => handleEditClick(t)} className="text-slate-400 hover:text-indigo-600 transition-colors" title="แก้ไข">
+                                                            <Icons.Edit />
+                                                        </button>
+                                                        <button onClick={() => handleDeleteTransaction(t.id)} className="text-slate-400 hover:text-rose-500 transition-colors" title="ลบ">
+                                                            <Icons.Trash />
+                                                        </button>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         ))
@@ -573,7 +561,7 @@
                                 เปลี่ยนเป็น {chartType === 'bar' ? 'กราฟวงกลม' : 'กราฟแท่ง'}
                             </button>
                         </div>
-                        {categoryData.length === 0 ? <div className="text-center text-slate-400 py-10">ไม่มีข้อมูลรายจ่าย</div> : (
+                        {categoryData.length === 0 ? <div className="text-center text-slate-400 py-10">ไม่มีข้อมูลรายจ่ายในเดือนนี้</div> : (
                             <div className="flex flex-col md:flex-row gap-8 items-center justify-center">
                                 <div className="w-full md:w-1/2 flex justify-center">
                                     {chartType === 'bar' ? (
@@ -642,10 +630,24 @@
                             <div className="max-w-6xl mx-auto fade-in">
                                 {view === 'dashboard' ? (
                                     <>
-                                        <div className="mb-6">
-                                            <h2 className="text-2xl font-bold text-slate-800">ภาพรวม</h2>
-                                            <p className="text-slate-500">ยินดีต้อนรับกลับ, นี่คือภาพรวมการเงินของคุณ</p>
+                                        <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                                            <div>
+                                                <h2 className="text-2xl font-bold text-slate-800">ภาพรวม</h2>
+                                                <p className="text-slate-500">ยินดีต้อนรับกลับ, นี่คือภาพรวมการเงินของคุณ</p>
+                                            </div>
+                                            
+                                            {/* Date Filter (Mobile/Header) */}
+                                            <div className="bg-white p-2 rounded-xl shadow-sm border border-slate-100 flex items-center gap-3">
+                                                 <span className="text-xs font-bold text-slate-500 uppercase px-2">ประจำเดือน</span>
+                                                 <input 
+                                                    type="month" 
+                                                    value={filterMonth}
+                                                    onChange={(e) => setFilterMonth(e.target.value)}
+                                                    className="bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-2"
+                                                />
+                                            </div>
                                         </div>
+
                                         {renderSummaryCards()}
                                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                                             <div className="lg:col-span-1">{renderCharts()}</div>
@@ -666,12 +668,19 @@
                             </div>
                         </main>
 
-                        <button onClick={() => setIsModalOpen(true)} className="fixed bottom-6 right-6 md:bottom-10 md:right-10 w-14 h-14 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full shadow-lg shadow-indigo-600/30 flex items-center justify-center transition-transform hover:scale-110 active:scale-95 z-40">
+                        <button onClick={() => { setTransactionToEdit(null); setIsModalOpen(true); }} className="fixed bottom-6 right-6 md:bottom-10 md:right-10 w-14 h-14 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full shadow-lg shadow-indigo-600/30 flex items-center justify-center transition-transform hover:scale-110 active:scale-95 z-40">
                             <Icons.Plus />
                         </button>
                     </div>
 
-                    <AddTransactionModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onAdd={handleAddTransaction} currentUser={user} isSaving={isSaving} />
+                    <AddTransactionModal 
+                        isOpen={isModalOpen} 
+                        onClose={() => { setIsModalOpen(false); setTransactionToEdit(null); }} 
+                        onSave={handleSaveTransaction} 
+                        currentUser={user} 
+                        isSaving={isSaving}
+                        transactionToEdit={transactionToEdit}
+                    />
                 </div>
             );
         };
