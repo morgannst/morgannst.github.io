@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Customer Support Hub</title>
+    <link id="favicon" rel="icon" href="https://cdn-icons-png.flaticon.com/128/2496/2496626.png">
+    <link id="apple-touch-icon" rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/128/2496/2496626.png">
+    <meta name="description" content="Customer Support Hub" />
+    <meta name="author" content="iton5" />
+    <meta property="og:title" content="Customer Support Hub" />
+    <meta property="og:description" content="Customer Support Hub-iton5 Thailand" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://botstickerlth.iton5.com" />
+    <meta property="og:image" content="https://cdn-icons-png.flaticon.com/128/2496/2496626.png" />
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/128/2496/2496626.png">
+    <meta name="description" content="Customer Support Hub" />
+
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.7/dayjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.7/plugin/relativeTime.min.js"></script>
+    <script>dayjs.extend(window.dayjs_plugin_relativeTime)</script>
+
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap');
+
+        :root {
+            --color-blue: #5bc0eb;
+            --color-yellow: #fde74c;
+            --color-green: #9bc53d;
+            --color-red: #c3423f;
+            --color-dark: #211a1e;
+        }
+
+        body {
+            font-family: 'Prompt', sans-serif;
+            background: #f3f4f6;
+            color: var(--color-dark);
+            overscroll-behavior-y: none;
+            /* Prevent pull-to-refresh on mobile */
+        }
+
+
+        .glass {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--color-blue) 0%, #4a90e2 100%);
+        }
+
+
+        @keyframes slideInUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .animate-slide-up {
+            animation: slideInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(91, 192, 235, 0.7);
+            }
+
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(91, 192, 235, 0);
+            }
+
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(91, 192, 235, 0);
+            }
+        }
+
+        .btn-pulse {
+            animation: pulse-ring 2s infinite;
+        }
+
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+
+        .status-open {
+            background-color: var(--color-blue);
+            color: white;
+        }
+
+        .status-in_progress {
+            background-color: var(--color-yellow);
+            color: var(--color-dark);
+        }
+
+        .status-closed {
+            background-color: var(--color-green);
+            color: white;
+        }
+
+
+        .chat-bubble-user {
+            background: linear-gradient(135deg, var(--color-blue), #4a9ec2);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-bubble-admin {
+            background: white;
+            color: var(--color-dark);
+            border: 1px solid #e5e7eb;
+            border-bottom-left-radius: 4px;
+        }
+
+
+        .deleted-msg {
+            color: #9ca3af;
+            font-style: italic;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+
+        .loader-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.3s;
+        }
+
+        .hidden-loader {
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body class="h-screen w-screen overflow-hidden flex flex-col bg-gray-50">
+
+
+    <div id="loader" class="loader-overlay">
+        <img src="https://developers.line.biz/media/line-mini-app/LINE_spinner_light.svg" width="60" alt="Loading...">
+        <p class="mt-4 text-gray-500 font-medium animate-pulse">กำลังเชื่อมต่อระบบ...</p>
+    </div>
+
+
+    <div id="app"
+        class="flex-1 flex flex-col relative max-w-md mx-auto w-full bg-white shadow-2xl overflow-hidden h-full">
+
+
+        <header class="glass h-16 px-4 flex items-center justify-between shrink-0 z-20 relative shadow-sm">
+            <h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-green-500 cursor-pointer"
+                onclick="app.goHome()">
+                Support Hub
+            </h1>
+            <div class="flex items-center gap-2">
+                <div id="user-info" class="flex items-center gap-2 text-sm text-gray-600">
+                    <img id="user-avatar" src="https://cdn-icons-png.flaticon.com/128/2102/2102633.png"
+                        class="w-8 h-8 rounded-full border border-gray-200">
+                    <span id="user-name" class="hidden sm:inline font-medium">Guest</span>
+                </div>
+            </div>
+        </header>
+
+
+        <main id="main-content" class="flex-1 overflow-y-auto bg-gray-50 relative scroll-smooth no-scrollbar pb-20">
+
+        </main>
+
+
+        <button id="fab-create" onclick="app.openCreateTicket()"
+            class="absolute bottom-6 right-6 w-14 h-14 rounded-full gradient-bg text-white shadow-lg flex items-center justify-center btn-pulse z-30 transition hover:scale-110 active:scale-90 hidden">
+            <i class="fa-solid fa-plus text-xl"></i>
+        </button>
+
+    </div>
+
+
+
+    <template id="tpl-customer-home">
+        <div class="p-4 space-y-4 animate-slide-up">
+            <div class="bg-blue-50 rounded-2xl p-5 border border-blue-100 shadow-sm">
+                <h2 class="text-lg font-bold text-gray-800">สวัสดีครับ, <span class="user-display-name"></span> 👋</h2>
+                <p class="text-sm text-gray-500 mt-1">พบปัญหาการใช้งาน แจ้งเราได้ทันทีครับ</p>
+            </div>
+
+            <div class="flex justify-between items-end px-1">
+                <h3 class="font-bold text-gray-700 text-lg">ประวัติการแจ้งปัญหา</h3>
+                <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full"
+                    id="ticket-count">โหลดข้อมูล...</span>
+            </div>
+
+            <div id="ticket-list-container" class="space-y-3 pb-4">
+
+            </div>
+        </div>
+    </template>
+
+
+    <template id="tpl-create-ticket">
+        <div class="flex flex-col h-full animate-slide-up bg-white">
+            <div class="p-4 border-b flex items-center gap-2 shrink-0">
+                <button onclick="app.goHome()"
+                    class="text-gray-500 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100">
+                    <i class="fa-solid fa-arrow-left text-lg"></i>
+                </button>
+                <h2 class="text-lg font-bold text-gray-800">แจ้งปัญหาใหม่</h2>
+            </div>
+
+            <div class="p-6 space-y-5 flex-1 overflow-y-auto">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">หัวข้อเรื่อง</label>
+                    <input type="text" id="inp-subject"
+                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition bg-gray-50"
+                        placeholder="เช่น เข้าใช้งานไม่ได้...">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">รายละเอียด</label>
+                    <textarea id="inp-message" rows="5"
+                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition bg-gray-50 resize-none"
+                        placeholder="อธิบายปัญหาที่พบ..."></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">รูปภาพประกอบ</label>
+                    <div class="border-2 border-dashed border-gray-300 rounded-xl p-4 text-center hover:bg-gray-50 transition cursor-pointer relative group"
+                        id="upload-area">
+                        <input type="file" id="inp-file" class="absolute inset-0 opacity-0 cursor-pointer z-10"
+                            accept="image/*" onchange="app.handleFileSelect(this)">
+                        <div id="upload-placeholder">
+                            <i
+                                class="fa-regular fa-image text-3xl text-gray-400 mb-2 group-hover:text-blue-400 transition"></i>
+                            <p class="text-sm text-gray-500">แตะเพื่อเลือกรูปภาพ</p>
+                        </div>
+                        <div id="upload-preview" class="hidden relative">
+                            <img id="preview-img" src="" class="max-h-48 mx-auto rounded-lg shadow-sm">
+                            <button onclick="app.clearFile(event)"
+                                class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center shadow-md z-20">
+                                <i class="fa-solid fa-times text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-4 border-t bg-white shrink-0">
+                <button onclick="app.submitTicket()"
+                    class="w-full py-3.5 rounded-xl gradient-bg text-white font-bold shadow-lg shadow-blue-200/50 hover:shadow-blue-300/50 transform active:scale-[0.98] transition flex items-center justify-center gap-2">
+                    <span>ส่งเรื่องแจ้งปัญหา</span>
+                    <i class="fa-solid fa-paper-plane text-sm"></i>
+                </button>
+            </div>
+        </div>
+    </template>
+
+
+    <template id="tpl-chat-room">
+        <div class="flex flex-col h-full bg-white animate-slide-up">
+
+            <div class="px-4 py-3 border-b flex items-center gap-3 bg-white z-20 shadow-sm shrink-0">
+                <button onclick="app.goBack()" class="text-gray-500 p-1"><i class="fa-solid fa-arrow-left"></i></button>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-bold text-gray-800 truncate text-sm" id="chat-subject">Loading...</h3>
+                    <p class="text-[10px] text-gray-400" id="chat-id">#ID</p>
+                </div>
+                <div id="chat-status-badge" class="px-2 py-1 rounded text-[10px] font-bold whitespace-nowrap">...</div>
+            </div>
+
+
+            <div id="messages-container" class="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50">
+
+            </div>
+
+
+            <div class="p-3 bg-white border-t flex gap-2 items-end shrink-0 z-20 shadow-[0_-2px_10px_rgba(0,0,0,0.02)]">
+
+                <input type="file" id="chat-file-input" class="hidden" accept="image/*"
+                    onchange="app.handleChatFileSelect(this)">
+
+                <button onclick="document.getElementById('chat-file-input').click()"
+                    class="text-gray-400 p-2 hover:text-blue-500 transition rounded-full hover:bg-gray-100 mb-1">
+                    <i class="fa-solid fa-image text-lg"></i>
+                </button>
+
+                <div
+                    class="flex-1 bg-gray-100 rounded-2xl flex flex-col px-3 py-2 border border-transparent focus-within:border-blue-300 focus-within:bg-white transition">
+
+                    <div id="chat-upload-preview" class="hidden mb-2 relative w-fit">
+                        <img id="chat-preview-img" src="" class="h-16 rounded-lg border">
+                        <button onclick="app.clearChatFile()"
+                            class="absolute -top-2 -right-2 bg-gray-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px]">✕</button>
+                    </div>
+                    <textarea id="chat-input" rows="1"
+                        class="w-full bg-transparent border-none focus:ring-0 text-sm resize-none max-h-24 outline-none"
+                        placeholder="พิมพ์ข้อความ..."></textarea>
+                </div>
+
+                <button onclick="app.sendChatMessage()"
+                    class="w-10 h-10 rounded-full gradient-bg text-white flex items-center justify-center shadow-md active:scale-90 transition mb-1">
+                    <i class="fa-solid fa-paper-plane text-sm"></i>
+                </button>
+            </div>
+        </div>
+    </template>
+
+
+    <script>
+        // --- CONSTANTS & CONFIG ---
+        const LIFF_ID = "2008084325-K13WjNRy";
+        const SUPABASE_URL = "https://egbtdfjczcsabjabtyrg.supabase.co";
+        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVnYnRkZmpjemNzYWJqYWJ0eXJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk2Njk4NDMsImV4cCI6MjA4NTI0NTg0M30.saq8ffsCVlwks3K7ldVl0JvP7Iv7WSoAe6NHcKRCXek";
+
+
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+
+        const appState = {
+            user: null,
+            role: 'customer',
+            currentView: 'home',
+            activeTicketId: null,
+            tickets: []
+        };
+
+
+        const app = {
+            async init() {
+                this.showLoader(true);
+
+
+                try {
+                    await liff.init({ liffId: LIFF_ID, withLoginOnExternalBrowser: true });
+                    await liff.ready;
+                    if (liff.isLoggedIn()) {
+                        const profile = await liff.getProfile();
+                        await this.syncUser(profile);
+                    } else {
+                        liff.login({ redirectUri: window.location.href });
+
+                    }
+                } catch (err) {
+                    console.error('LIFF Init Error:', err);
+
+                }
+
+
+                this.setupRealtime();
+
+                this.render();
+                this.showLoader(false);
+            },
+
+            async syncUser(profile) {
+                const { data, error } = await supabaseClient
+                    .from('users')
+                    .upsert({
+                        line_user_id: profile.userId,
+                        display_name: profile.displayName,
+                        picture_url: profile.pictureUrl
+                    }, { onConflict: 'line_user_id' })
+                    .select()
+                    .single();
+
+                if (data) {
+                    appState.user = { ...data };
+                } else {
+                    appState.user = {
+                        id: 'guest',
+                        line_user_id: profile.userId,
+                        display_name: profile.displayName,
+                        picture_url: profile.pictureUrl
+                    };
+                }
+                document.getElementById('user-avatar').src = appState.user.picture_url;
+                document.getElementById('user-name').innerText = appState.user.display_name;
+            },
+
+
+
+
+            goHome() {
+                appState.activeTicketId = null;
+                appState.currentView = 'home';
+                this.render();
+            },
+
+            openCreateTicket() {
+                appState.currentView = 'create';
+                this.render();
+            },
+
+            async openChat(ticketId) {
+                appState.activeTicketId = ticketId;
+                appState.currentView = 'chat';
+                this.render();
+                await this.fetchMessages(ticketId);
+            },
+
+            goBack() {
+                this.goHome();
+            },
+
+
+            handleFileSelect(input) {
+                const file = input.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        document.getElementById('preview-img').src = e.target.result;
+                        document.getElementById('upload-placeholder').classList.add('hidden');
+                        document.getElementById('upload-preview').classList.remove('hidden');
+                    }
+                    reader.readAsDataURL(file);
+                }
+            },
+
+            clearFile(e) {
+                e.stopPropagation();
+                document.getElementById('inp-file').value = "";
+                document.getElementById('upload-placeholder').classList.remove('hidden');
+                document.getElementById('upload-preview').classList.add('hidden');
+            },
+
+            handleChatFileSelect(input) {
+                const file = input.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        document.getElementById('chat-preview-img').src = e.target.result;
+                        document.getElementById('chat-upload-preview').classList.remove('hidden');
+                    }
+                    reader.readAsDataURL(file);
+                }
+            },
+
+            clearChatFile() {
+                document.getElementById('chat-file-input').value = "";
+                document.getElementById('chat-upload-preview').classList.add('hidden');
+            },
+
+            async uploadImageToSupabase(file) {
+                try {
+                    const fileExt = file.name.split('.').pop();
+                    const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
+
+                    const filePath = `${appState.user.id}/${fileName}`;
+
+                    const { error: uploadError } = await supabaseClient.storage
+                        .from('tickets')
+                        .upload(filePath, file);
+
+                    if (uploadError) throw uploadError;
+
+                    const { data } = supabaseClient.storage
+                        .from('tickets')
+                        .getPublicUrl(filePath);
+
+                    return data.publicUrl;
+                } catch (error) {
+                    console.error("Upload failed:", error);
+                    return null;
+                }
+            },
+
+
+
+            async fetchTickets() {
+                if (appState.user.id === 'guest') return;
+
+                const { data, error } = await supabaseClient
+                    .from('tickets')
+                    .select('*, messages(message_text, created_at)')
+                    .eq('user_id', appState.user.id)
+                    .order('created_at', { ascending: false })
+                    .limit(20); // LIMIT 20 for user performance
+
+                if (!error) {
+                    appState.tickets = data;
+                    this.renderTicketList();
+                } else {
+                    console.error('Fetch error:', error);
+                    appState.tickets = [];
+                    this.renderTicketList();
+                }
+            },
+
+            async fetchMessages(ticketId) {
+                const { data, error } = await supabaseClient
+                    .from('messages')
+                    .select('*')
+                    .eq('ticket_id', ticketId)
+                    .order('created_at', { ascending: true });
+
+                if (!error) {
+                    this.renderMessages(data);
+                }
+            },
+
+            async submitTicket() {
+                const subject = document.getElementById('inp-subject').value;
+                const message = document.getElementById('inp-message').value;
+                const fileInput = document.getElementById('inp-file');
+                const file = fileInput.files[0];
+
+                if (!subject || !message) {
+                    Swal.fire({ icon: 'warning', title: 'กรุณากรอกข้อมูล', text: 'หัวข้อและรายละเอียดจำเป็นต้องใส่ครับ' });
+                    return;
+                }
+
+                this.showLoader(true);
+
+
+                let imageUrl = null;
+                if (file) {
+                    imageUrl = await this.uploadImageToSupabase(file);
+                    if (!imageUrl && file) {
+                        Swal.fire({ icon: 'error', title: 'อัปโหลดรูปไม่สำเร็จ', text: 'กรุณาลองใหม่ หรือส่งเฉพาะข้อความ' });
+                        this.showLoader(false);
+                        return;
+                    }
+                }
+
+
+                const { data: ticket, error: tError } = await supabaseClient
+                    .from('tickets')
+                    .insert({
+                        user_id: appState.user.id,
+                        subject: subject,
+                        status: 'open'
+                    })
+                    .select()
+                    .single();
+
+                if (tError) {
+                    console.error(tError);
+                    Swal.fire('Error', 'สร้าง Ticket ไม่สำเร็จ', 'error');
+                    this.showLoader(false);
+                    return;
+                }
+
+                
+                await supabaseClient.from('messages').insert({
+                    ticket_id: ticket.id,
+                    sender_type: 'user',
+                    message_text: message,
+                    image_url: imageUrl
+                });
+
+
+                supabaseClient.functions.invoke('ticket-actions', {
+                    body: {
+                        action: 'create',
+                        ticketId: ticket.id,
+                        imageUrl: imageUrl
+                    }
+                }).then(({ error }) => {
+                    if (error) console.error("Notification Error:", error);
+                });
+
+                this.showLoader(false);
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'ส่งเรื่องเรียบร้อย!',
+                    text: 'ทีมงานจะรีบตรวจสอบครับ',
+                    timer: 1500,
+                    showConfirmButton: false
+                }).then(() => {
+                    this.openChat(ticket.id);
+                });
+            },
+
+            async sendChatMessage() {
+                const input = document.getElementById('chat-input');
+                const text = input.value.trim();
+                const fileInput = document.getElementById('chat-file-input');
+                const file = fileInput.files[0];
+
+                if (!text && !file) return;
+
+                const ticketId = appState.activeTicketId;
+
+
+                input.value = '';
+                this.clearChatFile();
+
+
+                let imageUrl = null;
+                if (file) {
+                    imageUrl = await this.uploadImageToSupabase(file);
+                }
+
+
+                await supabaseClient.from('messages').insert({
+                    ticket_id: ticketId,
+                    sender_type: 'user',
+                    message_text: text,
+                    image_url: imageUrl
+                });
+
+
+                await supabaseClient.from('tickets')
+                    .update({ last_activity_at: new Date() })
+                    .eq('id', ticketId);
+            },
+
+
+            async deleteMessage(messageId) {
+                const result = await Swal.fire({
+                    title: 'ยกเลิกข้อความ?',
+                    text: "ข้อความจะถูกลบออกจากทั้งสองฝั่ง",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'ใช่, ยกเลิกเลย',
+                    cancelButtonText: 'ไม่'
+                });
+
+                if (result.isConfirmed) {
+                    const { error } = await supabaseClient
+                        .from('messages')
+                        .update({ is_deleted: true })
+                        .eq('id', messageId);
+
+                    if (error) {
+                        Swal.fire('Error', 'ไม่สามารถยกเลิกข้อความได้', 'error');
+                        console.error(error);
+                    }
+                }
+            },
+
+
+            setupRealtime() {
+                supabaseClient
+                    .channel('public:tickets')
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'tickets' }, payload => {
+                        this.fetchTickets();
+                        if (appState.currentView === 'chat' && appState.activeTicketId === payload.new.id) {
+                            this.updateChatHeader(payload.new);
+                        }
+                    })
+                    .subscribe();
+
+                supabaseClient
+                    .channel('public:messages')
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'messages' }, payload => {
+
+                        if ((payload.eventType === 'INSERT' || payload.eventType === 'UPDATE') &&
+                            payload.new.ticket_id === appState.activeTicketId) {
+
+                            this.fetchMessages(appState.activeTicketId);
+                        }
+                    })
+                    .subscribe();
+            },
+
+
+            render() {
+                const main = document.getElementById('main-content');
+                const fab = document.getElementById('fab-create');
+
+                main.innerHTML = '';
+
+
+                if (appState.currentView === 'home') {
+                    fab.classList.remove('hidden');
+                } else {
+                    fab.classList.add('hidden');
+                }
+
+
+                if (appState.currentView === 'home') {
+                    const tpl = document.getElementById('tpl-customer-home').content.cloneNode(true);
+                    tpl.querySelector('.user-display-name').textContent = appState.user?.display_name || 'Guest';
+                    main.appendChild(tpl);
+                    this.fetchTickets();
+                }
+                else if (appState.currentView === 'create') {
+                    const tpl = document.getElementById('tpl-create-ticket').content.cloneNode(true);
+                    main.appendChild(tpl);
+                }
+                else if (appState.currentView === 'chat') {
+                    const tpl = document.getElementById('tpl-chat-room').content.cloneNode(true);
+                    main.appendChild(tpl);
+                    const ticket = appState.tickets.find(t => t.id === appState.activeTicketId);
+                    if (ticket) this.updateChatHeader(ticket);
+                }
+            },
+
+            renderTicketList() {
+                const container = document.getElementById('ticket-list-container');
+                if (!container) return;
+
+                container.innerHTML = '';
+
+
+                const total = appState.tickets.length;
+                const active = appState.tickets.filter(t => t.status !== 'closed').length;
+                const countText = total > 0 ? `${total} รายการ ${active > 0 ? `(รอ ${active})` : ''}` : '0 รายการ';
+
+                const countEl = document.getElementById('ticket-count');
+                if (countEl) countEl.innerText = countText;
+
+                if (total === 0) {
+                    container.innerHTML = `
+                        <div class="flex flex-col items-center justify-center mt-20 opacity-40">
+                            <i class="fa-solid fa-folder-open text-5xl mb-4 text-gray-300"></i>
+                            <p class="text-sm text-gray-400">ยังไม่มีประวัติการแจ้งปัญหา</p>
+                        </div>`;
+                    return;
+                }
+
+                appState.tickets.forEach(ticket => {
+                    const date = dayjs(ticket.created_at).fromNow();
+
+                    let statusColor, statusLabel;
+                    switch (ticket.status) {
+                        case 'in_progress':
+                            statusColor = 'bg-yellow-100 text-yellow-700 border-yellow-200';
+                            statusLabel = 'กำลังดำเนินการ';
+                            break;
+                        case 'closed':
+                            statusColor = 'bg-green-100 text-green-700 border-green-200';
+                            statusLabel = 'เสร็จสิ้น';
+                            break;
+                        default:
+                            statusColor = 'bg-blue-100 text-blue-700 border-blue-200';
+                            statusLabel = 'รอตรวจสอบ';
+                    }
+
+                    const el = document.createElement('div');
+                    el.className = 'bg-white p-4 rounded-xl shadow-sm border border-gray-100 active:scale-[0.98] transition cursor-pointer relative overflow-hidden group';
+                    el.onclick = () => app.openChat(ticket.id);
+
+                    const lastMsg = ticket.messages && ticket.messages.length > 0
+                        ? ticket.messages[ticket.messages.length - 1].message_text || '[รูปภาพ]'
+                        : 'ไม่มีรายละเอียด';
+
+                    el.innerHTML = `
+                        <div class="absolute left-0 top-0 bottom-0 w-1 ${ticket.status === 'closed' ? 'bg-green-400' : (ticket.status === 'in_progress' ? 'bg-yellow-400' : 'bg-blue-400')}"></div>
+                        <div class="flex justify-between items-start pl-2">
+                            <div class="flex-1 min-w-0 pr-2">
+                                <h4 class="font-bold text-gray-800 truncate text-sm mb-1">${ticket.subject}</h4>
+                                <p class="text-xs text-gray-500 truncate mb-2">${lastMsg}</p>
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold border ${statusColor}">${statusLabel}</span>
+                            </div>
+                            <div class="text-[10px] text-gray-400 whitespace-nowrap flex flex-col items-end">
+                                <span>${date}</span>
+                                <i class="fa-solid fa-chevron-right text-gray-300 mt-4 group-hover:text-blue-400 transition"></i>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(el);
+                });
+            },
+
+            renderMessages(messages) {
+                const container = document.getElementById('messages-container');
+                if (!container) return;
+                container.innerHTML = '';
+
+                if (messages.length === 0) {
+                    container.innerHTML = '<div class="text-center text-xs text-gray-300 mt-4">เริ่มการสนทนา...</div>';
+                    return;
+                }
+
+                messages.forEach(msg => this.appendMessage(msg));
+
+
+                requestAnimationFrame(() => {
+                    container.scrollTop = container.scrollHeight;
+                });
+            },
+
+            appendMessage(msg) {
+                const container = document.getElementById('messages-container');
+                if (!container) return;
+
+                const isMe = msg.sender_type === 'user';
+                const isDeleted = msg.is_deleted;
+
+                const wrapper = document.createElement('div');
+                wrapper.className = `flex w-full mb-3 ${isMe ? 'justify-end items-end gap-2' : 'justify-start items-end'} group`; // Added group for hover
+
+                const bubble = document.createElement('div');
+                bubble.className = `max-w-[80%] px-3 py-2 rounded-2xl text-sm shadow-sm break-words relative ${isMe
+                    ? 'chat-bubble-user rounded-br-none text-white'
+                    : 'chat-bubble-admin rounded-bl-none text-gray-800'
+                    }`;
+
+                let content = '';
+
+                if (isDeleted) {
+
+                    content = `<div class="deleted-msg"><i class="fa-solid fa-ban"></i> <span>ยกเลิกข้อความแล้ว</span></div>`;
+
+                    bubble.style.background = '#f3f4f6';
+                    bubble.style.color = '#9ca3af';
+                    bubble.style.boxShadow = 'none';
+                    bubble.style.border = '1px solid #e5e7eb';
+                } else {
+
+                    if (msg.image_url) {
+                        content += `<img src="${msg.image_url}" class="rounded-lg w-full mb-1 border border-black/10">`;
+                    }
+                    if (msg.message_text) {
+
+                        const linkClass = isMe ? 'text-blue-100 underline hover:text-white' : 'text-blue-600 underline hover:text-blue-800';
+                        const formattedText = msg.message_text.replace(
+                            /(https?:\/\/[^\s]+)/g,
+                            `<a href="$1" target="_blank" class="${linkClass} break-all">$1</a>`
+                        );
+                        content += `<p class="leading-relaxed">${formattedText}</p>`;
+                    }
+                }
+
+                if (!isDeleted) {
+                    const time = dayjs(msg.created_at).format('HH:mm');
+                    content += `<div class="text-[10px] mt-1 text-right opacity-70 flex items-center justify-end gap-1">
+                        ${time} ${isMe ? '<i class="fa-solid fa-check"></i>' : ''}
+                    </div>`;
+                } else {
+                    content += `<div class="text-[10px] mt-1 text-right opacity-50 flex items-center justify-end gap-1">
+                        ${dayjs(msg.created_at).format('HH:mm')}
+                    </div>`;
+                }
+
+                bubble.innerHTML = content;
+
+
+                if (isMe && !isDeleted) {
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+                    deleteBtn.className = 'text-gray-300 hover:text-red-500 p-1 opacity-0 group-hover:opacity-100 transition duration-200 text-xs mb-1';
+                    deleteBtn.onclick = () => app.deleteMessage(msg.id);
+
+                    wrapper.prepend(deleteBtn);
+                }
+
+                wrapper.appendChild(bubble);
+                container.appendChild(wrapper);
+
+
+                container.scrollTop = container.scrollHeight;
+            },
+
+            updateChatHeader(ticket) {
+                const subjEl = document.getElementById('chat-subject');
+                const badgeEl = document.getElementById('chat-status-badge');
+
+                if (subjEl) subjEl.innerText = ticket.subject;
+                if (badgeEl) {
+                    let statusColor, statusLabel;
+                    switch (ticket.status) {
+                        case 'in_progress':
+                            statusColor = 'bg-yellow-100 text-yellow-800 border-yellow-200';
+                            statusLabel = 'กำลังดำเนินการ';
+                            break;
+                        case 'closed':
+                            statusColor = 'bg-green-100 text-green-800 border-green-200';
+                            statusLabel = 'เสร็จสิ้น';
+                            break;
+                        default:
+                            statusColor = 'bg-blue-100 text-blue-800 border-blue-200';
+                            statusLabel = 'รอตรวจสอบ';
+                    }
+                    badgeEl.className = `px-2 py-0.5 rounded text-[10px] font-bold border ${statusColor}`;
+                    badgeEl.innerText = statusLabel;
+                }
+                document.getElementById('chat-id').innerText = `#${ticket.id.slice(0, 8)}`;
+            },
+
+            showLoader(show) {
+                const loader = document.getElementById('loader');
+                if (show) {
+                    loader.classList.remove('hidden-loader');
+                } else {
+                    loader.classList.add('hidden-loader');
+                }
+            }
+        };
+
+        window.onload = () => app.init();
+    </script>
+</body>
+
+</html>
