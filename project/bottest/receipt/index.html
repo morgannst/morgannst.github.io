@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบบันทึกรายรับ-รายจ่าย (Refactored Ultimate)</title>
+    <title>ระบบบันทึกรายรับ-รายจ่าย</title>
+    
+    <!-- SEO & Metadata -->
     <meta name="description" content="ระบบบันทึกรายรับ - รายจ่าย" />
     <meta name="author" content="@SRNANIMALCARE" />
     <meta property="og:title" content="ระบบบันทึกรายรับ - รายจ่าย" />
     <meta property="og:description" content="จดบันทึกเพื่อกันลืม" />
-       
+
     <!-- Google Fonts: Noto Sans Thai -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -163,17 +165,33 @@
         };
 
         // ==========================================
-        // 🛠 Helpers
+        // 🛠 Helpers (Date Fixed)
         // ==========================================
         const formatCurrency = (amount) => new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB' }).format(amount);
         
+        // 1. Get Today's Date String in Local Time (YYYY-MM-DD)
+        const getTodayDateString = () => {
+            const d = new Date();
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        };
+
+        // 2. Format Date Display (Force Buddhist Year)
         const formatDate = (dateStr) => {
             if (!dateStr) return "";
-            const d = new Date(dateStr);
-            if (isNaN(d.getTime())) return "";
-            const day = d.getDate();
-            const month = d.toLocaleDateString('th-TH', { month: 'short' });
-            const year = d.getFullYear() + 543;
+            // Parse manually to avoid UTC conversion
+            const [y, m, d] = dateStr.split('-').map(Number);
+            // Create local date object
+            const dateObj = new Date(y, m - 1, d);
+            
+            if (isNaN(dateObj.getTime())) return "";
+            
+            const day = dateObj.getDate();
+            const month = dateObj.toLocaleDateString('th-TH', { month: 'short' });
+            const year = dateObj.getFullYear() + 543;
+            
             return `${day} ${month} ${year}`;
         };
 
@@ -187,7 +205,6 @@
 
         const getThaiTimestamp = () => {
             const d = new Date();
-            // Create timestamp string "DD/MM/YYYY HH:mm:ss" where YYYY is BE
             return d.toLocaleString('th-TH', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
         };
 
@@ -381,7 +398,7 @@
 
         const TransactionTable = ({ transactions, user, onEdit, onDelete, isLoading, filterMonth, setFilterMonth, limit, onViewAll }) => {
             const [currentPage, setCurrentPage] = useState(1);
-            const itemsPerPage = 10;
+            const itemsPerPage = 10; // Set to 10 items per page
 
             useEffect(() => {
                 setCurrentPage(1);
@@ -586,7 +603,7 @@
         const AddTransactionModal = ({ isOpen, onClose, onSave, currentUser, isSaving, transactionToEdit }) => {
             const [formData, setFormData] = useState({
                 description: '', amount: '', type: 'expense', category: 'food',
-                date: new Date().toISOString().split('T')[0],
+                date: getTodayDateString(), // Use fixed default date
                 paymentMethod: 'cash'
             });
 
@@ -604,7 +621,7 @@
                     } else {
                         setFormData({
                             description: '', amount: '', type: 'expense', category: 'food',
-                            date: new Date().toISOString().split('T')[0],
+                            date: getTodayDateString(),
                             paymentMethod: 'cash'
                         });
                     }
