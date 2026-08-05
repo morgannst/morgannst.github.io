@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gabapentin · สรุปเภสัชวิทยาสำหรับสัตว์ | SRN Animal Care</title>
+<link rel="icon" href="https://yunhfdekcjosnfwndepu.supabase.co/storage/v1/object/public/DATA%20SRNanimalcare/Logo%20symbol.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/prompt/index.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/prompt/500.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/prompt/600.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/prompt/700.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/sarabun/index.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/sarabun/500.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/sarabun/600.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/sarabun/700.css">
+<style>
+:root{
+  --paper:#FAF5EC;
+  --paper2:#F3EBDD;
+  --ink:#132A26;
+  --ink-soft:#41564F;
+  --teal:#0E6B5C;
+  --teal-dark:#0A453C;
+  --teal-deep:#08332D;
+  --coral:#E4572E;
+  --amber:#F2A03D;
+  --sage:#B9CBB7;
+  --red:#C43D2B;
+  --line:rgba(19,42,38,.14);
+  --shadow:0 10px 30px rgba(19,42,38,.10);
+  --disp:'Prompt',system-ui,sans-serif;
+  --body:'Sarabun',system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--body);
+  background:var(--paper);
+  color:var(--ink);
+  line-height:1.7;
+  overflow-x:hidden;
+}
+::selection{background:var(--coral);color:#fff}
+img{max-width:100%;display:block}
+button{font-family:inherit;cursor:pointer}
+h1,h2,h3,h4,.disp{font-family:var(--disp)}
+
+/* ---------- noise overlay ---------- */
+.noise{
+  position:fixed;inset:0;z-index:60;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+/* ---------- scroll progress ---------- */
+#progressBar{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--coral),var(--amber));z-index:80}
+
+/* ---------- topbar + logo ---------- */
+.topbar{
+  position:sticky;top:0;z-index:70;
+  display:flex;align-items:center;gap:14px;
+  padding:10px 24px;background:rgba(250,245,236,.92);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.logo{
+  height:46px;width:auto;background:#fff;border:1px solid var(--line);border-radius:10px;
+  padding:5px 8px;box-shadow:2px 2px 0 rgba(19,42,38,.12);flex-shrink:0;
+}
+.rx{
+  width:40px;height:40px;border-radius:10px;background:var(--teal-dark);color:#F6EEDD;
+  display:grid;place-items:center;font-family:var(--disp);font-weight:700;font-size:20px;
+  box-shadow:3px 3px 0 var(--amber);flex-shrink:0;
+}
+.bt .t{font-family:var(--disp);font-weight:600;display:block;line-height:1.3;font-size:.95rem}
+.bt small{font-size:.7rem;color:var(--ink-soft);letter-spacing:.06em;display:block}
+.topbar .tag{margin-left:auto;font-size:.72rem;font-weight:600;color:var(--teal-dark);border:1px solid var(--teal);border-radius:999px;padding:4px 12px;background:#fff8;white-space:nowrap}
+
+/* ---------- hero ---------- */
+.hero{max-width:1180px;margin:0 auto;padding:56px 24px 40px;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
+.presented{
+  display:inline-flex;align-items:center;gap:9px;margin-bottom:16px;
+  font-family:var(--disp);font-size:.8rem;font-weight:600;color:var(--teal-dark);
+  background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 16px 6px 8px;
+  box-shadow:2px 2px 0 rgba(19,42,38,.1);
+}
+.presented img{height:26px;width:auto}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--disp);font-weight:600;font-size:.78rem;letter-spacing:.22em;color:var(--coral);text-transform:uppercase}
+.eyebrow::before{content:"";width:26px;height:2px;background:var(--coral)}
+.hero h1{font-size:clamp(3rem,7vw,5.4rem);line-height:1.02;letter-spacing:-.01em;font-weight:700;color:var(--teal-deep)}
+.hero h1 .en{display:block;color:var(--teal-deep)}
+.hero .th{display:block;font-size:clamp(1.4rem,3vw,2.1rem);font-weight:600;color:var(--coral);margin-top:6px;min-height:1.4em}
+.hero .lead{margin:18px 0 22px;font-size:1.06rem;color:var(--ink-soft);max-width:52ch}
+.hero .lead strong{color:var(--teal-dark)}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border:1.5px solid var(--ink);border-radius:999px;background:#fff;font-size:.85rem;font-weight:600;box-shadow:3px 3px 0 rgba(19,42,38,.15);transition:transform .25s,box-shadow .25s}
+.chip:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 rgba(19,42,38,.2)}
+.chip.c-teal{background:var(--teal);color:#fff;border-color:var(--teal-dark)}
+.chip.c-coral{background:var(--coral);color:#fff;border-color:#a33a1b}
+.chip.c-amber{background:var(--amber);color:var(--ink);border-color:#b06f1d}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:30px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 14px 12px;position:relative;overflow:hidden;transition:transform .3s}
+.stat:hover{transform:translateY(-4px)}
+.stat::after{content:"";position:absolute;left:0;bottom:0;height:4px;width:100%;background:var(--sc,var(--teal))}
+.stat .k{font-size:.72rem;font-weight:700;letter-spacing:.08em;color:var(--ink-soft);text-transform:uppercase}
+.stat .v{font-family:var(--disp);font-weight:700;font-size:1.05rem;color:var(--teal-deep);line-height:1.25}
+.stat .s{font-size:.75rem;color:var(--ink-soft)}
+
+.hero-art{position:relative}
+.hero-art .frame{
+  background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;
+  box-shadow:var(--shadow);transform:rotate(1.6deg);transition:transform .5s;
+}
+.hero-art .frame:hover{transform:rotate(0)}
+.hero-art .frame img{border-radius:12px}
+.hero-art .cap{
+  position:absolute;left:-38px;bottom:34px;width:132px;animation:floaty 5s ease-in-out infinite;
+  filter:drop-shadow(6px 8px 0 rgba(19,42,38,.18));
+}
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(-14deg)}50%{transform:translateY(-14px) rotate(-8deg)}}
+.hero-art .stamp{
+  position:absolute;top:-18px;right:-10px;transform:rotate(8deg);
+  border:2.5px dashed var(--coral);color:var(--coral);border-radius:10px;
+  padding:6px 12px;font-family:var(--disp);font-weight:700;font-size:.8rem;letter-spacing:.14em;background:rgba(255,255,255,.85);
+}
+
+/* ---------- ticker ---------- */
+.ticker{background:var(--teal-deep);color:#F2E9D6;overflow:hidden;border-block:1px solid var(--teal-dark)}
+.ticker-track{display:flex;width:max-content;animation:marquee 40s linear infinite}
+.ticker:hover .ticker-track{animation-play-state:paused}
+.ticker-track span{display:inline-flex;align-items:center;gap:14px;padding:12px 22px;font-family:var(--disp);font-weight:500;font-size:.9rem;white-space:nowrap}
+.ticker-track span i{font-style:normal;color:var(--amber)}
+@keyframes marquee{to{transform:translateX(-50%)}}
+
+/* ---------- nav ---------- */
+.mainnav{position:sticky;top:67px;z-index:65;background:var(--paper);border-bottom:1px solid var(--line)}
+.mainnav .in{max-width:1180px;margin:0 auto;display:flex;gap:6px;padding:10px 24px;overflow-x:auto;scrollbar-width:none}
+.mainnav .in::-webkit-scrollbar{display:none}
+.mainnav a{font-family:var(--disp);font-weight:600;font-size:.86rem;color:var(--ink-soft);text-decoration:none;padding:8px 16px;border-radius:999px;border:1px solid transparent;white-space:nowrap;transition:all .25s}
+.mainnav a:hover{color:var(--teal-dark);border-color:var(--line);background:#fff}
+.mainnav a.active{background:var(--teal-dark);color:#F6EEDD;border-color:var(--teal-dark);box-shadow:3px 3px 0 var(--amber)}
+
+/* ---------- sections ---------- */
+main{max-width:1180px;margin:0 auto;padding:0 24px}
+section{padding:84px 0 30px;scroll-margin-top:140px}
+.sec-head{margin-bottom:36px}
+.sec-head .eyebrow{color:var(--teal)}
+.sec-head .eyebrow::before{background:var(--teal)}
+.sec-head h2{font-size:clamp(1.7rem,3.6vw,2.6rem);font-weight:700;color:var(--teal-deep);line-height:1.2}
+.mask{overflow:hidden}
+.mask .mask-in{display:block;transform:translateY(120%);transition:transform .9s cubic-bezier(.2,.7,.2,1)}
+.mask.in .mask-in{transform:translateY(0)}
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
+.reveal.in{opacity:1;transform:none}
+.paw-div{display:flex;justify-content:center;gap:26px;padding:26px 0 0;opacity:.35}
+.paw-div svg{width:20px}
+
+/* ---------- MOA cards ---------- */
+.moa-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.moa-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px 24px;position:relative;overflow:hidden;transition:transform .35s,box-shadow .35s}
+.moa-card:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+.moa-card .num{position:absolute;top:10px;right:16px;font-family:var(--disp);font-weight:700;font-size:3.4rem;color:rgba(14,107,92,.1);line-height:1}
+.moa-card .ico{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font-size:24px;margin-bottom:16px;background:var(--ib,var(--paper2));box-shadow:3px 3px 0 rgba(19,42,38,.12)}
+.moa-card h3{font-size:1.12rem;font-weight:700;color:var(--teal-deep);margin-bottom:8px}
+.moa-card p{font-size:.92rem;color:var(--ink-soft)}
+.moa-card .ref{color:var(--coral);font-weight:700}
+
+/* ---------- PK tabs ---------- */
+.pk-box{margin-top:44px;background:var(--teal-deep);border-radius:20px;padding:34px;color:#EFE6D2;position:relative;overflow:hidden}
+.pk-box::before{content:"PK";position:absolute;right:18px;top:6px;font-family:var(--disp);font-weight:700;font-size:6rem;color:rgba(255,255,255,.05)}
+.pk-box h3{font-size:1.3rem;color:var(--amber);margin-bottom:6px}
+.pk-box .sub{font-size:.9rem;opacity:.75;margin-bottom:22px}
+.tabrow{display:flex;gap:10px;margin-bottom:22px;flex-wrap:wrap}
+.tabbtn{border:1.5px solid rgba(255,255,255,.3);background:transparent;color:#EFE6D2;border-radius:999px;padding:9px 22px;font-family:var(--disp);font-weight:600;font-size:.95rem;transition:all .25s}
+.tabbtn:hover{border-color:var(--amber);color:var(--amber)}
+.tabbtn.active{background:var(--amber);border-color:var(--amber);color:var(--teal-deep);box-shadow:4px 4px 0 rgba(0,0,0,.3)}
+.pkpanel{display:none;animation:fadeUp .45s ease}
+.pkpanel.active{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.pk-item{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:18px}
+.pk-item .k{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--sage);font-weight:700;margin-bottom:6px}
+.pk-item .v{font-size:.95rem;line-height:1.65}
+.pk-item .v b{color:var(--amber)}
+
+/* ---------- clinical postcards ---------- */
+.evi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.evi-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px;position:relative;transition:transform .4s,box-shadow .4s;box-shadow:5px 6px 0 rgba(19,42,38,.08)}
+.evi-card:nth-child(odd){transform:rotate(-1.2deg)}
+.evi-card:nth-child(even){transform:rotate(1deg)}
+.evi-card:hover{transform:rotate(0) translateY(-6px);box-shadow:var(--shadow)}
+.evi-card .pin{position:absolute;top:-12px;left:50%;transform:translateX(-50%);width:26px;height:26px;border-radius:50%;background:var(--pc,var(--coral));box-shadow:inset -3px -4px 6px rgba(0,0,0,.25)}
+.evi-card h3{font-size:1.1rem;color:var(--teal-deep);margin-bottom:8px;padding-right:8px}
+.evi-card p{font-size:.92rem;color:var(--ink-soft);margin-bottom:16px}
+.evi-card .lvl{display:flex;align-items:center;gap:10px;font-size:.78rem;font-weight:700;color:var(--ink-soft)}
+.evi-bar{flex:1;height:8px;border-radius:99px;background:var(--paper2);overflow:hidden;border:1px solid var(--line)}
+.evi-bar i{display:block;height:100%;width:0;background:var(--pc,var(--teal));border-radius:99px;transition:width 1.2s cubic-bezier(.2,.7,.2,1) .3s}
+.evi-card.in .evi-bar i{width:var(--w)}
+.evi-card .tags{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap}
+.evi-card .tags span{font-size:.72rem;font-weight:700;border-radius:999px;padding:3px 10px;background:var(--paper2);color:var(--ink-soft)}
+.sedative-note{margin-top:30px;background:linear-gradient(120deg,#fff, #FDF3E4);border:1.5px dashed var(--amber);border-radius:16px;padding:24px 26px;display:flex;gap:18px;align-items:flex-start}
+.sedative-note .big{font-size:2rem}
+.sedative-note h4{color:var(--teal-deep);font-size:1.05rem;margin-bottom:6px}
+.sedative-note p{font-size:.93rem;color:var(--ink-soft)}
+.sedative-note b{color:var(--coral)}
+.note-link{display:inline-block;margin-top:10px;font-family:var(--disp);font-weight:600;font-size:.88rem;color:var(--teal-dark);text-decoration:none;border-bottom:2px solid var(--amber);transition:all .25s}
+.note-link:hover{color:var(--coral);transform:translateX(4px)}
+
+/* ---------- Rx dose sheet ---------- */
+.rx-sheet{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+.rx-head{display:flex;align-items:center;gap:14px;padding:22px 28px;background:var(--teal-dark);color:#F6EEDD}
+.rx-head .sym{font-family:var(--disp);font-weight:700;font-size:1.8rem;color:var(--amber)}
+.rx-head h3{font-size:1.25rem}
+.rx-head small{display:block;font-size:.78rem;opacity:.7;font-weight:400}
+table{width:100%;border-collapse:collapse}
+th,td{padding:16px 28px;text-align:left;font-size:.95rem;vertical-align:top}
+th{font-family:var(--disp);font-weight:600;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);background:var(--paper2);border-bottom:1px solid var(--line)}
+tbody tr{border-bottom:1px solid var(--line);transition:background .25s}
+tbody tr:hover{background:#F6F0E4}
+tbody tr:last-child{border-bottom:none}
+td .sp{display:inline-flex;align-items:center;gap:10px;font-weight:700;font-family:var(--disp);color:var(--teal-deep)}
+td .sp .em{font-size:1.3rem}
+td .dose{font-family:var(--disp);font-weight:700;color:var(--coral);font-size:1.05rem;white-space:nowrap}
+td small{color:var(--ink-soft)}
+.rx-foot{padding:16px 28px;font-size:.85rem;color:var(--ink-soft);background:var(--paper2);border-top:1px dashed var(--line)}
+.table-scroll{overflow-x:auto}
+
+/* ---------- calculator ---------- */
+.calc-wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:26px;align-items:stretch}
+.calc-left{background:var(--teal-deep);border-radius:20px;padding:32px;color:#EFE6D2}
+.calc-left h3{color:var(--amber);font-size:1.25rem;margin-bottom:4px}
+.calc-left .hint{font-size:.88rem;opacity:.75;margin-bottom:24px}
+.sp-toggle{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:26px}
+.sp-btn{border:1.5px solid rgba(255,255,255,.25);background:rgba(255,255,255,.05);color:#EFE6D2;border-radius:14px;padding:16px 10px;text-align:center;transition:all .25s;font-family:var(--disp)}
+.sp-btn .em{font-size:1.7rem;display:block;margin-bottom:4px}
+.sp-btn .nm{font-weight:600}
+.sp-btn .rg{display:block;font-size:.7rem;opacity:.65;margin-top:2px}
+.sp-btn:hover{border-color:var(--amber)}
+.sp-btn.active{background:var(--amber);color:var(--teal-deep);border-color:var(--amber);box-shadow:4px 4px 0 rgba(0,0,0,.35)}
+.w-label{display:flex;justify-content:space-between;font-size:.85rem;font-weight:600;margin-bottom:10px}
+.w-label output{font-family:var(--disp);color:var(--amber);font-weight:700}
+input[type=range]{width:100%;accent-color:var(--amber);height:34px}
+.w-num{display:flex;align-items:center;gap:10px;margin-top:12px}
+.w-num input{width:110px;padding:10px 14px;border-radius:10px;border:1.5px solid rgba(255,255,255,.3);background:rgba(255,255,255,.08);color:#fff;font-family:var(--disp);font-weight:700;font-size:1.05rem;text-align:center}
+.w-num input:focus{outline:2px solid var(--amber)}
+.w-num span{font-size:.85rem;opacity:.7}
+.calc-right{background:#fff;border:1px solid var(--line);border-radius:20px;padding:32px;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:18px}
+.calc-right::before{content:"mg";position:absolute;right:14px;bottom:-14px;font-family:var(--disp);font-weight:700;font-size:7rem;color:rgba(228,87,46,.06)}
+.res-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.res-box{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px;text-align:center;transition:transform .3s}
+.res-box:hover{transform:translateY(-3px)}
+.res-box .k{font-size:.74rem;font-weight:700;letter-spacing:.08em;color:var(--ink-soft);text-transform:uppercase}
+.res-box .v{font-family:var(--disp);font-weight:700;font-size:clamp(1.5rem,3vw,2.2rem);color:var(--teal-dark);line-height:1.2}
+.res-box .v small{font-size:.9rem;color:var(--ink-soft);font-weight:600}
+.res-box.hi .v{color:var(--coral)}
+.res-freq{display:flex;align-items:center;justify-content:center;gap:10px;background:var(--teal);color:#fff;border-radius:999px;padding:10px 18px;font-family:var(--disp);font-weight:600;font-size:.95rem;width:max-content;margin:0 auto}
+.res-note{font-size:.86rem;border-radius:12px;padding:14px 16px;background:#FDF3E4;border:1px dashed var(--amber);color:var(--ink-soft)}
+.res-note b{color:var(--red)}
+.calc-disc{margin-top:14px;font-size:.78rem;color:var(--ink-soft);text-align:center}
+
+/* ---------- adverse ---------- */
+.warn-banner{display:flex;gap:16px;align-items:center;background:var(--red);color:#FFF3EA;border-radius:16px;padding:20px 26px;box-shadow:6px 6px 0 rgba(19,42,38,.2);margin-bottom:30px;transform:rotate(-.6deg)}
+.warn-banner .ic{font-size:2rem}
+.warn-banner h3{font-size:1.1rem}
+.warn-banner p{font-size:.9rem;opacity:.95}
+.acc{border:1px solid var(--line);border-radius:14px;background:#fff;margin-bottom:14px;overflow:hidden;transition:box-shadow .3s}
+.acc:hover{box-shadow:var(--shadow)}
+.acc-head{width:100%;display:flex;align-items:center;gap:14px;background:none;border:none;padding:20px 24px;text-align:left}
+.acc-head .em{font-size:1.4rem}
+.acc-head h3{font-size:1.02rem;color:var(--teal-deep);flex:1}
+.acc-head .plus{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-size:1rem;color:var(--teal-dark);transition:transform .35s,background .35s;flex-shrink:0}
+.acc.open .plus{transform:rotate(45deg);background:var(--teal);color:#fff;border-color:var(--teal)}
+.acc-body{max-height:0;overflow:hidden;transition:max-height .45s cubic-bezier(.2,.7,.2,1)}
+.acc-body .inpad{padding:0 24px 22px 62px}
+.acc-body ul{list-style:none}
+.acc-body li{position:relative;padding-left:22px;font-size:.92rem;color:var(--ink-soft);margin-bottom:8px}
+.acc-body li::before{content:"🐾";position:absolute;left:0;top:2px;font-size:.75rem}
+.acc-body li b{color:var(--red)}
+.acc-body li i{color:var(--teal-dark);font-style:normal;font-weight:600}
+
+/* ---------- research briefs ---------- */
+.brief{background:#fff;border:1.5px dashed var(--teal);border-radius:18px;padding:36px 34px 30px;position:relative;box-shadow:var(--shadow)}
+.brief .bnum{position:absolute;top:-16px;left:26px;background:var(--coral);color:#fff;font-family:var(--disp);font-weight:700;padding:6px 16px;border-radius:10px;box-shadow:3px 3px 0 rgba(19,42,38,.2);font-size:.8rem;letter-spacing:.1em}
+.brief h3{font-size:1.2rem;color:var(--teal-deep);margin-bottom:10px}
+.brief h3 .sup{color:var(--coral);font-size:.8rem;vertical-align:super}
+.brief .intro{font-size:.96rem;color:var(--ink-soft);margin-bottom:6px}
+.brief .intro b{color:var(--teal-dark)}
+.meta-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0}
+.meta-item{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 14px;transition:transform .25s}
+.meta-item:hover{transform:translateY(-3px)}
+.meta-item .k{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);font-weight:700}
+.meta-item .v{font-family:var(--disp);font-weight:700;color:var(--teal-deep);font-size:.95rem;line-height:1.4}
+.brief .sub-h{font-family:var(--disp);font-weight:600;color:var(--teal-deep);margin:26px 0 6px;font-size:1.02rem}
+
+/* timeline */
+.timeline{display:flex;justify-content:space-between;position:relative;margin:30px 0 8px;padding:0 6px;min-width:520px}
+.timeline::before{content:"";position:absolute;top:9px;left:10px;right:10px;height:2px;background:var(--line)}
+.timeline-wrap{overflow-x:auto;padding-bottom:6px}
+.tdot{position:relative;text-align:center;font-size:.72rem;font-weight:700;color:var(--ink-soft);width:76px;flex-shrink:0}
+.tdot i{display:block;width:18px;height:18px;border-radius:50%;background:#fff;border:3px solid var(--teal);margin:0 auto 8px;transition:transform .25s}
+.tdot:hover i{transform:scale(1.25)}
+.tdot.hot{color:var(--coral)}
+.tdot.hot i{border-color:var(--coral);background:var(--coral);animation:pulseDot 2.2s infinite}
+@keyframes pulseDot{0%,100%{box-shadow:0 0 0 0 rgba(228,87,46,.4)}50%{box-shadow:0 0 0 9px rgba(228,87,46,0)}}
+.mini-note{font-size:.75rem;color:var(--ink-soft);margin-top:8px}
+
+/* fear bars */
+.fear-bars{margin-top:24px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px 22px 14px}
+.fear-bars h4{font-family:var(--disp);color:var(--teal-deep);font-size:.98rem;margin-bottom:16px}
+.frow{display:grid;grid-template-columns:150px 1fr 90px;gap:12px;align-items:center;margin-bottom:14px;font-size:.85rem;font-weight:600}
+.ftrack{height:14px;background:var(--paper2);border-radius:99px;border:1px solid var(--line);overflow:hidden}
+.ffill{display:block;height:100%;width:0;border-radius:99px;background:var(--fc,var(--teal));transition:width 1.2s cubic-bezier(.2,.7,.2,1) .25s}
+.brief.in .ffill{width:var(--w)}
+.fval{font-family:var(--disp);font-weight:700;font-size:.78rem;color:var(--ink-soft);text-align:right}
+
+/* group tabs (light) */
+.grouprow{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.gbtn{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:9px 22px;font-family:var(--disp);font-weight:600;transition:all .25s;color:var(--ink-soft)}
+.gbtn:hover{border-color:var(--teal);color:var(--teal-dark)}
+.gbtn.active{background:var(--teal);color:#fff;border-color:var(--teal-dark);box-shadow:3px 3px 0 var(--amber)}
+.gpanel{display:none;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-top:14px;animation:fadeUp .4s}
+.gpanel.active{display:block}
+.gpanel ul{list-style:none}
+.gpanel li{position:relative;padding-left:24px;font-size:.92rem;color:var(--ink-soft);margin-bottom:8px}
+.gpanel li::before{content:"●";position:absolute;left:6px;color:var(--coral);font-size:.6rem;top:6px}
+.gpanel li b{color:var(--teal-dark)}
+
+/* results grid */
+.results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:24px}
+.ritem{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px 16px;transition:transform .25s,box-shadow .25s}
+.ritem:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.ritem .em{font-size:1.4rem}
+.ritem h4{font-size:.95rem;color:var(--teal-deep);margin:6px 0 4px}
+.ritem p{font-size:.83rem;color:var(--ink-soft)}
+.ritem p b{color:var(--red)}
+.ritem p i{color:var(--teal-dark);font-style:normal;font-weight:600}
+
+/* pearls */
+.pearls{margin-top:18px;display:grid;gap:12px}
+.pearl{display:flex;gap:14px;align-items:flex-start;background:linear-gradient(120deg,#EAF4EF,#fff);border:1px solid var(--teal);border-left:5px solid var(--teal);border-radius:12px;padding:16px 20px;transition:transform .25s,box-shadow .25s}
+.pearl:hover{transform:translateX(6px);box-shadow:var(--shadow)}
+.pearl .gem{font-size:1.3rem;flex-shrink:0}
+.pearl p{font-size:.93rem;color:var(--ink)}
+.pearl b{color:var(--teal-dark)}
+.limit{margin-top:24px;background:#FDF3E4;border:1.5px dashed var(--amber);border-radius:14px;padding:18px 22px;font-size:.9rem;color:var(--ink-soft)}
+.limit b{color:var(--red)}
+.limit .lh{font-family:var(--disp);font-weight:700;color:var(--teal-deep);display:block;margin-bottom:4px}
+
+/* ---------- quiz ---------- */
+.quiz-card{background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);max-width:760px;margin:0 auto;overflow:hidden}
+.quiz-top{display:flex;align-items:center;justify-content:space-between;padding:18px 26px;background:var(--teal-dark);color:#F6EEDD}
+.quiz-top .q-count{font-family:var(--disp);font-weight:600}
+.quiz-dots{display:flex;gap:6px;flex-wrap:wrap}
+.quiz-dots i{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.25);transition:all .3s}
+.quiz-dots i.done{background:var(--amber)}
+.quiz-dots i.now{background:#fff;transform:scale(1.25)}
+.quiz-body{padding:30px 30px 26px}
+.quiz-body h3{font-size:1.15rem;color:var(--teal-deep);margin-bottom:20px;line-height:1.5}
+.opt{display:block;width:100%;text-align:left;border:1.5px solid var(--line);background:var(--paper);border-radius:12px;padding:14px 18px;margin-bottom:12px;font-size:.95rem;transition:all .25s;font-family:var(--body)}
+.opt .lt{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:8px;background:var(--teal-dark);color:#fff;font-family:var(--disp);font-weight:700;font-size:.8rem;margin-right:12px}
+.opt:not(:disabled):hover{border-color:var(--teal);transform:translateX(4px);background:#fff}
+.opt:disabled{cursor:default}
+.opt.correct{border-color:var(--teal);background:#E7F3EE;box-shadow:4px 4px 0 var(--teal)}
+.opt.correct .lt{background:var(--teal)}
+.opt.wrong{border-color:var(--red);background:#FBEAE6;animation:shake .4s}
+.opt.wrong .lt{background:var(--red)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.quiz-exp{display:none;background:var(--paper2);border-left:4px solid var(--amber);border-radius:8px;padding:14px 16px;font-size:.9rem;color:var(--ink-soft);margin-top:6px}
+.quiz-exp.show{display:block;animation:fadeUp .4s}
+.quiz-next{margin-top:18px;width:100%;padding:14px;border:none;border-radius:12px;background:var(--coral);color:#fff;font-family:var(--disp);font-weight:700;font-size:1rem;box-shadow:4px 4px 0 var(--teal-deep);transition:transform .2s,box-shadow .2s;display:none}
+.quiz-next.show{display:block}
+.quiz-next:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--teal-deep)}
+.quiz-result{display:none;text-align:center;padding:44px 30px}
+.quiz-result.show{display:block;animation:fadeUp .5s}
+.ring-wrap{position:relative;width:150px;margin:0 auto 18px}
+.ring-wrap svg{transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:var(--paper2);stroke-width:12}
+.ring-fg{fill:none;stroke:var(--teal);stroke-width:12;stroke-linecap:round;stroke-dasharray:326.7;stroke-dashoffset:326.7;transition:stroke-dashoffset 1.2s cubic-bezier(.2,.7,.2,1)}
+.ring-num{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--disp);font-weight:700;font-size:1.6rem;color:var(--teal-deep)}
+.quiz-result h3{font-size:1.4rem;color:var(--teal-deep);margin-bottom:6px}
+.quiz-result p{color:var(--ink-soft);margin-bottom:22px}
+
+/* ---------- refs & footer ---------- */
+.refs{background:#fff;border:1px dashed var(--line);border-radius:14px;padding:20px 26px;font-size:.85rem;color:var(--ink-soft)}
+.refs b{color:var(--teal-dark)}
+footer{margin-top:70px;background:var(--teal-deep);color:#D9CFBB;padding:44px 24px;text-align:center}
+footer .f-logo{height:60px;width:auto;background:#fff;border-radius:12px;padding:8px 18px;margin:0 auto 16px;display:block}
+footer .fx{font-family:var(--disp);font-weight:700;font-size:1.2rem;color:var(--amber);margin-bottom:10px}
+footer p{font-size:.85rem;max-width:60ch;margin:0 auto 6px}
+footer .tiny{font-size:.72rem;opacity:.6;margin-top:14px}
+
+/* ---------- responsive ---------- */
+@media(max-width:960px){
+  .hero{grid-template-columns:1fr;padding-top:44px}
+  .hero-art{max-width:440px;margin:0 auto}
+  .stats,.meta-grid,.results-grid{grid-template-columns:repeat(2,1fr)}
+  .moa-grid,.pkpanel.active,.evi-grid,.calc-wrap{grid-template-columns:1fr}
+  th,td{padding:14px 16px}
+  .mainnav{top:66px}
+  .logo{height:40px}
+}
+@media(max-width:560px){
+  .topbar .tag{display:none}
+  .bt .t{font-size:.85rem}
+  .stats,.meta-grid,.results-grid{grid-template-columns:1fr}
+  .frow{grid-template-columns:100px 1fr 70px}
+  .brief{padding:30px 20px 24px}
+}
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .ticker-track{animation:none!important;flex-wrap:wrap;width:auto}
+  .reveal{opacity:1;transform:none}
+  .mask .mask-in{transform:none}
+  .evi-card.in .evi-bar i{width:var(--w)}
+  .brief.in .ffill,.brief .ffill{width:var(--w)}
+}
+</style>
+</head>
+<body>
+
+<div class="noise"></div>
+<div id="progressBar"></div>
+
+<header class="topbar">
+  <span class="rx" id="logoFallbackTop" style="display:none">℞</span>
+  <img src="https://yunhfdekcjosnfwndepu.supabase.co/storage/v1/object/public/DATA%20SRNanimalcare/Logo%20symbol.png"
+       alt="โลโก้ SRN Animal Care" class="logo"
+       onerror="this.style.display='none';var f=document.getElementById('logoFallbackTop');if(f)f.style.display='grid';">
+  <div class="bt">
+    <span class="t">สรุปเภสัชวิทยา · Veterinary Drug Review</span>
+    <small>นำเสนอโดย SRN Animal Care</small>
+  </div>
+  <span class="tag">ฉบับทบทวนความรู้ · ภาษาไทย</span>
+</header>
+
+<!-- ================= HERO ================= -->
+<div class="hero">
+  <div>
+    <div class="presented">
+      <img src="https://yunhfdekcjosnfwndepu.supabase.co/storage/v1/object/public/DATA%20SRNanimalcare/Logo%20symbol.png"
+           alt="" onerror="this.style.display='none'">
+      SRN Animal Care · Veterinary Review
+    </div>
+    <br>
+    <span class="eyebrow">Veterinary Pharmacology · Drug Summary</span>
+    <h1>
+      <span class="en mask"><span class="mask-in">GABAPENTIN</span></span>
+      <span class="th" id="thTitle" data-text="กาบาเพนติน">กาบาเพนติน</span>
+    </h1>
+    <p class="lead">ยาที่ใช้บ่อยใน<strong>สุนัขและแมว</strong> เพื่อ<strong>ป้องกันอาการชัก</strong>และ<strong>รักษาอาการปวดจากเส้นประสาท (neuropathic pain)</strong> — สรุปครบทั้งกลไกการออกฤทธิ์ การนำไปใช้ทางคลินิก ขนาดยา อาการไม่พึงประสงค์ พร้อมสรุปงานวิจัยล่าสุดในแมว</p>
+    <div class="chips">
+      <span class="chip c-teal">🐕 สุนัข</span>
+      <span class="chip c-coral">🐈 แมว</span>
+      <span class="chip c-amber">⚡ ป้องกันอาการชัก</span>
+      <span class="chip">🧠 ปวดจากเส้นประสาท</span>
+      <span class="chip">😌 ลดความกลัวในแมว</span>
+    </div>
+    <div class="stats">
+      <div class="stat reveal" style="--sc:var(--teal)"><div class="k">ขนาดในสุนัข</div><div class="v">10–20 mg/kg</div><div class="s">ทุก 8–12 ชม.</div></div>
+      <div class="stat reveal" style="--sc:var(--coral);--d:.1s"><div class="k">ขนาดในแมว</div><div class="v">3–20 mg/kg</div><div class="s">ทุก 6–24 ชม.</div></div>
+      <div class="stat reveal" style="--sc:var(--amber);--d:.2s"><div class="k">กลไกที่น่าจะเป็น</div><div class="v">ยับยั้ง Ca²⁺ / Na</div><div class="s">channels</div></div>
+      <div class="stat reveal" style="--sc:var(--sage);--d:.3s"><div class="k">งานวิจัย TNR</div><div class="v">50–100 mg/ตัว</div><div class="s">ลดความเครียดที่ 2–3 ชม.</div></div>
+    </div>
+  </div>
+  <div class="hero-art reveal">
+    <div class="frame">
+      <img src="https://image.qwenlm.ai/public_source/22cbcd3e-8c98-405d-a5eb-3a9a4dbcf354/1d11bded3-7b1e-4558-93b1-afecc5b46d39.png" alt="ภาพประกอบสุนัขและแมวกับแคปซูลกาบาเพนติน">
+    </div>
+    <svg class="cap" viewBox="0 0 140 64" aria-hidden="true">
+      <defs><clipPath id="capClip"><rect x="4" y="6" width="132" height="52" rx="26"/></clipPath></defs>
+      <rect x="4" y="6" width="132" height="52" rx="26" fill="#0E6B5C"/>
+      <rect x="70" y="6" width="66" height="52" fill="#E4572E" clip-path="url(#capClip)"/>
+      <rect x="16" y="12" width="42" height="10" rx="5" fill="#ffffff55"/>
+      <rect x="4" y="6" width="132" height="52" rx="26" fill="none" stroke="#132A26" stroke-width="2.5"/>
+    </svg>
+    <span class="stamp">℞ VET · NEURO</span>
+  </div>
+</div>
+
+<!-- ================= TICKER ================= -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track" id="tickerTrack">
+    <span>โครงสร้างคล้าย GABA แต่ไม่จับกับตัวรับ GABA <i>🐾</i></span>
+    <span>ยับยั้งช่องแคลเซียม และอาจรวมถึงโซเดียม <i>✚</i></span>
+    <span>สุนัข: เมแทบอไลซ์เป็น N-methyl-gabapentin <i>🐾</i></span>
+    <span>สุนัข 10–20 mg/kg q8–12h · แมว 3–20 mg/kg q6–24h <i>✚</i></span>
+    <span>งานวิจัย TNR: 50–100 mg/ตัว ลดความเครียดที่ 2–3 ชม. โดยไม่ง่วงซึมมากขึ้น <i>🐾</i></span>
+    <span>สูตรทาผิวหนัง: ระดับยาในเลือด ~1/6 ของการกิน — ยังสรุปผลไม่ได้ <i>✚</i></span>
+    <span>ง่วงซึม · เดินเซ = ผลข้างเคียงพบบ่อยสุด <i>🐾</i></span>
+    <span>ระวัง xylitol ในยาสูตรน้ำ (พิษต่อสุนัข) <i>✚</i></span>
+  </div>
+</div>
+
+<nav class="mainnav" id="mainnav">
+  <div class="in">
+    <a href="#moa">กลไกการออกฤทธิ์</a>
+    <a href="#clinical">การใช้ทางคลินิก</a>
+    <a href="#dose">ขนาดยาที่แนะนำ</a>
+    <a href="#calc">คำนวณขนาดยา</a>
+    <a href="#adverse">อาการไม่พึงประสงค์</a>
+    <a href="#research-fear">งานวิจัย: ความกลัวในแมว</a>
+    <a href="#research-td">Gabapentin ทาผิวหนัง</a>
+    <a href="#quiz">ทดสอบความรู้</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ================= MOA ================= -->
+<section id="moa">
+  <div class="sec-head">
+    <span class="eyebrow">Mechanism of Action</span>
+    <h2 class="mask"><span class="mask-in">กลไกการออกฤทธิ์</span></h2>
+  </div>
+
+  <div class="moa-grid">
+    <div class="moa-card reveal">
+      <span class="num">01</span>
+      <div class="ico" style="--ib:#E7F3EE">🧪</div>
+      <h3>คล้าย GABA แต่ "ไม่จับ" ตัวรับ GABA</h3>
+      <p>กาบาเพนตินเป็น structural analog ของสารสื่อประสาท <b>gamma-aminobutyric acid (GABA)</b> แต่ดูเหมือนจะ<i>ไม่มีอันตรกิริยากับตัวรับ GABA</i> แต่อย่างใด</p>
+    </div>
+    <div class="moa-card reveal" style="--d:.12s">
+      <span class="num">02</span>
+      <div class="ico" style="--ib:#FDF3E4">⚡</div>
+      <h3>ยับยั้งช่องแคลเซียม / โซเดียม</h3>
+      <p>กลไกที่แท้จริงยังไม่ชัดเจนทั้งหมด แต่น่าจะเกี่ยวข้องกับการ<b>ยับยั้งช่องแคลเซียม</b> และอาจรวมถึง<b>ช่องโซเดียม</b> <span class="ref">¹</span></p>
+    </div>
+    <div class="moa-card reveal" style="--d:.24s">
+      <span class="num">03</span>
+      <div class="ico" style="--ib:#FBEAE6">⏱️</div>
+      <h3>กำจัดยาเร็ว → เว้นช่วงยาสั้นกว่ามนุษย์</h3>
+      <p>ความแตกต่างด้านเภสัชจลนศาสตร์ระหว่างสปีชีส์ ทำให้สัตว์กำจัดยาได้เร็วกว่ามนุษย์ จึงใช้ช่วงการให้ยาที่ถี่กว่าได้</p>
+    </div>
+  </div>
+
+  <div class="pk-box reveal">
+    <h3>เภสัชจลนศาสตร์เปรียบเทียบ 3 สปีชีส์</h3>
+    <p class="sub">แตะปุ่มด้านล่างเพื่อเปรียบเทียบการเมแทบอไลซ์และการกำจัดยา <span style="color:var(--amber)">² ³</span></p>
+    <div class="tabrow" role="tablist">
+      <button class="tabbtn active" data-pk="human">🧑 มนุษย์</button>
+      <button class="tabbtn" data-pk="dog">🐕 สุนัข</button>
+      <button class="tabbtn" data-pk="cat">🐈 แมว</button>
+    </div>
+    <div class="pkpanel active" data-pk="human">
+      <div class="pk-item"><div class="k">การเมแทบอไลซ์</div><div class="v">ถูกขับออก<b>โดยไม่เปลี่ยนแปลง (unchanged)</b></div></div>
+      <div class="pk-item"><div class="k">การกำจัดยา</div><div class="v">กำจัดได้<b>ช้ากว่า</b>เมื่อเทียบกับสุนัขและแมว</div></div>
+      <div class="pk-item"><div class="k">นัยต่อช่วงการให้ยา</div><div class="v">ช่วงการให้ยา<b>เว้นห่างกว่า</b>ในสัตว์</div></div>
+    </div>
+    <div class="pkpanel" data-pk="dog">
+      <div class="pk-item"><div class="k">การเมแทบอไลซ์</div><div class="v">ถูกเมแทบอไลซ์เป็น <b>N-methyl-gabapentin</b> <span style="opacity:.7">²</span></div></div>
+      <div class="pk-item"><div class="k">การกำจัดยา</div><div class="v">กำจัดได้<b>เร็วกว่ามนุษย์</b></div></div>
+      <div class="pk-item"><div class="k">นัยต่อช่วงการให้ยา</div><div class="v">สามารถใช้<b>ช่วงการให้ยาสั้นกว่า</b>มนุษย์ได้</div></div>
+    </div>
+    <div class="pkpanel" data-pk="cat">
+      <div class="pk-item"><div class="k">การเมแทบอไลซ์</div><div class="v"><b>ยังไม่มีการศึกษา</b>ในแมว <span style="opacity:.7">³</span></div></div>
+      <div class="pk-item"><div class="k">การกำจัดยา</div><div class="v">เภสัชจลนศาสตร์ชี้ว่ากำจัด<b>เร็วกว่ามนุษย์</b></div></div>
+      <div class="pk-item"><div class="k">นัยต่อช่วงการให้ยา</div><div class="v">มีนัยต่อช่วงการให้ยา<b>คล้ายกับสุนัข</b></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CLINICAL ================= -->
+<section id="clinical">
+  <div class="sec-head">
+    <span class="eyebrow">Clinical Applications</span>
+    <h2 class="mask"><span class="mask-in">การใช้ทางคลินิก</span></h2>
+  </div>
+
+  <div class="evi-grid">
+    <div class="evi-card reveal" style="--pc:var(--teal)">
+      <span class="pin"></span>
+      <h3>⚡ โรคลมชัก — ยาร่วมรักษา (adjunct)</h3>
+      <p>ใช้เป็นยาร่วมรักษาอาการชักในสุนัขและแมว รวมถึงใช้รักษาอาการปวดจากเส้นประสาท (neuropathic pain) <span style="color:var(--coral);font-weight:700">⁴⁻⁹</span></p>
+      <div class="lvl">ระดับหลักฐาน <div class="evi-bar"><i style="--w:78%"></i></div> ใช้แพร่หลาย</div>
+      <div class="tags"><span>สุนัข</span><span>แมว</span><span>adjunct therapy</span></div>
+    </div>
+    <div class="evi-card reveal" style="--pc:var(--amber);--d:.1s">
+      <span class="pin"></span>
+      <h3>🧠 อาการปวดเฉียบพลัน (หลังผ่าตัด)</h3>
+      <p>ในมนุษย์อาจมีประโยชน์เป็นยาร่วมรักษาปวดเฉียบพลัน เช่น หลังผ่าตัดกระดูกสันหลัง/ตัดมดลูก แต่ในสุนัขและแมวมีผลน้อยกว่า และ <b>meta-analysis ไม่พบประโยชน์ชัดเจน</b> <span style="color:var(--coral);font-weight:700">¹⁰⁻¹⁸</span></p>
+      <div class="lvl">ระดับหลักฐาน <div class="evi-bar"><i style="--w:42%"></i></div> จำกัด / ขัดแย้ง</div>
+      <div class="tags"><span>มนุษย์</span><span>meta-analysis</span></div>
+    </div>
+    <div class="evi-card reveal" style="--pc:var(--coral);--d:.15s">
+      <span class="pin"></span>
+      <h3>🐴 รายงานผู้ป่วยในม้า 1 ราย</h3>
+      <p>มี case report เดียวที่รายงานการใช้กาบาเพนตินจัดการอาการปวดจากเส้นประสาทในม้าได้สำเร็จ (ขนาด 2.5 mg/kg q12h) <span style="color:var(--coral);font-weight:700">¹⁹</span></p>
+      <div class="lvl">ระดับหลักฐาน <div class="evi-bar"><i style="--w:16%"></i></div> case report เดียว</div>
+      <div class="tags"><span>ม้า</span><span>2.5 mg/kg q12h</span></div>
+    </div>
+    <div class="evi-card reveal" style="--pc:var(--sage);--d:.2s">
+      <span class="pin"></span>
+      <h3>📌 ภาพรวมหลักฐานด้านการระงับปวด</h3>
+      <p>หลักฐานส่วนใหญ่ที่แสดงประสิทธิภาพการจัดการความปวดในสัตว์เป็น<b>เชิงประสบการณ์ (anecdotal)</b> ยังไม่ได้มาจากการศึกษาแบบควบคุม</p>
+      <div class="lvl">ระดับหลักฐาน <div class="evi-bar"><i style="--w:30%"></i></div> anecdotal</div>
+      <div class="tags"><span>ต้องศึกษาเพิ่มเติม</span></div>
+    </div>
+  </div>
+
+  <div class="sedative-note reveal">
+    <span class="big">😼</span>
+    <div>
+      <h4>การใช้เป็นยาสงบประสาทในแมว (anecdotal)</h4>
+      <p>มีการใช้กาบาเพนตินในแมวเพื่อช่วยให้การมาพบสัตวแพทย์และหัตถการต่าง ๆ (เช่น การตรวจร่างกาย) ราบรื่นขึ้น โดยมีงานวิจัยแสดงว่าขนาด <b>50 mg/ตัว</b> และ <b>100 mg/ตัว</b> ช่วยลดการตอบสนองต่อความกลัวในแมวในโครงการจับ–ทำหมัน–ปล่อยกลับ (trap-neuter-return) ได้ <span style="color:var(--coral);font-weight:700">²¹</span></p>
+      <a class="note-link" href="#research-fear">📖 อ่านสรุปงานวิจัยฉบับเต็มด้านล่าง →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DOSE ================= -->
+<section id="dose">
+  <div class="sec-head">
+    <span class="eyebrow">Recommended Doses</span>
+    <h2 class="mask"><span class="mask-in">ขนาดยาที่แนะนำ</span></h2>
+  </div>
+
+  <div class="rx-sheet reveal">
+    <div class="rx-head">
+      <span class="sym">℞</span>
+      <div><h3>ใบสรุปขนาดยา · Gabapentin</h3><small>ช่วงขนาดยาค่อนข้างกว้าง ปรับตามการตอบสนองของสัตว์แต่ละตัว</small></div>
+    </div>
+    <div class="table-scroll">
+    <table>
+      <thead><tr><th>สปีชีส์</th><th>ขนาดยา</th><th>ความถี่</th><th>ข้อบ่งใช้ / หมายเหตุ</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="sp"><span class="em">🐕</span>สุนัข</span></td>
+          <td><span class="dose">10–20 mg/kg</span></td>
+          <td>ทุก 8–12 ชม.</td>
+          <td><small>ชัก / ปวดจากเส้นประสาท <span style="color:var(--coral);font-weight:700">4,7–9,20</span></small></td>
+        </tr>
+        <tr>
+          <td><span class="sp"><span class="em">🐈</span>แมว</span></td>
+          <td><span class="dose">3–20 mg/kg</span></td>
+          <td>ทุก 6–24 ชม.</td>
+          <td><small>ชัก / ปวดจากเส้นประสาท / สงบประสาท <span style="color:var(--coral);font-weight:700">7,14–16,20</span></small></td>
+        </tr>
+        <tr>
+          <td><span class="sp"><span class="em">🐴</span>ม้า</span></td>
+          <td><span class="dose">2.5 mg/kg</span></td>
+          <td>ทุก 12 ชม.</td>
+          <td><small>ปวดจากเส้นประสาท — case report เดียว <span style="color:var(--coral);font-weight:700">19</span></small></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="rx-foot">💡 แมว: มีรายงานขนาด 50–100 mg/ตัว เพื่อลดความกลัวในการมาพบสัตวแพทย์ (โครงการ TNR) <span style="color:var(--coral);font-weight:700">21</span></div>
+  </div>
+</section>
+
+<!-- ================= CALCULATOR ================= -->
+<section id="calc">
+  <div class="sec-head">
+    <span class="eyebrow">Interactive Dose Calculator</span>
+    <h2 class="mask"><span class="mask-in">เครื่องคำนวณขนาดยา</span></h2>
+  </div>
+
+  <div class="calc-wrap">
+    <div class="calc-left reveal">
+      <h3>ตั้งค่าผู้ป่วยสัตว์</h3>
+      <p class="hint">เลือกสปีชีส์และกำหนดน้ำหนักตัว ระบบจะคำนวณช่วงขนาดยาต่อครั้งให้ทันที</p>
+      <div class="sp-toggle">
+        <button class="sp-btn active" data-sp="dog"><span class="em">🐕</span><span class="nm">สุนัข</span><span class="rg">10–20 mg/kg</span></button>
+        <button class="sp-btn" data-sp="cat"><span class="em">🐈</span><span class="nm">แมว</span><span class="rg">3–20 mg/kg</span></button>
+      </div>
+      <div class="w-label"><span>น้ำหนักตัว</span><output id="wOut">10 kg</output></div>
+      <input type="range" id="wRange" min="0.5" max="80" step="0.5" value="10">
+      <div class="w-num">
+        <input type="number" id="wNum" min="0.1" max="150" step="0.1" value="10" inputmode="decimal">
+        <span>กิโลกรัม</span>
+      </div>
+    </div>
+
+    <div class="calc-right reveal" style="--d:.12s">
+      <div class="res-freq" id="resFreq"> สุนัข · ให้ยาทุก 8–12 ชั่วโมง</div>
+      <div class="res-row">
+        <div class="res-box"><div class="k">ขนาดต่ำสุด / ครั้ง</div><div class="v"><span id="resMin">100</span> <small>mg</small></div></div>
+        <div class="res-box hi"><div class="k">ขนาดสูงสุด / ครั้ง</div><div class="v"><span id="resMax">200</span> <small>mg</small></div></div>
+      </div>
+      <div class="res-row">
+        <div class="res-box"><div class="k">เทียบเท่าแคปซูล 100 mg</div><div class="v" style="font-size:1.2rem" id="resCap">≈ 1 – 2 เม็ด / ครั้ง</div></div>
+        <div class="res-box"><div class="k">ช่วงขนาดยาต่อน้ำหนัก</div><div class="v" style="font-size:1.2rem" id="resPerKg">10 – 20 mg/kg</div></div>
+      </div>
+      <div class="res-note" id="resNote"><b>⚠️ ระวัง:</b> ยาสูตรน้ำ (liquid formulation) บางยี่ห้อมี <b>xylitol</b> ซึ่งเป็นพิษต่อสุนัข — ควรเลือกสูตร xylitol-free</div>
+      <p class="calc-disc">การคำนวณนี้เป็นแนวทางเบื้องต้นตามข้อมูลต้นฉบับเท่านั้น · การใช้ยาจริงต้องอยู่ภายใต้ดุลยพินิจของสัตวแพทย์</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ADVERSE ================= -->
+<section id="adverse">
+  <div class="sec-head">
+    <span class="eyebrow">Adverse Effects</span>
+    <h2 class="mask"><span class="mask-in">อาการไม่พึงประสงค์</span></h2>
+  </div>
+
+  <div class="warn-banner reveal">
+    <span class="ic">☠️</span>
+    <div>
+      <h3>คำเตือนสำคัญ: Xylitol ในยาสูตรน้ำ</h3>
+      <p>ยาสูตรน้ำบางยี่ห้อมี xylitol ซึ่งเป็นพิษในสุนัข — สูตรที่มี xylitol อาจทำให้เกิดภาวะน้ำตาลในเลือดต่ำเมื่อให้ขนาดสูง แต่ภาวะรุนแรง (ตับวาย) มักไม่เกิดนอกจากขนาดสูงมาก (&gt;80 mg/kg) <span style="font-weight:700">²⁰</span></p>
+    </div>
+  </div>
+
+  <div class="acc reveal">
+    <button class="acc-head" aria-expanded="false">
+      <span class="em">😴</span>
+      <h3>ง่วงซึม (sedation) และเดินเซ (ataxia) — พบบ่อยที่สุด <sup style="color:var(--coral)">8,9,20</sup></h3>
+      <span class="plus">＋</span>
+    </button>
+    <div class="acc-body"><div class="inpad">
+      <ul>
+        <li>เป็นอาการไม่พึงประสงค์ที่<b>พบบ่อยที่สุด</b>ของกาบาเพนติน</li>
+        <li>มักพบเมื่อให้ยา<i>ขนาดสูงในช่วงบนของพิสัย</i> หรือเมื่อใช้ร่วมกับ<i>ยาอื่นที่ทำให้ง่วงซึม</i></li>
+        <li>อาการมัก<i>ลดลงได้เองหลังให้ยาไปหลายวัน</i> <sup style="color:var(--coral)">9,20</sup></li>
+      </ul>
+    </div></div>
+  </div>
+
+  <div class="acc reveal" style="--d:.1s">
+    <button class="acc-head" aria-expanded="false">
+      <span class="em">🧃</span>
+      <h3>Xylitol ในสูตรน้ำ → น้ำตาลในเลือดต่ำในสุนัข</h3>
+      <span class="plus">＋</span>
+    </button>
+    <div class="acc-body"><div class="inpad">
+      <ul>
+        <li>กาบาเพนตินสูตรน้ำ<b>บางยี่ห้อมี xylitol</b> ซึ่งเป็นพิษในสุนัข ขณะที่ยี่ห้ออื่นเป็นสูตร xylitol-free</li>
+        <li>สูตรที่มี xylitol อาจทำให้เกิด<b>hypoglycemia</b> ในสุนัขเมื่อให้ขนาดยาในช่วงบนของพิสัย</li>
+        <li>อย่างไรก็ตาม ภาวะพิษรุนแรง เช่น <i>ตับวาย</i> <b>ไม่น่าจะเกิดขึ้น</b> นอกจากใช้ขนาดสูงมาก (&gt;80 mg/kg) <sup style="color:var(--coral)">20</sup></li>
+      </ul>
+    </div></div>
+  </div>
+
+  <div class="acc reveal" style="--d:.2s">
+    <button class="acc-head" aria-expanded="false">
+      <span class="em">🩺</span>
+      <h3>ข้อพึงปฏิบัติเชิงคลินิก</h3>
+      <span class="plus">＋</span>
+    </button>
+    <div class="acc-body"><div class="inpad">
+      <ul>
+        <li>เฝ้าระวังอาการง่วงซึม/เดินเซมากขึ้นเมื่อ<i>เริ่มยาขนาดสูง</i>หรือใช้ร่วมกับยากดประสาทอื่น</li>
+        <li>อาการข้างเคียงมัก<i>ทุเลาหลังใช้ยาไปหลายวัน</i> — อาจให้เวลาปรับตัวก่อนปรับขนาด</li>
+        <li>ในสุนัข <b>ตรวจสอบฉลากยาสูตรน้ำเสมอ</b> ว่าไม่มี xylitol ก่อนจ่ายยา</li>
+      </ul>
+    </div></div>
+  </div>
+</section>
+
+<!-- ================= RESEARCH 01 : FEAR IN CATS ================= -->
+<section id="research-fear">
+  <div class="sec-head">
+    <span class="eyebrow">Research Digest 01 · Trap-Neuter-Return Program</span>
+    <h2 class="mask"><span class="mask-in">Gabapentin กับความกลัวในแมว</span></h2>
+  </div>
+
+  <div class="brief reveal">
+    <span class="bnum">RESEARCH BRIEF · 01</span>
+    <h3>🔬 ภูมิหลังของงานวิจัย (The Research)</h3>
+    <p class="intro">โปรแกรม <b>trap-neuter-return (TNR)</b> ถูกใช้อย่างแพร่หลายเพื่อควบคุมประชากรแมวจรจัด/แมวชุมชน ระหว่างการจับและการกักกรงช่วงผ่าตัด แมวอาจประสบ<b>ความเครียดสูงและบาดเจ็บด้วยตัวเอง</b> — กาบาเพนตินซึ่งเป็นยากันชักที่ใช้รักษาปวดจากเส้นประสาท มีรายงานว่า<b>ลดความกังวลในหนูและมนุษย์</b><sup>1,2</sup> แม้คุณสมบัติลดความกังวลในแมวยัง<b>ไม่เคยมีการศึกษาโดยตรง</b> แต่การศึกษาเภสัชจลนศาสตร์พบว่า<b>การดูดซึมทางปากดีเยี่ยม และมีช่วงความปลอดภัยกว้างเมื่อให้ครั้งเดียว</b><sup>3</sup></p>
+
+    <div class="meta-grid">
+      <div class="meta-item"><div class="k">รูปแบบการศึกษา</div><div class="v">Double-blind, Placebo-controlled</div></div>
+      <div class="meta-item"><div class="k">จำนวนแมว</div><div class="v">53 ตัว · แมวชุมชน อายุ &gt;4 เดือน (โดยประมาณ)</div></div>
+      <div class="meta-item"><div class="k">กลุ่มทดลอง</div><div class="v">3 กลุ่ม · ยาป้อนแบบน้ำ (oral suspension)</div></div>
+      <div class="meta-item"><div class="k">ช่วงขนาดจริง</div><div class="v">9.2 – 47.6 mg/kg</div></div>
+    </div>
+
+    <p class="sub-h">⏱️ จุดเวลาที่ประเมินผล</p>
+    <div class="timeline-wrap">
+      <div class="timeline">
+        <div class="tdot"><i></i>Baseline</div>
+        <div class="tdot"><i></i>1 ชม.</div>
+        <div class="tdot hot"><i></i>2 ชม. ★</div>
+        <div class="tdot hot"><i></i>3 ชม. ★</div>
+        <div class="tdot"><i></i>12 ชม.</div>
+        <div class="tdot"><i></i>ผ่าตัด</div>
+      </div>
+    </div>
+    <p class="mini-note">★ จุดที่คะแนนความเครียดในกลุ่มยาลดลงอย่างมีนัยสำคัญ · ประเมิน stress score, global sedation score และอัตราการหายใจทุกจุดเวลา · ประเมิน facial injury score ที่ baseline, 12 ชม. และระหว่างผ่าตัดทำหมัน · หลัง 12 ชม. แมวทุกตัวถูกวางยาสลบเพื่อผ่าตัด</p>
+
+    <div class="fear-bars">
+      <h4>📊 คะแนนความเครียด ณ 2–3 ชม. หลังให้ยา (เปรียบเทียบเชิงคุณภาพ)</h4>
+      <div class="frow"><span>Placebo</span><div class="ftrack"><span class="ffill" style="--w:82%;--fc:#8C9B93"></span></div><span class="fval">ไม่ลดลงชัดเจน</span></div>
+      <div class="frow"><span>50 mg/ตัว</span><div class="ftrack"><span class="ffill" style="--w:46%;--fc:var(--teal)"></span></div><span class="fval">ลดลงชัดเจน ↓</span></div>
+      <div class="frow"><span>100 mg/ตัว</span><div class="ftrack"><span class="ffill" style="--w:42%;--fc:var(--coral)"></span></div><span class="fval">ลดลงชัดเจน ↓</span></div>
+      <p class="mini-note">* แผนภาพแสดงทิศทางของผลการศึกษาเท่านั้น ไม่ใช่ค่าตัวเลขจริงจากงานวิจัย</p>
+    </div>
+
+    <p class="sub-h">🐈 เจาะลึกรายกลุ่ม — เลือกกลุ่มเพื่อดูผลลัพธ์</p>
+    <div class="grouprow">
+      <button class="gbtn active" data-g="p">💊 Placebo</button>
+      <button class="gbtn" data-g="l">🐱 50 mg/ตัว</button>
+      <button class="gbtn" data-g="h">🐈 100 mg/ตัว</button>
+    </div>
+    <div class="gpanel active" data-g="p">
+      <ul>
+        <li>คะแนนความเครียด<b>ไม่ลดลงอย่างมีนัยสำคัญ</b>เมื่อเทียบกับกลุ่มที่ได้รับกาบาเพนติน</li>
+        <li>อัตราการหายใจลดลงในช่วง 3 ชม. เช่นเดียวกับทุกกลุ่ม</li>
+        <li>พบ hypersalivation 2 ตัว · ทุกตัวผ่านการวางยาสลบและผ่าตัดตามปกติ</li>
+      </ul>
+    </div>
+    <div class="gpanel" data-g="l">
+      <ul>
+        <li>Stress score <b>ลดลงอย่างมีนัยสำคัญที่ 2 และ 3 ชม.</b> หลังให้ยาเมื่อเทียบกับกลุ่มควบคุม</li>
+        <li>ระดับการลดความเครียด<b>ไม่แตกต่างจากขนาด 100 mg</b> ณ เวลาใดเลย</li>
+        <li>คะแนน sedation <b>ไม่ต่างจาก placebo</b> · พบ hypersalivation 1 ตัว</li>
+      </ul>
+    </div>
+    <div class="gpanel" data-g="h">
+      <ul>
+        <li>Stress score <b>ลดลงอย่างมีนัยสำคัญที่ 2 และ 3 ชม.</b> หลังให้ยา</li>
+        <li>การเพิ่มขนาดเป็น 100 mg <b>ไม่ได้ลดความเครียดมากกว่า</b>ขนาด 50 mg</li>
+        <li>ขนาดจริงคำนวณได้ช่วง <b>9.2–47.6 mg/kg</b> · พบ hypersalivation 1 ตัว · ปลอดภัยตลอดการศึกษา</li>
+      </ul>
+    </div>
+
+    <p class="sub-h">📋 ผลลัพธ์หลักของการศึกษา</p>
+    <div class="results-grid">
+      <div class="ritem"><span class="em">😰</span><h4>คะแนนความเครียด</h4><p>ทั้งกลุ่ม 50 และ 100 mg <i>ลดลงอย่างมีนัยสำคัญที่ 2 และ 3 ชม.</i> เมื่อเทียบกับกลุ่มควบคุม — และไม่ต่างระหว่างสองกลุ่มยา ณ เวลาใดเลย</p></div>
+      <div class="ritem"><span class="em">😴</span><h4>คะแนน Sedation</h4><p><i>ไม่มีความแตกต่าง</i>ระหว่างทั้ง 3 กลุ่ม ณ จุดเวลาใดเลย → ลดความเครียดโดยไม่ทำให้ง่วงซึมมากขึ้น</p></div>
+      <div class="ritem"><span class="em">🫁</span><h4>อัตราการหายใจ</h4><p>ทุกกลุ่มมีอัตราการหายใจ<i>ลดลงในช่วง 3 ชม.</i>หลังให้ยา (แนวโน้มตามเวลา ไม่ได้จำเพาะกับยา)</p></div>
+      <div class="ritem"><span class="em">🩹</span><h4>การบาดเจ็บใบหน้า</h4><p>พบ facial injury ในทุกกลุ่ม และ<i>ไม่เปลี่ยนแปลงตามเวลา</i></p></div>
+      <div class="ritem"><span class="em">✅</span><h4>ความปลอดภัย</h4><p><i>ไม่มี adverse events ที่เกิดจากกาบาเพนติน</i> · แมวทุกตัวผ่านการวางยาสลบและผ่าตัดทำหมันโดยราบรื่น</p></div>
+      <div class="ritem"><span class="em">💧</span><h4>Hypersalivation</h4><p>พบ 4 ตัว — <b>placebo 2 ตัว · low-dose 1 ตัว · high-dose 1 ตัว</b> (ไม่ใช่ผลที่จำเพาะกับยา)</p></div>
+    </div>
+
+    <p class="sub-h">📌 สรุปสาระสำคัญเพื่อนำไปใช้ (The Takeaways)</p>
+    <div class="pearls">
+      <div class="pearl"><span class="gem">💎</span><p>ในแมว การให้กาบาเพนติน<b>ครั้งเดียว 50–100 mg/ตัว</b> อาจช่วย<b>ลดความเครียด แต่ไม่จำเป็นต้องทำให้ง่วงซึม (sedation)</b> โดยเห็นผลในช่วง <b>2–3 ชั่วโมง</b>หลังป้อนทางปาก</p></div>
+      <div class="pearl"><span class="gem">💎</span><p>กาบาเพนตินสามารถ<b>ให้ก่อนการวางยาสลบและการผ่าตัดทั่วไปได้อย่างปลอดภัย</b> ในแมวสุขภาพดีที่มีอายุมากกว่า 4 เดือน</p></div>
+      <div class="pearl"><span class="gem">💎</span><p>การป้อนกาบาเพนติน<b>รูปแบบยาน้ำ (oral suspension) ส่วนใหญ่ทนได้ดี</b> แม้บางตัวอาจเกิด hypersalivation ได้</p></div>
+    </div>
+    <p class="mini-note">ตัวเลขอ้างอิง ¹⁻³ ตามบทความวิจัยต้นฉบับของหัวข้อนี้</p>
+  </div>
+</section>
+
+<!-- ================= RESEARCH 02 : TRANSDERMAL ================= -->
+<section id="research-td">
+  <div class="sec-head">
+    <span class="eyebrow">Research Digest 02 · Transdermal Route</span>
+    <h2 class="mask"><span class="mask-in">กาบาเพนตินรูปแบบทาผิวหนังในแมว</span></h2>
+  </div>
+
+  <div class="brief reveal">
+    <span class="bnum" style="background:var(--teal)">RESEARCH BRIEF · 02</span>
+    <h3>🔬 ภูมิหลังของงานวิจัย (The Research)</h3>
+    <p class="intro">กาบาเพนตินถูกใช้อย่างแพร่หลายในแมวเพื่อ<b>ลดความกลัวและความเครียด</b> รวมถึงรักษาภาวะปวดบางชนิด (เช่น <b>ข้อเสื่อม — osteoarthritis</b>) — แต่การป้อนยาทางปากในแมวอาจทำได้ยากและนำไปสู่<b>ความล้มเหลวของการรักษา</b> จึงมีความต้องการวิธีให้ยาที่รุกรานน้อยกว่า · แม้ยา <b>mirtazapine</b> จะมีรูปแบบทาผิวหนังที่ FDA อนุมัติแล้ว แต่<b>ไม่ใช่ทุกโมเลกุลจะเหมาะสมกับการทา</b> และต้องประเมินในสปีชีส์เป้าหมายก่อน</p>
+
+    <div class="meta-grid">
+      <div class="meta-item"><div class="k">การศึกษา</div><div class="v">In vitro (diffusion cell) + In vivo (แมวเจ้าของ)</div></div>
+      <div class="meta-item"><div class="k">สูตรยา</div><div class="v">ความเข้มข้น 250 mg/mL ใน proprietary base</div></div>
+      <div class="meta-item"><div class="k">In vitro</div><div class="v">ยืนยันว่ายาผ่านผิวหนัง (cadaver skin) ได้</div></div>
+      <div class="meta-item"><div class="k">จำนวนแมว In vivo</div><div class="v">23 ตัว (&lt;6 ปี: 8 ตัว · &gt;8 ปี: 15 ตัว)</div></div>
+    </div>
+
+    <p class="sub-h">🧴 ตารางเฟส In Vivo ของการศึกษารูปแบบทาผิวหนัง</p>
+    <div class="rx-sheet">
+      <div class="table-scroll">
+      <table>
+        <thead><tr><th>กลุ่มอายุ</th><th>ความเข้มข้น</th><th>ขนาด</th><th>ความถี่</th><th>ตำแหน่งทา</th><th>ระยะเวลา</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="sp"><span class="em">🐱</span>&lt;6 ปี (n=8)</span></td>
+            <td>250 mg/mL</td>
+            <td><span class="dose">5 หรือ 10</span></td>
+            <td>ทุก 8 ชม.</td>
+            <td>ใบหูด้านใน หรือผิวหนังบริเวณคอที่โกนขน</td>
+            <td>5 วัน</td>
+          </tr>
+          <tr>
+            <td><span class="sp"><span class="em">🐈‍⬛</span>&gt;8 ปี (n=15)</span></td>
+            <td>250 mg/mL</td>
+            <td><span class="dose">10</span></td>
+            <td>ทุก 8 ชม.</td>
+            <td>ใบหูด้านใน</td>
+            <td>5 วัน</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="rx-foot">ขนาดตามตารางในบทความต้นฉบับ · เก็บตัวอย่างเลือดก่อนให้ยา dose แรก และในวันที่ 1 กับ 5</div>
+    </div>
+
+    <p class="sub-h">📋 ผลการศึกษา</p>
+    <div class="results-grid">
+      <div class="ritem"><span class="em">🩸</span><h4>ระดับยาในเลือด</h4><p>หลังทาผิวหนัง ระดับกาบาเพนตินในเลือด <b>ต่ำกว่าการให้ทางปากอย่างน้อย 6 เท่า</b> เมื่อเทียบกับค่าที่เคยรายงาน<sup>1</sup></p></div>
+      <div class="ritem"><span class="em">🐱</span><h4>แมวอายุน้อย (&lt;6 ปี)</h4><p><i>ไม่พบความแตกต่าง</i>ของระดับยาในเลือดระหว่าง 2 ขนาด (5 vs 10) และระหว่าง 2 ตำแหน่งทา</p></div>
+      <div class="ritem"><span class="em">🐈‍⬛</span><h4>แมวสูงอายุ (&gt;8 ปี)</h4><p>ระดับยาในเลือด<i>สูงกว่าวันที่ 1 อย่างมีนัยสำคัญในวันที่ 5</i> (การสะสมตามระยะเวลา)</p></div>
+      <div class="ritem"><span class="em">⏱️</span><h4>ข้อสังเกตด้านเวลา</h4><p>ตัวอย่างเลือดแรกถูกเก็บ<i>หลังเริ่มทายาแล้ว 1 วัน</i> → ประโยชน์ของการทาก่อนมาคลินิก<b>ยังไม่ทราบ</b></p></div>
+      <div class="ritem"><span class="em">📊</span><h4>Pain scoring</h4><p>รายงานเฉพาะแมว &gt;8 ปี แต่<b>ไม่ระบุชนิดของความปวด</b> — และเครื่องมือวัดปวดเฉียบพลันที่ใช้<b>ไม่เหมาะสม</b>กับแมวสูงวัยที่มักปวดเรื้อรัง</p></div>
+      <div class="ritem"><span class="em">😴</span><h4>Sedation</h4><p>กาบาเพนตินอาจทำให้ง่วงซึมซึ่งรบกวน pain scoring แต่การศึกษา<b>ไม่ให้รายละเอียดเรื่อง sedation</b></p></div>
+    </div>
+
+    <div class="limit">
+      <span class="lh">⚠️ ข้อจำกัดสำคัญ</span>
+      การศึกษานี้พบ<b>ระดับกาบาเพนตินในเลือดต่ำ</b>หลังทาผิวหนัง — <b>ไม่ควรสรุปเกี่ยวกับประสิทธิผลด้านการระงับปวด</b>จากข้อมูลที่มี · ไม่มีคะแนน sedation · และยังไม่ทราบว่าการทาก่อนมาพบสัตวแพทย์จะมีประโยชน์หรือไม่
+    </div>
+
+    <p class="sub-h">📌 สรุปสาระสำคัญเพื่อนำไปใช้ (The Takeaways)</p>
+    <div class="pearls">
+      <div class="pearl"><span class="gem">💎</span><p>ยัง<b>ต้องศึกษาเพิ่มเติม</b>ก่อนจะใช้กาบาเพนตินรูปแบบทาผิวหนังได้อย่างน่าเชื่อถือ ทั้งก่อนการมาคลินิกและสำหรับความปวดเรื้อรัง (maladaptive pain) ในแมว — <b>ผลิตภัณฑ์ compounding ไม่ผ่านการประเมินความปลอดภัยหรือประสิทธิผล</b><sup>2</sup></p></div>
+      <div class="pearl"><span class="gem">💎</span><p>กาบาเพนติน<b>รูปแบบกินทำให้เกิด sedation และลดความกลัวในแมวส่วนใหญ่</b> โดยระดับยาสูงสุดถึงภายใน <b>1–2 ชั่วโมง</b><sup>3</sup></p></div>
+      <div class="pearl"><span class="gem">💎</span><p>จากแบบสำรวจ <b>71% ของคลินิกใช้ oral gabapentin เป็นยาแรก</b>ในการรักษา chronic musculoskeletal pain<sup>4</sup> และมี small study ในแมวที่เป็นข้อเสื่อมรองรับการใช้ดังกล่าว<sup>5</sup></p></div>
+    </div>
+    <p class="mini-note">ตัวเลขอ้างอิง ¹⁻⁵ ตามบทความวิจัยต้นฉบับของหัวข้อนี้</p>
+  </div>
+</section>
+
+<!-- ================= QUIZ ================= -->
+<section id="quiz">
+  <div class="sec-head">
+    <span class="eyebrow">Knowledge Check</span>
+    <h2 class="mask"><span class="mask-in">ทดสอบความรู้</span></h2>
+  </div>
+
+  <div class="quiz-card reveal">
+    <div class="quiz-top">
+      <span class="q-count" id="qCount">ข้อ 1 / 7</span>
+      <div class="quiz-dots" id="qDots"></div>
+    </div>
+    <div class="quiz-body" id="quizBody"></div>
+    <div class="quiz-result" id="quizResult">
+      <div class="ring-wrap">
+        <svg width="150" height="150" viewBox="0 0 120 120">
+          <circle class="ring-bg" cx="60" cy="60" r="52"/>
+          <circle class="ring-fg" id="ringFg" cx="60" cy="60" r="52"/>
+        </svg>
+        <div class="ring-num" id="ringNum">0/7</div>
+      </div>
+      <h3 id="resTitle">ทำแบบทดสอบเสร็จแล้ว!</h3>
+      <p id="resMsg"></p>
+      <button class="quiz-next show" id="retryBtn" style="max-width:280px;margin:0 auto">↺ ทำแบบทดสอบอีกครั้ง</button>
+    </div>
+  </div>
+
+  <div style="height:36px"></div>
+  <div class="refs reveal">
+    <b>หมายเหตุอ้างอิง:</b> ตัวเลขยกกำลังในส่วนหลัก (¹–²¹) และในส่วน Research Digest แต่ละเรื่อง (¹–⁵) อ้างอิงตามลำดับหมายเลขในบทความต้นฉบับแต่ละบท ใช้เพื่อระบุตำแหน่งหลักฐานเท่านั้น · หลักฐานส่วนใหญ่ด้านการระงับปวดในสัตว์ยังเป็นเชิงประสบการณ์ (anecdotal) และต้องอาศัยการศึกษาแบบควบคุมเพิ่มเติม
+  </div>
+</section>
+
+<div class="paw-div" aria-hidden="true">
+  <svg viewBox="0 0 24 24" fill="#132A26"><circle cx="6" cy="8" r="2.4"/><circle cx="12" cy="6" r="2.4"/><circle cx="18" cy="8" r="2.4"/><path d="M12 11c-4 0-7 3.4-7 6.2 0 1.8 1.4 2.8 3 2.8 1.5 0 2.6-.8 4-.8s2.5.8 4 .8c1.6 0 3-1 3-2.8 0-2.8-3-6.2-7-6.2z"/></svg>
+  <svg viewBox="0 0 24 24" fill="#132A26"><circle cx="6" cy="8" r="2.4"/><circle cx="12" cy="6" r="2.4"/><circle cx="18" cy="8" r="2.4"/><path d="M12 11c-4 0-7 3.4-7 6.2 0 1.8 1.4 2.8 3 2.8 1.5 0 2.6-.8 4-.8s2.5.8 4 .8c1.6 0 3-1 3-2.8 0-2.8-3-6.2-7-6.2z"/></svg>
+  <svg viewBox="0 0 24 24" fill="#132A26"><circle cx="6" cy="8" r="2.4"/><circle cx="12" cy="6" r="2.4"/><circle cx="18" cy="8" r="2.4"/><path d="M12 11c-4 0-7 3.4-7 6.2 0 1.8 1.4 2.8 3 2.8 1.5 0 2.6-.8 4-.8s2.5.8 4 .8c1.6 0 3-1 3-2.8 0-2.8-3-6.2-7-6.2z"/></svg>
+</div>
+</main>
+
+<footer>
+  <img src="https://yunhfdekcjosnfwndepu.supabase.co/storage/v1/object/public/DATA%20SRNanimalcare/Logo%20symbol.png"
+       alt="SRN Animal Care" class="f-logo" onerror="this.style.display='none'">
+  <div class="fx">℞ Gabapentin · Veterinary Review</div>
+  <p>เนื้อหานี้จัดทำเพื่อการศึกษาและทบทวนความรู้เท่านั้น ไม่ใช่คำแนะนำทางการแพทย์ — การวินิจฉัยและการสั่งจ่ายยาต้องอยู่ภายใต้ดุลยพินิจของสัตวแพทย์ผู้ทำการรักษา</p>
+  <p class="tiny">นำเสนอโดย SRN Animal Care · ออกแบบในธีมเภสัชตำรับสัตวแพทย์ · Prompt × Sarabun · รองรับ prefers-reduced-motion</p>
+</footer>
+
+<script>
+(function(){
+"use strict";
+var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- ticker duplicate ---------- */
+var track = document.getElementById('tickerTrack');
+if(track){ track.innerHTML += track.innerHTML; }
+
+/* ---------- scroll progress ---------- */
+var bar = document.getElementById('progressBar');
+window.addEventListener('scroll', function(){
+  var h = document.documentElement;
+  var p = h.scrollTop / (h.scrollHeight - h.clientHeight || 1);
+  bar.style.width = (p*100) + '%';
+}, {passive:true});
+
+/* ---------- scramble thai title ---------- */
+var thEl = document.getElementById('thTitle');
+if(thEl && !reduced){
+  var finalText = thEl.dataset.text;
+  var chars = 'กขฆงงจฉชซญฎฐฑณดตถทธนบปผฝพฟภมยรลวศษสหอฮ';
+  var start = null, dur = 1400;
+  function frame(now){
+    if(!start) start = now;
+    var p = Math.min(1, (now-start)/dur);
+    var reveal = Math.floor(p * finalText.length);
+    var out = '';
+    for(var i=0;i<finalText.length;i++){
+      out += (i < reveal) ? finalText[i] : chars[Math.floor(Math.random()*chars.length)];
+    }
+    thEl.textContent = out;
+    if(p < 1) requestAnimationFrame(frame); else thEl.textContent = finalText;
+  }
+  requestAnimationFrame(frame);
+}
+
+/* ---------- reveal observer ---------- */
+var io = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+  });
+}, {threshold:.12});
+document.querySelectorAll('.reveal, .mask, .evi-card').forEach(function(el){ io.observe(el); });
+
+/* ---------- scrollspy ---------- */
+var links = document.querySelectorAll('.mainnav a');
+var spy = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){
+      links.forEach(function(a){ a.classList.toggle('active', a.getAttribute('href') === '#'+e.target.id); });
+    }
+  });
+}, {rootMargin:'-40% 0px -55% 0px'});
+['moa','clinical','dose','calc','adverse','research-fear','research-td','quiz'].forEach(function(id){
+  var s = document.getElementById(id); if(s) spy.observe(s);
+});
+
+/* ---------- PK tabs ---------- */
+document.querySelectorAll('.tabbtn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.tabbtn').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    document.querySelectorAll('.pkpanel').forEach(function(p){
+      p.classList.toggle('active', p.dataset.pk === btn.dataset.pk);
+    });
+  });
+});
+
+/* ---------- research group tabs ---------- */
+document.querySelectorAll('.gbtn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var scope = btn.closest('.brief');
+    scope.querySelectorAll('.gbtn').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    scope.querySelectorAll('.gpanel').forEach(function(p){
+      p.classList.toggle('active', p.dataset.g === btn.dataset.g);
+    });
+  });
+});
+
+/* ---------- accordion ---------- */
+document.querySelectorAll('.acc-head').forEach(function(head){
+  head.addEventListener('click', function(){
+    var item = head.parentElement;
+    var body = item.querySelector('.acc-body');
+    var open = item.classList.toggle('open');
+    head.setAttribute('aria-expanded', open);
+    body.style.maxHeight = open ? body.scrollHeight + 'px' : '0px';
+  });
+});
+
+/* ---------- calculator ---------- */
+var SPECIES = {
+  dog:{ em:'🐕', name:'สุนัข', min:10, max:20, freq:'🐕 สุนัข · ให้ยาทุก 8–12 ชั่วโมง',
+        note:'<b>⚠️ ระวัง:</b> ยาสูตรน้ำ (liquid formulation) บางยี่ห้อมี <b>xylitol</b> ซึ่งเป็นพิษต่อสุนัข — ควรเลือกสูตร xylitol-free',
+        perKg:'10 – 20 mg/kg' },
+  cat:{ em:'🐈', name:'แมว', min:3, max:20, freq:'🐈 แมว · ให้ยาทุก 6–24 ชั่วโมง',
+        note:'😼 มีรายงานการใช้ขนาด <b style="color:var(--coral)">50–100 mg/ตัว</b> เพื่อลดความเครียดในการมาพบสัตวแพทย์ (โครงการ TNR) โดยเห็นผลที่ 2–3 ชม. หลังป้อน',
+        perKg:'3 – 20 mg/kg' }
+};
+var curSp = 'dog', curW = 10;
+var wRange = document.getElementById('wRange'), wNum = document.getElementById('wNum'), wOut = document.getElementById('wOut');
+var resMin = document.getElementById('resMin'), resMax = document.getElementById('resMax');
+var resCap = document.getElementById('resCap'), resFreq = document.getElementById('resFreq');
+var resNote = document.getElementById('resNote'), resPerKg = document.getElementById('resPerKg');
+
+function countUp(el, to, dec){
+  dec = dec || 0;
+  var from = parseFloat(el.dataset.v || '0');
+  el.dataset.v = to;
+  if(reduced || from === to){ el.textContent = to.toFixed(dec); return; }
+  var t0 = null, dur = 450;
+  function step(t){
+    if(!t0) t0 = t;
+    var p = Math.min(1, (t - t0)/dur);
+    var ease = 1 - Math.pow(1-p, 3);
+    el.textContent = (from + (to-from)*ease).toFixed(dec);
+    if(p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+function r1(v){ return Math.round(v*10)/10; }
+function updateCalc(){
+  var sp = SPECIES[curSp];
+  wOut.textContent = r1(curW) + ' kg';
+  resFreq.textContent = sp.freq;
+  resNote.innerHTML = sp.note;
+  resPerKg.textContent = sp.perKg;
+  if(!curW || curW <= 0){
+    resMin.textContent = resMax.textContent = '—';
+    resCap.textContent = '—';
+    return;
+  }
+  var mn = curW * sp.min, mx = curW * sp.max;
+  countUp(resMin, Math.round(mn));
+  countUp(resMax, Math.round(mx));
+  resCap.textContent = '≈ ' + r1(mn/100) + ' – ' + r1(mx/100) + ' เม็ด / ครั้ง';
+}
+document.querySelectorAll('.sp-btn').forEach(function(b){
+  b.addEventListener('click', function(){
+    document.querySelectorAll('.sp-btn').forEach(function(x){ x.classList.remove('active'); });
+    b.classList.add('active');
+    curSp = b.dataset.sp;
+    updateCalc();
+  });
+});
+wRange.addEventListener('input', function(){ curW = parseFloat(wRange.value); wNum.value = wRange.value; updateCalc(); });
+wNum.addEventListener('input', function(){
+  var v = parseFloat(wNum.value);
+  curW = isNaN(v) ? 0 : v;
+  if(!isNaN(v) && v >= 0.5 && v <= 80) wRange.value = v;
+  updateCalc();
+});
+updateCalc();
+
+/* ---------- quiz ---------- */
+var QUIZ = [
+  { q:'กลไกการออกฤทธิ์ที่น่าจะเป็นของกาบาเพนตินคืออะไร?',
+    a:['จับและกระตุ้นตัวรับ GABA โดยตรง','ยับยั้งช่องแคลเซียม และอาจรวมถึงช่องโซเดียม','ยับยั้งเอนไซม์ COX-2','ปิดกั้นตัวรับ opioid'], c:1,
+    exp:'แม้กาบาเพนตินมีโครงสร้างคล้าย GABA แต่ไม่จับกับตัวรับ GABA — กลไกน่าจะเกี่ยวข้องกับการยับยั้งช่องแคลเซียม และอาจรวมถึงโซเดียม' },
+  { q:'ในสุนัข กาบาเพนตินถูกกำจัดจากร่างกายอย่างไร?',
+    a:['ขับออกโดยไม่เปลี่ยนแปลงเหมือนในมนุษย์','ถูกเมแทบอไลซ์เป็น N-methyl-gabapentin','ถูกทำลายที่กระเพาะอาหารทั้งหมด','สะสมในเนื้อเยื่อไขมัน'], c:1,
+    exp:'สุนัขเมแทบอไลซ์กาบาเพนตินเป็น N-methyl-gabapentin ทำให้กำจัดยาเร็วกว่ามนุษย์ จึงเว้นช่วงการให้ยาสั้นกว่าได้' },
+  { q:'ขนาดยาที่แนะนำสำหรับสุนัขคือเท่าใด?',
+    a:['2.5 mg/kg ทุก 12 ชั่วโมง','50 mg/kg ทุก 6 ชั่วโมง','10–20 mg/kg ทุก 8–12 ชั่วโมง','3–5 mg/kg ทุก 24 ชั่วโมง'], c:2,
+    exp:'สุนัข: 10–20 mg/kg ทุก 8–12 ชั่วโมง · ส่วนแมว: 3–20 mg/kg ทุก 6–24 ชั่วโมง' },
+  { q:'สารใดในยาสูตรน้ำบางยี่ห้อที่เป็นพิษต่อสุนัข?',
+    a:['ซูโครส','ไซลิทอล (xylitol)','แอสปาแตม','แลกโตส'], c:1,
+    exp:'ไซลิทอลในสูตรน้ำบางยี่ห้ออาจทำให้สุนัขเกิดภาวะน้ำตาลในเลือดต่ำที่ขนาดสูง แต่ตับวายไม่น่าเกิดนอกจากขนาดสูงมาก (>80 mg/kg)' },
+  { q:'อาการไม่พึงประสงค์ที่พบบ่อยที่สุดของกาบาเพนตินคืออะไร?',
+    a:['อาเจียนและท้องเสีย','ง่วงซึมและเดินเซ','ขนร่วงและคัน','ความดันโลหิตสูง'], c:1,
+    exp:'ง่วงซึม (sedation) และเดินเซ (ataxia) พบบ่อยที่สุด มักเกิดเมื่อใช้ขนาดสูงหรือร่วมกับยากดประสาทอื่น และอาจลดลงหลังให้ยาไปหลายวัน' },
+  { q:'จากงานวิจัยในโปรแกรม TNR กาบาเพนตินขนาด 50 และ 100 mg/ตัว มีผลต่อคะแนนความเครียดของแมวอย่างไร?',
+    a:['ไม่แตกต่างจาก placebo ในทุกจุดเวลา','ลดลงอย่างมีนัยสำคัญที่ 2–3 ชม. หลังให้ยา และไม่ต่างระหว่างสองขนาด','ลดลงเฉพาะกลุ่ม 100 mg เท่านั้น','ลดลงทันทีภายใน 30 นาทีและทำให้ง่วงซึมชัดเจน'], c:1,
+    exp:'ทั้งกลุ่ม 50 และ 100 mg มี stress score ลดลงอย่างมีนัยสำคัญที่ 2 และ 3 ชม. โดยไม่ต่างระหว่างสองขนาด และคะแนน sedation ไม่ต่างจาก placebo' },
+  { q:'จากการศึกษาทาผิวหนังในแมว ระดับกาบาเพนตินในเลือดเป็นอย่างไรเมื่อเทียบกับการกิน?',
+    a:['สูงกว่าการกินเล็กน้อย','ใกล้เคียงกับการกิน','ต่ำกว่าการกินอย่างน้อย 6 เท่า','สูงกว่าการกิน 2 เท่าในวันที่ 5'], c:2,
+    exp:'ระดับยาในเลือดหลังทาผิวหนังต่ำกว่าการให้ทางปากอย่างน้อย 6 เท่า — ยังไม่ควรสรุปประสิทธิผลด้านการระงับปวดจากข้อมูลชุดนี้ ต้องศึกษาเพิ่มเติม' }
+];
+var qIdx = 0, qScore = 0, answered = false;
+var qBody = document.getElementById('quizBody'), qCount = document.getElementById('qCount');
+var qDots = document.getElementById('qDots'), qResult = document.getElementById('quizResult');
+var letters = ['ก','ข','ค','ง'];
+
+for(var d=0; d<QUIZ.length; d++){ qDots.appendChild(document.createElement('i')); }
+
+function renderQ(){
+  answered = false;
+  var item = QUIZ[qIdx];
+  qCount.textContent = 'ข้อ ' + (qIdx+1) + ' / ' + QUIZ.length;
+  var dots = qDots.children;
+  for(var i=0;i<dots.length;i++){
+    dots[i].className = i < qIdx ? 'done' : (i === qIdx ? 'now' : '');
+  }
+  var html = '<h3>' + item.q + '</h3>';
+  item.a.forEach(function(opt, i){
+    html += '<button class="opt" data-i="' + i + '"><span class="lt">' + letters[i] + '</span>' + opt + '</button>';
+  });
+  html += '<div class="quiz-exp" id="qExp"></div>';
+  html += '<button class="quiz-next" id="qNext">' + (qIdx === QUIZ.length-1 ? 'ดูคะแนนของคุณ 🏁' : 'ข้อถัดไป →') + '</button>';
+  qBody.innerHTML = html;
+  qBody.style.display = 'block';
+  qResult.classList.remove('show');
+
+  qBody.querySelectorAll('.opt').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      if(answered) return;
+      answered = true;
+      var pick = parseInt(btn.dataset.i, 10);
+      var opts = qBody.querySelectorAll('.opt');
+      opts.forEach(function(o){ o.disabled = true; });
+      opts[item.c].classList.add('correct');
+      if(pick === item.c){ qScore++; } else { btn.classList.add('wrong'); }
+      var exp = document.getElementById('qExp');
+      exp.textContent = (pick === item.c ? '✅ ถูกต้อง! ' : '❌ ยังไม่ถูก — ') + item.exp;
+      exp.classList.add('show');
+      document.getElementById('qNext').classList.add('show');
+    });
+  });
+  document.getElementById('qNext').addEventListener('click', function(){
+    qIdx++;
+    if(qIdx < QUIZ.length){ renderQ(); } else { showResult(); }
+  });
+}
+function showResult(){
+  qBody.style.display = 'none';
+  qCount.textContent = 'สรุปผล';
+  var dots = qDots.children;
+  for(var i=0;i<dots.length;i++){ dots[i].className = 'done'; }
+  qResult.classList.add('show');
+  document.getElementById('ringNum').textContent = qScore + '/' + QUIZ.length;
+  var pct = qScore / QUIZ.length;
+  var msg = pct === 1 ? 'ยอดเยี่ยม! คุณเข้าใจกาบาเพนตินอย่างแตกฉาน 🏆'
+        : pct >= .8 ? 'เก่งมาก! เกือบสมบูรณ์แบบแล้ว 🌟'
+        : pct >= .6 ? 'ดีทีเดียว ทบทวนเพิ่มอีกนิดจะสมบูรณ์แบบ 📚'
+        : 'ลองเลื่อนกลับไปทบทวนเนื้อหา แล้วกลับมาท้าทายใหม่อีกครั้ง 💪';
+  document.getElementById('resMsg').textContent = msg;
+  var C = 326.7;
+  var ring = document.getElementById('ringFg');
+  ring.style.strokeDashoffset = C;
+  setTimeout(function(){
+    ring.style.strokeDashoffset = C * (1 - pct);
+  }, reduced ? 0 : 150);
+}
+document.getElementById('retryBtn').addEventListener('click', function(){
+  qIdx = 0; qScore = 0; renderQ();
+});
+renderQ();
+})();
+</script>
+</body>
+</html>
