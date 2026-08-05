@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doxycycline & Famciclovir for Feline URI in Kittens — บทสรุปงานวิจัย</title>
+<style>
+@font-face{font-family:'Kanit';font-style:normal;font-weight:500;src:url(https://cdn.jsdelivr.net/fontsource/fonts/kanit@latest/thai-500-normal.woff2) format('woff2');unicode-range:U+0E00-0E7F;}
+@font-face{font-family:'Kanit';font-style:normal;font-weight:600;src:url(https://cdn.jsdelivr.net/fontsource/fonts/kanit@latest/thai-600-normal.woff2) format('woff2');unicode-range:U+0E00-0E7F;}
+@font-face{font-family:'Kanit';font-style:normal;font-weight:700;src:url(https://cdn.jsdelivr.net/fontsource/fonts/kanit@latest/thai-700-normal.woff2) format('woff2');unicode-range:U+0E00-0E7F;}
+@font-face{font-family:'Kanit';font-style:normal;font-weight:600;src:url(https://cdn.jsdelivr.net/fontsource/fonts/kanit@latest/latin-600-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+2000-206F,U+2190-21FF,U+FEFF,U+FF00-FFEF;}
+@font-face{font-family:'Noto Sans Thai';font-style:normal;font-weight:400;src:url(https://cdn.jsdelivr.net/fontsource/fonts/noto-sans-thai@latest/thai-400-normal.woff2) format('woff2');unicode-range:U+0E00-0E7F;}
+@font-face{font-family:'Noto Sans Thai';font-style:normal;font-weight:500;src:url(https://cdn.jsdelivr.net/fontsource/fonts/noto-sans-thai@latest/thai-500-normal.woff2) format('woff2');unicode-range:U+0E00-0E7F;}
+@font-face{font-family:'Noto Sans Thai';font-style:normal;font-weight:700;src:url(https://cdn.jsdelivr.net/fontsource/fonts/noto-sans-thai@latest/thai-700-normal.woff2) format('woff2');unicode-range:U+0E00-0E7F;}
+@font-face{font-family:'Noto Sans Thai';font-style:normal;font-weight:400;src:url(https://cdn.jsdelivr.net/fontsource/fonts/noto-sans-thai@latest/latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+2000-206F,U+2190-21FF,U+FEFF,U+FF00-FFEF;}
+@font-face{font-family:'Noto Sans Thai';font-style:normal;font-weight:700;src:url(https://cdn.jsdelivr.net/fontsource/fonts/noto-sans-thai@latest/latin-700-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+2000-206F,U+2190-21FF,U+FEFF,U+FF00-FFEF;}
+
+:root{
+  --bg:#fff8f0; --card:#ffffff; --ink:#2b2118; --muted:#7a6a5c;
+  --teal:#0f766e; --teal-dark:#115e59; --teal-soft:#ccfbf1;
+  --orange:#ea580c; --orange-soft:#ffedd5; --line:#f0e2d2;
+  --red:#dc2626; --green:#16a34a; --shadow:0 10px 30px rgba(60,40,20,.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Noto Sans Thai',system-ui,-apple-system,'Segoe UI',sans-serif;
+  background:var(--bg); color:var(--ink); line-height:1.75; font-size:16px;
+  background-image:radial-gradient(circle at 8% 12%, rgba(234,88,12,.06), transparent 32%),
+                   radial-gradient(circle at 92% 30%, rgba(15,118,110,.07), transparent 36%);
+}
+#progressBar{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--orange),var(--teal));z-index:200;border-radius:0 4px 4px 0;}
+nav{
+  position:sticky;top:0;z-index:100;background:rgba(255,248,240,.88);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+}
+.nav-inner{max-width:1080px;margin:auto;display:flex;align-items:center;gap:14px;padding:12px 20px;overflow-x:auto;}
+.nav-logo{font-family:'Kanit',sans-serif;font-weight:700;color:var(--teal-dark);white-space:nowrap;font-size:1.02rem;}
+.nav-logo span{color:var(--orange);}
+nav a{color:var(--muted);text-decoration:none;font-size:.88rem;font-weight:500;padding:6px 14px;border-radius:999px;white-space:nowrap;transition:.25s;}
+nav a:hover{background:var(--orange-soft);color:var(--orange);}
+header.hero{max-width:1080px;margin:auto;padding:64px 20px 30px;text-align:center;position:relative;}
+.badge{display:inline-block;background:var(--teal-soft);color:var(--teal-dark);font-weight:700;font-size:.8rem;padding:6px 16px;border-radius:999px;letter-spacing:.4px;}
+h1{font-family:'Kanit',sans-serif;font-weight:700;font-size:clamp(1.9rem,5vw,3.2rem);margin:18px 0 6px;color:var(--teal-dark);line-height:1.25;}
+h1 em{font-style:normal;color:var(--orange);}
+.hero h2{font-family:'Kanit',sans-serif;font-weight:600;font-size:clamp(1rem,2.6vw,1.35rem);color:var(--ink);}
+.hero p.sub{color:var(--muted);max-width:720px;margin:14px auto 0;font-size:.98rem;}
+.tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:20px;}
+.tag{background:#fff;border:1px solid var(--line);color:var(--muted);font-size:.78rem;font-weight:500;padding:5px 14px;border-radius:999px;box-shadow:0 2px 6px rgba(60,40,20,.05);}
+section{max-width:1080px;margin:auto;padding:44px 20px;scroll-margin-top:86px;}
+.sec-head{display:flex;align-items:center;gap:14px;margin-bottom:8px;}
+.sec-num{flex:0 0 44px;width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,var(--orange),#f59e0b);color:#fff;font-family:'Kanit',sans-serif;font-weight:700;font-size:1.2rem;display:grid;place-items:center;box-shadow:0 6px 14px rgba(234,88,12,.3);}
+.sec-head h3{font-family:'Kanit',sans-serif;font-weight:700;font-size:clamp(1.25rem,3vw,1.7rem);color:var(--ink);}
+.sec-head h3 small{display:block;font-size:.78rem;font-weight:600;color:var(--orange);letter-spacing:1.5px;text-transform:uppercase;}
+.sec-intro{color:var(--muted);margin-bottom:24px;max-width:860px;}
+.grid{display:grid;gap:18px;}
+.cols-2{grid-template-columns:repeat(auto-fit,minmax(290px,1fr));}
+.cols-3{grid-template-columns:repeat(auto-fit,minmax(230px,1fr));}
+.cols-4{grid-template-columns:repeat(auto-fit,minmax(180px,1fr));}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:var(--shadow);transition:transform .3s,box-shadow .3s;}
+.card:hover{transform:translateY(-4px);box-shadow:0 16px 38px rgba(60,40,20,.12);}
+.card h4{font-family:'Kanit',sans-serif;font-weight:600;font-size:1.08rem;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.card p{font-size:.93rem;color:#4a3f35;}
+.icon-dot{width:34px;height:34px;border-radius:10px;display:inline-grid;place-items:center;font-size:1.05rem;flex:0 0 34px;}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+.chip{font-size:.8rem;font-weight:500;padding:5px 12px;border-radius:999px;background:#f5f0e9;color:#5c4f43;border:1px solid var(--line);}
+.chip.bact{background:#eef7ff;border-color:#d3e8fb;color:#1d5fa8;}
+.chip.virus{background:#fdf0f0;border-color:#f6d8d8;color:#b03535;}
+.highlight-card{background:linear-gradient(135deg,var(--teal-dark),var(--teal));color:#fff;border:none;position:relative;overflow:hidden;}
+.highlight-card::after{content:"🐾";position:absolute;right:-14px;bottom:-22px;font-size:7rem;opacity:.12;}
+.highlight-card h4{color:#fff;}
+.highlight-card p{color:#e6fffb;}
+.highlight-card strong{color:#fde68a;}
+.warn-card{background:var(--orange-soft);border:1px dashed var(--orange);}
+.warn-card p{color:#7c3a0d;}
+figure.fig{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:var(--shadow);}
+.fig-img{width:100%;aspect-ratio:4/3;object-fit:cover;cursor:zoom-in;display:block;transition:transform .5s;}
+figure.fig:hover .fig-img{transform:scale(1.04);}
+figcaption{padding:18px 20px 20px;}
+.fig-label{display:inline-block;font-family:'Kanit',sans-serif;font-weight:700;font-size:.75rem;letter-spacing:1px;color:#fff;background:var(--orange);border-radius:8px;padding:3px 10px;margin-bottom:10px;}
+figcaption p{font-size:.9rem;color:#4a3f35;}
+.zoom-hint{font-size:.75rem;color:var(--muted);margin-top:8px;display:block;}
+#lightbox{position:fixed;inset:0;background:rgba(20,12,6,.86);z-index:300;display:none;align-items:center;justify-content:center;flex-direction:column;padding:24px;backdrop-filter:blur(4px);}
+#lightbox.open{display:flex;}
+#lb-img{max-width:min(92vw,860px);max-height:72vh;border-radius:16px;box-shadow:0 30px 80px rgba(0,0,0,.5);}
+#lb-cap{color:#ffe9d6;max-width:760px;text-align:center;margin-top:16px;font-size:.92rem;line-height:1.7;}
+#lb-close{position:absolute;top:18px;right:22px;background:var(--orange);color:#fff;border:none;width:44px;height:44px;border-radius:50%;font-size:1.3rem;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.35);}
+.arm{border-top:5px solid var(--teal);}
+.arm.control{border-top-color:#94a3b8;}
+.dose{display:flex;align-items:baseline;gap:10px;background:#f8faf9;border-radius:12px;padding:10px 14px;margin-top:10px;}
+.dose b{font-family:'Kanit',sans-serif;font-size:1.05rem;color:var(--teal-dark);white-space:nowrap;}
+.dose span{font-size:.85rem;color:var(--muted);}
+.arm-tag{font-size:.72rem;font-weight:700;letter-spacing:1px;padding:3px 10px;border-radius:999px;background:var(--teal-soft);color:var(--teal-dark);}
+.arm.control .arm-tag{background:#e2e8f0;color:#475569;}
+.common-care{border:2px dashed var(--teal);background:#f0fdfa;border-radius:20px;padding:20px 24px;margin-top:18px;}
+.common-care h4{font-family:'Kanit',sans-serif;color:var(--teal-dark);margin-bottom:8px;}
+.common-care ul{list-style:none;display:flex;flex-wrap:wrap;gap:10px;}
+.common-care li{background:#fff;border:1px solid var(--teal-soft);color:#134e4a;font-size:.87rem;font-weight:500;padding:7px 14px;border-radius:999px;}
+.def-card{text-align:center;background:#fffdf8;}
+.def-card .big{font-family:'Kanit',sans-serif;font-weight:700;font-size:1rem;color:var(--orange);}
+.def-card p{font-size:.85rem;margin-top:6px;}
+.stat{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px 18px;text-align:center;box-shadow:var(--shadow);}
+.stat .num{font-family:'Kanit',sans-serif;font-weight:700;font-size:2.6rem;color:var(--orange);line-height:1;}
+.stat .unit{font-family:'Kanit',sans-serif;font-weight:600;font-size:1.1rem;color:var(--orange);}
+.stat .lbl{font-size:.85rem;color:var(--muted);margin-top:8px;font-weight:500;}
+.finding{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow);}
+.finding .fi{flex:0 0 36px;width:36px;height:36px;border-radius:12px;display:grid;place-items:center;font-size:1.05rem;background:var(--teal-soft);}
+.finding p{font-size:.93rem;color:#40362c;}
+.bars{margin-top:22px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:var(--shadow);}
+.bars h4{font-family:'Kanit',sans-serif;font-size:1rem;margin-bottom:16px;color:var(--ink);}
+.bar-row{margin-bottom:16px;}
+.bar-label{font-size:.86rem;font-weight:700;color:#4a3f35;display:block;margin-bottom:6px;}
+.bar-track{background:#f3ede4;border-radius:999px;height:22px;overflow:hidden;}
+.bar-fill{height:100%;width:0;border-radius:999px;transition:width 1.4s cubic-bezier(.22,1,.36,1);}
+.bar-fill.fast{background:linear-gradient(90deg,#10b981,var(--teal));}
+.bar-fill.slow{background:linear-gradient(90deg,#f59e0b,var(--orange));}
+.bar-note{font-size:.78rem;color:var(--muted);}
+.acc-item{background:#fff;border:1px solid var(--line);border-radius:16px;margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow);}
+.acc-head{width:100%;display:flex;align-items:center;gap:14px;background:none;border:none;padding:18px 20px;cursor:pointer;text-align:left;font-family:'Noto Sans Thai',sans-serif;font-size:.97rem;font-weight:700;color:var(--ink);}
+.acc-head .acc-ico{flex:0 0 38px;width:38px;height:38px;border-radius:12px;background:var(--orange-soft);display:grid;place-items:center;font-size:1.1rem;}
+.acc-head .arrow{margin-left:auto;transition:transform .35s;color:var(--orange);font-size:1rem;}
+.acc-item.open .arrow{transform:rotate(180deg);}
+.acc-panel{max-height:0;overflow:hidden;transition:max-height .45s ease;}
+.acc-body{padding:0 20px 20px 72px;font-size:.92rem;color:#4a3f35;}
+@media(max-width:640px){.acc-body{padding-left:20px;}}
+.quiz-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:var(--shadow);margin-bottom:18px;}
+.quiz-q{font-weight:700;font-size:.98rem;margin-bottom:14px;display:flex;gap:10px;}
+.quiz-q .qno{flex:0 0 30px;width:30px;height:30px;border-radius:10px;background:var(--teal);color:#fff;font-family:'Kanit',sans-serif;display:grid;place-items:center;font-size:.9rem;}
+.opt{display:block;width:100%;text-align:left;background:#faf6ef;border:1.5px solid var(--line);border-radius:12px;padding:11px 16px;margin-bottom:8px;cursor:pointer;font-family:'Noto Sans Thai',sans-serif;font-size:.9rem;color:#40362c;transition:.2s;}
+.opt:hover:not(:disabled){border-color:var(--teal);background:#f0fdfa;}
+.opt.correct{background:#ecfdf5;border-color:var(--green);color:#14532d;font-weight:700;}
+.opt.wrong{background:#fef2f2;border-color:var(--red);color:#7f1d1d;}
+.opt:disabled{cursor:default;}
+.expl{display:none;margin-top:10px;background:#f0fdfa;border-left:4px solid var(--teal);border-radius:8px;padding:10px 14px;font-size:.85rem;color:#134e4a;}
+.expl.show{display:block;}
+.quiz-top{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:20px;}
+#scoreBadge{font-family:'Kanit',sans-serif;font-weight:700;background:var(--teal);color:#fff;padding:8px 20px;border-radius:999px;font-size:.95rem;}
+#quizReset{background:var(--orange);color:#fff;border:none;border-radius:999px;padding:9px 22px;font-family:'Noto Sans Thai',sans-serif;font-weight:700;cursor:pointer;font-size:.88rem;transition:.2s;}
+#quizReset:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(234,88,12,.35);}
+footer{border-top:1px solid var(--line);margin-top:40px;padding:30px 20px 40px;text-align:center;color:var(--muted);font-size:.83rem;}
+footer b{color:var(--teal-dark);}
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.on{opacity:1;transform:none;}
+.term{border-bottom:2px dotted var(--orange);cursor:help;position:relative;font-weight:600;color:#9a3412;}
+.term:hover::after{content:attr(data-tip);position:absolute;bottom:130%;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;font-size:.75rem;padding:6px 12px;border-radius:8px;white-space:nowrap;z-index:60;box-shadow:0 8px 20px rgba(0,0,0,.25);}
+</style>
+</head>
+<body>
+<div id="progressBar"></div>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">🐱 Feline URI <span>Summary</span></div>
+    <a href="#research">งานวิจัย</a>
+    <a href="#figures">ภาพคลินิก</a>
+    <a href="#study">การออกแบบศึกษา</a>
+    <a href="#results">ผลการศึกษา</a>
+    <a href="#takeaways">ข้อสรุป</a>
+    <a href="#quiz">ทดสอบความเข้าใจ</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <span class="badge">บทสรุปงานวิจัยทางสัตวแพทย์ • Veterinary Research Summary</span>
+  <h1>Doxycycline <em>&</em> Famciclovir</h1>
+  <h2>for Feline Upper Respiratory Disease in Kittens</h2>
+  <p class="sub">โรคระบบทางเดินหายใจส่วนต้นติดเชื้อในลูกแมว: สรุปงานวิจัยเปรียบเทียบผลลัพธ์ทางคลินิกระหว่างการรักษาด้วย doxycycline ร่วมกับ famciclovir และ doxycycline ร่วมกับยาหลอก</p>
+  <div class="tags">
+    <span class="tag">#FHV-1</span><span class="tag">#Calicivirus</span><span class="tag">#Chlamydia felis</span>
+    <span class="tag">#Bordetella bronchiseptica</span><span class="tag">#Mycoplasma felis</span><span class="tag">#ลูกแมว 1–12 สัปดาห์</span>
+  </div>
+</header>
+
+<!-- ===================== 1. THE RESEARCH ===================== -->
+<section id="research">
+  <div class="sec-head reveal"><div class="sec-num">1</div><h3><small>The Research</small>ความเป็นมาของงานวิจัย</h3></div>
+  <p class="sec-intro reveal">โรคระบบทางเดินหายใจส่วนต้นชนิดติดเชื้อ (infectious upper respiratory disease; URD) ในแมวพบได้บ่อย <b>โดยเฉพาะในสิ่งแวดล้อมที่มีแมวอยู่ร่วมกันหลายตัว</b> สาเหตุเกิดได้จากทั้งเชื้อแบคทีเรียและไวรัส (ลองแตะ/ชี้ที่การ์ดเพื่อดูรายละเอียด)</p>
+  <div class="grid cols-2">
+    <div class="card reveal">
+      <h4><span class="icon-dot" style="background:#eef7ff">🦠</span>เชื้อแบคทีเรียที่เกี่ยวข้องบ่อย</h4>
+      <p>เป็นสาเหตุที่พบได้บ่อยของการติดเชื้อทางเดินหายใจส่วนต้นในแมว</p>
+      <div class="chips">
+        <span class="chip bact">Chlamydia felis</span>
+        <span class="chip bact">Bordetella bronchiseptica</span>
+        <span class="chip bact">Mycoplasma felis</span>
+      </div>
+    </div>
+    <div class="card reveal">
+      <h4><span class="icon-dot" style="background:#fdf0f0">🧬</span>เชื้อไวรัสที่เกี่ยวข้องบ่อย</h4>
+      <p>ไวรัสมักเป็นตัวการสำคัญ โดยเฉพาะในลูกแมวที่ภูมิคุ้มกันยังไม่สมบูรณ์</p>
+      <div class="chips">
+        <span class="chip virus">Feline herpesvirus type 1 (FHV-1)</span>
+        <span class="chip virus">Calicivirus</span>
+      </div>
+    </div>
+  </div>
+  <div class="grid cols-2" style="margin-top:18px">
+    <div class="card highlight-card reveal">
+      <h4>⚠️ ข้อยกเว้นสำคัญ: FHV-1</h4>
+      <p>อาการทางตาส่วนใหญ่<b>ไม่จำเพาะ</b>และคล้ายคลึงกันในทุกสาเหตุ — <b>ยกเว้น FHV-1</b> ซึ่งมีความจำเพาะต่อ<strong>กระจกตา (cornea)</strong> ทำให้ลูกแมวมีอัตราป่วย (morbidity) และอัตราตาย (mortality) <strong>เพิ่มขึ้น</strong> (ดูภาพที่ 1 และ 2)</p>
+    </div>
+    <div class="card warn-card reveal">
+      <h4 style="color:#9a3412">🔀 การติดเชื้อร่วม (Coinfections)</h4>
+      <p>พบการติดเชื้อร่วมหลายชนิดในอัตราสูงในผู้ป่วยโรค URD ทำให้<b>การตัดสินใจรักษาซับซ้อนยิ่งขึ้น</b> จึงควรใช้แนวทางการจัดการหลายปัจจัยร่วมกัน</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 2. FIGURES ===================== -->
+<section id="figures">
+  <div class="sec-head reveal"><div class="sec-num">2</div><h3><small>Clinical Figures</small>ภาพอาการทางคลินิก</h3></div>
+  <p class="sec-intro reveal">ภาพแสดงความรุนแรงของอาการทางตาจาก FHV-1 — คลิกที่ภาพเพื่อขยายดูรายละเอียด</p>
+  <div class="grid cols-2">
+    <figure class="fig reveal">
+      <img class="fig-img" src="https://image.qwenlm.ai/public_source/fc7b2872-e83f-4476-99a1-a48f9d316971/1b38159e8-eb28-4e3a-93b5-2c9d96e6e693.png" alt="FHV-1 blepharoconjunctivitis" data-cap="ภาพที่ 1: FHV-1 blepharoconjunctivitis ในแมว — ขอบเปลือกตาอักเสบ เยื่อหุ้มตาแดงมาก (hyperemia) เยื่อหุ้มตาบวม (chemosis) น้ำตาไหลมาก (epiphora) และหนังตาที่สามยกตัวขึ้น">
+      <figcaption>
+        <span class="fig-label">FIGURE 1</span>
+        <p><b>FHV-1 blepharoconjunctivitis:</b> การอักเสบของขอบเปลือกตา ร่วมกับเยื่อหุ้มตาแดงมาก (hyperemia), เยื่อหุ้มตาบวม (<span class="term" data-tip="เยื่อหุ้มตาบวม">chemosis</span>), น้ำตาไหลมาก (<span class="term" data-tip="น้ำตาไหลมากผิดปกติ">epiphora</span>) และหนังตาที่สามยกตัวขึ้น</p>
+        <span class="zoom-hint">🔍 คลิกเพื่อขยายภาพ</span>
+      </figcaption>
+    </figure>
+    <figure class="fig reveal">
+      <img class="fig-img" src="https://image.qwenlm.ai/public_source/fc7b2872-e83f-4476-99a1-a48f9d316971/16ca49bac-665b-474d-9c00-99222aba7719.png" alt="Severe ocular changes FHV-1" data-cap="ภาพที่ 2: การเปลี่ยนแปลงรุนแรงที่ตาจาก FHV-1 — ขี้ตาข้นสะสมรอบตาทั้งสองข้าง เยื่อหุ้มตา/เปลือกตาอักเสบรุนแรง และกระจกตาอักเสบทุติยภูมิที่ตาขวา จนกระจกตาทะลุพร้อมม่านตาปลิ้น (iris prolapse)">
+      <figcaption>
+        <span class="fig-label">FIGURE 2</span>
+        <p><b>การเปลี่ยนแปลงรุนแรงที่ตาจาก infectious URD ที่เกิดจาก FHV-1:</b> ขี้ตาข้นสะสมรอบตาทั้งสองข้าง, blepharoconjunctivitis รุนแรง และกระจกตาอักเสบทุติยภูมิ (keratitis) ที่ตาขวา จนเกิด<strong>กระจกตาทะลุ</strong>พร้อม<strong>ม่านตาปลิ้น (iris prolapse)</strong>ชัดเจน</p>
+        <span class="zoom-hint">🔍 คลิกเพื่อขยายภาพ</span>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<div id="lightbox">
+  <button id="lb-close" aria-label="ปิด">✕</button>
+  <img id="lb-img" src="" alt="ขยายภาพ">
+  <p id="lb-cap"></p>
+</div>
+
+<!-- ===================== 3. STUDY DESIGN ===================== -->
+<section id="study">
+  <div class="sec-head reveal"><div class="sec-num">3</div><h3><small>Study Design</small>การออกแบบการศึกษา</h3></div>
+  <p class="sec-intro reveal">การศึกษาเปรียบเทียบผลลัพธ์ทางคลินิกใน<b>ลูกแมวอายุ 1–12 สัปดาห์</b>ที่ป่วยด้วย infectious URD เป็นเวลา <b>21 วัน</b> โดยแบ่งเป็น 2 กลุ่มการรักษา</p>
+  <div class="grid cols-2">
+    <div class="card arm reveal">
+      <span class="arm-tag">กลุ่มศึกษา • TREATMENT</span>
+      <h4 style="margin-top:12px">💊 Doxycycline + Famciclovir</h4>
+      <div class="dose"><b>Doxycycline 5 mg/kg</b><span>กิน (PO) ทุก 12 ชั่วโมง — ในรูป oral suspension</span></div>
+      <div class="dose"><b>Famciclovir 90 mg/kg</b><span>กิน (PO) ทุก 12 ชั่วโมง — เตรียมจากเม็ดการค้าที่บดแล้ว</span></div>
+    </div>
+    <div class="card arm control reveal">
+      <span class="arm-tag">กลุ่มเปรียบเทียบ • CONTROL</span>
+      <h4 style="margin-top:12px">🧪 Doxycycline + Placebo</h4>
+      <div class="dose"><b>Doxycycline 5 mg/kg</b><span>กิน (PO) ทุก 12 ชั่วโมง</span></div>
+      <div class="dose"><b>Placebo (ยาหลอก)</b><span>ให้แทน famciclovir ทุก 12 ชั่วโมง</span></div>
+    </div>
+  </div>
+  <div class="common-care reveal">
+    <h4>🏥 ทุกตัวได้รับการรักษาร่วมกัน (ทุกกลุ่ม)</h4>
+    <ul>
+      <li>💧 ยาหยอดตา 0.3% ofloxacin ophthalmic solution</li>
+      <li>🤲 การดูแลแบบประคับประคอง (supportive care)</li>
+      <li>⚖️ ชั่งน้ำหนักทุกวัน</li>
+    </ul>
+  </div>
+  <div class="grid cols-2" style="margin-top:18px">
+    <div class="card reveal">
+      <h4><span class="icon-dot" style="background:var(--orange-soft)">🗂️</span>การแบ่งกลุ่มและการประเมิน</h4>
+      <p>• แบ่งกลุ่มตาม <b>ความรุนแรงของโรค</b> (เล็กน้อย / รุนแรง), <b>อายุ</b> และ<b>กลุ่มการรักษา</b><br>
+         • ผู้ดูแลที่ผ่านการฝึกอบรม ให้คะแนนอาการทางเดินหายใจและทางตา<b>ทุกวัน</b><br>
+         • ตรวจตาโดยจักษุแพทย์สัตวแพทย์หรือแพทย์ประจำบ้านสาขาจักษุวิทยา ในวันที่ <b>1 และ 21</b><br>
+         • ประเมินอัตราการดีขึ้นทางคลินิกและคะแนนคลินิกระหว่างกลุ่ม</p>
+    </div>
+    <div class="card reveal">
+      <h4><span class="icon-dot" style="background:var(--teal-soft)">📖</span>นิยามที่ใช้ในการศึกษา</h4>
+      <div class="grid" style="gap:10px;margin-top:6px">
+        <div class="dose"><b>Ophthalmic resolution</b><span>คะแนนอาการทางตาทั้งหมด = 0</span></div>
+        <div class="dose"><b>Clinical resolution</b><span>คะแนนอาการทางตา + ทางเดินหายใจทั้งหมด = 0</span></div>
+        <div class="dose"><b>Recovery (การฟื้นหาย)</b><span>ไม่มีการอักเสบที่ยังดำเนินอยู่</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 4. RESULTS ===================== -->
+<section id="results">
+  <div class="sec-head reveal"><div class="sec-num">4</div><h3><small>Results</small>ผลการศึกษา</h3></div>
+  <div class="grid cols-4" style="margin-top:20px">
+    <div class="stat reveal"><span class="num" data-target="75">0</span><span class="unit">%</span><div class="lbl">ของผู้ป่วยอาการน้อยที่ได้รับ famciclovir หายสนิททางคลินิกเร็วกว่ากลุ่มอื่น</div></div>
+    <div class="stat reveal"><span class="num">4–5</span><span class="unit">วัน</span><div class="lbl">ความเร็วที่เพิ่มขึ้นโดยเฉลี่ยของการหายสนิททางคลินิก</div></div>
+    <div class="stat reveal"><span class="num" data-target="21">0</span><span class="unit">วัน</span><div class="lbl">ระยะเวลาการรักษาในการศึกษา</div></div>
+    <div class="stat reveal"><span class="num">↓</span><span class="unit">กระจกตา</span><div class="lbl">กลุ่มที่ได้ famciclovir มีโอกาสเกิดโรคกระจกตาน้อยลง</div></div>
+  </div>
+  <div class="grid" style="gap:12px;margin-top:22px">
+    <div class="finding reveal"><div class="fi">✅</div><p><b>การฟื้นหายสูงทุกกลุ่ม:</b> ไม่ว่าจะได้รับสูตรการรักษาใด ทุกกลุ่มมีอัตราการฟื้นหายทางคลินิกและทางตาในสัดส่วนสูง</p></div>
+    <div class="finding reveal"><div class="fi">⏳</div><p><b>โรครุนแรงหายช้ากว่า:</b> ผู้ป่วยที่มีโรครุนแรงใช้เวลานานกว่าจะถึงการฟื้นหายหรือการหายสนิททางคลินิก</p></div>
+    <div class="finding reveal"><div class="fi">⚡</div><p><b>Famciclovir เร่งการหายในเคสอาการน้อย:</b> ผู้ป่วยอาการน้อยส่วนใหญ่ (75%) ที่ได้รับ famciclovir มีการหายสนิททางคลินิกเร็วกว่ากลุ่มอื่นทั้งหมด โดยเฉลี่ย 4–5 วัน</p></div>
+    <div class="finding reveal"><div class="fi">👁️</div><p><b>ปกป้องกระจกตา:</b> ผู้ป่วยที่ได้รับ famciclovir มีโอกาสน้อยลงที่จะเกิดโรคกระจกตา (corneal disease)</p></div>
+  </div>
+  <div class="bars reveal">
+    <h4>📊 แผนภาพเปรียบเทียบเวลาจนถึงการหายสนิททางคลินิก (clinical resolution) ในกลุ่มอาการน้อย</h4>
+    <div class="bar-row">
+      <span class="bar-label">กลุ่ม Doxycycline + Famciclovir (อาการน้อย)</span>
+      <div class="bar-track"><div class="bar-fill fast" data-w="45"></div></div>
+      <span class="bar-note">หายเร็วกว่าเฉลี่ย 4–5 วัน ⚡</span>
+    </div>
+    <div class="bar-row">
+      <span class="bar-label">กลุ่มอื่น ๆ (Doxycycline + placebo / โรครุนแรง)</span>
+      <div class="bar-track"><div class="bar-fill slow" data-w="82"></div></div>
+      <span class="bar-note">ใช้เวลาหายนานกว่า</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 5. TAKEAWAYS ===================== -->
+<section id="takeaways">
+  <div class="sec-head reveal"><div class="sec-num">5</div><h3><small>The Takeaways</small>ข้อสรุปสำคัญสู่การปฏิบัติ</h3></div>
+  <p class="sec-intro reveal">คลิกแต่ละหัวข้อเพื่อเปิดอ่านรายละเอียด</p>
+  <div class="reveal">
+    <div class="acc-item">
+      <button class="acc-head" aria-expanded="false"><span class="acc-ico"></span>อัตราการฟื้นหายและการรักษาผสมผสานในเคสอาการน้อย<span class="arrow">▼</span></button>
+      <div class="acc-panel"><div class="acc-body">ไม่พบความแตกต่างทางสถิติของอัตราการฟื้นหายทางคลินิกระหว่างกลุ่มการรักษา อย่างไรก็ตาม ผู้ป่วยที่มี<b>อาการรุนแรงน้อย</b>จะหายสนิททางคลินิกได้เร็วกว่าเมื่อได้รับการรักษาผสมผสานด้วย <b>ofloxacin ชนิดหยอดตา + doxycycline ชนิดกิน + famciclovir ชนิดกิน</b> การศึกษานี้ไม่ได้ประเมินความปลอดภัยของ famciclovir ในลูกแมวโดยตรง แต่<b>ไม่มีการรายงานเหตุการณ์ไม่พึงประสงค์</b></div></div>
+    </div>
+    <div class="acc-item">
+      <button class="acc-head" aria-expanded="false"><span class="acc-ico">🏠</span>เงื่อนไขการเลี้ยงดูอาจส่งผลต่อผลลัพธ์<span class="arrow">▼</span></button>
+      <div class="acc-panel"><div class="acc-body">การศึกษานี้<b>ไม่ได้จำลองสภาพศูนย์พักพิง (shelter)</b> — ลูกแมวถูกเลี้ยงเดี่ยวหรือในกลุ่มเล็กภายใน<b>บ้านอุปถัมภ์ (foster homes)</b> ซึ่งอาจส่งผลต่อผลลัพธ์ที่ได้ ดังนั้นการนำไปใช้ในสภาพโรงเรือนแออัดควรพิจารณาอย่างระมัดระวัง</div></div>
+    </div>
+    <div class="acc-item">
+      <button class="acc-head" aria-expanded="false"><span class="acc-ico">🐈</span>ข้อมูลในแมวโต และ famciclovir ในสภาพศูนย์พักพิง<span class="arrow">▼</span></button>
+      <div class="acc-panel"><div class="acc-body">ยัง<b>ขาดการศึกษา</b>ที่ประเมินการรักษาผสมผสานในแมวโตเต็มวัย ในสภาพการทดลอง famciclovir มีประสิทธิภาพและทนต่อยาได้ดี ผลข้างเคียงต่ำ แต่ในสภาพศูนย์พักพิง: การให้<b>ขนาดเดียว</b>ทำให้อาการทางคลินิกและการขับไวรัส (viral shedding) <b>แย่ลง</b> และการให้<b>วันละ 2 ครั้งนาน 1 สัปดาห์</b> ลดการขับไวรัสได้แต่<b>ไม่ลดอาการทางคลินิก</b></div></div>
+    </div>
+    <div class="acc-item">
+      <button class="acc-head" aria-expanded="false"><span class="acc-ico">🔬</span>การวินิจฉัยสำคัญกว่าการดูอาการเพียงอย่างเดียว<span class="arrow">▼</span></button>
+      <div class="acc-panel"><div class="acc-body">ไม่สามารถระบุสาเหตุของ infectious URD จากอาการทางตาหรือการตรวจร่างกายเพียงอย่างเดียว — <b>การตรวจวินิจฉัย (diagnostic testing) เป็นสิ่งสำคัญ</b> เนื่องจากพบการติดเชื้อร่วมบ่อย จึงแนะนำให้ใช้<b>แนวทางการจัดการหลายปัจจัย (multifactor management)</b></div></div>
+    </div>
+    <div class="acc-item">
+      <button class="acc-head" aria-expanded="false"><span class="acc-ico">⚗️</span>ข้อควรระวังของยาสูตรผสม (compounded formulations)<span class="arrow">▼</span></button>
+      <div class="acc-panel"><div class="acc-body">การใช้ยา compounded ชนิดกิน ควร<b>ติดตามวันที่ควรใช้ (best-use dates)</b> และ<b>สั่งในปริมาณน้อย</b> เพื่อจำกัดความแปรปรวนของความเข้มข้นและ/หรือฤทธิ์ของยา โดยมีรายงานหนึ่งพบว่า <b>compounded famciclovir ไม่มีประสิทธิภาพ</b></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 6. QUIZ ===================== -->
+<section id="quiz">
+  <div class="sec-head reveal"><div class="sec-num">6</div><h3><small>Quick Quiz</small>ทดสอบความเข้าใจ</h3></div>
+  <p class="sec-intro reveal">ลองตอบคำถามต่อไปนี้เพื่อทบทวนเนื้อหา — ระบบจะแจ้งผลพร้อมคำอธิบายทันที</p>
+  <div class="quiz-top reveal">
+    <span id="scoreBadge">คะแนน: 0 / 0</span>
+    <button id="quizReset">🔄 เริ่มใหม่</button>
+  </div>
+  <div id="quizBox"></div>
+</section>
+
+<footer>
+  <p>สรุปเนื้อหาจากบทความ <b>"Doxycycline & Famciclovir for Feline Upper Respiratory Disease in Kittens"</b></p>
+  <p>จัดทำเพื่อวัตถุประสงค์ทางการศึกษาเท่านั้น • ไม่ใช้แทนการวินิจฉัยหรือคำแนะนำจากสัตวแพทย์ 🐾</p>
+</footer>
+
+<script>
+(function(){
+  /* ---------- progress bar ---------- */
+  var progBar = document.getElementById('progressBar');
+  window.addEventListener('scroll', function(){
+    var docEl = document.documentElement;
+    var ratio = docEl.scrollTop / (docEl.scrollHeight - docEl.clientHeight);
+    progBar.style.width = (ratio * 100) + '%';
+  }, {passive:true});
+
+  /* ---------- reveal + counters + bars ---------- */
+  function animateCounter(el){
+    var target = parseInt(el.getAttribute('data-target'), 10);
+    var duration = 1300, t0 = null;
+    function stepFn(ts){
+      if(!t0) t0 = ts;
+      var p = Math.min((ts - t0) / duration, 1);
+      el.textContent = Math.round(target * p);
+      if(p < 1) requestAnimationFrame(stepFn);
+    }
+    requestAnimationFrame(stepFn);
+  }
+  var revealObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.classList.add('on');
+        if(entry.target.classList.contains('stat') ){
+          var numEl = entry.target.querySelector('.num[data-target]');
+          if(numEl && !numEl.dataset.done){ numEl.dataset.done = '1'; animateCounter(numEl); }
+        }
+        if(entry.target.classList.contains('bars')){
+          entry.target.querySelectorAll('.bar-fill').forEach(function(bf){
+            bf.style.width = bf.getAttribute('data-w') + '%';
+          });
+        }
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, {threshold:.18});
+  document.querySelectorAll('.reveal').forEach(function(el){ revealObserver.observe(el); });
+
+  /* ---------- lightbox ---------- */
+  var lbBox = document.getElementById('lightbox');
+  var lbImg = document.getElementById('lb-img');
+  var lbCap = document.getElementById('lb-cap');
+  document.querySelectorAll('.fig-img').forEach(function(imgEl){
+    imgEl.addEventListener('click', function(){
+      lbImg.src = imgEl.src;
+      lbCap.textContent = imgEl.getAttribute('data-cap');
+      lbBox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+  function closeLightbox(){ lbBox.classList.remove('open'); document.body.style.overflow = ''; }
+  document.getElementById('lb-close').addEventListener('click', closeLightbox);
+  lbBox.addEventListener('click', function(ev){ if(ev.target === lbBox) closeLightbox(); });
+  window.addEventListener('keydown', function(ev){ if(ev.key === 'Escape') closeLightbox(); });
+
+  /* ---------- accordion ---------- */
+  document.querySelectorAll('.acc-head').forEach(function(headBtn){
+    headBtn.addEventListener('click', function(){
+      var item = headBtn.parentElement;
+      var panel = item.querySelector('.acc-panel');
+      var isOpen = item.classList.toggle('open');
+      headBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      panel.style.maxHeight = isOpen ? (panel.scrollHeight + 'px') : null;
+    });
+  });
+
+  /* ---------- quiz ---------- */
+  var quizData = [
+    { q:'เชื้อใดมีความจำเพาะต่อกระจกตา ทำให้ลูกแมวมีอัตราป่วยและอัตราตายเพิ่มขึ้น?',
+      opts:['Calicivirus','FHV-1','Bordetella bronchiseptica','Mycoplasma felis'], ans:1,
+      why:'FHV-1 มีความจำเพาะต่อกระจกตา (cornea) จึงเพิ่ม morbidity/mortality ในลูกแมว และเป็นข้อยกเว้นของอาการทางตาที่ไม่จำเพาะ'},
+    { q:'ขนาดยา famciclovir ที่ใช้ในการศึกษานี้คือข้อใด?',
+      opts:['5 mg/kg PO ทุก 12 ชม.','40 mg/kg PO ทุก 8 ชม.','90 mg/kg PO ทุก 12 ชม.','125 mg/kg IV ทุก 24 ชม.'], ans:2,
+      why:'การศึกษาใช้ famciclovir 90 mg/kg PO ทุก 12 ชั่วโมง ร่วมกับ doxycycline 5 mg/kg PO ทุก 12 ชั่วโมง เป็นเวลา 21 วัน'},
+    { q:'ข้อใดสอดคล้องกับผลการศึกษา?',
+      opts:['กลุ่ม placebo หายเร็วกว่ากลุ่ม famciclovir','ทุกกลุ่มฟื้นหายสูง และกลุ่มอาการน้อยที่ได้ famciclovir หายเร็วกว่าเฉลี่ย 4–5 วัน','กลุ่มโรครุนแรงหายเร็วกว่ากลุ่มอาการน้อย','famciclovir เพิ่มโอกาสเกิดโรคกระจกตา'], ans:1,
+      why:'ทุกกลุ่มมีอัตราฟื้นหายสูง แต่ 75% ของเคสอาการน้อยที่ได้ famciclovir หายสนิททางคลินิกเร็วกว่า (เฉลี่ย 4–5 วัน) และเกิดโรคกระจกตาน้อยลง'},
+    { q:'การระบุสาเหตุของ infectious URD ที่เชื่อถือที่สุดทำได้โดยวิธีใด?',
+      opts:['ดูอาการทางตาเพียงอย่างเดียว','การตรวจร่างกายเพียงอย่างเดียว','การตรวจวินิจฉัย (diagnostic testing)','ดูจากสีของขี้ตา'], ans:2,
+      why:'อาการทางตาไม่จำเพาะและคล้ายกันในแต่ละสาเหตุ จึงต้องอาศัย diagnostic testing เป็นหลัก เพราะ coinfection พบบ่อย'},
+    { q:'ในสภาพศูนย์พักพิง (shelter) การให้ famciclovir "ขนาดเดียว" ส่งผลอย่างไร?',
+      opts:['ลดทั้งอาการและ viral shedding','ไม่มีผลใด ๆ','ทำให้อาการทางคลินิกและ viral shedding แย่ลง','รักษาโรคกระจกตาได้ทันที'], ans:2,
+      why:'ใน shelter การให้ขนาดเดียวทำให้อาการและการขับไวรัสแย่ลง ส่วนการให้วันละ 2 ครั้ง 1 สัปดาห์ ลด viral shedding ได้แต่ไม่ลดอาการทางคลินิก'}
+  ];
+  var quizBox = document.getElementById('quizBox');
+  var scoreBadge = document.getElementById('scoreBadge');
+  var quizScore = 0, quizAnswered = 0;
+
+  function renderQuiz(){
+    quizScore = 0; quizAnswered = 0;
+    updateScore();
+    quizBox.innerHTML = '';
+    quizData.forEach(function(item, qIndex){
+      var card = document.createElement('div');
+      card.className = 'quiz-card reveal on';
+      var html = '<div class="quiz-q"><span class="qno">' + (qIndex+1) + '</span><span>' + item.q + '</span></div>';
+      item.opts.forEach(function(optText, oIndex){
+        html += '<button class="opt" data-q="' + qIndex + '" data-o="' + oIndex + '">' + optText + '</button>';
+      });
+      html += '<div class="expl" id="expl-' + qIndex + '">💡 ' + item.why + '</div>';
+      card.innerHTML = html;
+      quizBox.appendChild(card);
+    });
+    quizBox.querySelectorAll('.opt').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var qIdx = parseInt(btn.getAttribute('data-q'),10);
+        var oIdx = parseInt(btn.getAttribute('data-o'),10);
+        var parentCard = btn.closest('.quiz-card');
+        if(parentCard.dataset.done) return;
+        parentCard.dataset.done = '1';
+        var correctIdx = quizData[qIdx].ans;
+        parentCard.querySelectorAll('.opt').forEach(function(ob){ ob.disabled = true; });
+        if(oIdx === correctIdx){ btn.classList.add('correct'); quizScore++; }
+        else{
+          btn.classList.add('wrong');
+          parentCard.querySelectorAll('.opt')[correctIdx].classList.add('correct');
+        }
+        quizAnswered++;
+        document.getElementById('expl-' + qIdx).classList.add('show');
+        updateScore();
+      });
+    });
+  }
+  function updateScore(){
+    scoreBadge.textContent = 'คะแนน: ' + quizScore + ' / ' + quizData.length +
+      (quizAnswered === quizData.length ? (quizScore === quizData.length ? ' 🏆 ยอดเยี่ยม!' : ' 📚 ทบทวนอีกครั้งนะ') : '');
+  }
+  document.getElementById('quizReset').addEventListener('click', renderQuiz);
+  renderQuiz();
+})();
+</script>
+</body>
+</html>
