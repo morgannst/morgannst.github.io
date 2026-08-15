@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIC Quiz 🐱 แบบทดสอบ: เมื่อแมวเครียด กระเพาะปัสสาวะก็ป่วย</title>
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-thai/thai-400.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-thai/thai-500.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-thai/thai-700.css" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f3ec; --card:#fffdf8; --ink:#28253c; --muted:#7a7490;
+  --teal:#12756e; --teal-d:#0b5751; --teal-l:#e2f2f0;
+  --amber:#e8963a; --amber-l:#fdf1de;
+  --ok:#189a4a; --okbg:#e6f7ec; --bad:#d93636; --badbg:#fdeaea;
+  --line:#e9e2d5; --shadow:0 12px 32px rgba(60,50,30,.10);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans Thai',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;
+  background-image:radial-gradient(circle at 8% 0%, #eaf3ef 0%, transparent 40%),
+                   radial-gradient(circle at 95% 12%, #fdf0dd 0%, transparent 38%);}
+.wrap{max-width:920px;margin:0 auto;padding:26px 18px 70px}
+/* ---------- hero ---------- */
+.hero{background:linear-gradient(130deg,#0b5751,#12756e 55%,#1a8a7f);border-radius:26px;color:#fff;
+  padding:30px 32px;box-shadow:var(--shadow);display:flex;gap:26px;align-items:center;position:relative;overflow:hidden}
+.hero .paw{position:absolute;opacity:.10;font-size:34px;user-select:none}
+.hero-left{flex:1;min-width:0}
+.hero .kicker{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);
+  border-radius:999px;padding:4px 14px;font-size:.78rem;margin-bottom:12px}
+.hero h1{font-size:1.55rem;line-height:1.4;font-weight:700}
+.hero h1 em{font-style:normal;color:#ffd9a0}
+.hero p{opacity:.92;margin-top:8px;font-size:.93rem;line-height:1.7}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.pill{background:rgba(255,255,255,.14);border-radius:999px;padding:4px 12px;font-size:.78rem}
+.hero-img{width:210px;height:210px;border-radius:50%;overflow:hidden;flex-shrink:0;border:5px solid rgba(255,255,255,.35);
+  box-shadow:0 14px 34px rgba(0,0,0,.25);animation:float 5s ease-in-out infinite}
+.hero-img img{width:100%;height:100%;object-fit:cover}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+/* ---------- tabs ---------- */
+.tabs{display:flex;gap:8px;margin:22px 0 18px}
+.tab{border:1.5px solid var(--line);background:var(--card);color:var(--muted);padding:10px 22px;border-radius:999px;
+  cursor:pointer;font-family:inherit;font-size:.95rem;font-weight:500;transition:.2s}
+.tab:hover{border-color:var(--teal);color:var(--teal)}
+.tab.active{background:var(--teal);border-color:var(--teal);color:#fff;box-shadow:0 6px 18px rgba(18,117,110,.35)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px;box-shadow:var(--shadow);animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.hidden{display:none!important}
+/* ---------- intro ---------- */
+.intro-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:26px;align-items:start}
+.intro-grid h2{font-size:1.2rem;margin-bottom:12px}
+.intro-list{list-style:none;margin:14px 0}
+.intro-list li{display:flex;gap:10px;margin-bottom:10px;line-height:1.6;font-size:.93rem}
+.intro-list .ic{flex-shrink:0;width:30px;height:30px;border-radius:9px;background:var(--teal-l);display:flex;align-items:center;justify-content:center}
+.intro-side{background:var(--amber-l);border:1px solid #f2ddb6;border-radius:16px;padding:20px}
+.intro-side .big{font-size:2rem}
+.intro-side h3{font-size:1rem;margin:6px 0 12px}
+.meta-row{display:flex;justify-content:space-between;font-size:.9rem;padding:8px 0;border-bottom:1px dashed #e4c98f}
+.meta-row:last-of-type{border-bottom:none}
+.meta-row b{color:var(--teal-d)}
+.chk{display:flex;align-items:center;gap:8px;margin:14px 0;font-size:.9rem;cursor:pointer}
+.chk input{width:17px;height:17px;accent-color:var(--teal)}
+.btn{border:none;border-radius:13px;padding:12px 24px;font-family:inherit;font-size:.96rem;font-weight:500;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:8px}
+.btn-p{background:linear-gradient(120deg,var(--teal),#1a8a7f);color:#fff}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(18,117,110,.4)}
+.btn-o{background:#fff;border:1.5px solid var(--line);color:var(--ink)}
+.btn-o:hover{border-color:var(--teal);color:var(--teal)}
+.btn-a{background:linear-gradient(120deg,var(--amber),#d97f26);color:#fff}
+.btn-a:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(232,150,58,.4)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+/* ---------- quiz run ---------- */
+.run-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.qcount{font-size:.9rem;color:var(--muted)}
+.qcount b{color:var(--teal);font-size:1.05rem}
+.tagchip{background:var(--teal-l);color:var(--teal-d);border-radius:999px;padding:4px 13px;font-size:.78rem;font-weight:500}
+.progress-outer{height:10px;background:#eee7d8;border-radius:99px;overflow:hidden;margin:12px 0 22px;position:relative}
+.progress-inner{height:100%;background:linear-gradient(90deg,var(--amber),var(--teal));border-radius:99px;transition:width .45s ease}
+.qtext{font-size:1.18rem;font-weight:700;line-height:1.6;margin-bottom:18px}
+.opt{display:flex;gap:13px;align-items:flex-start;border:1.5px solid var(--line);border-radius:15px;background:#fff;
+  padding:14px 16px;margin-bottom:12px;cursor:pointer;transition:.18s;line-height:1.55}
+.opt:hover{border-color:var(--teal);background:var(--teal-l);transform:translateX(4px)}
+.opt .bub{width:34px;height:34px;border-radius:50%;background:var(--bg);border:1.5px solid var(--line);display:flex;
+  align-items:center;justify-content:center;font-weight:700;color:var(--muted);flex-shrink:0;transition:.18s}
+.opt.selected{border-color:var(--teal);background:var(--teal-l);box-shadow:0 0 0 3px rgba(18,117,110,.14)}
+.opt.selected .bub{background:var(--teal);border-color:var(--teal);color:#fff}
+.opt.correct{border-color:var(--ok);background:var(--okbg);cursor:default;transform:none}
+.opt.correct .bub{background:var(--ok);border-color:var(--ok);color:#fff}
+.opt.wrong{border-color:var(--bad);background:var(--badbg);cursor:default;animation:shake .4s}
+.opt.wrong .bub{background:var(--bad);border-color:var(--bad);color:#fff}
+.opt.locked{cursor:default;transform:none;opacity:.75}
+.opt.locked.correct{opacity:1}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.run-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:16px}
+/* feedback + explain */
+.feedback{border-radius:14px;padding:13px 18px;font-weight:700;margin:16px 0 4px;animation:fade .3s}
+.feedback.ok{background:var(--okbg);color:var(--ok);border:1px solid #bfe6cd}
+.feedback.bad{background:var(--badbg);color:var(--bad);border:1px solid #f2c4c4}
+.explain{margin-top:14px;border:1px solid var(--line);border-left:5px solid var(--amber);border-radius:14px;background:#fffaf0;padding:18px 20px;animation:fade .4s}
+.ex-head{font-size:1rem;margin-bottom:12px}
+.ex-head b{color:var(--teal-d)}
+.ex-lab{font-weight:700;font-size:.9rem;color:var(--teal-d);margin:12px 0 6px}
+.explain p{font-size:.92rem;line-height:1.75}
+.ex-wrong{list-style:none}
+.ex-wrong li{display:flex;gap:10px;margin-bottom:8px;font-size:.9rem;line-height:1.65}
+.ex-wrong .wl{flex-shrink:0;width:26px;height:26px;border-radius:8px;background:var(--badbg);color:var(--bad);
+  font-weight:700;display:flex;align-items:center;justify-content:center;font-size:.8rem}
+.ex-tip{margin-top:12px;background:var(--teal-l);border-radius:10px;padding:10px 14px;font-size:.88rem;line-height:1.65;color:var(--teal-d)}
+/* ---------- result ---------- */
+.res-head{text-align:center}
+.ring{width:160px;height:160px;margin:10px auto 12px;position:relative}
+.ring svg{transform:rotate(-90deg)}
+.ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-center b{font-size:2rem;color:var(--teal-d)}
+.ring-center span{font-size:.8rem;color:var(--muted)}
+.res-msg{font-weight:700;font-size:1.05rem;margin-bottom:4px}
+.res-sub{color:var(--muted);font-size:.9rem}
+.dots{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin:18px 0 6px}
+.dot{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;color:#fff}
+.dot.ok{background:var(--ok)}.dot.bad{background:var(--bad)}
+details.rev{border:1px solid var(--line);border-radius:14px;background:#fff;margin-bottom:12px;overflow:hidden}
+details.rev summary{list-style:none;cursor:pointer;padding:15px 18px;display:flex;gap:12px;align-items:flex-start;line-height:1.55}
+details.rev summary::-webkit-details-marker{display:none}
+details.rev summary .no{flex-shrink:0;width:28px;height:28px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8rem;color:#fff}
+details.rev summary .no.ok{background:var(--ok)}details.rev summary .no.bad{background:var(--bad)}
+details.rev .body{padding:0 18px 18px}
+.rev-meta{font-size:.85rem;color:var(--muted);margin:4px 0 8px;line-height:1.7}
+.rev-meta .c-ok{color:var(--ok);font-weight:700}.rev-meta .c-bad{color:var(--bad);font-weight:700}
+/* ---------- notes ---------- */
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.note{border:1px solid var(--line);border-radius:16px;background:#fff;padding:18px;transition:.2s;animation:fade .4s}
+.note:hover{transform:translateY(-4px);box-shadow:0 10px 26px rgba(60,50,30,.12);border-color:var(--teal)}
+.note .nic{width:44px;height:44px;border-radius:12px;background:var(--teal-l);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:10px}
+.note h4{font-size:.98rem;margin-bottom:6px;color:var(--teal-d)}
+.note p{font-size:.87rem;line-height:1.7;color:#4c4860}
+footer{margin-top:30px;text-align:center;color:var(--muted);font-size:.82rem;line-height:1.8}
+.confetti{position:fixed;top:-50px;z-index:99;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(115vh) rotate(380deg)}}
+@media(max-width:760px){
+  .hero{flex-direction:column-reverse;text-align:center;padding:26px 20px}
+  .pills{justify-content:center}
+  .hero-img{width:150px;height:150px}
+  .intro-grid{grid-template-columns:1fr}
+  .notes-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="paw" style="top:14px;left:16px">🐾</span>
+    <span class="paw" style="bottom:18px;left:38%;font-size:26px">🐾</span>
+    <span class="paw" style="top:22px;right:34%;font-size:28px">🐾</span>
+    <div class="hero-left">
+      <span class="kicker">🩺 เวชศาสตร์พฤติกรรมสัตว์เลี้ยง · Cat Wellness</span>
+      <h1>แบบทดสอบเรื่อง <em>FIC & MEMO</em><br>เมื่อแมวเครียด...กระเพาะปัสสาวะก็ป่วยได้</h1>
+      <p>อ้างอิงจากบทความ “Beyond the Bladder: เมื่อ FIC ไม่ใช่แค่โรคของกระเพาะปัสสาวะ” — ทดสอบความเข้าใจตั้งแต่ปัจจัยเสี่ยง กลไกโรค ไปจนถึงการจัดการสิ่งแวดล้อม</p>
+      <div class="pills">
+        <span class="pill">FIC / FLUTD</span><span class="pill">Pandora Syndrome</span><span class="pill">Top-down Mechanism</span>
+        <span class="pill">Trigger Stacking</span><span class="pill">MEMO</span>
+      </div>
+    </div>
+    <div class="hero-img"><img src="https://image.qwenlm.ai/public_source/9c4d5c51-c549-4aab-86fa-1bfef5000680/1622f7d41-35ab-47a6-beea-a5061675c869.png" alt="แมวสบายใจ"></div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" id="tabQuiz">🎯 ทำแบบทดสอบ</button>
+    <button class="tab" id="tabNotes">📖 สรุปเนื้อหา (Study Notes)</button>
+  </nav>
+
+  <!-- ============ PAGE QUIZ ============ -->
+  <div id="pageQuiz">
+
+    <!-- intro -->
+    <section class="card" id="viewIntro">
+      <div class="intro-grid">
+        <div>
+          <h2>พร้อมทดสอบความเข้าใจเรื่องแมวเครียดหรือยัง? 🐱</h2>
+          <ul class="intro-list">
+            <li><span class="ic">🔎</span>เข้าใจปัจจัยเสี่ยงและสัญญาณความเครียดในบ้านแมวหลายตัว</li>
+            <li><span class="ic">🧠</span>แยกแยะกลไก Top-down / Pandora Syndrome / Trigger Stacking ได้</li>
+            <li><span class="ic">🏠</span>นำหลัก MEMO ไปปรับสิ่งแวดล้อม กระบะทราย และทรัพยากรได้จริง</li>
+          </ul>
+          <label class="chk"><input type="checkbox" id="shuffleChk"> สุ่มลำดับคำถาม</label>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn btn-p" id="btnStart">🚀 เริ่มทำแบบทดสอบ</button>
+            <button class="btn btn-o" id="btnToNotes">📖 อ่านสรุปก่อนทำ</button>
+          </div>
+        </div>
+        <aside class="intro-side">
+          <div class="big">📋</div>
+          <h3>รายละเอียดแบบทดสอบ</h3>
+          <div class="meta-row"><span>จำนวนคำถาม</span><b>10 ข้อ</b></div>
+          <div class="meta-row"><span>เวลาโดยประมาณ</span><b>5–8 นาที</b></div>
+          <div class="meta-row"><span>รูปแบบ</span><b>เฉลยทันทีพร้อมคำอธิบาย</b></div>
+          <div class="meta-row"><span>คะแนนดีที่สุด</span><b id="bestScore">-</b></div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- run -->
+    <section class="card hidden" id="viewRun">
+      <div class="run-top">
+        <span class="qcount">ข้อที่ <b id="runIdx">1</b> / <span id="runTotal">10</span></span>
+        <span class="tagchip" id="runTag"></span>
+      </div>
+      <div class="progress-outer"><div class="progress-inner" id="runBar" style="width:0%"></div></div>
+      <div class="qtext" id="runQ"></div>
+      <div id="runOpts"></div>
+      <div id="runFeedback"></div>
+      <div class="run-actions">
+        <button class="btn btn-a" id="btnSubmit" disabled>✔️ ตอบคำถาม</button>
+        <button class="btn btn-p hidden" id="btnNext">ข้อถัดไป →</button>
+      </div>
+    </section>
+
+    <!-- result -->
+    <section class="card hidden" id="viewResult">
+      <div class="res-head">
+        <h2 style="font-size:1.2rem">🏁 ผลการทำแบบทดสอบ</h2>
+        <div class="ring">
+          <svg width="160" height="160">
+            <circle cx="80" cy="80" r="68" fill="none" stroke="#eee7d8" stroke-width="13"/>
+            <circle id="ringFill" cx="80" cy="80" r="68" fill="none" stroke="url(#gTeal)" stroke-width="13"
+              stroke-linecap="round" stroke-dasharray="427" stroke-dashoffset="427" style="transition:stroke-dashoffset 1.1s ease"/>
+            <defs><linearGradient id="gTeal"><stop offset="0%" stop-color="#12756e"/><stop offset="100%" stop-color="#e8963a"/></linearGradient></defs>
+          </svg>
+          <div class="ring-center"><b id="scoreText">0/10</b><span id="scorePct">0%</span></div>
+        </div>
+        <p class="res-msg" id="resMsg"></p>
+        <p class="res-sub" id="resSub"></p>
+        <div class="dots" id="resDots"></div>
+      </div>
+      <h3 style="margin:22px 0 12px;font-size:1.05rem">🔑 ทบทวนเฉลยรายข้อ</h3>
+      <div id="reviewList"></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px">
+        <button class="btn btn-p" id="btnRetry">🔄 ทำอีกครั้ง</button>
+        <button class="btn btn-o" id="btnReviewNotes">📖 เปิดสรุปเนื้อหา</button>
+        <button class="btn btn-o" id="btnHome">🏠 หน้าเริ่มต้น</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ PAGE NOTES ============ -->
+  <div id="pageNotes" class="hidden">
+    <section class="card" style="margin-bottom:16px">
+      <h2 style="font-size:1.15rem">📖 สรุปเนื้อหาสำคัญ: FIC, ความเครียด และ MEMO</h2>
+      <p style="color:var(--muted);font-size:.92rem;margin-top:6px;line-height:1.7">การ์ดความรู้ 10 ใบ ครอบคลุมแนวคิดหลักจากบทความ “Beyond the Bladder” สำหรับทบทวนก่อนหรือหลังทำแบบทดสอบ</p>
+    </section>
+    <div class="notes-grid" id="notesGrid"></div>
+  </div>
+
+  <footer>
+    แหล่งอ้างอิง: บทความ “Beyond the Bladder: เมื่อ FIC ไม่ใช่แค่โรคของกระเพาะปัสสาวะ”<br>
+    เนื้อหาจัดทำเพื่อการศึกษาเท่านั้น ไม่ใช้แทนการวินิจฉัยโดยสัตวแพทย์ 🐾
+  </footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+const L=["ก","ข","ค","ง"];
+/* ================= ข้อมูลคำถาม 10 ข้อ ================= */
+const QUESTIONS=[
+{tag:"ปัจจัยเสี่ยงของ FIC",
+ q:"ข้อใดเป็นปัจจัยเสี่ยงที่มีความสัมพันธ์กับการเกิด FIC",
+ choices:["แมวอายุมากกว่า 15 ปี","แมวที่มีกิจกรรมสูงและออกนอกบ้านสม่ำเสมอ","การเลี้ยงแมวหลายตัวภายในบ้านเดียวกัน","การได้รับอาหารเปียกเป็นประจำ"],
+ answer:2,
+ why:"การเลี้ยงแมวหลายตัวร่วมกันมักก่อให้เกิดความตึงเครียดและความขัดแย้ง แม้ไม่มีการต่อสู้ชัดเจน แต่พฤติกรรมเงียบ ๆ เช่น การจ้องมอง การเดินขวางทาง หรือการเฝ้าทรัพยากร (ชามอาหาร ถาดทราย ที่นอน) ก็เพียงพอที่จะกระตุ้นความเครียดเรื้อรัง ส่งผลต่อระบบประสาท Sympathetic และ Central threat response system จนนำไปสู่การอักเสบของกระเพาะปัสสาวะ",
+ wrong:[{l:"ก",t:"บทความระบุว่าปัจจัยเสี่ยงคือแมวอายุน้อยกว่า 10 ปี ไม่ใช่มากกว่า 15 ปี"},
+        {l:"ข",t:"ปัจจัยเสี่ยงที่แท้จริงคือแมวที่มีระดับกิจกรรมต่ำ (low activity) และเลี้ยงในพื้นที่จำกัด เช่น เลี้ยงระบบปิด"},
+        {l:"ง",t:"อาหารเปียกไม่ถูกระบุว่าเป็นปัจจัยเสี่ยง แต่ภาวะอ้วนและการเข้าถึงทรัพยากรที่จำกัดต่างหากที่มีส่วนสำคัญ"}],
+ tip:"FIC เป็นสาเหตุที่พบบ่อยที่สุดของกลุ่มโรคทางเดินปัสสาวะส่วนล่างในแมว (FLUTD) และปัจจุบันถูกมองผ่านแนวคิด Pandora Syndrome ร่วมกับแนวทางการจัดการสิ่งแวดล้อมแบบ MEMO"},
+{tag:"Pandora Syndrome",
+ q:"แนวคิด Pandora syndrome อธิบายภาวะใดได้ดีที่สุด",
+ choices:["การติดเชื้อแบคทีเรียเรื้อรังในกระเพาะปัสสาวะ","ความผิดปกติที่เกิดจากนิ่วในทางเดินปัสสาวะ","การเกิดอาการทางคลินิกจากความไวต่อความเครียดร่วมกับปัจจัยสิ่งแวดล้อม","โรคทางพันธุกรรมของระบบทางเดินปัสสาวะ"],
+ answer:2,
+ why:"Pandora syndrome อธิบายว่าแมวบางตัวมีความไวต่อความเครียดสูงเป็นพิเศษ (susceptible individual) เมื่อเผชิญสิ่งแวดล้อมที่ไม่เหมาะสมจะเหนี่ยวนำให้เกิดอาการทางคลินิก โดยอาการไม่จำกัดเฉพาะระบบปัสสาวะ แต่กระทบระบบอื่นของร่างกายได้ด้วย ผ่านกลไก Top-down ที่สมองกระตุ้นระบบ Sympathetic และ Central threat response system จนเกิดการอักเสบ ความไวต่อความเจ็บปวด (hyperalgesia) และความบกพร่องของเกราะเมือกกระเพาะปัสสาวะ (urothelial barrier)",
+ wrong:[{l:"ก",t:"FIC เป็นการอักเสบที่ไม่ทราบสาเหตุแน่ชัด ไม่ได้เกิดจากการติดเชื้อแบคทีเรียเป็นหลัก"},
+        {l:"ข",t:"นิ่วไม่ใช่สาเหตุหลักของ FIC การระบุเช่นนั้นจึงไม่สอดคล้องกับพยาธิสภาพของโรค"},
+        {l:"ง",t:"Pandora syndrome ไม่ใช่โรคทางพันธุกรรมของระบบปัสสาวะโดยตรง แต่เป็นกลุ่มอาการเรื้อรังที่ถูกกระตุ้นด้วยความเครียดและสิ่งแวดล้อม"}],
+ tip:"แมวมักแสดงอาการหลังเหตุการณ์กระตุ้นความเครียด เช่น การย้ายบ้าน การมีสมาชิกใหม่ หรือความขัดแย้งภายในบ้าน"},
+{tag:"Top-down Mechanism",
+ q:"ข้อใดต่อไปนี้สอดคล้องกับแนวคิด top-down mechanism ของ FIC",
+ choices:["นิ่วทำให้เกิดการอักเสบของกระเพาะปัสสาวะ","การติดเชื้อส่งผลให้เกิดอาการปัสสาวะผิดปกติ","ความผิดปกติของไตทำให้เกิดการอักเสบของกระเพาะปัสสาวะ","ความเครียดและการรับรู้ภัยคุกคามกระตุ้นให้เกิดอาการทางคลินิก"],
+ answer:3,
+ why:"แนวคิดปัจจุบัน (Top-down) อธิบายว่าความเครียดและการรับรู้ภัยคุกคามจากสิ่งแวดล้อมเริ่มต้นที่สมอง แล้วส่งสัญญาณลงมากระตุ้นระบบประสาท Sympathetic และ Central threat response system จนเกิดการอักเสบ ความไวต่อความเจ็บปวด และความบกพร่องของ urothelial barrier ที่กระเพาะปัสสาวะ ต่างจากแนวคิดเดิม (Bottom-up) ที่เชื่อว่าความผิดปกติเริ่มที่กระเพาะปัสสาวะก่อนแล้วค่อยส่งสัญญาณขึ้นสู่สมอง",
+ wrong:[{l:"ก",t:"นิ่วเป็นสาเหตุทางกายภาพเฉพาะที่ ไม่ใช่กลไกจากสมองและความเครียด"},
+        {l:"ข",t:"การติดเชื้อเป็นสาเหตุจากเชื้อโรค จัดอยู่ในกรอบคิดแบบ bottom-up"},
+        {l:"ค",t:"ความผิดปกติของไตเป็นคนละอวัยวะ และไม่ใช่กลไกสมอง→กระเพาะปัสสาวะ"}],
+ tip:"กลไกนี้อธิบายได้ว่าทำไมแมวจึงมักกำเริบหลังเหตุการณ์เครียดในบ้าน เช่น ย้ายบ้าน หรือมีสมาชิกใหม่เข้ามา"},
+{tag:"พฤติกรรมแมวหลายตัว",
+ q:"ในบ้านที่เลี้ยงแมวหลายตัว ข้อใดอาจเป็นสัญญาณของความตึงเครียดระหว่างแมว",
+ choices:["การขวางทางและเฝ้าทรัพยากร","เลียขนให้กัน","ผลัดกันกินอาหาร","นอนใกล้กัน"],
+ answer:0,
+ why:"ความขัดแย้งระหว่างแมวมักแสดงออกอย่างเงียบเชียบ เช่น การจ้องมอง (staring) การเดินขวางทางเดินหรือบันได (blocking) และการเฝ้าทรัพยากร (guarding) เช่น ชามอาหาร ถาดน้ำ กระบะทราย เพื่อกดดันไม่ให้อีกตัวเข้าใช้งาน ทำให้ตัวที่ถูกข่มเกิดความเครียดเรื้อรังและกระตุ้นให้ FIC กำเริบได้ง่าย",
+ wrong:[{l:"ข",t:"การเลียขนให้กัน (allogrooming) เป็นพฤติกรรมเชิงบวก แสดงว่ายอมรับกันในกลุ่มสังคมเดียวกัน"},
+        {l:"ค",t:"การผลัดกันกินอาหารสะท้อนความผ่อนคลาย ไม่มีความตึงเครียด"},
+        {l:"ง",t:"การนอนใกล้กันเป็นพฤติกรรมเชิงบวก (affiliative behavior) ที่บ่งบอกว่าแมวไม่มีความขัดแย้งต่อกัน"}],
+ tip:"เจ้าของมักเข้าใจผิดว่าถ้าไม่กัดกัน = ไม่ขัดแย้ง แต่ความตึงเครียดแบบเงียบ ๆ พบบ่อยกว่าที่คิดมาก"},
+{tag:"Trigger Stacking",
+ q:"Trigger stacking หมายถึงข้อใด",
+ choices:["การได้รับยาหลายชนิดพร้อมกัน","การสะสมของนิ่วในกระเพาะปัสสาวะ","การเลี้ยงแมวหลายตัวในบ้าน","การมีปัจจัยก่อความเครียดหลายอย่างเกิดขึ้นพร้อมกัน"],
+ answer:3,
+ why:"Trigger stacking คือการสะสมหรือเกิดขึ้นพร้อมกันของปัจจัยกระตุ้นความเครียดหลายอย่าง จนเกินขีดความสามารถในการรับมือ (coping capacity) ของแมว ร่างกายจึงกระตุ้นระบบ Sympathetic และ Central threat response system ส่งผลให้เกิดการอักเสบและความเสียหายของผิวเมือกกระเพาะปัสสาวะ จน FIC กำเริบ แมวที่ขลาดกลัวหรือตื่นตระหนกง่ายจะไวต่อภาวะนี้มากกว่าปกติ",
+ wrong:[{l:"ก",t:"การใช้ยาหลายชนิดพร้อมกันเป็นเรื่องอันตรกิริยาระหว่างยา (drug interaction) ไม่เกี่ยวกับพฤติกรรม"},
+        {l:"ข",t:"การสะสมของนิ่วเป็นพยาธิสภาพทางเดินปัสสาวะ ไม่ใช่ศัพท์ทางพฤติกรรมศาสตร์"},
+        {l:"ค",t:"การเลี้ยงแมวหลายตัวเป็นเพียงหนึ่งในปัจจัยเสี่ยง ไม่ใช่ความหมายของ trigger stacking"}],
+ tip:"ตัวอย่าง trigger: พื้นที่จำกัด, ย้ายบ้าน, สัตว์เลี้ยงใหม่, ความขัดแย้งกับแมวตัวอื่น หรือกลิ่นฉุนจากน้ำยาทำความสะอาด — หากเกิดพร้อมกันหลายอย่าง แมวอาจเครียดเฉียบพลันจนปัสสาวะติดขัดได้"},
+{tag:"พื้นที่แนวตั้ง (MEMO)",
+ q:"เหตุผลสำคัญของการเพิ่มพื้นที่แนวตั้งภายในบ้านคือข้อใด",
+ choices:["เพื่อให้แมวออกกำลังกายเฉพาะเวลากลางคืน","เพื่อเพิ่มพื้นที่ใช้สอยและช่วยหลีกเลี่ยงการเผชิญหน้าระหว่างแมว","เพื่อทดแทนกระบะทราย","เพื่อให้แมวสามารถกินอาหารได้มากขึ้น"],
+ answer:1,
+ why:"พื้นที่แนวตั้ง (คอนโดแมว ชั้นติดผนัง) ช่วยเพิ่มพื้นที่ใช้สอยอย่างมีประสิทธิภาพ โดยเฉพาะบ้านพื้นที่จำกัดหรือเลี้ยงแมวหลายตัว เปิดโอกาสให้แมวแสดงพฤติกรรมธรรมชาติ เช่น ปีนป่าย สำรวจ และสังเกตการณ์จากมุมสูง อีกทั้งเป็นทางเลือกให้แมวหลบเลี่ยงสถานการณ์ตึงเครียด ควรออกแบบให้มีทางขึ้น-ลงมากกว่า 1 ตำแหน่ง เพื่อไม่ให้เกิดการปิดกั้นเส้นทางและเผชิญหน้ากัน",
+ wrong:[{l:"ก",t:"จุดประสงค์หลักไม่ใช่การออกกำลังกายเฉพาะกลางคืน แต่เป็นการลดความเครียดและแสดงพฤติกรรมธรรมชาติตลอดทั้งวัน"},
+        {l:"ค",t:"พื้นที่แนวตั้งทดแทนกระบะทรายไม่ได้ กระบะทรายต้องวางในจุดที่เงียบ ปลอดภัย และเข้าถึงง่ายบนพื้นราบ"},
+        {l:"ง",t:"เรื่องการกินอาหารเกี่ยวข้องกับการเลือกภาชนะ (ลด whisker fatigue) และการวางชามแยกตามกลุ่มสังคมมากกว่า"}],
+ tip:"สำหรับแมวสูงวัยหรือมีปัญหากระดูกและข้อ ควรจัดทำพื้นที่แนวตั้งแบบขั้นบันไดเพื่อลดข้อจำกัดทางร่างกาย"},
+{tag:"การแก้ปัญหาขับถ่าย",
+ q:"แนวทางใดเหมาะสมที่สุดเมื่อแมวปัสสาวะนอกกระบะทราย",
+ choices:["ดุหรือลงโทษทันที","ฉีดน้ำเพื่อหยุดพฤติกรรม","ประเมินสาเหตุทางการแพทย์และปัจจัยความเครียดร่วมกัน","จำกัดพื้นที่ให้อยู่ในกรง"],
+ answer:2,
+ why:"การปัสสาวะนอกกระบะทราย (periuria) มักไม่ใช่นิสัยเกเร แต่เป็นสัญญาณเตือนของปัญหาสุขภาพหรือความเครียด จึงต้องประเมินทั้งสองด้านร่วมกัน ได้แก่ ด้านการแพทย์ (ตรวจประเมิน FLUTD/FIC และให้การรักษาที่เหมาะสม) และด้านพฤติกรรม (ซักประวัติ ประเมินปัจจัยก่อความเครียด และทำ MEMO) จึงจะควบคุมโรคและป้องกันการกลับเป็นซ้ำได้ในระยะยาว",
+ wrong:[{l:"ก",t:"การดุหรือลงโทษไม่แก้ที่ต้นเหตุ กลับเพิ่มความกลัวและความเครียดเรื้อรัง ทำให้โรคกำเริบหนักขึ้นและทำลายความสัมพันธ์"},
+        {l:"ข",t:"การฉีดน้ำเป็นการลงโทษรูปแบบหนึ่ง ซึ่งยิ่งเพิ่มความเครียดและทำให้อาการแย่ลง"},
+        {l:"ง",t:"การขังกรง/จำกัดพื้นที่เป็นปัจจัยกระตุ้นความเครียดและ trigger stacking ทำให้อาการรุนแรงขึ้นได้"}],
+ tip:"การลงโทษทุกรูปแบบล้วนเพิ่มความเครียด ซึ่งเป็นตัวกระตุ้นหลักของ FIC — จึงเป็นวิธีที่ควรหลีกเลี่ยงโดยเด็ดขาด"},
+{tag:"กระบะทราย",
+ q:"ข้อใดเป็นลักษณะของกระบะทรายที่เหมาะสมสำหรับแมวส่วนใหญ่",
+ choices:["มีฝาปิดเท่านั้น","ขอบสูงมากเพื่อป้องกันทรายกระเด็น","ขนาดเล็กเพื่อให้แมวรู้สึกปลอดภัย","ผิดทุกข้อ"],
+ answer:3,
+ why:"ข้อ ก, ข, ค ล้วนไม่ถูกต้อง: รูปแบบเปิดหรือปิดควรเลือกตามความชอบของแมวแต่ละตัว (ไม่มีแบบใดเหมาะกับทุกตัว), ขอบที่สูงมากเป็นอุปสรรคต่อแมวป่วย แมวสูงอายุ หรือแมวที่มีปัญหาข้อต่อ, และขนาดที่ถูกต้องคือต้องใหญ่พอให้หมุนตัวได้สะดวก โดยมีรายงานว่าแมวส่วนใหญ่ชอบกระบะที่ใหญ่กว่าขนาดมาตรฐานทั่วไป",
+ wrong:[{l:"ก",t:"ไม่มีรูปแบบใดเหมาะกับแมวทุกตัว ต้องพิจารณาความชอบเป็นรายตัว"},
+        {l:"ข",t:"ขอบสูงเกินไปทำให้เข้าใช้งานลำบาก จนแมวอาจเลี่ยงไปขับถ่ายนอกกระบะ"},
+        {l:"ค",t:"แมวต้องการกระบะขนาดใหญ่ ไม่ใช่ขนาดเล็ก เป็นความเข้าใจผิดที่พบบ่อย"}],
+ tip:"หลักการครบชุด: ขนาดใหญ่พอหมุนตัว • รูปแบบที่แมวชอบ • วางจุดเงียบปลอดภัยเข้าถึงง่าย • ตักทำความสะอาดทุกวัน • ทรายเนื้อละเอียดจับก้อนดี"},
+{tag:"ของเล่นเสริมพฤติกรรม",
+ q:"Puzzle feeder มีประโยชน์ต่อแมวในด้านใด",
+ choices:["ลดความจำเป็นในการดื่มน้ำ","ส่งเสริมพฤติกรรมการล่าและการแก้ปัญหาตามธรรมชาติ","เพิ่มการกินอาหารของแมว","เพิ่มการกินน้ำของแมว"],
+ answer:1,
+ why:"Puzzle feeder และอุปกรณ์ให้อาหารที่ต้องแก้ปัญหา ช่วยกระตุ้นสัญชาตญาณการล่าและการทำงานของสมองผ่านการค้นหาและแก้ปัญหาเพื่อเข้าถึงอาหาร เพิ่มกิจกรรมทางกายระหว่างวัน ลดความเบื่อหน่ายและความเครียด เหมาะอย่างยิ่งสำหรับแมวที่เลี้ยงระบบปิดซึ่งมีโอกาสแสดงพฤติกรรมธรรมชาติอย่างจำกัด",
+ wrong:[{l:"ก",t:"ไม่ได้ลดความจำเป็นในการดื่มน้ำ น้ำยังคงสำคัญมากโดยเฉพาะแมวที่มีปัญหาทางเดินปัสสาวะ"},
+        {l:"ค",t:"เป้าหมายหลักไม่ใช่เพิ่มปริมาณการกินอาหาร แต่คือการส่งเสริมพฤติกรรมธรรมชาติ"},
+        {l:"ง",t:"ไม่ได้มีผลเพิ่มการกินน้ำโดยตรงตามที่บทความระบุ"}],
+ tip:"ของเล่นให้อาหารยังช่วยลดพฤติกรรมไม่พึงประสงค์ที่เกิดจากพลังงานเหลือและความเบื่อหน่ายได้ด้วย"},
+{tag:"ฟีโรโมนสังเคราะห์",
+ q:"ข้อใดกล่าวถึงการใช้ฟีโรโมนสังเคราะห์ในแมวได้เหมาะสมที่สุด",
+ choices:["เครื่องมือเสริมที่สามารถใช้ร่วมกับการจัดการสิ่งแวดล้อมตามหลัก MEMO","มีประโยชน์เฉพาะในแมวที่มีปัญหาปัสสาวะเท่านั้น","มีผลรักษา FIC ได้โดยตรงในทุกกรณี","ใช้แทนการปรับปรุงสิ่งแวดล้อมได้ทั้งหมด"],
+ answer:0,
+ why:"ฟีโรโมนสังเคราะห์ควรเป็นเพียง “ส่วนหนึ่ง” ของการจัดการสิ่งแวดล้อมแบบองค์รวม (MEMO) เนื่องจากความเครียดในแมวมักเกิดจากหลายปัจจัยร่วมกัน เช่น การเข้าถึงทรัพยากร ความสัมพันธ์ทางสังคม และลักษณะสิ่งแวดล้อมในบ้าน การใช้ควบคู่กับการปรับปรุงสิ่งแวดล้อมจึงให้ผลลัพธ์ดีที่สุด",
+ wrong:[{l:"ข",t:"ประโยชน์กว้างกว่าปัญหาปัสสาวะ เช่น Feline Facial Pheromone (F3) ช่วยสร้างความคุ้นเคยและปลอดภัย ส่วน Feline Appeasing Pheromone ช่วยลดความตึงเครียดในบ้านแมวหลายตัว"},
+        {l:"ค",t:"ฟีโรโมนไม่ได้ออกฤทธิ์เป็นยารักษา FIC โดยตรงในทุกกรณี เป็นเพียงเครื่องมือเสริมลดปัจจัยกระตุ้นความเครียด"},
+        {l:"ง",t:"ใช้แทนการปรับสิ่งแวดล้อมไม่ได้ ยังต้องจัดสรรทรัพยากรตามหลัก social group + 1 และกระจายตำแหน่งให้เหมาะสม"}],
+ tip:"ฟีโรโมนสังเคราะห์ = ตัวช่วยเสริม ไม่ใช่ทางลัด — การแก้ที่ต้นตอยังคงเป็นการจัดการสิ่งแวดล้อมและทรัพยากร"}
+];
+/* ================= สรุปเนื้อหา ================= */
+const NOTES=[
+{ic:"🩺",t:"FIC & FLUTD",d:"FIC (Feline Idiopathic Cystitis) คือกระเพาะปัสสาวะอักเสบไม่ทราบสาเหตุ พบมากที่สุดในกลุ่มโรคทางเดินปัสสาวะส่วนล่างในแมว (FLUTD) และมีความเชื่อมโยงกับความเครียดอย่างชัดเจน"},
+{ic:"📦",t:"Pandora Syndrome",d:"มอง FIC อย่างเป็นองค์รวม: เกิดจาก “ตัวสัตว์ที่ไวต่อความเครียด + สิ่งแวดล้อมไม่เหมาะสม” อาการไม่จำกัดเฉพาะทางเดินปัสสาวะ แต่กระทบได้หลายระบบของร่างกาย"},
+{ic:"🧠",t:"Top-down Mechanism",d:"สมองรับรู้ภัยคุกคาม → กระตุ้นระบบ Sympathetic และ Central threat response → เกิดการอักเสบ ความไวต่อความเจ็บปวด และเกราะเมือกกระเพาะปัสสาวะ (urothelial barrier) บกพร่อง"},
+{ic:"⚡",t:"Trigger Stacking",d:"ปัจจัยก่อความเครียดหลายอย่างสะสมหรือเกิดพร้อมกันจนเกิน coping capacity ของแมว ทำให้ FIC กำเริบ แมวขลาดกลัว/ตื่นตระหนกง่ายจะไวเป็นพิเศษ"},
+{ic:"🏠",t:"MEMO",d:"Multimodal Environmental Modification — การปรับเปลี่ยนสิ่งแวดล้อมแบบองค์รวม เพื่อลดความเครียดและตอบสนองพฤติกรรมตามธรรมชาติของแมว เป็นหัวใจของการจัดการ FIC ระยะยาว"},
+{ic:"🍽️",t:"จัดสรรทรัพยากร",d:"ชามอาหาร ชามน้ำ กระบะทราย ควรแยกตามกลุ่มสังคมและกระจายตำแหน่ง จำนวนแนะนำ = จำนวนกลุ่มสังคม + 1 เพื่อลดการแย่งชิงและการเผชิญหน้า"},
+{ic:"🧗",t:"พื้นที่แนวตั้ง",d:"เพิ่มพื้นที่ใช้สอย ให้แมวปีนป่ายและสังเกตการณ์จากมุมสูง ช่วยหลบเลี่ยงความตึงเครียด ควรมีทางขึ้น-ลงมากกว่า 1 จุด และทำขั้นบันไดสำหรับแมวสูงวัย"},
+{ic:"🚽",t:"กระบะทรายที่ใช่",d:"ขนาดใหญ่พอให้หมุนตัวได้ (แมวชอบใหญ่กว่ามาตรฐาน) รูปแบบเปิด/ปิดตามความชอบ วางจุดเงียบปลอดภัย ตักสิ่งขับถ่ายทุกวัน และใช้ทรายเนื้อละเอียดจับก้อนดี"},
+{ic:"🧩",t:"Puzzle Feeder",d:"ของเล่นให้อาหารที่กระตุ้นสัญชาตญาณการล่าและการแก้ปัญหา เพิ่มกิจกรรม ลดความเบื่อหน่ายและความเครียด เหมาะกับแมวเลี้ยงระบบปิด"},
+{ic:"💨",t:"ฟีโรโมนสังเคราะห์",d:"เป็นเครื่องมือเสริมที่ใช้ร่วมกับการจัดการสิ่งแวดล้อมตามหลัก MEMO ไม่ใช่ยารักษาโดยตรง และใช้ทดแทนการปรับปรุงสิ่งแวดล้อมไม่ได้"}
+];
+/* ================= state & helpers ================= */
+const state={order:[],idx:0,answers:[],selected:-1,answered:false,startTime:0};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+function show(el){["viewIntro","viewRun","viewResult"].forEach(v=>$(v).classList.add("hidden"));$(el).classList.remove("hidden");window.scrollTo({top:0,behavior:"smooth"});}
+function setBest(v){try{localStorage.setItem("fic_best",v);}catch(e){}}
+function getBest(){try{return localStorage.getItem("fic_best");}catch(e){return null;}}
+/* ================= tabs ================= */
+$("tabQuiz").addEventListener("click",()=>{$("tabQuiz").classList.add("active");$("tabNotes").classList.remove("active");$("pageQuiz").classList.remove("hidden");$("pageNotes").classList.add("hidden");});
+$("tabNotes").addEventListener("click",()=>{$("tabNotes").classList.add("active");$("tabQuiz").classList.remove("active");$("pageNotes").classList.remove("hidden");$("pageQuiz").classList.add("hidden");window.scrollTo({top:0,behavior:"smooth"});});
+$("btnToNotes").addEventListener("click",()=>$("tabNotes").click());
+$("btnReviewNotes").addEventListener("click",()=>$("tabNotes").click());
+/* ================= intro ================= */
+function initIntro(){const b=getBest();$("bestScore").textContent=b?b+"/10":"-";show("viewIntro");}
+$("btnHome").addEventListener("click",initIntro);
+$("btnStart").addEventListener("click",()=>{
+  state.order=QUESTIONS.map((_,i)=>i);
+  if($("shuffleChk").checked){for(let k=state.order.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[state.order[k],state.order[j]]=[state.order[j],state.order[k]];}}
+  state.answers=new Array(QUESTIONS.length).fill(-1);
+  state.idx=0;state.startTime=Date.now();
+  $("runTotal").textContent=QUESTIONS.length;
+  show("viewRun");renderRun();
+});
+/* ================= run ================= */
+function renderRun(){
+  const it=QUESTIONS[state.order[state.idx]];
+  state.selected=-1;state.answered=false;
+  $("runIdx").textContent=state.idx+1;
+  $("runTag").textContent="🏷️ "+it.tag;
+  $("runBar").style.width=(state.idx/QUESTIONS.length*100)+"%";
+  $("runQ").textContent=(state.idx+1)+". "+it.q;
+  const box=$("runOpts");box.innerHTML="";
+  it.choices.forEach((c,ci)=>{
+    const d=document.createElement("div");d.className="opt";d.dataset.i=ci;
+    d.innerHTML=`<span class="bub">${L[ci]}</span><span>${esc(c)}</span>`;
+    d.addEventListener("click",()=>{if(state.answered)return;state.selected=ci;
+      box.querySelectorAll(".opt").forEach(o=>o.classList.remove("selected"));d.classList.add("selected");
+      $("btnSubmit").disabled=false;});
+    box.appendChild(d);
+  });
+  $("runFeedback").innerHTML="";
+  $("btnSubmit").classList.remove("hidden");$("btnSubmit").disabled=true;
+  $("btnNext").classList.add("hidden");
+  $("btnNext").textContent=state.idx===QUESTIONS.length-1?"🏁 ดูผลคะแนน":"ข้อถัดไป →";
+}
+$("btnSubmit").addEventListener("click",()=>{
+  if(state.selected<0||state.answered)return;
+  const it=QUESTIONS[state.order[state.idx]];
+  state.answered=true;state.answers[state.idx]=state.selected;
+  const opts=$("runOpts").querySelectorAll(".opt");
+  opts.forEach(o=>{const i=+o.dataset.i;o.classList.add("locked");
+    if(i===it.answer)o.classList.add("correct");
+    else if(i===state.selected)o.classList.add("wrong");});
+  const ok=state.selected===it.answer;
+  $("runFeedback").innerHTML=`<div class="feedback ${ok?"ok":"bad"}">${ok?"✅ ถูกต้อง! เก่งมาก":"❌ ยังไม่ถูก — เฉลยคือ "+L[it.answer]+". "+esc(it.choices[it.answer])}</div>`+buildExplain(it);
+  $("btnSubmit").classList.add("hidden");
+  $("btnNext").classList.remove("hidden");
+  $("runBar").style.width=((state.idx+1)/QUESTIONS.length*100)+"%";
+  setTimeout(()=>{$("runFeedback").scrollIntoView({behavior:"smooth",block:"nearest"});},60);
+});
+$("btnNext").addEventListener("click",()=>{
+  if(state.idx<QUESTIONS.length-1){state.idx++;renderRun();window.scrollTo({top:0,behavior:"smooth"});}
+  else showResult();
+});
+function buildExplain(it){
+  let h=`<div class="explain"><div class="ex-head">💡 เฉลย: <b>${L[it.answer]}. ${esc(it.choices[it.answer])}</b></div>`;
+  h+=`<div class="ex-lab">✅ เหตุผลโดยละเอียด</div><p>${it.why}</p>`;
+  h+=`<div class="ex-lab">🔍 ทำไมตัวเลือกอื่นถึงผิด</div><ul class="ex-wrong">`;
+  it.wrong.forEach(w=>{h+=`<li><span class="wl">${w.l}</span><span>${w.t}</span></li>`;});
+  h+=`</ul>`;
+  if(it.tip)h+=`<div class="ex-tip">📌 เกร็ดเพิ่มเติม: ${it.tip}</div>`;
+  return h+`</div>`;
+}
+/* ================= result ================= */
+function showResult(){
+  const total=QUESTIONS.length;
+  let score=0;state.answers.forEach((a,k)=>{if(a===QUESTIONS[state.order[k]].answer)score++;});
+  const pct=Math.round(score/total*100);
+  const secs=Math.round((Date.now()-state.startTime)/1000);
+  const mm=Math.floor(secs/60),ss=secs%60;
+  const prev=getBest();const prevNum=prev?parseInt(prev,10):-1;
+  if(score>prevNum)setBest(String(score));
+  show("viewResult");
+  $("scoreText").textContent=score+"/"+total;
+  $("scorePct").textContent=pct+"%";
+  $("resMsg").textContent=pct>=90?"สุดยอด! คุณคือผู้เชี่ยวชาญ FIC & MEMO ตัวจริง 🏆":pct>=70?"เก่งมาก! เข้าใจเรื่องแมวเครียดอย่างลึกซึ้ง 💪":pct>=50?"เข้าใจพื้นฐานดี ลองทบทวนสรุปเนื้อหาอีกนิด 📖":"ไม่เป็นไร อ่านสรุปเนื้อหาแล้วกลับมาลองใหม่ได้เสมอ 🐾";
+  $("resSub").textContent=`ใช้เวลา ${mm} นาที ${ss} วินาที · คะแนนดีที่สุด ${Math.max(score,prevNum)}/${total}`;
+  const ring=$("ringFill");ring.style.strokeDashoffset="427";
+  requestAnimationFrame(()=>setTimeout(()=>{ring.style.strokeDashoffset=427-(427*pct/100);},120));
+  $("resDots").innerHTML=state.answers.map((a,k)=>{const ok=a===QUESTIONS[state.order[k]].answer;return `<span class="dot ${ok?"ok":"bad"}" title="ข้อ ${k+1}">${k+1}</span>`;}).join("");
+  $("reviewList").innerHTML=state.order.map((qi,k)=>{
+    const it=QUESTIONS[qi];const ua=state.answers[k];const ok=ua===it.answer;
+    return `<details class="rev"><summary><span class="no ${ok?"ok":"bad"}">${k+1}</span><span><b>${esc(it.q)}</b></span></summary>
+      <div class="body">
+        <div class="rev-meta">คำตอบของคุณ: <span class="${ok?"c-ok":"c-bad"}">${ua>=0?L[ua]+". "+esc(it.choices[ua]):"ไม่ได้ตอบ"}</span>
+        ${ok?"":" · เฉลยที่ถูกต้อง: <span class='c-ok'>"+L[it.answer]+". "+esc(it.choices[it.answer])+"</span>"} · หัวข้อ: ${esc(it.tag)}</div>
+        ${buildExplain(it)}
+      </div></details>`;
+  }).join("");
+  if(pct>=80)celebrate();
+}
+$("btnRetry").addEventListener("click",()=>$("btnStart").click());
+function celebrate(){
+  const em=["🐾","💚","⭐","🐱","✨","🧡"];
+  for(let i=0;i<42;i++){
+    const s=document.createElement("span");s.className="confetti";s.textContent=em[i%em.length];
+    s.style.left=Math.random()*100+"vw";
+    s.style.animationDuration=(2.6+Math.random()*2.6)+"s";
+    s.style.animationDelay=(Math.random()*.9)+"s";
+    s.style.fontSize=(13+Math.random()*18)+"px";
+    document.body.appendChild(s);setTimeout(()=>s.remove(),6500);
+  }
+}
+/* ================= notes ================= */
+$("notesGrid").innerHTML=NOTES.map(n=>`<div class="note"><div class="nic">${n.ic}</div><h4>${n.t}</h4><p>${n.d}</p></div>`).join("");
+/* ================= keyboard ================= */
+document.addEventListener("keydown",e=>{
+  if($("viewRun").classList.contains("hidden"))return;
+  if(!state.answered&&["1","2","3","4"].includes(e.key)){
+    const o=$("runOpts").querySelectorAll(".opt")[+e.key-1];if(o)o.click();
+  }else if(e.key==="Enter"){
+    if(!$("btnSubmit").classList.contains("hidden")&&!$("btnSubmit").disabled)$("btnSubmit").click();
+    else if(!$("btnNext").classList.contains("hidden"))$("btnNext").click();
+  }
+});
+/* ================= init ================= */
+initIntro();
+})();
+</script>
+</body>
+</html>
