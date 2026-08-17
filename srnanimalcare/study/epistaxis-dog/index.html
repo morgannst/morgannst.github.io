@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Epistaxis in Dogs — ภาวะเลือดกำเดาไหลในสุนัข | สรุปเชิงคลินิก</title>
+<meta name="description" content="สรุปเชิงโต้ตอบ: แนวทางวินิจฉัยและจัดการ epistaxis ในสุนัข (Ask the Expert)">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/prompt@5/thai-400.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/prompt@5/thai-600.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/prompt@5/thai-700.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/sarabun@5/thai-400.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/sarabun@5/thai-500.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/sarabun@5/thai-700.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        paper: '#f6f1e7',
+        cream: '#fdfaf2',
+        ink: '#1a2622',
+        pine: { DEFAULT:'#0e5e53', dark:'#0a423b', light:'#dcebe6' },
+        blood: { DEFAULT:'#c0392f', dark:'#8e2a23', light:'#f7e3df' },
+        amber: { DEFAULT:'#d9942b', light:'#f6ead4' }
+      },
+      fontFamily: {
+        display: ['Prompt','sans-serif'],
+        body: ['Sarabun','sans-serif']
+      },
+      boxShadow: {
+        card: '0 2px 10px rgba(26,38,34,.06), 0 12px 32px rgba(26,38,34,.08)',
+        lift: '0 6px 18px rgba(26,38,34,.12), 0 18px 44px rgba(26,38,34,.14)'
+      }
+    }
+  }
+}
+</script>
+<style>
+  html{scroll-behavior:smooth}
+  section{scroll-margin-top:92px}
+  body{background:#f6f1e7}
+  .dotgrid{background-image:radial-gradient(rgba(14,94,83,.10) 1px, transparent 1px);background-size:22px 22px}
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease, transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+  .d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}
+  .acc-body{max-height:0;overflow:hidden;transition:max-height .5s ease}
+  .acc.open .acc-body{max-height:1200px}
+  .acc .chev{transition:transform .35s ease}
+  .acc.open .chev{transform:rotate(180deg)}
+  @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  .floaty{animation:floaty 5s ease-in-out infinite}
+  .floaty2{animation:floaty 6.5s ease-in-out infinite;animation-delay:1.2s}
+  @keyframes drip{0%{transform:translateY(-4px) scale(.6);opacity:0}30%{opacity:1}100%{transform:translateY(26px) scale(1);opacity:0}}
+  .drip{animation:drip 2.2s ease-in infinite}
+  .drip2{animation:drip 2.2s ease-in infinite;animation-delay:1.1s}
+  @keyframes dashmove{to{stroke-dashoffset:-400}}
+  .pulse-line{stroke-dasharray:8 6;animation:dashmove 6s linear infinite}
+  .navlink{position:relative}
+  .navlink::after{content:"";position:absolute;left:0;bottom:-4px;height:2px;width:0;background:#c0392f;transition:width .3s}
+  .navlink:hover::after,.navlink.active::after{width:100%}
+  .navlink.active{color:#c0392f}
+  .cause-card{transition:transform .3s ease, box-shadow .3s ease}
+  .cause-card:hover{transform:translateY(-4px)}
+  .chipbtn{transition:all .25s ease}
+  .chipbtn.on{background:#0e5e53;color:#fdfaf2;border-color:#0e5e53;box-shadow:0 6px 16px rgba(14,94,83,.28)}
+  .tabbtn{transition:all .25s ease}
+  .tabbtn.on{background:#c0392f;color:#fdfaf2;transform:translateY(-2px);box-shadow:0 8px 20px rgba(192,57,47,.3)}
+  .quizopt{transition:all .2s ease}
+  .quizopt:not(:disabled):hover{transform:translateX(4px);border-color:#0e5e53}
+  .quizopt.correct{background:#dcebe6;border-color:#0e5e53;color:#0a423b}
+  .quizopt.wrong{background:#f7e3df;border-color:#c0392f;color:#8e2a23}
+  .num-input::-webkit-outer-spin-button,.num-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  .num-input{-moz-appearance:textfield;appearance:textfield}
+  ::selection{background:#c0392f;color:#fdfaf2}
+  .scrollthin::-webkit-scrollbar{height:6px}
+  .scrollthin::-webkit-scrollbar-thumb{background:#0e5e53;border-radius:3px}
+</style>
+</head>
+<body class="font-body text-ink antialiased">
+
+<!-- progress bar -->
+<div id="progressBar" class="fixed top-0 left-0 h-1 z-[60] bg-gradient-to-r from-blood-dark via-blood to-amber" style="width:0%"></div>
+
+<!-- NAV -->
+<header id="siteNav" class="sticky top-0 z-50 bg-cream/90 backdrop-blur border-b border-pine/10 transition-shadow">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+    <a href="#top" class="flex items-center gap-3 min-w-0">
+      <img src="https://yunhfdekcjosnfwndepu.supabase.co/storage/v1/object/public/DATA%20SRNanimalcare/Logo%20symbol.png" alt="SRN Animal Care Logo" class="h-10 w-10 object-contain" onerror="this.style.display='none'">
+      <div class="leading-tight min-w-0">
+        <p class="font-display font-700 font-bold text-pine-dark text-sm sm:text-base truncate">SRN Animal Care</p>
+        <p class="text-[11px] text-ink/60 truncate">Clinical Summary • Ask the Expert</p>
+      </div>
+    </a>
+    <nav class="hidden lg:flex items-center gap-6 font-display font-semibold text-sm text-ink/80">
+      <a class="navlink" href="#overview">ภาพรวม</a>
+      <a class="navlink" href="#signs">อาการคลินิก</a>
+      <a class="navlink" href="#causes">สาเหตุ</a>
+      <a class="navlink" href="#diagnosis">การวินิจฉัย</a>
+      <a class="navlink" href="#treatment">การรักษา</a>
+      <a href="#quiz" class="ml-2 px-4 py-2 rounded-full bg-blood text-cream shadow hover:bg-blood-dark hover:-translate-y-0.5 transition">ทดสอบความรู้</a>
+    </nav>
+    <button id="menuBtn" class="lg:hidden p-2 rounded-lg border border-pine/20 text-pine-dark" aria-label="เปิดเมนู">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+  <div id="mobileMenu" class="hidden lg:hidden border-t border-pine/10 bg-cream px-6 py-4 flex flex-col gap-3 font-display font-semibold text-sm">
+    <a class="hover:text-blood" href="#overview">ภาพรวม</a>
+    <a class="hover:text-blood" href="#signs">อาการคลินิก</a>
+    <a class="hover:text-blood" href="#causes">สาเหตุ</a>
+    <a class="hover:text-blood" href="#diagnosis">การวินิจฉัย</a>
+    <a class="hover:text-blood" href="#treatment">การรักษา</a>
+    <a class="text-blood" href="#quiz">ทดสอบความรู้</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="top" class="dotgrid relative overflow-hidden">
+  <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-pine/10 blur-3xl"></div>
+  <div class="absolute -bottom-32 -left-24 w-96 h-96 rounded-full bg-blood/10 blur-3xl"></div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-14 lg:py-20 grid lg:grid-cols-12 gap-10 items-center relative">
+    <div class="lg:col-span-7 reveal in">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-pine-light border border-pine/20 text-pine-dark font-display font-semibold text-xs sm:text-sm">
+        <span class="w-2 h-2 rounded-full bg-blood animate-pulse"></span>
+        ASK THE EXPERT • สรุปแนวทางวินิจฉัยและจัดการ
+      </div>
+      <h1 class="font-display font-bold text-4xl sm:text-5xl lg:text-6xl mt-5 text-pine-dark leading-tight">
+        Epistaxis in Dogs
+      </h1>
+      <p class="font-display font-semibold text-xl sm:text-2xl text-blood mt-2">ภาวะเลือดกำเดาไหลในสุนัข</p>
+      <p class="mt-5 text-ink/75 text-base sm:text-lg leading-relaxed max-w-2xl">
+        Epistaxis พบได้บ่อยในสุนัข แต่ข้อมูลตีพิมพ์ยังมีจำกัด สรุปนี้เรียบเรียงแนวทางตั้งแต่
+        <strong class="text-pine-dark">อาการคลินิก สาเหตุเฉพาะที่/ระบบิก การตรวจวินิจฉัยอย่างเป็นระบบ</strong>
+        ไปจนถึง <strong class="text-blood-dark">การจัดการฉุกเฉินและการรักษาจำเพาะ</strong> พร้อมอินเทอร์แอกทีฟให้คลิกสำรวจทุกหัวข้อ
+      </p>
+      <div class="mt-7 flex flex-wrap gap-3">
+        <a href="#overview" class="px-6 py-3 rounded-full bg-pine text-cream font-display font-semibold shadow hover:bg-pine-dark hover:-translate-y-0.5 transition">เริ่มอ่านสรุป ↓</a>
+        <a href="#causes" class="px-6 py-3 rounded-full border-2 border-blood text-blood font-display font-semibold hover:bg-blood hover:text-cream transition">สำรวจสาเหตุ</a>
+      </div>
+      <div class="mt-8 flex flex-wrap gap-2 text-xs sm:text-sm">
+        <span class="px-3 py-1.5 rounded-full bg-cream border border-pine/20 text-pine-dark font-medium">📄 การศึกษาย้อนหลัง n = 176 สุนัข</span>
+        <span class="px-3 py-1.5 rounded-full bg-cream border border-pine/20 text-pine-dark font-medium">🩸 สาเหตุเฉพาะที่พบได้ถึง 83%</span>
+        <span class="px-3 py-1.5 rounded-full bg-cream border border-pine/20 text-pine-dark font-medium">🧭 แนะนำแนวทางวินิจฉัยแบบมีโครงสร้าง</span>
+      </div>
+    </div>
+    <div class="lg:col-span-5 relative reveal in d2">
+      <div class="relative rounded-3xl bg-cream border border-pine/15 shadow-lift overflow-hidden">
+        <img src="https://image.qwenlm.ai/public_source/38ad6675-12f5-4553-925d-0f65e2dffdf6/1fea7ac8e-4c1a-425d-a75e-9225bf30bd6b.png" alt="ภาพประกอบสุนัขที่มีเลือดกำเดาไหล" class="w-full h-auto">
+        <div class="absolute top-4 left-4 px-3 py-1.5 rounded-full bg-ink/80 text-cream text-xs font-display font-semibold backdrop-blur">Unilateral หรือ Bilateral • Acute หรือ Chronic</div>
+      </div>
+      <div class="floaty absolute -left-4 sm:-left-8 top-8 px-4 py-3 rounded-2xl bg-pine text-cream shadow-lift">
+        <p class="font-display font-bold text-2xl leading-none">83%</p>
+        <p class="text-[11px] opacity-90 mt-1">สาเหตุเฉพาะที่<br>ในโพรงจมูก</p>
+      </div>
+      <div class="floaty2 absolute -right-3 sm:-right-6 bottom-10 px-4 py-3 rounded-2xl bg-cream border border-blood/30 shadow-lift">
+        <p class="font-display font-bold text-2xl text-blood leading-none">52%</p>
+        <p class="text-[11px] text-ink/70 mt-1">โรคระบบิก<br>แต่แสดงเลือดออกข้างเดียว</p>
+      </div>
+    </div>
+  </div>
+  <svg class="w-full h-10 text-pine/40" viewBox="0 0 1200 40" preserveAspectRatio="none" fill="none">
+    <path class="pulse-line" d="M0 20 H420 l14 -12 14 24 14 -24 14 12 H760 l12 -10 12 20 12 -20 12 10 H1200" stroke="currentColor" stroke-width="2"/>
+  </svg>
+</section>
+
+<!-- OVERVIEW STATS -->
+<section id="overview" class="max-w-7xl mx-auto px-4 sm:px-6 py-14">
+  <div class="flex items-end justify-between flex-wrap gap-4 reveal">
+    <div>
+      <p class="font-display font-semibold text-blood text-sm tracking-wide">01 • ภาพรวมจากการศึกษา</p>
+      <h2 class="font-display font-bold text-3xl sm:text-4xl text-pine-dark mt-2">สัดส่วนสาเหตุในสุนัข 176 ตัว</h2>
+    </div>
+    <p class="text-sm text-ink/60 max-w-md">การศึกษาย้อนหลังรายงานสาเหตุเฉพาะที่และระบบิก ซึ่งอาจ <strong class="text-blood-dark">ซ้อนทับกันได้</strong> และทั้งระยะเวลาของอาการหรือข้างที่ออก <em>ไม่สามารถ</em> ใช้แยกสองกลุ่มนี้ได้อย่างเชื่อถือ</p>
+  </div>
+  <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-8">
+    <div class="reveal d1 rounded-2xl bg-cream border border-pine/15 shadow-card p-6 hover:shadow-lift hover:-translate-y-1 transition">
+      <p class="text-xs font-display font-semibold text-ink/50">จำนวนสุนัขในการศึกษา</p>
+      <p class="font-display font-bold text-5xl text-pine-dark mt-2"><span class="counter" data-count="176">0</span></p>
+      <p class="text-sm text-ink/60 mt-2">ตัว (retrospective study)</p>
+    </div>
+    <div class="reveal d2 rounded-2xl bg-pine text-cream shadow-card p-6 hover:shadow-lift hover:-translate-y-1 transition">
+      <p class="text-xs font-display font-semibold opacity-80">สาเหตุเฉพาะที่ (Local)</p>
+      <p class="font-display font-bold text-5xl mt-2"><span class="counter" data-count="83">0</span>%</p>
+      <p class="text-sm opacity-85 mt-2">เนื้องอก • อุบัติเหตุ • rhinitis • ฝีรากฟัน</p>
+    </div>
+    <div class="reveal d3 rounded-2xl bg-blood text-cream shadow-card p-6 hover:shadow-lift hover:-translate-y-1 transition">
+      <p class="text-xs font-display font-semibold opacity-80">สาเหตุระบบิก (Systemic)</p>
+      <p class="font-display font-bold text-5xl mt-2"><span class="counter" data-count="22">0</span>%</p>
+      <p class="text-sm opacity-85 mt-2">เกล็ดเลือด • การแข็งตัว • ความดัน • vasculitis</p>
+    </div>
+    <div class="reveal d4 rounded-2xl bg-cream border border-amber/40 shadow-card p-6 hover:shadow-lift hover:-translate-y-1 transition">
+      <p class="text-xs font-display font-semibold text-ink/50">สาเหตุเฉพาะที่อันดับ 1</p>
+      <p class="font-display font-bold text-5xl text-amber mt-2"><span class="counter" data-count="30">0</span>%</p>
+      <p class="text-sm text-ink/60 mt-2">เนื้องอกในโพรงจมูก (nasal neoplasia)</p>
+    </div>
+  </div>
+</section>
+
+<!-- CLINICAL SIGNS -->
+<section id="signs" class="bg-pine-light/50 border-y border-pine/10 py-14">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="reveal">
+      <p class="font-display font-semibold text-blood text-sm tracking-wide">02 • Clinical Signs</p>
+      <h2 class="font-display font-bold text-3xl sm:text-4xl text-pine-dark mt-2">อาการคลินิกที่พบได้</h2>
+      <p class="text-ink/70 mt-3 max-w-3xl">Epistaxis อาจเป็น <strong>ข้างเดียวหรือสองข้าง</strong> และ <strong>เฉียบพลันหรือเรื้อรัง</strong> — เลือดออกข้างเดียวพบบกว่าและมักสะท้อนโรคเฉพาะที่ แต่ <em>ไม่ใช่เครื่องหมายยืนยัน (not pathognomonic)</em></p>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-8">
+      <div class="reveal d1 rounded-2xl bg-cream shadow-card p-5 border-t-4 border-blood hover:shadow-lift transition">
+        <p class="font-display font-bold text-pine-dark">เลือดออกข้างเดียว / สองข้าง</p>
+        <p class="text-sm text-ink/70 mt-2">ข้างเดียวพบบกว่า ชี้แนวโน้มโรคเฉพาะที่ แต่โรคระบบิกก็แสดงข้างเดียวได้เช่นกัน</p>
+      </div>
+      <div class="reveal d2 rounded-2xl bg-cream shadow-card p-5 border-t-4 border-pine hover:shadow-lift transition">
+        <p class="font-display font-bold text-pine-dark">น้ำมูก • จาม</p>
+        <p class="text-sm text-ink/70 mt-2">nasal discharge และ sneezing พบร่วมได้บ่อย ทั้งเฉียบพลันและเรื้อรัง</p>
+      </div>
+      <div class="reveal d3 rounded-2xl bg-cream shadow-card p-5 border-t-4 border-pine hover:shadow-lift transition">
+        <p class="font-display font-bold text-pine-dark">Stertor • airflow เปลี่ยน</p>
+        <p class="text-sm text-ink/70 mt-2">เสียงหายใจผิดปกติและการไหลของอากาศในโพรงจมูกเปลี่ยนไป</p>
+      </div>
+      <div class="reveal d4 rounded-2xl bg-cream shadow-card p-5 border-t-4 border-amber hover:shadow-lift transition">
+        <p class="font-display font-bold text-pine-dark">ใบหน้าผิดรูป</p>
+        <p class="text-sm text-ink/70 mt-2">facial deformity ชี้โรคเฉพาะที่รุนแรง เช่น เนื้องอกหรือเชื้อราทำลายกระดูก</p>
+      </div>
+      <div class="reveal d1 rounded-2xl bg-cream shadow-card p-5 border-t-4 border-blood hover:shadow-lift transition">
+        <p class="font-display font-bold text-pine-dark">อาการระบบิก</p>
+        <p class="text-sm text-ink/70 mt-2">อ่อนแรง ซีด (weakness, pallor) จากเสียเลือดหรือโรคทั่วร่างกาย</p>
+      </div>
+      <div class="reveal d2 rounded-2xl bg-cream shadow-card p-5 border-t-4 border-blood hover:shadow-lift transition">
+        <p class="font-display font-bold text-pine-dark">อาการทางประสาท</p>
+        <p class="text-sm text-ink/70 mt-2">พฤติกรรมเปลี่ยน ก้าวร้าว หรือชัก ในเนื้องอก/โรคติดเชื้ออักเสบที่ลุกลาม (เช่น encephalitis)</p>
+      </div>
+      <div class="reveal d3 rounded-2xl bg-cream shadow-card p-5 border-t-4 border-amber hover:shadow-lift transition">
+        <p class="font-display font-bold text-pine-dark">Nasal planum ซีด/แผล</p>
+        <p class="text-sm text-ink/70 mt-2">depigmentation และ ulceration พบในโรคเชื้อรา ภูมิคุ้มกัน และเนื้องอก</p>
+      </div>
+      <div class="reveal d4 rounded-2xl bg-cream shadow-card p-5 border-t-4 border-pine hover:shadow-lift transition">
+        <p class="font-display font-bold text-pine-dark">รูปแบบเวลาเกิด</p>
+        <p class="text-sm text-ink/70 mt-2">acute มักสัมพันธ์กับอุบัติเหตุ/สิ่งแปลกปลอม • chronic ชี้โรคดำเนินต่อเนื่อง</p>
+      </div>
+    </div>
+    <div class="reveal mt-8 rounded-2xl bg-ink text-cream p-6 sm:p-8 grid sm:grid-cols-[auto,1fr] gap-6 items-center shadow-lift">
+      <div class="text-center px-6 py-4 rounded-2xl bg-cream/10 border border-cream/20">
+        <p class="font-display font-bold text-5xl text-amber"><span class="counter" data-count="52">0</span>%</p>
+      </div>
+      <div>
+        <p class="font-display font-bold text-xl">⚠️ อย่าตัดสินจาก "ข้างที่ออก" เพียงอย่างเดียว</p>
+        <p class="text-cream/80 mt-2 leading-relaxed">ในการศึกษาหนึ่ง สุนัขที่มีความผิดปกติของระบบห้ามเลือดแบบระบบิกถึง <strong class="text-amber">52%</strong> แสดงอาการเลือดออก <em>ข้างเดียว</em> — ดังนั้นทั้งระยะเวลาของอาการและ laterality ไม่สามารถแยกโรคเฉพาะที่ออกจากโรคระบบิกได้อย่างเชื่อถือ ต้องอาศัยการตรวจวินิจฉัยอย่างเป็นระบบ</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CAUSES -->
+<section id="causes" class="max-w-7xl mx-auto px-4 sm:px-6 py-14">
+  <div class="reveal">
+    <p class="font-display font-semibold text-blood text-sm tracking-wide">03 • Causes</p>
+    <h2 class="font-display font-bold text-3xl sm:text-4xl text-pine-dark mt-2">สาเหตุ: เฉพาะที่ vs ระบบิก</h2>
+    <p class="text-ink/70 mt-3 max-w-3xl">คลิกที่ชิ้นกราฟวงกลมเพื่อดูรายละเอียดของแต่ละสาเหตุจากการศึกษา 176 สุนัข หรือเลือกการ์ดด้านล่างเพื่ออ่านเชิงลึก</p>
+  </div>
+
+  <div class="grid lg:grid-cols-2 gap-8 mt-8 items-start">
+    <div class="reveal rounded-3xl bg-cream border border-pine/15 shadow-card p-6">
+      <div class="relative h-72 sm:h-80">
+        <canvas id="causeChart"></canvas>
+      </div>
+      <div class="flex flex-wrap gap-2 justify-center mt-4 text-xs font-display font-semibold">
+        <span class="px-3 py-1 rounded-full bg-pine-light text-pine-dark">■ สาเหตุเฉพาะที่ (Local)</span>
+        <span class="px-3 py-1 rounded-full bg-blood-light text-blood-dark">■ สาเหตุระบบิก (Systemic)</span>
+      </div>
+    </div>
+    <div id="causePanel" class="reveal d2 rounded-3xl bg-pine-dark text-cream shadow-lift p-7 min-h-[320px] flex flex-col justify-center">
+      <p class="font-display font-semibold text-amber text-sm">📊 คลิกชิ้นกราฟเพื่อดูรายละเอียด</p>
+      <h3 class="font-display font-bold text-2xl mt-3">การกระจายสาเหตุ</h3>
+      <p class="text-cream/80 mt-3 leading-relaxed">สาเหตุเฉพาะที่เป็นฝ่าย predominance (พบได้ถึง 83%) นำโดยเนื้องอกจมูก 30% และอุบัติเหตุ 29% ขณะที่ฝั่งระบบิกนำโดย severe thrombocytopenia 10% — ทั้งสองกลุ่มอาจซ้อนทับกันในผู้ป่วยรายเดียว</p>
+      <div class="mt-5 grid grid-cols-2 gap-3 text-center">
+        <div class="rounded-xl bg-cream/10 p-3"><p class="font-display font-bold text-2xl text-pine-light">78%</p><p class="text-xs opacity-80">ผลรวมเฉพาะที่ (ในการศึกษา)</p></div>
+        <div class="rounded-xl bg-cream/10 p-3"><p class="font-display font-bold text-2xl text-amber">22%</p><p class="text-xs opacity-80">ผลรวมระบบิก (ในการศึกษา)</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- filters -->
+  <div class="reveal mt-10 flex flex-wrap items-center gap-3">
+    <button class="chipbtn on px-4 py-2 rounded-full border border-pine/30 font-display font-semibold text-sm" data-group="all">ทั้งหมด (<span id="cntAll">0</span>)</button>
+    <button class="chipbtn px-4 py-2 rounded-full border border-pine/30 font-display font-semibold text-sm" data-group="local">เฉพาะที่ (Local)</button>
+    <button class="chipbtn px-4 py-2 rounded-full border border-pine/30 font-display font-semibold text-sm" data-group="systemic">ระบบิก (Systemic)</button>
+    <div class="relative flex-1 min-w-[220px]">
+      <input id="causeSearch" type="text" placeholder="🔍 ค้นหาสาเหตุ เช่น aspergillosis, เกล็ดเลือด, เนื้องอก..." class="w-full px-4 py-2.5 rounded-full border border-pine/25 bg-cream focus:outline-none focus:ring-2 focus:ring-pine/40 text-sm">
+    </div>
+    <p class="text-xs text-ink/50">แสดง <span id="causeCount">0</span> รายการ</p>
+  </div>
+  <div id="causeGrid" class="grid md:grid-cols-2 xl:grid-cols-3 gap-5 mt-6"></div>
+</section>
+
+<!-- DIAGNOSIS -->
+<section id="diagnosis" class="bg-cream border-y border-pine/10 py-14">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="reveal">
+      <p class="font-display font-semibold text-blood text-sm tracking-wide">04 • Diagnosis</p>
+      <h2 class="font-display font-bold text-3xl sm:text-4xl text-pine-dark mt-2">แนวทางวินิจฉัยแบบมีโครงสร้าง</h2>
+    </div>
+
+    <div class="grid lg:grid-cols-5 gap-8 mt-8">
+      <!-- timeline -->
+      <div class="lg:col-span-2 reveal">
+        <ol class="relative border-l-2 border-pine/25 ml-4 space-y-7">
+          <li class="ml-7 relative">
+            <span class="absolute -left-[42px] w-8 h-8 rounded-full bg-blood text-cream font-display font-bold flex items-center justify-center shadow">1</span>
+            <p class="font-display font-bold text-pine-dark">ประเมินความรุนแรงทันที</p>
+            <p class="text-sm text-ink/70 mt-1">ถ้าเลือดออกรุนแรง ประเมิน perfusion: อัตราหัวใจ, คุณภาพชีพจร, สีเยื่อเมือก, CRT, อุณหภูมิปลายร่างกาย, mentation</p>
+          </li>
+          <li class="ml-7 relative">
+            <span class="absolute -left-[42px] w-8 h-8 rounded-full bg-pine text-cream font-display font-bold flex items-center justify-center shadow">2</span>
+            <p class="font-display font-bold text-pine-dark">ตรวจพื้นฐานชุดแรก</p>
+            <p class="text-sm text-ink/70 mt-1">PCV, total protein, CBC + blood smear, chemistry, coagulation (PT/aPTT) และวัดความดันโลหิต</p>
+          </li>
+          <li class="ml-7 relative">
+            <span class="absolute -left-[42px] w-8 h-8 rounded-full bg-pine text-cream font-display font-bold flex items-center justify-center shadow">3</span>
+            <p class="font-display font-bold text-pine-dark">เจาะลึกเกล็ดเลือดและการแข็งตัว</p>
+            <p class="text-sm text-ink/70 mt-1">ประมาณเกล็ดเลือดจาก smear; ถ้าปกติแต่สงสัย primary hemostasis → ส่ง platelet function tests</p>
+          </li>
+          <li class="ml-7 relative">
+            <span class="absolute -left-[42px] w-8 h-8 rounded-full bg-amber text-cream font-display font-bold flex items-center justify-center shadow">4</span>
+            <p class="font-display font-bold text-pine-dark">ถ่ายภาพวินิจฉัย "ก่อน" หัตถการอื่น</p>
+            <p class="text-sm text-ink/70 mt-1">CT เป็น first-line; ตามด้วย rhinoscopy/ตรวจทางเดินหายใจส่วนต้นภายใต้ยาสลบ (ระวังเลือดออกหลังหัตถการ)</p>
+          </li>
+          <li class="ml-7 relative">
+            <span class="absolute -left-[42px] w-8 h-8 rounded-full bg-pine-dark text-cream font-display font-bold flex items-center justify-center shadow">5</span>
+            <p class="font-display font-bold text-pine-dark">ตรวจเพิ่มเติมตามข้อสงสัย</p>
+            <p class="text-sm text-ink/70 mt-1">PCR/serology, cytology, histopathology, thoracic imaging และ infrared thermography</p>
+          </li>
+        </ol>
+      </div>
+
+      <!-- accordions -->
+      <div class="lg:col-span-3 space-y-4">
+        <div class="acc reveal rounded-2xl border border-pine/20 bg-paper shadow-card overflow-hidden">
+          <button class="acc-head w-full flex items-center justify-between px-6 py-4 text-left">
+            <span class="font-display font-bold text-pine-dark">🩸 CBC & การนับเกล็ดเลือด</span>
+            <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0e5e53" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="acc-body px-6 pb-5 text-sm text-ink/80 leading-relaxed space-y-2">
+            <p>• CBC อาจปกติได้ในบางราย; <strong>regenerative anemia</strong> บ่งชี้ว่าไขกระดูกตอบสนองต่อเลือดที่เสีย</p>
+            <p>• Leukocytosis ไม่จำเพาะ และอาจพบ leukopenia ร่วมได้</p>
+            <p>• <strong>Blood smear</strong> ช่วยประเมินเกล็ดเลือดระหว่างรอผลแล็บ และเห็น macroplatelets</p>
+            <p>• เครื่องนับอัตโนมัติมีข้อผิดพลาดได้ทั้งสูง/ต่ำเกินจริง → ยืนยันด้วย <strong>manual count</strong> จาก smear (EDTA หรือเลือดสด) บนกำลังขยาย 100× บริเวณ monolayer</p>
+            <p class="px-4 py-3 rounded-xl bg-pine-light text-pine-dark font-semibold">เกล็ดเลือด 1 ตัว/สนามภาพ ≈ 15 × 10³/μL → ใช้ค่าเฉลี่ย 5 สนามภาพ × 15 × 10³/μL = ค่าประมาณเกล็ดเลือด (ลองใช้เครื่องคำนวณด้านล่าง 👇)</p>
+            <p>• ถ้าเกล็ดเลือด "ปกติ" แต่อาการเข้าได้กับ primary hemostatic disorder → พิจารณา BMBT, platelet function analysis, vWF assay และ aggregometry</p>
+          </div>
+        </div>
+
+        <div class="acc reveal rounded-2xl border border-pine/20 bg-paper shadow-card overflow-hidden">
+          <button class="acc-head w-full flex items-center justify-between px-6 py-4 text-left">
+            <span class="font-display font-bold text-pine-dark">🧪 Serum Chemistry Profile</span>
+            <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0e5e53" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="acc-body px-6 pb-5 text-sm text-ink/80 leading-relaxed space-y-2">
+            <p>• <strong>Panhypoproteinemia</strong> อาจเกิดจากเสียเลือดเรื้อรัง เนื้องอก หรือการติดเชื้อ</p>
+            <p>• <strong>Hyperlactatemia</strong> เป็นสัญญาณของ hemorrhagic shock ระดับปานกลางถึงรุนแรง</p>
+          </div>
+        </div>
+
+        <div class="acc reveal rounded-2xl border border-pine/20 bg-paper shadow-card overflow-hidden">
+          <button class="acc-head w-full flex items-center justify-between px-6 py-4 text-left">
+            <span class="font-display font-bold text-pine-dark">📈 การวัดความดันโลหิต</span>
+            <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0e5e53" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="acc-body px-6 pb-5 text-sm text-ink/80 leading-relaxed">
+            <p>เมื่อสงสัยว่า <strong>hypertension</strong> เป็นปัจจัยร่วม ควรประเมินความดันด้วยวิธี indirect แบบ <strong>Doppler หรือ oscillometric</strong></p>
+          </div>
+        </div>
+
+        <div class="acc reveal rounded-2xl border border-pine/20 bg-paper shadow-card overflow-hidden">
+          <button class="acc-head w-full flex items-center justify-between px-6 py-4 text-left">
+            <span class="font-display font-bold text-pine-dark">⏱️ Coagulation Testing (PT / aPTT / ACT)</span>
+            <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0e5e53" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="acc-body px-6 pb-5 text-sm text-ink/80 leading-relaxed space-y-3">
+            <p>• Viscoelastic assays ให้ภาพรวมจลนศาสตร์และความแข็งแรงของลิ่มเลือด โดย platelet function มีบทบาทสำคัญ</p>
+            <div class="overflow-x-auto scrollthin">
+              <table class="w-full text-left border-collapse min-w-[480px]">
+                <thead><tr class="bg-pine text-cream font-display">
+                  <th class="px-4 py-2.5 rounded-l-lg">การทดสอบ</th><th class="px-4 py-2.5">สิ่งที่ประเมิน</th><th class="px-4 py-2.5 rounded-r-lg">จุดสำคัญ</th>
+                </tr></thead>
+                <tbody class="text-[13px]">
+                  <tr class="border-b border-pine/10"><td class="px-4 py-3 font-bold text-pine-dark">PT</td><td class="px-4 py-3">extrinsic + common pathway</td><td class="px-4 py-3">ยาวขึ้นเมื่อ factor ขาด/ผิดปกติ รวมถึง vitamin K-dependent factors จากสารฆ่าหนู anticoagulant</td></tr>
+                  <tr class="border-b border-pine/10 bg-cream"><td class="px-4 py-3 font-bold text-pine-dark">aPTT</td><td class="px-4 py-3">intrinsic + common pathway</td><td class="px-4 py-3">ไม่ได้รับผลจาก primary hemostatic disorders</td></tr>
+                  <tr><td class="px-4 py-3 font-bold text-pine-dark">ACT</td><td class="px-4 py-3">clotting factors ทั้งหมด ยกเว้น factor VII</td><td class="px-4 py-3">ง่าย เร็ว ถูก; ยาวขึ้นเล็กน้อย–ปานกลางใน thrombocytopenia รุนแรงและ thrombopathies บางราย</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc reveal rounded-2xl border border-pine/20 bg-paper shadow-card overflow-hidden">
+          <button class="acc-head w-full flex items-center justify-between px-6 py-4 text-left">
+            <span class="font-display font-bold text-pine-dark">🖥️ Imaging & การประเมินทางเดินหายใจ</span>
+            <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0e5e53" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="acc-body px-6 pb-5 text-sm text-ink/80 leading-relaxed space-y-2">
+            <p>• ควรทำ imaging <strong>ก่อน</strong>หัตถการอื่น เพราะหัตถการอาจกระตุ้นเลือดออก</p>
+            <p>• <strong>CT = first-line</strong> สำหรับสงสัยเนื้องอกหรือ destructive rhinitis (ไว กว่า X-ray_plain; ข้อจำกัดคือค่าใช้จ่าย/ความพร้อม)</p>
+            <p>• X-ray กะโหลก: ความไวต่ำ–ปานกลางต่อ soft tissue และปานกลางต่อกระดูก/ไซนัส</p>
+            <p>• <strong>Rhinoscopy</strong> มองเห็นโพรงจมูกและ choanae โดยตรง → ค้นหาปรสิต สิ่งแปลกปลอม fungal plaques stenosis/atresia และก้อน</p>
+            <p>• ตรวจทางเดินหายใจส่วนต้นภายใต้ยาสลบ มักทำคู่ rhinoscopy; พิจารณา saline flush เพื่อวินิจฉัย/รักษา</p>
+            <p>• Thoracic imaging เมื่อสงสัยเนื้องอก/เชื้อรา เพื่อมองหา metastasis หรือการลุกลามระบบิก</p>
+          </div>
+        </div>
+
+        <div class="acc reveal rounded-2xl border border-pine/20 bg-paper shadow-card overflow-hidden">
+          <button class="acc-head w-full flex items-center justify-between px-6 py-4 text-left">
+            <span class="font-display font-bold text-pine-dark">🔬 Additional Diagnostics</span>
+            <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0e5e53" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="acc-body px-6 pb-5 text-sm text-ink/80 leading-relaxed">
+            <p>• PCR และ/หรือ serology สำหรับสาเหตุติดเชื้อ • cytology • histopathology</p>
+            <p>• <strong>Infrared thermography</strong> — เครื่องมือใหม่แบบ noninvasive พกพาได้ ตรวจรูปแบบอุณหภูมิผิวที่สัมพันธ์กับ nasal obstruction</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Platelet calculator -->
+    <div class="reveal mt-10 rounded-3xl bg-gradient-to-br from-pine to-pine-dark text-cream shadow-lift p-7 sm:p-9 grid lg:grid-cols-2 gap-8 items-center">
+      <div>
+        <p class="font-display font-semibold text-amber text-sm">INTERACTIVE TOOL</p>
+        <h3 class="font-display font-bold text-2xl sm:text-3xl mt-2">🧮 เครื่องประมาณเกล็ดเลือดจาก Blood Smear</h3>
+        <p class="text-cream/85 mt-3 leading-relaxed text-sm sm:text-base">นับเกล็ดเลือดบนกำลังขยาย 100× (monolayer) จำนวน 5 สนามภาพ แล้วระบบจะคำนวณค่าประมาณให้โดยอัตโนมัติ — แต่ละเกล็ดเทียบเท่า 15 × 10³/μL</p>
+        <p class="text-cream/60 text-xs mt-3">*เครื่องมือเพื่อการเรียนรู้เท่านั้น ใช้ร่วมดุลยพินิจทางคลินิกและผลแล็บยืนยัน</p>
+      </div>
+      <div class="rounded-2xl bg-cream/10 border border-cream/20 p-6">
+        <div class="grid grid-cols-5 gap-2">
+          <label class="text-center text-xs text-cream/80">สนาม 1<input id="plt1" type="number" min="0" class="num-input mt-1 w-full text-center rounded-lg px-1 py-2 text-ink font-bold bg-cream focus:outline-none focus:ring-2 focus:ring-amber"></label>
+          <label class="text-center text-xs text-cream/80">สนาม 2<input id="plt2" type="number" min="0" class="num-input mt-1 w-full text-center rounded-lg px-1 py-2 text-ink font-bold bg-cream focus:outline-none focus:ring-2 focus:ring-amber"></label>
+          <label class="text-center text-xs text-cream/80">สนาม 3<input id="plt3" type="number" min="0" class="num-input mt-1 w-full text-center rounded-lg px-1 py-2 text-ink font-bold bg-cream focus:outline-none focus:ring-2 focus:ring-amber"></label>
+          <label class="text-center text-xs text-cream/80">สนาม 4<input id="plt4" type="number" min="0" class="num-input mt-1 w-full text-center rounded-lg px-1 py-2 text-ink font-bold bg-cream focus:outline-none focus:ring-2 focus:ring-amber"></label>
+          <label class="text-center text-xs text-cream/80">สนาม 5<input id="plt5" type="number" min="0" class="num-input mt-1 w-full text-center rounded-lg px-1 py-2 text-ink font-bold bg-cream focus:outline-none focus:ring-2 focus:ring-amber"></label>
+        </div>
+        <div class="mt-5 rounded-xl bg-ink/40 p-4 text-center">
+          <p class="text-xs text-cream/70">ค่าประมาณเกล็ดเลือด</p>
+          <p class="font-display font-bold text-4xl text-amber mt-1" id="pltResult">— × 10³/μL</p>
+          <p class="text-sm mt-2 min-h-[20px]" id="pltNote">กรอกจำนวนเกล็ดเลือดทั้ง 5 สนามภาพ</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TREATMENT -->
+<section id="treatment" class="max-w-7xl mx-auto px-4 sm:px-6 py-14">
+  <div class="reveal">
+    <p class="font-display font-semibold text-blood text-sm tracking-wide">05 • Treatment</p>
+    <h2 class="font-display font-bold text-3xl sm:text-4xl text-pine-dark mt-2">การจัดการ: จากฉุกเฉินสู่การรักษาจำเพาะ</h2>
+  </div>
+  <div class="reveal mt-7 flex flex-wrap gap-3">
+    <button class="tabbtn on px-5 py-2.5 rounded-full border-2 border-blood font-display font-semibold text-sm text-blood" data-tab="t1">🚑 Stabilization</button>
+    <button class="tabbtn px-5 py-2.5 rounded-full border-2 border-blood/40 font-display font-semibold text-sm text-blood" data-tab="t2">💉 Systemic Therapies</button>
+    <button class="tabbtn px-5 py-2.5 rounded-full border-2 border-blood/40 font-display font-semibold text-sm text-blood" data-tab="t3">🧰 Advanced / Refractory</button>
+    <button class="tabbtn px-5 py-2.5 rounded-full border-2 border-blood/40 font-display font-semibold text-sm text-blood" data-tab="t4">🎯 Definitive</button>
+  </div>
+
+  <div id="t1" class="tabpanel mt-6 rounded-3xl bg-cream border border-pine/15 shadow-card p-7">
+    <h3 class="font-display font-bold text-xl text-pine-dark">การ stabilize ทันที & การรักษาเฉพาะที่</h3>
+    <p class="text-sm text-ink/60 mt-1">Triage เน้น perfusion parameters และเสถียรภาพระบบิก</p>
+    <div class="grid sm:grid-cols-2 gap-4 mt-5">
+      <div class="rounded-xl bg-paper border border-pine/15 p-4 hover:border-pine/40 transition"><p class="font-display font-bold text-pine-dark">Nasal packing</p><p class="text-sm text-ink/70 mt-1">อุดโพรงจมูกด้วย sponge เพื่อกดหยุดเลือด</p></div>
+      <div class="rounded-xl bg-paper border border-pine/15 p-4 hover:border-pine/40 transition"><p class="font-display font-bold text-pine-dark">Sedation</p><p class="text-sm text-ink/70 mt-1">ลดความกังวล ลดความดันโลหิต ลดแรงดันบริเวณเลือดออก</p></div>
+      <div class="rounded-xl bg-paper border border-pine/15 p-4 hover:border-pine/40 transition"><p class="font-display font-bold text-pine-dark">Cold compress</p><p class="text-sm text-ink/70 mt-1">ประคบเย็นช่วย vasoconstriction</p></div>
+      <div class="rounded-xl bg-paper border border-pine/15 p-4 hover:border-pine/40 transition"><p class="font-display font-bold text-pine-dark">Topical vasoconstrictors</p><p class="text-sm text-ink/70 mt-1">เช่น epinephrine, phenylephrine เมื่อวิธีเบื้องต้นคุมเลือดไม่ได้</p></div>
+      <div class="rounded-xl bg-blood-light border border-blood/30 p-4 sm:col-span-2"><p class="font-display font-bold text-blood-dark">🎯 รักษาสาเหตุพื้นฐานควบคู่เสมอ</p><p class="text-sm text-ink/70 mt-1">หากวิธีเบื้องต้นและ vasoconstrictors เอาไม่อยู่ → พิจารณา systemic therapies และขั้น advanced</p></div>
+    </div>
+  </div>
+
+  <div id="t2" class="tabpanel hidden mt-6 rounded-3xl bg-cream border border-pine/15 shadow-card p-7">
+    <h3 class="font-display font-bold text-xl text-pine-dark">การรักษาทางระบบ (Systemic Therapies)</h3>
+    <div class="grid sm:grid-cols-2 gap-4 mt-5 text-sm">
+      <div class="rounded-xl bg-paper border border-pine/15 p-4"><p class="font-display font-bold text-pine-dark">🩸 Fresh whole blood</p><p class="text-ink/70 mt-1">สำหรับเลือดออกจาก severe thrombocytopenia, platelet disorders และ vWD <strong>ที่มี anemia</strong></p></div>
+      <div class="rounded-xl bg-paper border border-pine/15 p-4"><p class="font-display font-bold text-pine-dark">❄️ Cryoprecipitate</p><p class="text-ink/70 mt-1">เหมาะใน vWD <strong>ที่ไม่มี anemia</strong></p></div>
+      <div class="rounded-xl bg-paper border border-pine/15 p-4"><p class="font-display font-bold text-pine-dark">🧫 Lyophilized platelets</p><p class="text-ink/70 mt-1">พิจารณาเพื่อป้องกันเลือดออกใน thrombopathy / thrombocytopenia</p></div>
+      <div class="rounded-xl bg-paper border border-pine/15 p-4"><p class="font-display font-bold text-pine-dark">🛡️ Desmopressin</p><p class="text-ink/70 mt-1">เสริม platelet aggregation และเพิ่มการปล่อย vWF จาก endothelium; ใช้ใน hemophilia A, vWD และหยุดเลือดออกเอง</p></div>
+      <div class="rounded-xl bg-amber-light border border-amber/40 p-4 sm:col-span-2"><p class="font-display font-bold text-ink">➕ การรักษาเพิ่มเติมตามโรคพื้นเดิม</p><p class="text-ink/70 mt-1">whole blood, packed RBCs, fresh frozen plasma, cryoprecipitate หรือ vitamin K</p></div>
+    </div>
+    <h4 class="font-display font-bold text-lg text-blood-dark mt-7">💊 ตารางขนาดยา Antifibrinolytics & Desmopressin</h4>
+    <div class="overflow-x-auto scrollthin mt-3 rounded-xl border border-pine/15">
+      <table class="w-full text-left text-[13px] min-w-[640px] bg-paper">
+        <thead><tr class="bg-blood text-cream font-display"><th class="px-4 py-3">ยา</th><th class="px-4 py-3">เส้นทาง</th><th class="px-4 py-3">ขนาดยา</th></tr></thead>
+        <tbody>
+          <tr class="border-b border-pine/10 align-top"><td class="px-4 py-3 font-bold text-pine-dark" rowspan="2">Aminocaproic acid</td><td class="px-4 py-3">IV</td><td class="px-4 py-3">50–100 mg/kg q6h <em>หรือ</em> bolus 50 mg/kg แล้ว infusion 15 mg/kg/hr นาน 8 ชม.</td></tr>
+          <tr class="border-b border-pine/10 align-top bg-cream"><td class="px-4 py-3">PO</td><td class="px-4 py-3">100 mg/kg q6h <em>หรือ</em> 500–1,000 mg q8h (หลังจากได้รับ IV 15–40 mg/kg แล้ว)</td></tr>
+          <tr class="border-b border-pine/10 align-top"><td class="px-4 py-3 font-bold text-pine-dark">Tranexamic acid</td><td class="px-4 py-3">PO / IV</td><td class="px-4 py-3">PO 15–20 mg/kg q8h • IV 20 mg/kg q6–8h <em>หรือ</em> bolus 20 mg/kg แล้ว infusion 20 mg/kg ใน 8 ชม.</td></tr>
+          <tr class="align-top bg-cream"><td class="px-4 py-3 font-bold text-pine-dark">Desmopressin</td><td class="px-4 py-3">SC / IV</td><td class="px-4 py-3">สูตร intranasal ให้ SC 1–5 μg/kg • สูตร parenteral 0.3–1 μg/kg IV หรือ SC</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="text-xs text-ink/50 mt-2">Antifibrinolytics ใช้เฉพาะที่หรือทางระบบได้ มีข้อบ่งใช้ใน thrombocytopenia ที่มีเลือดออก (เช่น epistaxis) และใช้ร่วมกับ platelet transfusion ได้</p>
+  </div>
+
+  <div id="t3" class="tabpanel hidden mt-6 rounded-3xl bg-cream border border-pine/15 shadow-card p-7">
+    <h3 class="font-display font-bold text-xl text-pine-dark">ทางเลือกขั้นสูง / กรณีดื้อการรักษา</h3>
+    <div class="grid sm:grid-cols-2 gap-4 mt-5 text-sm">
+      <div class="rounded-xl bg-paper border border-pine/15 p-4 hover:-translate-y-1 hover:shadow-card transition"><p class="font-display font-bold text-pine-dark">🔗 Carotid artery ligation</p><p class="text-ink/70 mt-1">การผูกถาวร common carotid artery อาจได้ผลเพียงชั่วคราว เนื่องจากมี collateral revascularization</p></div>
+      <div class="rounded-xl bg-paper border border-pine/15 p-4 hover:-translate-y-1 hover:shadow-card transition"><p class="font-display font-bold text-pine-dark">🎯 Percutaneous arterial embolization</p><p class="text-ink/70 mt-1">วาง microcatheter ใกล้จุดกำเนิดของ minor palatine a., ลำร่วม sphenopalatine + major palatine aa. และ infraorbital a.</p></div>
+      <div class="rounded-xl bg-paper border border-pine/15 p-4 hover:-translate-y-1 hover:shadow-card transition"><p class="font-display font-bold text-pine-dark">🎈 Balloon catheter</p><p class="text-ink/70 mt-1">ให้แรงกดเฉพาะที่ในโพรงจมูก มีรายงานใช้ร่วม carotid ligation ใน epistaxis รุนแรงจาก leishmaniosis</p></div>
+      <div class="rounded-xl bg-paper border border-pine/15 p-4 hover:-translate-y-1 hover:shadow-card transition"><p class="font-display font-bold text-pine-dark">🧵 Degradable cotton</p><p class="text-ink/70 mt-1">high-expansion degradable cotton เป็นวัสดุห้ามเลือดสลายได้หลังผ่าตัด endoscopic (ในโมเดลสุนัข)</p></div>
+      <div class="rounded-xl bg-amber-light border border-amber/40 p-4 sm:col-span-2"><p class="font-display font-bold text-ink">🛠️ Nasopharyngeal tamponade ประยุกต์ (condom + NG tube)</p><p class="text-ink/70 mt-1">ทดสอบใน cadaver เพื่อกดหลอดเลือดและให้ยาห้ามเลือดในจมูก (ioversol เจือจาง 50%) โดยไม่รั่วซึม — เป็นทางเลือกแบบทรัพยากรจำกัด แต่ยังไม่ได้ทดสอบในผู้ป่วยที่เลือดออกจริง</p></div>
+    </div>
+  </div>
+
+  <div id="t4" class="tabpanel hidden mt-6 rounded-3xl bg-pine-dark text-cream shadow-lift p-7">
+    <h3 class="font-display font-bold text-xl text-amber">🎯 การรักษาจำเพาะ (Definitive Treatment)</h3>
+    <p class="text-cream/85 mt-3 leading-relaxed">หัวใจสำคัญคือ <strong class="text-amber">จัดการสาเหตุพื้นฐาน</strong> จึงจะได้ผลยั่งยืน:</p>
+    <div class="grid sm:grid-cols-3 gap-4 mt-5 text-sm">
+      <div class="rounded-xl bg-cream/10 border border-cream/20 p-4"><p class="font-display font-bold">Antifungal therapy</p><p class="opacity-80 mt-1">สำหรับ sinonasal aspergillosis</p></div>
+      <div class="rounded-xl bg-cream/10 border border-cream/20 p-4"><p class="font-display font-bold">Chemotherapy / Radiation</p><p class="opacity-80 mt-1">สำหรับเนื้องอกในโพรงจมูก</p></div>
+      <div class="rounded-xl bg-cream/10 border border-cream/20 p-4"><p class="font-display font-bold">Immunosuppression</p><p class="opacity-80 mt-1">สำหรับ immune-mediated thrombocytopenia</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz" class="bg-blood-light/60 border-t border-blood/15 py-14">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6">
+    <div class="reveal text-center">
+      <p class="font-display font-semibold text-blood text-sm tracking-wide">06 • Knowledge Check</p>
+      <h2 class="font-display font-bold text-3xl sm:text-4xl text-pine-dark mt-2">ทดสอบความเข้าใจ 6 ข้อ</h2>
+      <p class="text-ink/60 mt-2 text-sm">ตอบแล้วดูคำอธิบายทันที พร้อมคะแนนตอนท้าย</p>
+    </div>
+    <div id="quizBox" class="reveal mt-8 rounded-3xl bg-cream shadow-lift border border-blood/20 p-7 sm:p-9"></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-ink text-cream py-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 grid md:grid-cols-3 gap-8 items-start">
+    <div class="flex items-center gap-3">
+      <img src="https://yunhfdekcjosnfwndepu.supabase.co/storage/v1/object/public/DATA%20SRNanimalcare/Logo%20symbol.png" alt="SRN Animal Care Logo" class="h-12 w-12 object-contain rounded-full bg-cream/10 p-1" onerror="this.style.display='none'">
+      <div>
+        <p class="font-display font-bold">SRN Animal Care</p>
+        <p class="text-cream/60 text-xs">Clinical Education Summary</p>
+      </div>
+    </div>
+    <div class="text-sm text-cream/75 leading-relaxed">
+      <p class="font-display font-semibold text-cream">เกี่ยวกับสรุปนี้</p>
+      <p class="mt-2">เรียบเรียงจากบทความ "Ask the Expert: What is the recommended diagnostic and management approach for a patient presented with epistaxis?" — หัวข้อ Epistaxis in Dogs</p>
+    </div>
+    <div class="text-sm text-cream/75 leading-relaxed">
+      <p class="font-display font-semibold text-cream">ข้อสงวนสิทธิ์</p>
+      <p class="mt-2">เนื้อหาเพื่อการศึกษาเท่านั้น ไม่แทนดุลยพินิจสัตวแพทย์ผู้รักษา โปรดอ้างอิงวรรณกรรมต้นฉบับ (อ้างอิงหมายเลข 1–39 ในบทความ) ก่อนนำไปใช้ทางคลินิก</p>
+    </div>
+  </div>
+  <p class="text-center text-cream/40 text-xs mt-10">© SRN Animal Care — Interactive Clinical Summary</p>
+</footer>
+
+<button id="toTop" class="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full bg-blood text-cream shadow-lift font-bold opacity-0 pointer-events-none transition hover:bg-blood-dark" aria-label="กลับขึ้นด้านบน">↑</button>
+
+<script>
+/* ---------- scroll progress / nav ---------- */
+var progressBar = document.getElementById('progressBar');
+var toTopBtn = document.getElementById('toTop');
+var siteNav = document.getElementById('siteNav');
+window.addEventListener('scroll', function(){
+  var h = document.documentElement;
+  var pct = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100;
+  progressBar.style.width = pct + '%';
+  if (h.scrollTop > 600){ toTopBtn.classList.remove('opacity-0','pointer-events-none'); }
+  else { toTopBtn.classList.add('opacity-0','pointer-events-none'); }
+  siteNav.classList.toggle('shadow-card', h.scrollTop > 10);
+  /* active nav */
+  var secs = ['overview','signs','causes','diagnosis','treatment','quiz'];
+  var cur = '';
+  secs.forEach(function(id){
+    var el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top < 140) cur = id;
+  });
+  document.querySelectorAll('.navlink').forEach(function(a){
+    a.classList.toggle('active', a.getAttribute('href') === '#' + cur);
+  });
+}, {passive:true});
+toTopBtn.addEventListener('click', function(){ window.scrollTo({top:0, behavior:'smooth'}); });
+
+/* mobile menu */
+var menuBtn = document.getElementById('menuBtn');
+var mobileMenu = document.getElementById('mobileMenu');
+menuBtn.addEventListener('click', function(){ mobileMenu.classList.toggle('hidden'); });
+mobileMenu.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ mobileMenu.classList.add('hidden'); }); });
+
+/* ---------- reveal ---------- */
+var revealIO = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); revealIO.unobserve(e.target); } });
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(function(el){ revealIO.observe(el); });
+
+/* ---------- counters ---------- */
+var counterIO = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(!e.isIntersecting) return;
+    var el = e.target, target = parseInt(el.getAttribute('data-count'),10), start = null;
+    function step(ts){
+      if(!start) start = ts;
+      var p = Math.min((ts - start)/1200, 1);
+      el.textContent = Math.round(target * (0.2 + 0.8*p*p));
+      if(p < 1) requestAnimationFrame(step); else el.textContent = target;
+    }
+    requestAnimationFrame(step);
+    counterIO.unobserve(el);
+  });
+},{threshold:.6});
+document.querySelectorAll('.counter').forEach(function(el){ counterIO.observe(el); });
+
+/* ---------- accordions ---------- */
+document.querySelectorAll('.acc-head').forEach(function(head){
+  head.addEventListener('click', function(){ head.closest('.acc').classList.toggle('open'); });
+});
+
+/* ---------- chart ---------- */
+var studyCauses = [
+  {label:'Nasal neoplasia', th:'เนื้องอกในโพรงจมูก', value:30, group:'local', color:'#c0392f', info:'สาเหตุเฉพาะที่อันดับ 1 — carcinoma พบบ่อยสุด (~2/3) รุกรานเฉพาะที่ แพร่กระจายต่ำ ณ วินิจฉัย; epistaxis พบได้ถึง 69% ของเคส'},
+  {label:'Trauma', th:'อุบัติเหตุ', value:29, group:'local', color:'#0e5e53', info:'เลือดกำเดามักเฉียบพลันและมาพร้อมอาการบาดเจ็บอื่น การซักประวัติครบถ้วนช่วยระบุสาเหตุ'},
+  {label:'Idiopathic rhinitis', th:'โรคจมูกอักเสบไม่ทราบสาเหตุ', value:17, group:'local', color:'#d9942b', info:'รวมถึง idiopathic lymphoplasmacytic rhinitis โรคจมูกเรื้อรังที่พบบ่อยในสุนัข'},
+  {label:'Periapical abscess', th:'ฝีรากฟัน', value:2, group:'local', color:'#7a9e7e', info:'โรคช่องปาก/รากฟันและ oronasal fistula — ควรตรวจช่องปากอย่างละเอียดทุกราย'},
+  {label:'Severe thrombocytopenia', th:'เกล็ดเลือดต่ำรุนแรง', value:10, group:'systemic', color:'#8e2a23', info:'ความผิดปกติเกล็ดเลือดที่พบบ่อยสุด จำนวนเกล็ดสัมพันธ์โดยตรงกับความเสี่ยงเลือดออก'},
+  {label:'Thrombocytopathy', th:'เกล็ดเลือดทำงานผิดปกติ', value:6, group:'systemic', color:'#3d7ea6', info:'จำนวนเกล็ดปกติแต่การทำงานเสีย ต้องอาศัย platelet function testing'},
+  {label:'Abnormal secondary hemostasis', th:'การแข็งตัวระยะที่สองผิดปกติ', value:3, group:'systemic', color:'#5d5a8f', info:'เช่น hemophilia, สารฆ่าหนู anticoagulant, ตับล้มเหลว, DIC'},
+  {label:'Systemic hypertension', th:'ความดันโลหิตสูงระบบิก', value:2, group:'systemic', color:'#a8663b', info:'วัดความดันด้วย Doppler/oscillometric เมื่อสงสัยว่าเป็นปัจจัยร่วม'},
+  {label:'Vasculitis', th:'หลอดเลือดอักเสบ', value:1, group:'systemic', color:'#6b7a74', info:'vasculitis ที่เกี่ยวข้องกับหลอดเลือดบริเวณจมูกอาจก่อ epistaxis ได้ เช่น ใน SRMA'}
+];
+var centerTextPlugin = {
+  id:'centerText',
+  afterDraw:function(chart){
+    var ctx = chart.ctx;
+    var x = (chart.chartArea.left + chart.chartArea.right)/2;
+    var y = (chart.chartArea.top + chart.chartArea.bottom)/2;
+    ctx.save(); ctx.textAlign='center';
+    ctx.font='700 30px Prompt, sans-serif'; ctx.fillStyle='#1a2622';
+    ctx.fillText('176', x, y-2);
+    ctx.font='500 12px Sarabun, sans-serif'; ctx.fillStyle='#6b7a74';
+    ctx.fillText('สุนัขในการศึกษา', x, y+18);
+    ctx.restore();
+  }
+};
+var causeChart = new Chart(document.getElementById('causeChart'), {
+  type:'doughnut',
+  data:{ labels: studyCauses.map(function(c){return c.label;}),
+    datasets:[{ data: studyCauses.map(function(c){return c.value;}),
+      backgroundColor: studyCauses.map(function(c){return c.color;}),
+      borderColor:'#fdfaf2', borderWidth:3, hoverOffset:14 }]},
+  options:{ cutout:'66%', maintainAspectRatio:false,
+    plugins:{ legend:{ display:false },
+      tooltip:{ callbacks:{ label:function(ctx){ return ' ' + ctx.parsed + '% — ' + studyCauses[ctx.dataIndex].th; } } } },
+    onClick:function(evt, elements){ if(elements.length){ updateCausePanel(elements[0].index); } } },
+  plugins:[centerTextPlugin]
+});
+function updateCausePanel(idx){
+  var c = studyCauses[idx];
+  var panel = document.getElementById('causePanel');
+  var groupChip = c.group === 'local'
+    ? '<span class="px-3 py-1 rounded-full bg-pine text-cream text-xs font-display font-semibold">สาเหตุเฉพาะที่ (Local)</span>'
+    : '<span class="px-3 py-1 rounded-full bg-blood text-cream text-xs font-display font-semibold">สาเหตุระบบิก (Systemic)</span>';
+  panel.innerHTML =
+    '<p class="font-display font-semibold text-amber text-sm">📊 ผลจากการศึกษา 176 สุนัข</p>' +
+    '<div class="flex items-center gap-3 mt-3 flex-wrap"><h3 class="font-display font-bold text-2xl">' + c.th + '</h3>' + groupChip + '</div>' +
+    '<p class="text-cream/70 text-sm mt-1 italic">' + c.label + '</p>' +
+    '<div class="mt-4"><div class="flex justify-between text-xs text-cream/70 mb-1"><span>สัดส่วนที่รายงาน</span><span class="font-bold text-amber">' + c.value + '%</span></div>' +
+    '<div class="h-3 rounded-full bg-cream/15 overflow-hidden"><div class="h-full rounded-full" style="width:' + (c.value/30*100) + '%;background:' + c.color + '"></div></div></div>' +
+    '<p class="text-cream/85 mt-4 leading-relaxed">' + c.info + '</p>';
+}
+
+/* ---------- causes cards ---------- */
+var causeData = [
+  {group:'local', cat:'เนื้องอก', badge:'30%', title:'เนื้องอกในโพรงจมูก (Nasal Neoplasia)', summary:'สาเหตุเฉพาะที่อันดับ 1 — carcinoma พบบ่อยสุด รุกรานเฉพาะที่ อัตราแพร่กระจายต่ำ ณ เวลาวินิจฉัย', detail:'เนื้องอกจมูก/ไซนัสคิดเป็น 1–2% ของเนื้องอกสุนัขทั้งหมด; carcinoma ~2/3 และ epistaxis พบได้ถึง 69% • osteosarcoma/chondrosarcoma ในสุนัขใหญ่สูงอายุ • ที่หายาก: leiomyoma, intravascular lymphoma, TVT • ในแมวพบน้อย (<10% ของเนื้องอก) lymphoma พบบ่อยสุด [1,3,11–15]'},
+  {group:'local', cat:'อุบัติเหตุ', badge:'29%', title:'อุบัติเหตุ (Trauma)', summary:'เลือดกำเดามักเกิดเฉียบพลันและมาพร้อมอาการบาดเจ็บอื่น', detail:'การซักประวัติผู้ป่วยอย่างสมบูรณ์ช่วยระบุสาเหตุได้ [1]'},
+  {group:'local', cat:'อักเสบ', badge:'17%', title:'Idiopathic Rhinitis', summary:'โรคจมูกอักเสบเรื้อรังไม่ทราบสาเหตุ รวมถึง lymphoplasmacytic rhinitis', detail:'อาการ: epistaxis, น้ำมูก mucoid/serous, reverse sneezing, stridor และ inspiratory dyspnea ส่วนใหญ่มาด้วยน้ำมูกข้างเดียวหรือสองข้าง [16]'},
+  {group:'local', cat:'อักเสบ', badge:'2%', title:'ฝีรากฟัน (Periapical Abscess)', summary:'โรคช่องปาก/รากฟัน และ oronasal fistula เป็นสาเหตุที่มองข้ามง่าย', detail:'ควรตรวจช่องปากอย่างละเอียดในสุนัขที่มี epistaxis ทุกราย [1]'},
+  {group:'local', cat:'เชื้อรา', title:'Sinonasal Aspergillosis / Cryptococcus', summary:'Aspergillosis คิดเป็น 12–34% ของโรคจมูกในสุนัข', detail:'CT และ rhinoscopy มักพบ bilateral destructive rhinitis • อาการ: จาม น้ำมูกปนเลือด stertor (ในแมว) [3–5]'},
+  {group:'local', cat:'ปรสิต', title:'ปรสิต (Cuterebra / ปลิง)', summary:'มีรายงานเป็นสาเหตุของ epistaxis เรื้อรัง', detail:'Cuterebra larvae และการเกาะของปลิง (leech infestation) ก่อเลือดกำเดาเรื้อรังได้ [6,7]'},
+  {group:'local', cat:'ติดเชื้อ', title:'Angiostrongylus vasorum', summary:'เสี่ยงเลือดออกแม้ coagulation times ปกติ', detail:'กลไกยังไม่ชัด อาจมีภาวะ hyper/hypocoagulable รุนแรงจาก DIC, thrombocytopenia, hyperfibrinolysis • อาการหายใจ (ไอ หอบ) เป็นเหตุมาพบหลัก [7,8]'},
+  {group:'local', cat:'ติดเชื้อ', title:'Leishmaniosis', summary:'ในรายที่มีประวัติเดินทาง/สัมผัสเชื้อ', detail:'ก่อ epistaxis จาก thrombocytopathy, hyperviscosity จาก hyperglobulinemia หรือ rhinitis [9,10]'},
+  {group:'local', cat:'อักเสบ', title:'สิ่งแปลกปลอม (Foreign Body)', summary:'จามเฉียบพลันหลังสูดดมสิ่งแปลกปลอม', detail:'Grass awn rhinitis เลียนแบบ rhinitis ทั่วไป: น้ำมูกข้างเดียวพบบ่อยสุด แต่ 14% เป็นสองข้าง และ 9% มี epistaxis [6]'},
+  {group:'local', cat:'ก้อนไม่ร้ายแรง', title:'Nasal Hamartoma', summary:'ก้อนไม่ใช่มะเร็ง ประกอบด้วยเนื้อเยื่อพื้นเมืองจัดเรียงผิดปกติ', detail:'Epistaxis เป็นอาการพบบ่อย เกิดได้ถึง 66% ของรายที่รายงาน [18]'},
+  {group:'local', cat:'อักเสบ', title:'SRMA', summary:'Steroid-responsive meningitis arteritis: ไข้ ซึม คอเจ็บเฉียบพลัน', detail:'แม้ epistaxis ไม่ใช่อาการคลาสสิก แต่ systemic vasculitis ที่เกี่ยวข้องกับหลอดเลือดบริเวณจมูกอาจก่อเลือดกำเดาได้ [17]'},
+  {group:'systemic', cat:'เกล็ดเลือด', badge:'10%', title:'Severe Thrombocytopenia', summary:'ความผิดปกติเกล็ดเลือดที่พบบ่อยสุด; จำนวนเกล็ดสัมพันธ์กับความเสี่ยงเลือดออก', detail:'กลไก: การสร้างลด, การใช้/บริโภคเพิ่ม, sequestration, การทำลายเพิ่ม, การสูญเสีย [1,19]'},
+  {group:'systemic', cat:'เกล็ดเลือด', badge:'6%', title:'Thrombocytopathy', summary:'เกล็ดเลือดจำนวนปกติแต่การทำงานบกพร่อง', detail:'ประเมินด้วย BMBT, platelet function analysis, vWF assay และ aggregometry [19,26]'},
+  {group:'systemic', cat:'เกล็ดเลือด', title:'von Willebrand Disease (vWD)', summary:'โรคถ่ายทอดทางพันธุกรรม ขาด vWF เชิงโครงสร้าง/ปริมาณ', detail:'vWF ทำหน้าที่เชื่อมเกล็ดเลือดกับ endothelium ที่บาดเจ็บและช่วยให้เกล็ดรวมตัว → เมื่อขาดจะทำให้เลือดออกง่าย [20]'},
+  {group:'systemic', cat:'การแข็งตัว', badge:'3%', title:'Coagulation Factor Deficiency', summary:'Hemophilia A (factor VIII) พบบ่อยสุด • Hemophilia B (IX) ยีนด้อยบน X', detail:'สาเหตุภายหลัง: สารฆ่าหนูชนิด anticoagulant, ตับล้มเหลว, DIC [20]'},
+  {group:'systemic', cat:'การแข็งตัว', title:'Paraneoplastic Hyperfibrinolysis', summary:'เซลล์เนื้องอกสร้าง profibrinolytic proteins (uPA, tPA)', detail:'สัมพันธ์กับ prostate cancer, breast carcinoma, sarcoma • มีรายงานใน border collie เพศผู้ทำหมันอายุ 8 ปี จาก metastatic nasal adenocarcinoma [7,21,22]'},
+  {group:'systemic', cat:'ระบบิก', badge:'2%', title:'Systemic Hypertension', summary:'ความดันโลหิตสูงเป็นปัจจัยร่วมของ epistaxis', detail:'ประเมินด้วย indirect Doppler หรือ oscillometric เมื่อสงสัย [28]'},
+  {group:'systemic', cat:'ระบบิก', badge:'1%', title:'Vasculitis', summary:'การอักเสบของหลอดเลือดบริเวณจมูกก่อเลือดออกได้', detail:'อาจเป็นส่วนหนึ่งของโรคภูมิคุ้มกัน เช่น SRMA [17]'},
+  {group:'systemic', cat:'ติดเชื้อ', title:'Systemic Aspergillosis', summary:'เชื้อราแพร่กระจายทางเลือด หลายระบบ คุกคามชีวิต', detail:'German shepherd พบบ่อยสุด • ลุกลาม respiratory, GI, nervous, musculoskeletal, urinary, lymphatic และ ocular [23]'}
+];
+var causeState = { group:'all', q:'' };
+function renderCauses(){
+  var grid = document.getElementById('causeGrid');
+  var list = causeData.filter(function(c){
+    var okG = causeState.group === 'all' || c.group === causeState.group;
+    var q = causeState.q.trim().toLowerCase();
+    var okQ = !q || (c.title + ' ' + c.summary + ' ' + c.detail + ' ' + c.cat).toLowerCase().indexOf(q) !== -1;
+    return okG && okQ;
+  });
+  document.getElementById('causeCount').textContent = list.length;
+  document.getElementById('cntAll').textContent = causeData.length;
+  if(!list.length){
+    grid.innerHTML = '<p class="md:col-span-2 xl:col-span-3 text-center text-ink/50 py-10">ไม่พบรายการที่ตรงเงื่อนไข 🐾 ลองเปลี่ยนคำค้นหรือตัวกรอง</p>';
+    return;
+  }
+  grid.innerHTML = list.map(function(c, i){
+    var isLocal = c.group === 'local';
+    var border = isLocal ? 'border-l-pine' : 'border-l-blood';
+    var chip = isLocal ? '<span class="px-2.5 py-1 rounded-full bg-pine-light text-pine-dark text-[11px] font-display font-semibold">เฉพาะที่</span>'
+                       : '<span class="px-2.5 py-1 rounded-full bg-blood-light text-blood-dark text-[11px] font-display font-semibold">ระบบิก</span>';
+    var badge = c.badge ? '<span class="px-2.5 py-1 rounded-full bg-amber-light text-amber text-[11px] font-display font-bold">' + c.badge + ' ในการศึกษา</span>' : '';
+    return '<div class="acc cause-card reveal in rounded-2xl bg-cream border border-pine/15 border-l-4 ' + border + ' shadow-card overflow-hidden" style="animation-delay:' + (i*40) + 'ms">' +
+      '<button class="acc-head w-full text-left px-5 py-4">' +
+        '<div class="flex items-center justify-between gap-2">' +
+          '<div class="flex items-center gap-2 flex-wrap">' + chip + badge + '<span class="px-2.5 py-1 rounded-full bg-paper border border-pine/15 text-ink/60 text-[11px]">' + c.cat + '</span></div>' +
+          '<svg class="chev shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0e5e53" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>' +
+        '</div>' +
+        '<h3 class="font-display font-bold text-pine-dark mt-2">' + c.title + '</h3>' +
+        '<p class="text-sm text-ink/70 mt-1">' + c.summary + '</p>' +
+      '</button>' +
+      '<div class="acc-body"><p class="px-5 pb-5 text-sm text-ink/80 leading-relaxed border-t border-pine/10 pt-3 mx-0">' + c.detail + '</p></div>' +
+    '</div>';
+  }).join('');
+  grid.querySelectorAll('.acc-head').forEach(function(head){
+    head.addEventListener('click', function(){ head.closest('.acc').classList.toggle('open'); });
+  });
+}
+document.querySelectorAll('.chipbtn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.chipbtn').forEach(function(b){ b.classList.remove('on'); });
+    btn.classList.add('on');
+    causeState.group = btn.getAttribute('data-group');
+    renderCauses();
+  });
+});
+document.getElementById('causeSearch').addEventListener('input', function(e){
+  causeState.q = e.target.value; renderCauses();
+});
+renderCauses();
+
+/* ---------- platelet calculator ---------- */
+var pltInputs = ['plt1','plt2','plt3','plt4','plt5'].map(function(id){ return document.getElementById(id); });
+function calcPlatelets(){
+  var vals = pltInputs.map(function(i){ return i.value === '' ? null : Math.max(0, parseFloat(i.value)); });
+  var res = document.getElementById('pltResult');
+  var note = document.getElementById('pltNote');
+  if(vals.some(function(v){ return v === null; })){
+    res.textContent = '— × 10³/μL';
+    note.textContent = 'กรอกจำนวนเกล็ดเลือดทั้ง 5 สนามภาพ';
+    note.style.color = '';
+    return;
+  }
+  var sum = vals.reduce(function(a,b){ return a+b; }, 0);
+  var avg = sum / 5;
+  var est = Math.round(avg * 15);
+  res.textContent = est.toLocaleString('th-TH') + ' × 10³/μL';
+  if(est < 50){ note.textContent = '⚠️ ต่ำมาก — เสี่ยงเลือดออกเอง (spontaneous bleeding) รีบหาสาเหตุและยืนยันด้วยค่าแล็บ'; note.style.color = '#ffb4a8'; }
+  else if(est < 100){ note.textContent = '⚠️ ต่ำ — เสี่ยงเลือดออกเพิ่มขึ้น ควรติดตามใกล้ชิดและหาสาเหตุ'; note.style.color = '#ffd9a0'; }
+  else { note.textContent = '✅ อยู่ในช่วงเพียงพอต่อการห้ามเลือดเบื้องต้น — หากยังเลือดออกแบบ primary hemostasis ให้พิจารณา platelet function testing'; note.style.color = '#b8e6c9'; }
+}
+pltInputs.forEach(function(i){ i.addEventListener('input', calcPlatelets); });
+
+/* ---------- treatment tabs ---------- */
+document.querySelectorAll('.tabbtn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.tabbtn').forEach(function(b){
+      b.classList.remove('on'); b.classList.remove('border-blood'); b.classList.add('border-blood/40');
+    });
+    btn.classList.add('on'); btn.classList.add('border-blood'); btn.classList.remove('border-blood/40');
+    document.querySelectorAll('.tabpanel').forEach(function(p){ p.classList.add('hidden'); });
+    document.getElementById(btn.getAttribute('data-tab')).classList.remove('hidden');
+  });
+});
+
+/* ---------- quiz ---------- */
+var quizData = [
+  {q:'จากการศึกษาย้อนหลังในสุนัข 176 ตัว สาเหตุเฉพาะที่ (local) ที่พบบ่อยที่สุดคืออะไร?', opts:['อุบัติเหตุ (Trauma)','เนื้องอกในโพรงจมูก (Nasal neoplasia)','Idiopathic rhinitis','ฝีรากฟัน (Periapical abscess)'], a:1, ex:'เนื้องอกในโพรงจมูกพบบ่อยสุดที่ 30% ตามด้วยอุบัติเหตุ 29% และ idiopathic rhinitis 17%'},
+  {q:'สุนัขที่มีความผิดปกติของระบบห้ามเลือดแบบ "ระบบิก" แสดงอาการเลือดออกข้างเดียว (unilateral) กี่เปอร์เซ็นต์?', opts:['14%','30%','52%','83%'], a:2, ex:'ถึง 52% — ดังนั้น laterality เพียงอย่างเดียวไม่สามารถแยกโรคเฉพาะที่ออกจากโรคระบบิกได้'},
+  {q:'การถ่ายภาพวินิจฉัยขั้นแรก (first-line) เมื่อสงสัยเนื้องอกจมูกหรือ destructive rhinitis คืออะไร?', opts:['X-ray กะโหลก','อัลตราซาวนด์','CT','MRI'], a:2, ex:'CT เป็น first-line modality ให้ความไวสูงกว่า plain radiography ในการตรวจโรคจมูก'},
+  {q:'การประมาณเกล็ดเลือดจาก blood smear กำลังขยาย 100× เกล็ดเลือด 1 ตัวเทียบเท่าค่าใด?', opts:['5 × 10³/μL','10 × 10³/μL','15 × 10³/μL','25 × 10³/μL'], a:2, ex:'เกล็ด 1 ตัว ≈ 15 × 10³/μL → ใช้ค่าเฉลี่ยจาก 5 สนามภาพคูณ 15 × 10³/μL'},
+  {q:'Prothrombin time (PT) ใช้ประเมินเส้นทางใดของการแข็งตัว?', opts:['Intrinsic + common pathway','Extrinsic + common pathway','Primary hemostasis','Fibrinolysis โดยตรง'], a:1, ex:'PT ประเมิน extrinsic และ common pathway — ยาวขึ้นเมื่อ factor ขาด รวมถึง vitamin K-dependent factors จากสารฆ่าหนู anticoagulant'},
+  {q:'Desmopressin มีข้อบ่งใช้หลักในภาวะใด?', opts:['Immune-mediated thrombocytopenia','Hemophilia A และ von Willebrand disease','ภาวะไตวายเรื้อรัง','Sinonasal aspergillosis'], a:1, ex:'Desmopressin เพิ่มการปล่อย vWF และเสริม platelet adhesion/aggregation ใช้ใน hemophilia A, vWD และช่วยหยุดเลือดออกเอง'}
+];
+var quizState = { qi:0, score:0, answered:false };
+var quizBox = document.getElementById('quizBox');
+function renderQuiz(){
+  var q = quizData[quizState.qi];
+  quizState.answered = false;
+  quizBox.innerHTML =
+    '<div class="flex items-center justify-between text-xs font-display font-semibold text-ink/50">' +
+      '<span>ข้อ ' + (quizState.qi+1) + ' / ' + quizData.length + '</span><span>คะแนน: ' + quizState.score + '</span></div>' +
+    '<div class="h-2 rounded-full bg-paper mt-3 overflow-hidden"><div class="h-full bg-blood rounded-full transition-all duration-500" style="width:' + ((quizState.qi)/quizData.length*100) + '%"></div></div>' +
+    '<h3 class="font-display font-bold text-lg sm:text-xl text-pine-dark mt-5">' + q.q + '</h3>' +
+    '<div class="grid gap-3 mt-5">' + q.opts.map(function(o,i){
+      return '<button class="quizopt text-left px-5 py-3.5 rounded-xl border-2 border-pine/20 bg-paper font-medium text-sm sm:text-base" data-i="' + i + '">' + String.fromCharCode(65+i) + '. ' + o + '</button>';
+    }).join('') + '</div>' +
+    '<div id="quizExplain" class="hidden mt-5 rounded-xl p-4 text-sm leading-relaxed"></div>' +
+    '<div class="mt-6 text-right"><button id="quizNext" class="hidden px-6 py-2.5 rounded-full bg-pine text-cream font-display font-semibold hover:bg-pine-dark transition">' + (quizState.qi === quizData.length-1 ? 'ดูผลคะแนน 🏁' : 'ข้อถัดไป →') + '</button></div>';
+  quizBox.querySelectorAll('.quizopt').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      if(quizState.answered) return;
+      quizState.answered = true;
+      var pick = parseInt(btn.getAttribute('data-i'),10);
+      var correct = q.a;
+      quizBox.querySelectorAll('.quizopt').forEach(function(b){
+        b.disabled = true;
+        var bi = parseInt(b.getAttribute('data-i'),10);
+        if(bi === correct) b.classList.add('correct');
+        else if(bi === pick) b.classList.add('wrong');
+      });
+      var ex = document.getElementById('quizExplain');
+      ex.classList.remove('hidden');
+      if(pick === correct){ quizState.score++; ex.className = 'mt-5 rounded-xl p-4 text-sm leading-relaxed bg-pine-light text-pine-dark border border-pine/30'; ex.innerHTML = '✅ <strong>ถูกต้อง!</strong> ' + q.ex; }
+      else { ex.className = 'mt-5 rounded-xl p-4 text-sm leading-relaxed bg-blood-light text-blood-dark border border-blood/30'; ex.innerHTML = '❌ <strong>ยังไม่ถูก</strong> คำตอบคือ "' + q.opts[correct] + '" — ' + q.ex; }
+      document.getElementById('quizNext').classList.remove('hidden');
+    });
+  });
+  document.getElementById('quizNext').addEventListener('click', function(){
+    if(quizState.qi < quizData.length - 1){ quizState.qi++; renderQuiz(); }
+    else renderQuizResult();
+  });
+}
+function renderQuizResult(){
+  var s = quizState.score, total = quizData.length;
+  var msg = s === total ? 'ยอดเยี่ยม! คุณ nắmเนื้อหาได้ครบถ้วน 🏆' : (s >= 4 ? 'เก่งมาก! ทบทวนอีกเล็กน้อยก็สมบูรณ์แบบ 👏' : 'อ่านสรุปอีกครั้งแล้วลองใหม่ได้ สู้ ๆ 🐾');
+  var pct = Math.round(s/total*100);
+  quizBox.innerHTML =
+    '<div class="text-center">' +
+      '<p class="font-display font-semibold text-blood text-sm">ผลคะแนนของคุณ</p>' +
+      '<p class="font-display font-bold text-6xl text-pine-dark mt-4">' + s + '<span class="text-2xl text-ink/40"> / ' + total + '</span></p>' +
+      '<div class="h-3 rounded-full bg-paper mt-5 overflow-hidden"><div class="h-full rounded-full ' + (pct >= 70 ? 'bg-pine' : 'bg-amber') + '" style="width:' + pct + '%"></div></div>' +
+      '<p class="text-ink/70 mt-4">' + msg + '</p>' +
+      '<div class="flex justify-center gap-3 mt-7">' +
+        '<button id="quizRestart" class="px-6 py-2.5 rounded-full bg-blood text-cream font-display font-semibold hover:bg-blood-dark transition">🔄 ทำแบบทดสอบอีกครั้ง</button>' +
+        '<a href="#top" class="px-6 py-2.5 rounded-full border-2 border-pine text-pine font-display font-semibold hover:bg-pine hover:text-cream transition">↑ กลับขึ้นด้านบน</a>' +
+      '</div>' +
+    '</div>';
+  document.getElementById('quizRestart').addEventListener('click', function(){
+    quizState = { qi:0, score:0, answered:false }; renderQuiz();
+  });
+}
+renderQuiz();
+</script>
+</body>
+</html>
