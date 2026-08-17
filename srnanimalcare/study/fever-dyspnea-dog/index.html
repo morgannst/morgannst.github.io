@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fever & Dyspnea in a Dog — สรุปเคสคลินิก | SRN Animal Care</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/noto-sans-thai@latest/400.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/noto-sans-thai@latest/500.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/noto-sans-thai@latest/600.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/noto-sans-thai@latest/700.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/noto-sans-thai@latest/800.css">
+<style>
+  :root{
+    --teal-950:#062f2b; --teal-900:#0b3b36; --teal-700:#0f5f56; --teal-600:#0d7a6d;
+    --teal-500:#12907f; --teal-100:#d7efe9; --teal-50:#eef8f5;
+    --amber-500:#f59e0b; --amber-100:#fef3c7; --amber-700:#b45309;
+    --red-600:#dc2626; --red-100:#fee2e2; --red-700:#b91c1c;
+    --green-600:#16a34a; --green-100:#dcfce7;
+    --ink:#12312c; --ink-soft:#41605a; --muted:#6b8781;
+    --bg:#f4f8f7; --card:#ffffff; --line:#dcebe7;
+    --shadow:0 10px 30px rgba(11,59,54,.10);
+    --radius:18px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Noto Sans Thai',system-ui,-apple-system,sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  sup{font-size:.68em;color:var(--teal-600);font-weight:700}
+  a{color:var(--teal-600)}
+
+  /* ---------- Top bar ---------- */
+  .topbar{
+    position:sticky;top:0;z-index:60;background:rgba(255,255,255,.92);
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+  }
+  .topbar-inner{max-width:1080px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:12px}
+  .logo-wrap{display:flex;align-items:center;gap:12px}
+  .logo-wrap img{width:44px;height:44px;object-fit:contain;border-radius:12px;background:#fff;box-shadow:0 2px 8px rgba(11,59,54,.15)}
+  .brand-name{font-weight:800;font-size:1.02rem;color:var(--teal-900);letter-spacing:.2px}
+  .brand-sub{font-size:.74rem;color:var(--muted);font-weight:500;margin-top:-3px}
+  .topbar-tag{margin-left:auto;font-size:.75rem;font-weight:700;color:var(--teal-700);background:var(--teal-50);border:1px solid var(--teal-100);padding:6px 12px;border-radius:999px;white-space:nowrap}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    background:linear-gradient(135deg,var(--teal-950) 0%,var(--teal-900) 45%,var(--teal-700) 100%);
+    color:#fff;position:relative;overflow:hidden;
+  }
+  .hero::before,.hero::after{content:"";position:absolute;border-radius:50%;filter:blur(70px);opacity:.35}
+  .hero::before{width:420px;height:420px;background:#2dd4bf;top:-140px;right:-120px}
+  .hero::after{width:320px;height:320px;background:#f59e0b;bottom:-160px;left:-100px;opacity:.18}
+  .hero-inner{max-width:1080px;margin:0 auto;padding:56px 20px 64px;display:grid;grid-template-columns:1.15fr .85fr;gap:44px;align-items:center;position:relative;z-index:1}
+  .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);padding:6px 14px;border-radius:999px;font-size:.78rem;font-weight:600;margin-bottom:18px}
+  .pulse-dot{width:8px;height:8px;border-radius:50%;background:#fbbf24;animation:pulse 1.6s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(251,191,36,.6)}70%{box-shadow:0 0 0 9px rgba(251,191,36,0)}100%{box-shadow:0 0 0 0 rgba(251,191,36,0)}}
+  .hero h1{font-size:clamp(1.7rem,4vw,2.6rem);font-weight:800;line-height:1.25;letter-spacing:-.5px}
+  .hero h1 .hl{color:#5eead4}
+  .hero .thai-sub{margin-top:10px;font-size:1.02rem;color:#cdeee6;font-weight:500}
+  .patient-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+  .p-chip{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.22);padding:7px 14px;border-radius:999px;font-size:.82rem;font-weight:600;transition:transform .2s,background .2s}
+  .p-chip:hover{transform:translateY(-2px);background:rgba(255,255,255,.2)}
+  .p-chip b{color:#5eead4}
+  .hero-photo{position:relative}
+  .hero-photo .frame{border-radius:22px;overflow:hidden;border:4px solid rgba(255,255,255,.25);box-shadow:0 24px 60px rgba(0,0,0,.4);transform:rotate(1.5deg);transition:transform .4s}
+  .hero-photo .frame:hover{transform:rotate(0deg) scale(1.02)}
+  .hero-photo img{width:100%;display:block;aspect-ratio:1/1;object-fit:cover}
+  .photo-caption{position:absolute;left:14px;bottom:14px;background:rgba(6,47,43,.82);backdrop-filter:blur(6px);padding:8px 14px;border-radius:12px;font-size:.78rem;font-weight:600;border:1px solid rgba(255,255,255,.2)}
+
+  /* ---------- Alert banner ---------- */
+  .alert-wrap{max-width:1080px;margin:-30px auto 0;padding:0 20px;position:relative;z-index:5}
+  .alert-banner{
+    background:linear-gradient(90deg,#7f1d1d,#b91c1c);color:#fff;border-radius:16px;
+    padding:16px 22px;display:flex;gap:14px;align-items:flex-start;box-shadow:0 16px 40px rgba(185,28,28,.35);
+    border:1px solid rgba(255,255,255,.2);
+  }
+  .alert-banner .icon{font-size:1.5rem;line-height:1.2}
+  .alert-banner b{color:#fecaca}
+  .alert-banner .t{font-size:.92rem}
+
+  /* ---------- Nav pills ---------- */
+  .nav-pills{position:sticky;top:64px;z-index:50;background:linear-gradient(var(--bg) 78%,transparent);padding:18px 0 10px}
+  .nav-pills-inner{max-width:1080px;margin:0 auto;padding:0 20px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+  .nav-pills-inner::-webkit-scrollbar{display:none}
+  .nav-pill{
+    flex:0 0 auto;padding:9px 18px;border-radius:999px;border:1px solid var(--line);
+    background:#fff;color:var(--ink-soft);font-weight:600;font-size:.85rem;cursor:pointer;
+    transition:all .25s;text-decoration:none;
+  }
+  .nav-pill:hover{border-color:var(--teal-500);color:var(--teal-700);transform:translateY(-1px)}
+  .nav-pill.active{background:var(--teal-700);border-color:var(--teal-700);color:#fff;box-shadow:0 6px 16px rgba(15,95,86,.3)}
+
+  /* ---------- Sections ---------- */
+  main{max-width:1080px;margin:0 auto;padding:10px 20px 60px}
+  section{padding-top:34px}
+  .sec-head{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+  .sec-icon{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:1.35rem;background:var(--teal-100);box-shadow:inset 0 0 0 1px var(--teal-500)}
+  .sec-head h2{font-size:1.35rem;font-weight:800;color:var(--teal-900)}
+  .sec-head .en{font-size:.78rem;color:var(--muted);font-weight:600;letter-spacing:.6px;text-transform:uppercase}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px 28px}
+  .card p{color:var(--ink-soft);font-size:.95rem}
+  .lead-note{background:var(--teal-50);border-left:4px solid var(--teal-500);border-radius:10px;padding:12px 16px;font-size:.93rem;color:var(--teal-900);margin-bottom:16px}
+
+  .bullet-list{list-style:none;display:grid;gap:10px;margin-top:6px}
+  .bullet-list li{display:flex;gap:12px;align-items:flex-start;background:#f8fbfa;border:1px solid var(--line);border-radius:12px;padding:12px 16px;font-size:.93rem;color:var(--ink-soft);transition:transform .2s,border-color .2s}
+  .bullet-list li:hover{transform:translateX(4px);border-color:var(--teal-500)}
+  .bullet-list .b-ico{flex:0 0 auto;width:30px;height:30px;border-radius:9px;background:var(--teal-100);display:grid;place-items:center;font-size:.95rem}
+  .bullet-list b{color:var(--te-900)}
+  .bullet-list b{color:var(--teal-900)}
+
+  /* Vitals grid */
+  .vitals{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px}
+  .vital{background:#f8fbfa;border:1px solid var(--line);border-radius:14px;padding:14px 16px;text-align:center;transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden}
+  .vital:hover{transform:translateY(-4px);box-shadow:0 12px 26px rgba(11,59,54,.12)}
+  .vital .v-ico{font-size:1.4rem}
+  .vital .v-label{font-size:.72rem;color:var(--muted);font-weight:600;margin-top:4px}
+  .vital .v-value{font-size:1.15rem;font-weight:800;color:var(--teal-900)}
+  .vital .v-tag{display:inline-block;margin-top:6px;font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:999px}
+  .tag-red{background:var(--red-100);color:var(--red-700)}
+  .tag-amber{background:var(--amber-100);color:var(--amber-700)}
+  .tag-green{background:var(--green-100);color:#15803d}
+
+  /* Diagnosis steps */
+  .dx-steps{display:grid;gap:14px}
+  .dx-step{display:flex;gap:16px;align-items:flex-start;background:#f8fbfa;border:1px solid var(--line);border-radius:14px;padding:16px 18px;transition:border-color .2s,transform .2s}
+  .dx-step:hover{border-color:var(--teal-500);transform:translateX(4px)}
+  .dx-num{flex:0 0 auto;width:38px;height:38px;border-radius:50%;background:var(--teal-700);color:#fff;display:grid;place-items:center;font-weight:800;box-shadow:0 6px 14px rgba(15,95,86,.3)}
+  .dx-step h4{font-size:.98rem;color:var(--teal-900);font-weight:700;margin-bottom:4px}
+  .dx-step p{font-size:.9rem}
+  .dx-step .result-chip{display:inline-block;margin-top:8px;background:var(--teal-100);color:var(--teal-700);font-weight:700;font-size:.78rem;padding:4px 12px;border-radius:999px}
+  .pathogen-box{margin-top:18px;background:linear-gradient(120deg,var(--teal-900),var(--teal-700));color:#fff;border-radius:16px;padding:20px 24px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+  .pathogen-box .microbe{font-size:2.4rem}
+  .pathogen-box h3{font-size:1.15rem;font-style:italic;color:#5eead4}
+  .pathogen-box p{color:#d7efe9;font-size:.88rem}
+
+  /* Timeline */
+  .timeline{position:relative;margin:6px 0 0 10px;padding-left:26px;border-left:3px solid var(--teal-100)}
+  .tl-item{position:relative;padding:0 0 22px 8px}
+  .tl-item::before{content:"";position:absolute;left:-36px;top:4px;width:15px;height:15px;border-radius:50%;background:var(--teal-500);border:3px solid #fff;box-shadow:0 0 0 2px var(--teal-500)}
+  .tl-item.bad::before{background:var(--red-600);box-shadow:0 0 0 2px var(--red-600)}
+  .tl-item.amber::before{background:var(--amber-500);box-shadow:0 0 0 2px var(--amber-500)}
+  .tl-item h4{font-size:.97rem;font-weight:700;color:var(--teal-900)}
+  .tl-item p{font-size:.9rem;color:var(--ink-soft)}
+
+  /* ---------- Quiz ---------- */
+  .quiz-head-card{background:linear-gradient(120deg,var(--teal-900),var(--teal-600));color:#fff;border-radius:var(--radius);padding:26px 30px;box-shadow:var(--shadow);margin-bottom:22px}
+  .quiz-head-card h2{font-size:1.3rem;font-weight:800}
+  .quiz-head-card .q-note{font-size:.85rem;color:#cdeee6;margin-top:6px}
+  .quiz-meta{display:flex;gap:14px;align-items:center;margin-top:18px;flex-wrap:wrap}
+  .score-pill{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);padding:8px 18px;border-radius:999px;font-weight:700;font-size:.9rem}
+  .progress-track{flex:1;min-width:180px;height:10px;background:rgba(255,255,255,.18);border-radius:999px;overflow:hidden}
+  .progress-fill{height:100%;width:0%;background:linear-gradient(90deg,#5eead4,#fbbf24);border-radius:999px;transition:width .5s ease}
+  .q-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px 26px;margin-bottom:18px;transition:border-color .3s}
+  .q-card.done-right{border-color:var(--green-600)}
+  .q-card.done-wrong{border-color:var(--red-600)}
+  .q-title{display:flex;gap:12px;align-items:flex-start;font-weight:700;color:var(--teal-900);font-size:1rem;margin-bottom:16px}
+  .q-badge{flex:0 0 auto;background:var(--teal-700);color:#fff;font-size:.78rem;font-weight:700;padding:4px 12px;border-radius:999px;margin-top:2px}
+  .q-title a{font-weight:700}
+  .opt-list{display:grid;gap:10px}
+  .opt-btn{
+    display:flex;align-items:center;gap:12px;width:100%;text-align:left;
+    background:#f8fbfa;border:2px solid var(--line);border-radius:12px;padding:12px 16px;
+    font-family:inherit;font-size:.92rem;color:var(--ink-soft);cursor:pointer;transition:all .2s;font-weight:500;
+  }
+  .opt-btn:hover:not(:disabled){border-color:var(--teal-500);background:var(--teal-50);transform:translateX(3px)}
+  .opt-btn:disabled{cursor:default}
+  .opt-letter{flex:0 0 auto;width:28px;height:28px;border-radius:8px;background:#fff;border:1px solid var(--line);display:grid;place-items:center;font-weight:800;font-size:.8rem;color:var(--teal-700)}
+  .opt-btn.correct{background:var(--green-100);border-color:var(--green-600);color:#14532d;font-weight:700}
+  .opt-btn.correct .opt-letter{background:var(--green-600);border-color:var(--green-600);color:#fff}
+  .opt-btn.wrong{background:var(--red-100);border-color:var(--red-600);color:#7f1d1d;font-weight:700}
+  .opt-btn.wrong .opt-letter{background:var(--red-600);border-color:var(--red-600);color:#fff}
+  .opt-btn.faded{opacity:.55}
+  .explain-box{display:none;margin-top:14px;border-radius:12px;padding:14px 18px;font-size:.88rem;animation:slideIn .4s ease}
+  .explain-box.show{display:block}
+  .explain-box.ok{background:var(--green-100);border:1px solid #86efac;color:#14532d}
+  .explain-box.no{background:var(--red-100);border:1px solid #fca5a5;color:#7f1d1d}
+  @keyframes slideIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+  .result-panel{display:none;background:linear-gradient(120deg,var(--teal-900),var(--teal-600));color:#fff;border-radius:var(--radius);padding:30px;text-align:center;box-shadow:var(--shadow);animation:slideIn .5s ease}
+  .result-panel.show{display:block}
+  .result-panel .big{font-size:2.6rem;font-weight:800}
+  .result-panel .msg{font-size:1rem;margin-top:6px;color:#d7efe9}
+  .reset-btn{margin-top:18px;background:#fff;color:var(--teal-800);color:var(--teal-700);border:none;border-radius:999px;padding:11px 28px;font-family:inherit;font-weight:800;font-size:.9rem;cursor:pointer;transition:transform .2s,box-shadow .2s}
+  .reset-btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.25)}
+
+  /* Reveal animation */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.visible{opacity:1;transform:translateY(0)}
+
+  /* Footer */
+  footer{background:var(--teal-950);color:#9ecfc6;margin-top:30px}
+  .footer-inner{max-width:1080px;margin:0 auto;padding:34px 20px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+  .footer-inner img{width:42px;height:42px;border-radius:10px;background:#fff;padding:4px}
+  .footer-inner .f-title{font-weight:800;color:#fff}
+  .footer-inner small{display:block;font-size:.76rem}
+  .footer-right{margin-left:auto;font-size:.76rem;text-align:right}
+
+  @media(max-width:900px){
+    .hero-inner{grid-template-columns:1fr;padding-top:40px}
+    .hero-photo{max-width:420px}
+    .topbar-tag{display:none}
+  }
+  @media(max-width:560px){
+    .card{padding:20px}
+    .q-card{padding:18px}
+    .nav-pills{top:60px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ======= TOP BAR ======= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="logo-wrap">
+      <img src="https://yunhfdekcjosnfwndepu.supabase.co/storage/v1/object/public/DATA%20SRNanimalcare/Logo%20symbol.png" alt="SRN Animal Care Logo" onerror="this.style.display='none'">
+      <div>
+        <div class="brand-name">SRN Animal Care</div>
+        <div class="brand-sub">Clinical Case Summary</div>
+      </div>
+    </div>
+    <span class="topbar-tag">🩺 Infectious Disease • Zoonosis</span>
+  </div>
+</header>
+
+<!-- ======= HERO ======= -->
+<div class="hero">
+  <div class="hero-inner">
+    <div>
+      <span class="hero-badge"><span class="pulse-dot"></span> กรณีศึกษาคลินิกสัตว์เล็ก</span>
+      <h1>Fever &amp; Dyspnea in a Dog<br><span class="hl">ไข้และหายใจลำบากในสุนัข</span></h1>
+      <p class="thai-sub">กรณี "Jessie" — กาฬโรค (Plague) จากเชื้อ <i>Yersinia pestis</i> ในสุนัข และความเสี่ยงต่อสุขภาพมนุษย์</p>
+      <div class="patient-chips">
+        <span class="p-chip">🐶 ชื่อ <b>Jessie</b></span>
+        <span class="p-chip">🎂 อายุ <b>2 ปี</b></span>
+        <span class="p-chip">⚖️ น้ำหนัก <b>65 lb (29.5 kg)</b></span>
+        <span class="p-chip">✂️ <b>ทำหมันแล้ว (spayed)</b></span>
+        <span class="p-chip">🧬 <b>สุนัขพันธุ์ผสม (crossbreed)</b></span>
+      </div>
+    </div>
+    <div class="hero-photo">
+      <div class="frame">
+        <img src="https://image.qwenlm.ai/public_source/560b17be-46a9-4bac-849f-8911f0a59791/11b485b61-36b5-4314-998f-042b510e2990.png" alt="Jessie สุนัขพันธุ์ผสมยืนบนก้อนหิน">
+      </div>
+      <div class="photo-caption">📍 Jessie • ชนบทของรัฐโคโลราโด</div>
+    </div>
+  </div>
+</div>
+
+<!-- ======= ALERT ======= -->
+<div class="alert-wrap">
+  <div class="alert-banner reveal">
+    <span class="icon">⚠️</span>
+    <div class="t"><b>Zoonotic Alert!</b> การวินิจฉัยสุดท้ายคือ <b>pneumonic plague</b> ซึ่งมีความเสี่ยงสูงที่เชื้อจะติดต่อสู่มนุษย์ผ่าน <b>ละอองเสมหะ (droplets)</b> — บุคลากรทุกคนต้องสวมอุปกรณ์ป้องกันส่วนบุคคลอย่างเคร่งครัด</div>
+  </div>
+</div>
+
+<!-- ======= NAV ======= -->
+<nav class="nav-pills">
+  <div class="nav-pills-inner">
+    <a class="nav-pill" href="#history" data-spy="history">📋 ประวัติ</a>
+    <a class="nav-pill" href="#exam" data-spy="exam">🩺 การตรวจร่างกาย</a>
+    <a class="nav-pill" href="#diagnosis" data-spy="diagnosis">🔬 การวินิจฉัย</a>
+    <a class="nav-pill" href="#treatment" data-spy="treatment">💊 การรักษาและผลลัพธ์</a>
+    <a class="nav-pill" href="#quiz" data-spy="quiz">📝 แบบทดสอบ 5 ข้อ</a>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ======= HISTORY ======= -->
+  <section id="history" class="spy-sec">
+    <div class="sec-head reveal"><div class="sec-icon">📋</div><div><h2>ประวัติการป่วย (History)</h2><div class="en">Signalment &amp; History</div></div></div>
+    <div class="card reveal">
+      <div class="lead-note">Jessie สุนัขพันธุ์ผสม อายุ 2 ปี น้ำหนัก 65 ปอนด์ (29.5 กก.) ทำหมานแล้ว มาด้วยอาการ <b>ซึม (lethargy)</b> และ <b>เบื่ออาหาร (anorexia)</b> นาน 2 วัน ร่วมกับ <b>ไอ/คายเลือด (hemoptysis)</b> นานน้อยกว่า 24 ชั่วโมง</div>
+      <ul class="bullet-list">
+        <li><span class="b-ico">🏞️</span><span>อาศัยอยู่ใน<b>ชนบทของรัฐโคโลราโด</b> ได้รับอนุญาตให้เที่ยวเล่นนอกบ้านโดยไม่มีคนดูแล</span></li>
+        <li><span class="b-ico">🐭</span><span>บางครั้ง<b>คาบและงับสัตว์ป่าขนาดเล็กที่ตายแล้ว</b>มาเล่น — ปัจจัยเสี่ยงสำคัญต่อการรับเชื้อ</span></li>
+        <li><span class="b-ico">🛡️</span><span><b>ไม่ได้รับยาป้องกันเห็บ หมัด และพยาธิหนอนหัวใจอย่างสม่ำเสมอ</b></span></li>
+        <li><span class="b-ico">️</span><span><b>ไม่มีประวัติการเดินทาง</b>ออกนอกพื้นที่</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ======= PHYSICAL EXAM ======= -->
+  <section id="exam" class="spy-sec">
+    <div class="sec-head reveal"><div class="sec-icon">🩺</div><div><h2>การตรวจร่างกาย (Physical Examination)</h2><div class="en">Physical Findings</div></div></div>
+    <div class="card reveal">
+      <div class="vitals">
+        <div class="vital"><div class="v-ico">🌡️</div><div class="v-label">อุณหภูมิร่างกาย</div><div class="v-value">103.9°F (39.9°C)</div><span class="v-tag tag-red">ไข้สูง</span></div>
+        <div class="vital"><div class="v-ico">🫁</div><div class="v-label">อัตราการหายใจ</div><div class="v-value">40 ครั้ง/นาที</div><span class="v-tag tag-amber">หายใจเร็ว</span></div>
+        <div class="vital"><div class="v-ico">❤️</div><div class="v-label">อัตราการเต้นหัวใจ</div><div class="v-value">110 bpm</div><span class="v-tag tag-green">อยู่ในเกณฑ์</span></div>
+        <div class="vital"><div class="v-ico">🐕</div><div class="v-label">Body Condition</div><div class="v-value">BCS 5/9</div><span class="v-tag tag-green">สมส่วน</span></div>
+        <div class="vital"><div class="v-ico">💧</div><div class="v-label">ภาวะขาดน้ำ</div><div class="v-value">~5%</div><span class="v-tag tag-amber">ขาดน้ำเล็กน้อย</span></div>
+      </div>
+      <ul class="bullet-list">
+        <li><span class="b-ico">😮‍💨</span><span>สัตว์<b>อ่อนแรง ซึม และขาดน้ำเล็กน้อย (5%)</b></span></li>
+        <li><span class="b-ico">🔊</span><span>ฟังปอดพบ <b>harsh lung sounds ทุกพื้นที่ปอด</b> ร่วมกับหายใจออกแรงมากขึ้นและ<b>ไอ</b></span></li>
+        <li><span class="b-ico">🩸</span><span>มี<b>เลือดสดเป็นรอยปนกับน้ำลาย</b>ตามขอบ mucocutaneous ของปาก และใต้ริมฝีปากบนด้านซ้าย</span></li>
+        <li><span class="b-ico">🔍</span><span>คลำพบ<b>ต่อมน้ำเหลืองโต</b> — left cervical และ bilateral mandibular lymphadenomegaly</span></li>
+        <li><span class="b-ico">🪲</span><span>พบ <b>flea dirt และหมัดมีชีวิต 2 ตัว</b>บริเวณขาหนีบ (inguinal area)</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ======= DIAGNOSIS ======= -->
+  <section id="diagnosis" class="spy-sec">
+    <div class="sec-head reveal"><div class="sec-icon">🔬</div><div><h2>การวินิจฉัย (Diagnosis)</h2><div class="en">Diagnostic Workup</div></div></div>
+    <div class="card reveal">
+      <div class="dx-steps">
+        <div class="dx-step">
+          <div class="dx-num">1</div>
+          <div>
+            <h4>ดูดเก็บตัวอย่างต่อมน้ำเหลืองซ้าย (Left cervical LN aspirate) + ย้อมสีแกรม</h4>
+            <p>พบเชื้อ <b>gram-negative bipolar coccobacilli</b> รูปร่างเข้าได้กับการติดเชื้อ <i>Yersinia pestis</i></p>
+            <span class="result-chip">Presumptive diagnosis ✔</span>
+          </div>
+        </div>
+        <div class="dx-step">
+          <div class="dx-num">2</div>
+          <div>
+            <h4>ถ่ายภาพรังสีทรวงอก (Thoracic radiographs)</h4>
+            <p>พบ <b>bronchial pattern</b> และการเปลี่ยนแปลงเข้าได้กับ <b>pneumonic plague</b> — ซึ่งถือเป็นความเสี่ยงสูงต่อการติดต่อสู่มนุษย์ผ่าน droplets</p>
+            <span class="result-chip">Pneumonic plague ⚠️</span>
+          </div>
+        </div>
+        <div class="dx-step">
+          <div class="dx-num">3</div>
+          <div>
+            <h4>แจ้งกรมสาธารณสุข (State public health department) และยืนยันผล</h4>
+            <p>ส่งตัวอย่าง <b>เลือด, สารดูดจากต่อมน้ำเหลือง และ oropharyngeal swab</b> เพาะเชื้อแบบ aerobic → ตัวอย่างจากช่องคอขึ้นเชื้อ <i>Y. pestis</i></p>
+            <span class="result-chip">Confirmed by culture ✔</span>
+          </div>
+        </div>
+      </div>
+      <div class="pathogen-box">
+        <span class="microbe">🦠</span>
+        <div>
+          <h3>Yersinia pestis</h3>
+          <p>เชื้อก่อโรคกาฬโรค (plague) — แกรมลบรูป bipolar coccobacilli ติดต่อผ่านหมัดสัตว์ฟันแทะ และแพร่สู่คนได้ทาง droplets เมื่อสัตว์/คนมีอาการทางปอด</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= TREATMENT ======= -->
+  <section id="treatment" class="spy-sec">
+    <div class="sec-head reveal"><div class="sec-icon">💊</div><div><h2>การรักษาและผลลัพธ์ (Treatment &amp; Outcome)</h2><div class="en">Management &amp; Follow-up</div></div></div>
+    <div class="card reveal">
+      <div class="timeline">
+        <div class="tl-item"><h4>🚫 แยกกักสัตว์ป่วย (Isolation)</h4><p>เพื่อป้องกันการแพร่กระจายเชื้อสู่บุคคลและสิ่งแวดล้อม</p></div>
+        <div class="tl-item"><h4>💉 ให้การรักษาด้วย IV fluids + Gentamicin + การรักษาประคับประคอง</h4><p>ให้การรักษามาตรฐานสำหรับสงสัยกาฬโรคร่วมกับการดูแลสนับสนุน</p></div>
+        <div class="tl-item bad"><h4>📉 อาการทรุดลงอย่างรวดเร็ว (Rapid deterioration)</h4><p>แม้ได้รับการรักษา แต่สภาพร่างกายแย่ลงอย่างรวดเร็ว</p></div>
+        <div class="tl-item bad"><h4>🕊️ การุณยฆาต (Euthanasia)</h4><p>จำเป็นต้องยุติความทรมานเนื่องจากพยากรณ์โรคเลวร้าย</p></div>
+        <div class="tl-item amber"><h4>📞 กรมสาธารณสุขติดตามผู้สัมผัส</h4><p>ติดต่อเจ้าของและบุคลากรสัตวแพทย์ทุกคนที่เกี่ยวข้องกับเคสนี้</p></div>
+        <div class="tl-item"><h4>💊 ยาปฏิชีวนะป้องกัน (Prophylactic antibiotics)</h4><p>ผู้สัมผัสทุกคนได้รับยาป้องกันโดยสั่งจ่ายผ่านแพทย์ประจำตัวของแต่ละคน</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= QUIZ ======= -->
+  <section id="quiz" class="spy-sec">
+    <div class="sec-head reveal"><div class="sec-icon">📝</div><div><h2>แบบทดสอบประจำบทความ</h2><div class="en">Interactive Quiz — 5 Questions</div></div></div>
+
+    <div class="quiz-head-card reveal">
+      <h2>❓ คุณจะวินิจฉัยและรักษาผู้ป่วยรายนี้อย่างไร</h2>
+      <div class="q-note">ทดสอบความเข้าใจจากกรณีศึกษาของ Jessie — คลิกเลือกคำตอบแล้วระบบจะตรวจและเฉลยทันที</div>
+      <div class="quiz-meta">
+        <span class="score-pill" id="scorePill">คะแนน 0 / 5</span>
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        <span class="score-pill" id="answeredPill">ตอบแล้ว 0 / 5</span>
+      </div>
+    </div>
+
+    <div id="quizList"></div>
+
+    <div class="result-panel" id="resultPanel">
+      <div class="big" id="resultScore">0 / 5</div>
+      <div class="msg" id="resultMsg"></div>
+      <button class="reset-btn" id="resetBtn">🔄 ทำแบบทดสอบใหม่</button>
+    </div>
+  </section>
+
+</main>
+
+<!-- ======= FOOTER ======= -->
+<footer>
+  <div class="footer-inner">
+    <img src="https://yunhfdekcjosnfwndepu.supabase.co/storage/v1/object/public/DATA%20SRNanimalcare/Logo%20symbol.png" alt="logo" onerror="this.style.display='none'">
+    <div>
+      <div class="f-title">SRN Animal Care</div>
+      <small>สรุปเนื้อหาเพื่อการศึกษาเท่านั้น ไม่ใช่คำแนะนำทางคลินิกโดยตรง</small>
+    </div>
+    <div class="footer-right">
+      อ้างอิงจาก: Clinician's Brief — <i>Fever &amp; Dyspnea in a Dog</i> (Spring 2024)<br>
+      จัดทำเพื่อสรุปความรู้โรคติดต่อจากสัตว์สู่คน 🐾
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* ================= QUIZ DATA ================= */
+  var quizData = [
+    {
+      q: "จริงหรือเท็จ? ผู้ป่วยรายนี้อาจเป็นโรคติดต่อจากสัตว์สู่คน (zoonotic disease)",
+      opts: ["จริง", "เท็จ"],
+      ans: 0,
+      exp: "✔ กาฬโรค (plague) จากเชื้อ Yersinia pestis เป็นโรคติดต่อจากสัตว์สู่คนที่สำคัญ มนุษย์อาจติดเชื้อได้จากการถูกหมัดนำเชื้อกัด การสัมผัสสารคัดหลั่ง/ซากสัตว์ป่วย และที่อันตรายที่สุดคือการสูดดมละอองเสมหะ (droplets) จากสัตว์ที่เป็น pneumonic plague"
+    },
+    {
+      q: "หัตถการวินิจฉัยใดต่อไปนี้ที่ทำได้ภายในโรงพยาบาลและช่วยให้วินิจฉัยเบื้องต้นได้?<sup>1-3</sup>",
+      opts: [
+        "การตรวจความสมบูรณ์ของเม็ดเลือด (CBC) และการตรวจเคมีซีรัม",
+        "การถ่ายภาพรังสีทรวงอก",
+        "การดูดเก็บตัวอย่างจากต่อมน้ำเหลืองและย้อมสีแกรม",
+        "การล้างหลอดลมและถุงลม (bronchoalveolar lavage) และย้อมสีแกรม"
+      ],
+      ans: 2,
+      exp: "✔ การดูดเก็บตัวอย่างจากต่อมน้ำเหลืองที่โต (lymph node aspirate) มาย้อมสีแกรม ทำได้รวดเร็วภายในโรงพยาบาล และพบ gram-negative bipolar coccobacilli ซึ่งเพียงพอต่อการวินิจฉัยเบื้องต้น (presumptive diagnosis) ของ Y. pestis"
+    },
+    {
+      q: "สาเหตุจากเชื้อก่อโรคใดมีความเป็นไปได้มากที่สุด",
+      opts: [
+        "<i>Francisella tularensis</i>",
+        "<i>Yersinia pestis</i>",
+        "<i>Coccidioides immitis</i>",
+        "<i>Rickettsia rickettsii</i>"
+      ],
+      ans: 1,
+      exp: "✔ ผลแกรมส테인พบ gram-negative bipolar coccobacilli ร่วมกับปัจจัยเสี่ยงทางระบาดวิทยา — อาศัยในชนบทของรัฐโคโลราโด (พื้นที่โรคประจำถิ่นของกาฬโรค), คาบสัตว์ป่าตายมาเล่น, มีหมัด และไม่ได้รับยาป้องกันสม่ำเสมอ จึงเข้าได้กับ Yersinia pestis มากที่สุด"
+    },
+    {
+      q: 'ควรสวม<a href="https://www.cliniciansbrief.com/article/top-5-zoonotic-disease-transmission-veterinary-medicine" target="_blank" rel="noopener">อุปกรณ์ป้องกันส่วนบุคคล</a>ชนิดใดเมื่อต้องดูแลผู้ป่วยรายนี้?<sup>1-4</sup>',
+      opts: [
+        "หน้ากากกรองอนุภาค N95",
+        "ถุงมือ",
+        "กระบังหน้าหรือแว่นป้องกันตา",
+        "ทุกข้อข้างต้น"
+      ],
+      ans: 3,
+      exp: "✔ เนื่องจาก pneumonic plague สามารถแพร่ผ่าน droplets ได้ บุคลากรจึงต้องป้องกันครบทุกรูปแบบ ทั้ง N95 (ป้องกันละอองฝอยเล็ก), ถุงมือ (ป้องกันสัมผัสสารคัดหลั่ง) และกระบังหน้า/แว่นตา (ป้องกันเยื่อบุตา) — คำตอบคือ 'ทุกข้อข้างต้น'"
+    },
+    {
+      q: "หัตถการวินิจฉัยใดต่อไปนี้ที่ทำได้ภายในโรงพยาบาลและมีประโยชน์มากที่สุดในการประเมินความเสี่ยงที่อาจเกิดขึ้นต่อสุขภาพมนุษย์?<sup>5,6</sup>",
+      opts: [
+        "การตรวจช่องปากเพื่อหารอยโรคแผลหลุม",
+        "การถ่ายภาพรังสีทรวงอก",
+        "การดูดเก็บตัวอย่างจากต่อมน้ำเหลืองและย้อมสีแกรม",
+        "การจำแนกชนิดหมัด"
+      ],
+      ans: 1,
+      exp: "✔ การถ่ายภาพรังสีทรวงอกช่วยประเมินว่ามีพยาธิสภาพที่ปอด (pneumonic plague) หรือไม่ ซึ่งรูปแบบปอดอักเสบหมายถึงความเสี่ยงสูงที่เชื้อจะแพร่สู่มนุษย์ทาง droplets จึงเป็นหัตถการที่มีประโยชน์ที่สุดในการประเมินความเสี่ยงต่อสุขภาพมนุษย์ (คำตอบต้นฉบับ: 5:B)"
+    }
+  ];
+
+  /* ================= QUIZ RENDER & LOGIC ================= */
+  var quizList = document.getElementById('quizList');
+  var scorePill = document.getElementById('scorePill');
+  var answeredPill = document.getElementById('answeredPill');
+  var progressFill = document.getElementById('progressFill');
+  var resultPanel = document.getElementById('resultPanel');
+  var resultScore = document.getElementById('resultScore');
+  var resultMsg = document.getElementById('resultMsg');
+  var totalQ = quizData.length;
+  var quizScore = 0;
+  var quizAnswered = 0;
+
+  function buildQuiz(){
+    quizList.innerHTML = '';
+    quizScore = 0; quizAnswered = 0;
+    resultPanel.classList.remove('show');
+    updateMeta();
+    quizData.forEach(function(item, qIdx){
+      var card = document.createElement('div');
+      card.className = 'q-card reveal visible';
+      var letters = ['ก','ข','ค','ง'];
+      var optsHtml = item.opts.map(function(optText, oIdx){
+        return '<button class="opt-btn" data-q="'+qIdx+'" data-o="'+oIdx+'">'+
+                 '<span class="opt-letter">'+letters[oIdx]+'</span><span>'+optText+'</span>'+
+               '</button>';
+      }).join('');
+      card.innerHTML =
+        '<div class="q-title"><span class="q-badge">ข้อที่ '+(qIdx+1)+'</span><span>'+item.q+'</span></div>'+
+        '<div class="opt-list">'+optsHtml+'</div>'+
+        '<div class="explain-box" id="exp-'+qIdx+'"></div>';
+      quizList.appendChild(card);
+    });
+  }
+
+  function updateMeta(){
+    scorePill.textContent = 'คะแนน ' + quizScore + ' / ' + totalQ;
+    answeredPill.textContent = 'ตอบแล้ว ' + quizAnswered + ' / ' + totalQ;
+    progressFill.style.width = (quizAnswered / totalQ * 100) + '%';
+  }
+
+  quizList.addEventListener('click', function(evt){
+    var btn = evt.target.closest('.opt-btn');
+    if(!btn || btn.disabled) return;
+    var qIdx = parseInt(btn.getAttribute('data-q'), 10);
+    var oIdx = parseInt(btn.getAttribute('data-o'), 10);
+    var item = quizData[qIdx];
+    var card = btn.closest('.q-card');
+    var allBtns = card.querySelectorAll('.opt-btn');
+    var isCorrect = (oIdx === item.ans);
+
+    allBtns.forEach(function(bEl){
+      bEl.disabled = true;
+      var bi = parseInt(bEl.getAttribute('data-o'), 10);
+      if(bi === item.ans){ bEl.classList.add('correct'); }
+      else if(bi === oIdx){ bEl.classList.add('wrong'); }
+      else { bEl.classList.add('faded'); }
+    });
+
+    if(isCorrect){ quizScore++; card.classList.add('done-right'); }
+    else { card.classList.add('done-wrong'); }
+    quizAnswered++;
+
+    var expBox = document.getElementById('exp-' + qIdx);
+    expBox.className = 'explain-box show ' + (isCorrect ? 'ok' : 'no');
+    expBox.innerHTML = (isCorrect ? '<b>🎉 ตอบถูกต้อง!</b> ' : '<b>❌ ยังไม่ถูกต้อง — คำตอบที่ถูกต้องคือ: ' + item.opts[item.ans] + '</b> ') + '<br>' + item.exp;
+
+    updateMeta();
+
+    if(quizAnswered === totalQ){
+      setTimeout(function(){
+        resultScore.textContent = quizScore + ' / ' + totalQ;
+        var msgTxt = '';
+        if(quizScore === totalQ){ msgTxt = '🏆 ยอดเยี่ยม! คุณเข้าใจกรณีกาฬโรคในสุนัขได้อย่างครบถ้วน'; }
+        else if(quizScore >= 3){ msgTxt = '💪 เก่งมาก! ทบทวนคำอธิบายเพิ่มเติมอีกเล็กน้อยจะสมบูรณ์แบบ'; }
+        else { msgTxt = '📚 แนะนำทบทวนเนื้อหาด้านบน แล้วลองทำแบบทดสอบอีกครั้ง'; }
+        resultMsg.textContent = msgTxt;
+        resultPanel.classList.add('show');
+        resultPanel.scrollIntoView({behavior:'smooth', block:'center'});
+      }, 600);
+    }
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', buildQuiz);
+  buildQuiz();
+
+  /* ================= SCROLL SPY ================= */
+  var spySections = document.querySelectorAll('.spy-sec');
+  var navPills = document.querySelectorAll('.nav-pill');
+  var spyObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        var sid = entry.target.id;
+        navPills.forEach(function(pill){
+          pill.classList.toggle('active', pill.getAttribute('data-spy') === sid);
+        });
+      }
+    });
+  }, {rootMargin:'-35% 0px -55% 0px'});
+  spySections.forEach(function(sec){ spyObserver.observe(sec); });
+
+  /* ================= REVEAL ON SCROLL ================= */
+  var revealObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, {threshold:0.12});
+  document.querySelectorAll('.reveal').forEach(function(el){ revealObserver.observe(el); });
+</script>
+</body>
+</html>
