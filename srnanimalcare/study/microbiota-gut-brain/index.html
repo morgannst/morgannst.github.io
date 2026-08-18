@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>บทบาทของแกน Microbiota–Gut–Brain Axis ในโรคทางพฤติกรรมและระบบประสาท</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/sarabun@4.5.10/index.min.css" rel="stylesheet">
+<style>
+  body { font-family: 'Sarabun', sans-serif; }
+  .tab-active { background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%); color: white; box-shadow: 0 4px 15px rgba(13,148,136,0.4); }
+  .tab-inactive { background: white; color: #475569; }
+  .tab-inactive:hover { background: #f1f5f9; }
+  .section { display: none; animation: fadeIn 0.5s ease-in; }
+  .section.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  .card { animation: slideUp 0.6s ease-out; }
+  .gradient-header { background: linear-gradient(135deg, #0f766e 0%, #14b8a6 50%, #5eead4 100%); }
+  .quiz-option { transition: all 0.3s; cursor: pointer; }
+  .quiz-option:hover { transform: translateX(5px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+  .quiz-option.correct { background: #dcfce7; border-color: #22c55e; }
+  .quiz-option.incorrect { background: #fee2e2; border-color: #ef4444; }
+  .score-circle { transition: all 1s ease; }
+  .floating { animation: float 3s ease-in-out infinite; }
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  .pulse-dot { animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+  details summary { cursor: pointer; list-style: none; }
+  details summary::-webkit-details-marker { display: none; }
+  .scroll-smooth { scroll-behavior: smooth; }
+</style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-teal-50 min-h-screen">
+
+<!-- Header -->
+<header class="gradient-header text-white py-8 shadow-2xl">
+  <div class="max-w-6xl mx-auto px-4 flex items-center gap-6">
+    <img src="https://yunhfdekcjosnfwndepu.supabase.co/storage/v1/object/public/DATA%20SRNanimalcare/Logo%20symbol.png" alt="Logo" class="w-20 h-20 bg-white rounded-full p-2 shadow-lg floating">
+    <div>
+      <h1 class="text-3xl md:text-4xl font-bold mb-2">บทบาทของแกน Microbiota–Gut–Brain Axis</h1>
+      <p class="text-teal-100 text-lg">ในโรคทางพฤติกรรมและระบบประสาทของสุนัข</p>
+      <p class="text-teal-200 text-sm mt-2">Role of the Microbiota–Gut–Brain Axis in Behavioral and Neurologic Disorders</p>
+    </div>
+  </div>
+</header>
+
+<!-- Navigation Tabs -->
+<nav class="sticky top-0 z-40 bg-white shadow-md border-b border-teal-100">
+  <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap gap-2 justify-center">
+    <button onclick="showSection('intro')" id="tab-intro" class="tab-active px-4 py-2 rounded-full font-semibold text-sm md:text-base transition-all">🏠 บทนำ</button>
+    <button onclick="showSection('dysbiosis')" id="tab-dysbiosis" class="tab-inactive px-4 py-2 rounded-full font-semibold text-sm md:text-base transition-all"> Dysbiosis</button>
+    <button onclick="showSection('diseases')" id="tab-diseases" class="tab-inactive px-4 py-2 rounded-full font-semibold text-sm md:text-base transition-all">🩺 โรคที่เกี่ยวข้อง</button>
+    <button onclick="showSection('management')" id="tab-management" class="tab-inactive px-4 py-2 rounded-full font-semibold text-sm md:text-base transition-all">💊 การจัดการ</button>
+    <button onclick="showSection('case')" id="tab-case" class="tab-inactive px-4 py-2 rounded-full font-semibold text-sm md:text-base transition-all">📋 กรณีศึกษา</button>
+    <button onclick="showSection('quiz')" id="tab-quiz" class="tab-inactive px-4 py-2 rounded-full font-semibold text-sm md:text-base transition-all">📝 แบบทดสอบ</button>
+  </div>
+</nav>
+
+<main class="max-w-6xl mx-auto px-4 py-8">
+
+<!-- SECTION: บทนำ -->
+<section id="intro" class="section active">
+  <div class="card bg-white rounded-2xl shadow-xl p-6 md:p-8 mb-6">
+    <h2 class="text-2xl font-bold text-teal-700 mb-4 flex items-center gap-2">📌 บทคัดย่อ (Abstract)</h2>
+    <p class="text-gray-700 leading-relaxed text-lg">
+      แกน <strong class="text-teal-600">Microbiota–Gut–Brain Axis (MGBA)</strong> อธิบายถึงเส้นทางการสื่อสารแบบสองทิศทางที่ช่วยให้จุลินทรีย์ในลำไส้มีอิทธิพลต่อการทำงานของระบบประสาท การรู้คิด และพฤติกรรม ในขณะที่สมองก็ควบคุมสรีรวิทยาของลำไส้และองค์ประกอบของจุลินทรีย์
+    </p>
+    <p class="text-gray-700 leading-relaxed mt-4">
+      การศึกษาในสัตว์ฟันแทะและมนุษย์แสดงให้เห็นว่า MGBA อาจมีส่วนในการเกิด <span class="bg-yellow-100 px-2 py-1 rounded">ความวิตกกังวล, ภาวะซึมเศร้า, ออทิสติก, ไบโพลาร์, จิตเภท, พาร์กินสัน, ALS, กลุ่มอาการอ่อนเพลียเรื้อรัง และโรคลมชัก</span>
+    </p>
+  </div>
+
+  <div class="card bg-gradient-to-r from-teal-50 to-cyan-50 rounded-2xl shadow-xl p-6 md:p-8 mb-6">
+    <h2 class="text-2xl font-bold text-teal-700 mb-6 flex items-center gap-2">🎯 ประเด็นสำคัญ (Take-Home Points)</h2>
+    <div class="grid md:grid-cols-2 gap-4">
+      <div class="bg-white p-4 rounded-xl shadow-md border-l-4 border-teal-500">
+        <div class="text-3xl mb-2"></div>
+        <p class="text-gray-700">มีการศึกษาบทบาทของ MGBA ในสุนัขที่มี <strong>โรคทางพฤติกรรม, โรคลมชักไม่ทราบสาเหตุ (IE), และกลุ่มอาการสมองเสื่อมในสุนัข (CCDS)</strong></p>
+      </div>
+      <div class="bg-white p-4 rounded-xl shadow-md border-l-4 border-cyan-500">
+        <div class="text-3xl mb-2">⚠️</div>
+        <p class="text-gray-700">Dysbiosis รบกวนการทำงานของ MGBA ทำให้เกิดการอักเสบของระบบประสาท ความเครียดออกซิเดชัน และทำลาย blood-brain barrier</p>
+      </div>
+      <div class="bg-white p-4 rounded-xl shadow-md border-l-4 border-emerald-500">
+        <div class="text-3xl mb-2">💡</div>
+        <p class="text-gray-700">ธรรมชาติแบบสองทิศทางของ MGBA หมายความว่า <strong>การรักษาที่ลำไส้</strong> อาจช่วยรักษาโรคทางพฤติกรรมและระบบประสาทได้</p>
+      </div>
+      <div class="bg-white p-4 rounded-xl shadow-md border-l-4 border-blue-500">
+        <div class="text-3xl mb-2">🎯</div>
+        <p class="text-gray-700">ผลลัพธ์ที่ดีที่สุดเกิดขึ้นเมื่อ <strong>รักษาจุลินทรีย์ในลำไส้และสุขภาพจิตพร้อมกัน</strong></p>
+      </div>
+      <div class="bg-white p-4 rounded-xl shadow-md border-l-4 border-purple-500 md:col-span-2">
+        <div class="text-3xl mb-2">📊</div>
+        <p class="text-gray-700">โรค MGBA มักมีโรคแทรกซ้อนร่วม ทำให้การจัดการเป็นเรื่องท้าทายและพยากรณ์โรคมักไม่ดี</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card bg-white rounded-2xl shadow-xl p-6 md:p-8">
+    <h2 class="text-2xl font-bold text-teal-700 mb-4">🔬 เส้นทางการสื่อสารของ MGBA</h2>
+    <div class="grid md:grid-cols-4 gap-4">
+      <div class="text-center p-4 bg-gradient-to-br from-teal-100 to-teal-200 rounded-xl">
+        <div class="text-4xl mb-2">🧬</div>
+        <h3 class="font-bold text-teal-800">Gut Hormones</h3>
+        <p class="text-sm text-gray-600">สัญญาณฮอร์โมนจากลำไส้</p>
+      </div>
+      <div class="text-center p-4 bg-gradient-to-br from-cyan-100 to-cyan-200 rounded-xl">
+        <div class="text-4xl mb-2">⚡</div>
+        <h3 class="font-bold text-cyan-800">Vagus Nerve</h3>
+        <p class="text-sm text-gray-600">เส้นประสาทเวกัส</p>
+      </div>
+      <div class="text-center p-4 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl">
+        <div class="text-4xl mb-2">️</div>
+        <h3 class="font-bold text-blue-800">Immune System</h3>
+        <p class="text-sm text-gray-600">ระบบภูมิคุ้มกัน</p>
+      </div>
+      <div class="text-center p-4 bg-gradient-to-br from-indigo-100 to-indigo-200 rounded-xl">
+        <div class="text-4xl mb-2"></div>
+        <h3 class="font-bold text-indigo-800">Microbial Metabolites</h3>
+        <p class="text-sm text-gray-600">SCFA, สารสื่อประสาท</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: Dysbiosis -->
+<section id="dysbiosis" class="section">
+  <div class="card bg-white rounded-2xl shadow-xl p-6 md:p-8 mb-6">
+    <h2 class="text-2xl font-bold text-teal-700 mb-4">🦠 Dysbiosis และ MGBA</h2>
+    <p class="text-gray-700 leading-relaxed mb-4">
+      ในบุคคลที่มีสุขภาพดี ระบบนิเวศของจุลินทรีย์จะอยู่ในสภาวะสมดุล เมื่อสมดุลถูกรบกวนจะนำไปสู่ภาวะ <strong class="text-red-600">Dysbiosis</strong> ซึ่งมีลักษณะคือ:
+    </p>
+    <div class="grid md:grid-cols-3 gap-4 mb-6">
+      <div class="bg-red-50 p-4 rounded-xl border-2 border-red-200">
+        <div class="text-2xl mb-2">📉</div>
+        <h3 class="font-bold text-red-700">ความหลากหลายลดลง</h3>
+        <p class="text-sm text-gray-600">Reduced bacterial diversity</p>
+      </div>
+      <div class="bg-orange-50 p-4 rounded-xl border-2 border-orange-200">
+        <div class="text-2xl mb-2">😔</div>
+        <h3 class="font-bold text-orange-700">แบคทีเรียดีลดลง</h3>
+        <p class="text-sm text-gray-600">Depletion of beneficial bacteria</p>
+      </div>
+      <div class="bg-yellow-50 p-4 rounded-xl border-2 border-yellow-200">
+        <div class="text-2xl mb-2"></div>
+        <h3 class="font-bold text-yellow-700">เชื้อโรคเพิ่มขึ้น</h3>
+        <p class="text-sm text-gray-600">Proliferation of pathogens</p>
+      </div>
+    </div>
+
+    <div class="bg-gradient-to-r from-amber-50 to-orange-50 p-6 rounded-xl border-l-4 border-amber-500">
+      <h3 class="font-bold text-amber-800 mb-3">⚠️ ผลกระทบของ Dysbiosis ต่อ MGBA</h3>
+      <ul class="space-y-2 text-gray-700">
+        <li class="flex items-start gap-2"><span class="text-red-500">•</span> การส่งสัญญาณภูมิคุ้มกันผิดปกติ (Dysregulated immune signaling)</li>
+        <li class="flex items-start gap-2"><span class="text-red-500">•</span> การอักเสบของระบบประสาทเพิ่มขึ้น (Increased neuroinflammation)</li>
+        <li class="flex items-start gap-2"><span class="text-red-500">•</span> ความเครียดออกซิเดชัน (Oxidative stress)</li>
+        <li class="flex items-start gap-2"><span class="text-red-500">•</span> ทำลายความสมบูรณ์ของ blood-brain barrier</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card bg-white rounded-2xl shadow-xl p-6 md:p-8">
+    <h2 class="text-2xl font-bold text-teal-700 mb-4">🔍 สาเหตุของ Dysbiosis</h2>
+    <div class="grid md:grid-cols-2 gap-4">
+      <div class="flex items-center gap-3 p-4 bg-slate-50 rounded-xl">
+        <div class="text-3xl">😰</div>
+        <div>
+          <h4 class="font-bold">ความเครียดเรื้อรัง</h4>
+          <p class="text-sm text-gray-600">เพิ่มการทำงานของ sympathetic nervous system และ HPA axis</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 p-4 bg-slate-50 rounded-xl">
+        <div class="text-3xl">🦠</div>
+        <div>
+          <h4 class="font-bold">การติดเชื้อ</h4>
+          <p class="text-sm text-gray-600">Infections</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 p-4 bg-slate-50 rounded-xl">
+        <div class="text-3xl"></div>
+        <div>
+          <h4 class="font-bold">อาหารไม่ดี</h4>
+          <p class="text-sm text-gray-600">Poor diet</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 p-4 bg-slate-50 rounded-xl">
+        <div class="text-3xl">💊</div>
+        <div>
+          <h4 class="font-bold">การใช้ยาปฏิชีวนะ</h4>
+          <p class="text-sm text-gray-600">Antibiotic use</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 p-4 bg-slate-50 rounded-xl">
+        <div class="text-3xl">️</div>
+        <div>
+          <h4 class="font-bold">การไม่ออกกำลังกาย</h4>
+          <p class="text-sm text-gray-600">Inactivity</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 p-4 bg-slate-50 rounded-xl">
+        <div class="text-3xl">🌍</div>
+        <div>
+          <h4 class="font-bold">ปัจจัยสิ่งแวดล้อม</h4>
+          <p class="text-sm text-gray-600">Environmental factors</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: โรคที่เกี่ยวข้อง -->
+<section id="diseases" class="section">
+  <div class="card bg-white rounded-2xl shadow-xl p-6 md:p-8 mb-6">
+    <h2 class="text-2xl font-bold text-teal-700 mb-4"> โรคที่เกี่ยวข้องกับ MGBA และโรคแทรกซ้อน</h2>
+    <p class="text-gray-700 mb-4">
+      สุนัขที่มีโรคทางพฤติกรรม, CCDS และ/หรือ IE มักถูกการุณยฆาตเนื่องจากคุณภาพชีวิตที่ไม่ดี
+    </p>
+
+    <h3 class="text-xl font-bold text-teal-600 mt-6 mb-3">📊 ตารางที่ 1: โรคที่เกี่ยวข้องกับ MGBA</h3>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm border-collapse">
+        <thead>
+          <tr class="bg-gradient-to-r from-gray-600 to-gray-700 text-white">
+            <th class="p-3 text-left">โรคที่เกี่ยวข้อง</th>
+            <th class="p-3 text-left">อายุขัยเฉลี่ยหลังวินิจฉัย</th>
+            <th class="p-3 text-left">สาเหตุหลักของการเสียชีวิต</th>
+            <th class="p-3 text-left">ผลลัพธ์หลังการรักษา</th>
+            <th class="p-3 text-left">ปัจจัยพยากรณ์โรคที่ไม่ดี</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="bg-gray-50 border-b">
+            <td class="p-3 font-semibold">โรคลมชักไม่ทราบสาเหตุ (IE)</td>
+            <td class="p-3">~5.5 ปี หลัง episode แรก</td>
+            <td class="p-3">การการุณยฆาต (52% เกี่ยวข้องกับลมชัก)</td>
+            <td class="p-3">~40% ปลอดชัก; 64.5% ลดลง ≥50%</td>
+            <td class="p-3">Cluster seizures, status epilepticus, เพศผู้ทำหมัน, สายพันธุ์บางชนิด</td>
+          </tr>
+          <tr class="bg-white border-b">
+            <td class="p-3 font-semibold">โรคทางพฤติกรรม</td>
+            <td class="p-3">แปรผัน; ต้องรักษาตลอดชีวิต</td>
+            <td class="p-3">การการุณยฆาตหรือการปล่อยทิ้ง</td>
+            <td class="p-3">ส่วนใหญ่ดีขึ้น; ไม่มีรายใด "หายขาด"</td>
+            <td class="p-3">ความก้าวร้าวต่อมนุษย์, ความสามารถของเจ้าของ, การรักษาล่าช้า</td>
+          </tr>
+          <tr class="bg-gray-50">
+            <td class="p-3 font-semibold">CCDS</td>
+            <td class="p-3">ไม่ทำให้อายุขัยสั้นลง</td>
+            <td class="p-3">การการุณยฆาตเพื่อคุณภาพชีวิต (ภายใน 2 ปี หากอาการรุนแรง)</td>
+            <td class="p-3">77% ดีขึ้นด้วย selegiline</td>
+            <td class="p-3">ความรุนแรงตอนวินิจฉัย, ไม่ได้รับการรักษาแต่เนิ่นๆ</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="text-xs text-gray-500 mt-2 italic">MGBA = microbiota–gut–brain axis</p>
+  </div>
+
+  <div class="card bg-white rounded-2xl shadow-xl p-6 md:p-8 mb-6">
+    <h3 class="text-xl font-bold text-teal-600 mb-3">📊 ตารางที่ 2: โรคแทรกซ้อนที่อาจเกิดขึ้น</h3>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm border-collapse">
+        <thead>
+          <tr class="bg-gradient-to-r from-gray-600 to-gray-700 text-white">
+            <th class="p-3 text-left">โรคหลักและโรคแทรกซ้อน</th>
+            <th class="p-3 text-left">ตัวอย่าง</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="bg-gray-200"><td colspan="2" class="p-3 font-bold">โรคทางพฤติกรรม</td></tr>
+          <tr class="bg-white border-b">
+            <td class="p-3">CIE (Chronic Inflammatory Enteropathy)</td>
+            <td class="p-3">CIE และพฤติกรรมที่เกี่ยวข้องกับการแยกจาก</td>
+          </tr>
+          <tr class="bg-gray-50 border-b">
+            <td class="p-3">โรคทางเดินอาหารอื่นๆ</td>
+            <td class="p-3">กรดไหลย้อนและเลียพื้นผิวมากเกินไป</td>
+          </tr>
+          <tr class="bg-gray-200"><td colspan="2" class="p-3 font-bold">โรคลมชักไม่ทราบสาเหตุ (IE)</td></tr>
+          <tr class="bg-white border-b">
+            <td class="p-3">โรคทางพฤติกรรม</td>
+            <td class="p-3">IE และพฤติกรรมก้าวร้าว</td>
+          </tr>
+          <tr class="bg-gray-50">
+            <td class="p-3">CCDS</td>
+            <td class="p-3">IE ในสุนัขอายุ 6 ปี ที่มี CCDS ระดับปานกลาง</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="text-xs text-gray-500 mt-2 italic">CCDS = canine cognitive dysfunction syndrome; CIE = chronic inflammatory enteropathy; IE = idiopathic epilepsy</p>
+  </div>
+
+  <div class="card bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl shadow-xl p-6 md:p-8">
+    <h2 class="text-2xl font-bold text-purple-700 mb-4">🔍 สัญญาณพฤติกรรมที่ไม่寻常ของโรคทางเดินอาหาร</h2>
+    <div class="grid md:grid-cols-2 gap-4">
+      <div class="bg-white p-4 rounded-xl shadow">
+        <h4 class="font-bold text-purple-700 mb-2">🍽️ Pica (กินสิ่งที่ไม่ใช่อาหาร)</h4>
+        <p class="text-sm text-gray-600">อาจเป็นสัญญาณของ gastroenteritis เรื้อรัง</p>
+      </div>
+      <div class="bg-white p-4 rounded-xl shadow">
+        <h4 class="font-bold text-purple-700 mb-2">👅 การเลียมากเกินไป</h4>
+        <p class="text-sm text-gray-600">เลียอากาศ, เลียพื้นผิว, groom มากเกินไป - 14/19 สุนัขมีความผิดปกติทางเดินอาหาร</p>
+      </div>
+      <div class="bg-white p-4 rounded-xl shadow">
+        <h4 class="font-bold text-purple-700 mb-2"> Fly Biting</h4>
+        <p class="text-sm text-gray-600">พฤติกรรมกัดอากาศ - ส่วนใหญ่มีโรคทางเดินอาหารแฝง</p>
+      </div>
+      <div class="bg-white p-4 rounded-xl shadow">
+        <h4 class="font-bold text-purple-700 mb-2">⭐ Star Gazing</h4>
+        <p class="text-sm text-gray-600">จ้องมองท้องฟ้า - พบใน Yorkshire terrier ที่มีการไหลย้อน</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: การจัดการ -->
+<section id="management" class="section">
+  <div class="card bg-white rounded-2xl shadow-xl p-6 md:p-8 mb-6">
+    <h2 class="text-2xl font-bold text-teal-700 mb-4">💊 การรักษาที่เป็นไปได้</h2>
+    <div class="grid md:grid-cols-2 gap-4 mb-6">
+      <div class="bg-blue-50 p-4 rounded-xl border-l-4 border-blue-500">
+        <h3 class="font-bold text-blue-700 mb-2"> การรักษาที่สมอง</h3>
+        <ul class="text-sm text-gray-700 space-y-1">
+          <li>• Behavior modification</li>
+          <li>• Psychoactive medications</li>
+          <li>• Anticonvulsants (สำหรับ IE)</li>
+          <li>• Selegiline (สำหรับ CCDS)</li>
+        </ul>
+      </div>
+      <div class="bg-green-50 p-4 rounded-xl border-l-4 border-green-500">
+        <h3 class="font-bold text-green-700 mb-2">🦠 การรักษาที่ลำไส้</h3>
+        <ul class="text-sm text-gray-700 space-y-1">
+          <li>• Prebiotics</li>
+          <li>• Probiotics</li>
+          <li>• Synbiotics</li>
+          <li>• Postbiotics</li>
+          <li>• Fecal Microbiota Transplantation (FMT)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="bg-amber-50 p-4 rounded-xl border-l-4 border-amber-500">
+      <h3 class="font-bold text-amber-700 mb-2"> ผลการศึกษา FMT ในสุนัข</h3>
+      <ul class="text-sm text-gray-700 space-y-2">
+        <li>✅ สุนัข CIE: เจ้าของสังเกตเห็นกิจกรรมเพิ่มขึ้นและคุณภาพชีวิตดีขึ้น</li>
+        <li>✅ สุนัข IE ดื้อยา 9 ตัว: พฤติกรรมและคุณภาพชีวิตดีขึ้นทั้งหมด, 4 ตัวมี seizure cluster days ลดลง 50%</li>
+        <li>✅ สุนัขตำรวจ 20 ตัว: FMT ลดอัตราท้องเสียและตัวบ่งชี้ความเครียด</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card bg-white rounded-2xl shadow-xl p-6 md:p-8 mb-6">
+    <h2 class="text-2xl font-bold text-teal-700 mb-4">📋 หลักการจัดการโรค MGBA</h2>
+    <div class="space-y-4">
+      <div class="flex items-start gap-3 p-4 bg-teal-50 rounded-xl">
+        <div class="text-2xl">1️⃣</div>
+        <div>
+          <h4 class="font-bold text-teal-700">รักษาทั้งสองภาวะพร้อมกัน</h4>
+          <p class="text-sm text-gray-600">เมื่อมีทั้ง CIE และปัญหาสุขภาพจิต ต้องจัดการทั้งสองอย่างพร้อมกัน</p>
+        </div>
+      </div>
+      <div class="flex items-start gap-3 p-4 bg-teal-50 rounded-xl">
+        <div class="text-2xl">2️⃣</div>
+        <div>
+          <h4 class="font-bold text-teal-700">ใช้แนวทาง Food Allergy Trial</h4>
+          <p class="text-sm text-gray-600">จำกัดอาหารเฉพาะที่เลือก งด treats, chews, supplements อื่นๆ</p>
+        </div>
+      </div>
+      <div class="flex items-start gap-3 p-4 bg-teal-50 rounded-xl">
+        <div class="text-2xl">3️⃣</div>
+        <div>
+          <h4 class="font-bold text-teal-700">เปลี่ยนแปลงทีละอย่าง</h4>
+          <p class="text-sm text-gray-600">เปลี่ยนยาหรืออาหารทีละอย่าง เพื่อประเมินผลได้ชัดเจน</p>
+        </div>
+      </div>
+      <div class="flex items-start gap-3 p-4 bg-teal-50 rounded-xl">
+        <div class="text-2xl">4️⃣</div>
+        <div>
+          <h4 class="font-bold text-teal-700">บันทึกคะแนนทุกวัน</h4>
+          <p class="text-sm text-gray-600">บันทึกอาการทางเดินอาหารและพฤติกรรมเป็นตัวเลข เพื่อติดตามแนวโน้ม</p>
+        </div>
+      </div>
+      <div class="flex items-start gap-3 p-4 bg-teal-50 rounded-xl">
+        <div class="text-2xl">5️⃣</div>
+        <div>
+          <h4 class="font-bold text-teal-700">เตรียม "Rescue" medications</h4>
+          <p class="text-sm text-gray-600">มียาและแผนโภชนาการสำรองสำหรับเหตุการณ์ไม่คาดฝัน</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl shadow-xl p-6 md:p-8">
+    <h2 class="text-2xl font-bold text-indigo-700 mb-4">📊 Box A: ระบบติดตามที่เจ้าของสร้างเอง</h2>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div>
+        <h3 class="font-bold text-indigo-600 mb-3">🧠 พฤติกรรม</h3>
+        <div class="space-y-3">
+          <details class="bg-white p-3 rounded-lg shadow">
+            <summary class="font-semibold"> การเลียพื้นผิว</summary>
+            <ul class="mt-2 text-sm space-y-1 text-gray-600">
+              <li>1 = เลีย obsessively หลังอาหารทุกมื้อ</li>
+              <li>3 = เลีย obsessively ตอนกลางคืน</li>
+              <li>5 = ไม่เลีย พักผ่อนสบายหลังอาหาร</li>
+            </ul>
+          </details>
+          <details class="bg-white p-3 rounded-lg shadow">
+            <summary class="font-semibold">️ การส่งเสียง</summary>
+            <ul class="mt-2 text-sm space-y-1 text-gray-600">
+              <li>1 = ครางและเห่าหลังอาหาร</li>
+              <li>3 = ครางและเห่าหลังมื้อสุดท้าย</li>
+              <li>5 = เงียบและพักผ่อนหลังอาหาร</li>
+            </ul>
+          </details>
+          <details class="bg-white p-3 rounded-lg shadow">
+            <summary class="font-semibold">💪 ความกล้า</summary>
+            <ul class="mt-2 text-sm space-y-1 text-gray-600">
+              <li>1 = อยู่ภายใน 3 ฟุตจากเจ้าของ</li>
+              <li>3 = รอให้เจ้าของออกไปก่อน</li>
+              <li>5 = เข้า dog yard ได้เอง</li>
+            </ul>
+          </details>
+        </div>
+      </div>
+      <div>
+        <h3 class="font-bold text-indigo-600 mb-3">️ ทางเดินอาหาร</h3>
+        <div class="space-y-3">
+          <details class="bg-white p-3 rounded-lg shadow">
+            <summary class="font-semibold">🍽️ ความอยากอาหาร</summary>
+            <ul class="mt-2 text-sm space-y-1 text-gray-600">
+              <li>1 = ปฏิเสธอาหาร</li>
+              <li>3 = เลือกกิน</li>
+              <li>5 = กินทุกมื้อเอง</li>
+            </ul>
+          </details>
+          <details class="bg-white p-3 rounded-lg shadow">
+            <summary class="font-semibold">💧 การดื่มน้ำ</summary>
+            <ul class="mt-2 text-sm space-y-1 text-gray-600">
+              <li>1 = สำลักหลังดื่ม</li>
+              <li>3 = กลัว/ปฏิเสธดื่มจากชาม</li>
+              <li>5 = ดื่มจากชามสุนัขปกติ</li>
+            </ul>
+          </details>
+          <details class="bg-white p-3 rounded-lg shadow">
+            <summary class="font-semibold">💩 อุจจาระ</summary>
+            <ul class="mt-2 text-sm space-y-1 text-gray-600">
+              <li>1 = เหลว</li>
+              <li>3 = บางส่วนนิ่ม บางส่วนปกติ</li>
+              <li>5 = ปกติทั้งหมด</li>
+            </ul>
+          </details>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: กรณีศึกษา -->
+<section id="case" class="section">
+  <div class="card bg-white rounded-2xl shadow-xl p-6 md:p-8 mb-6">
+    <h2 class="text-2xl font-bold text-teal-700 mb-4">📋 กรณีศึกษา: Bliss สุนัขพันธุ์ Poodle</h2>
+    <div class="bg-gradient-to-r from-teal-50 to-cyan-50 p-4 rounded-xl mb-4">
+      <h3 class="font-bold text-teal-700 mb-2">🐕 ข้อมูลสุนัข</h3>
+      <ul class="text-gray-700 space-y-1">
+        <li>• <strong>ชื่อ:</strong> Bliss</li>
+        <li>• <strong>สายพันธุ์:</strong> Miniature Poodle</li>
+        <li>• <strong>อายุ:</strong> 3 ปี เพศผู้ไม่ทำหมัน</li>
+        <li>• <strong>น้ำหนัก:</strong> 6.27 kg (13.8 lb)</li>
+        <li>• <strong>BCS:</strong> 3/9</li>
+        <li>• <strong>วินิจฉัย:</strong> Lymphoplasmacytic CIE, Generalized Anxiety Disorder, Noise Phobias</li>
+      </ul>
+    </div>
+
+    <div class="bg-red-50 p-4 rounded-xl mb-4 border-l-4 border-red-400">
+      <h3 class="font-bold text-red-700 mb-2">⚠️ อาการ</h3>
+      <p class="text-gray-700">ปฏิเสธอาหารและน้ำ, เรอซ้ำ, อาเจียนน้ำดี, อุจจาระเหลวมีเลือดและเมือก, anorexia สมบูรณ์, ไม่ยอมดื่มจากชาม, ท้องเสียเหลว, น้ำหนักลด</p>
+    </div>
+
+    <div class="bg-blue-50 p-4 rounded-xl mb-4 border-l-4 border-blue-400">
+      <h3 class="font-bold text-blue-700 mb-2">💊 แผนการรักษาเดิม</h3>
+      <ul class="text-gray-700 text-sm space-y-1">
+        <li>• Buspirone 7.5 mg q12h</li>
+        <li>• Gabapentin 25 mg q12h</li>
+        <li>• Rescue: Alprazolam, Gabapentin, Sileo</li>
+        <li>• Desensitization programs</li>
+      </ul>
+    </div>
+
+    <div class="bg-green-50 p-4 rounded-xl border-l-4 border-green-400">
+      <h3 class="font-bold text-green-700 mb-2">✅ แผนโภชนาการใหม่</h3>
+      <ul class="text-gray-700 text-sm space-y-1">
+        <li>• Diet trials เพื่อหาอาหารที่เหมาะสม</li>
+        <li>• เป้าหมาย BCS 6/9</li>
+        <li>• High-value treats สำหรับ desensitization</li>
+        <li>• Visbiome Vet 1 capsule q24h</li>
+        <li>• เปลี่ยนทีละอย่างเท่านั้น</li>
+        <li>• บันทึกคะแนนทุกวัน</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card bg-white rounded-2xl shadow-xl p-6 md:p-8 mb-6">
+    <h2 class="text-2xl font-bold text-teal-700 mb-4">📈 Figure A: การติดตาม 11/3/21 - 11/19/21</h2>
+    <p class="text-gray-600 mb-4 text-sm">ช่วงที่เปลี่ยนเป็น homemade diet - อาการแย่ลง</p>
+    <div class="bg-gray-50 p-4 rounded-xl">
+      <canvas id="chartA" height="300"></canvas>
+    </div>
+  </div>
+
+  <div class="card bg-white rounded-2xl shadow-xl p-6 md:p-8 mb-6">
+    <h2 class="text-2xl font-bold text-teal-700 mb-4">📈 Figure B: การติดตาม 2/1/22 - 2/17/22</h2>
+    <p class="text-gray-600 mb-4 text-sm">ช่วงที่เปลี่ยนเป็น hydrolyzed diet - อาการดีขึ้น (พื้นที่สีเทา = วัน groom)</p>
+    <div class="bg-gray-50 p-4 rounded-xl relative">
+      <canvas id="chartB" height="300"></canvas>
+    </div>
+  </div>
+
+  <div class="card bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl shadow-xl p-6 md:p-8">
+    <h2 class="text-2xl font-bold text-emerald-700 mb-4">🎉 ผลลัพธ์</h2>
+    <p class="text-gray-700 leading-relaxed">
+      หลังจากติดตามและปรึกษากับทีมสัตวแพทย์เป็นเวลา <strong>3 ปี</strong> Bliss และครอบครัวย้ายไปฝรั่งเศส ปัจจุบัน Bliss ยังคงกิน hydrolyzed diet, ได้รับยาปรับพฤติกรรม และมี<strong class="text-emerald-600">คุณภาพชีวิตที่ดี</strong> ตามที่เจ้าของรายงาน
+    </p>
+  </div>
+</section>
+
+<!-- SECTION: แบบทดสอบ -->
+<section id="quiz" class="section">
+  <div class="card bg-white rounded-2xl shadow-xl p-6 md:p-8 mb-6">
+    <h2 class="text-2xl font-bold text-teal-700 mb-6 flex items-center gap-2"> แบบทดสอบ (Quiz)</h2>
+    <div id="quiz-container" class="space-y-6">
+      <!-- Questions will be injected here -->
+    </div>
+    <div class="mt-8 flex justify-center">
+      <button onclick="submitQuiz()" id="submitBtn" class="bg-gradient-to-r from-teal-500 to-cyan-500 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:shadow-xl transition-all hover:scale-105">
+        ส่งคำตอบ
+      </button>
+    </div>
+    <div id="score-display" class="hidden mt-6 text-center">
+      <div class="bg-gradient-to-r from-teal-100 to-cyan-100 p-6 rounded-2xl">
+        <div class="text-6xl mb-2" id="score-emoji">🎉</div>
+        <h3 class="text-2xl font-bold text-teal-700">คะแนนของคุณ</h3>
+        <div class="text-5xl font-bold text-teal-600 my-4" id="score-text">0/5</div>
+        <p class="text-gray-600" id="score-message"></p>
+        <button onclick="resetQuiz()" class="mt-4 bg-teal-500 text-white px-6 py-2 rounded-full hover:bg-teal-600 transition">
+          ทำใหม่
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="bg-gradient-to-r from-teal-700 to-cyan-700 text-white py-6 mt-12">
+  <div class="max-w-6xl mx-auto px-4 text-center">
+    <p class="text-sm">📚 สรุปจากบทความ: Role of the Microbiota–Gut–Brain Axis in Behavioral and Neurologic Disorders</p>
+    <p class="text-xs text-teal-200 mt-2">สร้างเพื่อการศึกษาเท่านั้น</p>
+  </div>
+</footer>
+
+<script>
+// Tab Navigation
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('[id^="tab-"]').forEach(t => {
+    t.classList.remove('tab-active');
+    t.classList.add('tab-inactive');
+  });
+  document.getElementById(id).classList.add('active');
+  document.getElementById('tab-' + id).classList.remove('tab-inactive');
+  document.getElementById('tab-' + id).classList.add('tab-active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  
+  if (id === 'case') {
+    setTimeout(initCharts, 100);
+  }
+}
+
+// Quiz Data
+const quizData = [
+  {
+    q: "1. ข้อใดสัมพันธ์กับความผิดปกติของ MGBA?",
+    options: ["a. Dysbiosis", "b. Parvovirus infection", "c. Intervertebral disk disease", "d. Dental disease"],
+    correct: 0
+  },
+  {
+    q: "2. ข้อใดอธิบายคำแนะนำด้านอาหารสำหรับสุนัขที่มีโรค MGBA ได้ดีที่สุด?",
+    options: [
+      "a. อาหารดิบโฮมเมดช่วยปรับปรุง dysbiosis",
+      "b. อาหารกระป๋องมักน่ากินกว่า",
+      "c. ควรแนะนำอาหารรักษาที่มีส่วนผสมเฉพาะเพื่อสนับสนุนสุขภาพทางเดินอาหารและสมอง",
+      "d. อาหารไขมันสูงทั่วไปมีประโยชน์ต่อสุนัข IE"
+    ],
+    correct: 2
+  },
+  {
+    q: "3. ข้อใดไม่ถือเป็นการรักษาที่ลำไส้และจุลินทรีย์โดยตรง?",
+    options: ["a. Prebiotics", "b. Alprazolam", "c. Probiotics", "d. Fecal microbiota transplantation"],
+    correct: 1
+  },
+  {
+    q: "4. ข้อใดเกี่ยวกับโรคแทรกซ้อนในสุนัขที่มีโรคทางพฤติกรรมถูกต้องที่สุด?",
+    options: [
+      "a. สุนัขที่มีภูมิแพ้เรื้อรังมักมีโรคทางพฤติกรรม",
+      "b. สุนัขที่มีโรคทางพฤติกรรมมีความเสี่ยงสูงต่อ CCDS",
+      "c. สุนัขที่เกิดจากการผ่าคลอดมักมี dysbiosis และโรคทางพฤติกรรม",
+      "d. CIE และโรคทางเดินอาหารอื่นๆ สามารถเป็นโรคแทรกซ้อนในสุนัขที่มีโรคทางพฤติกรรม"
+    ],
+    correct: 3
+  },
+  {
+    q: "5. ข้อใดอธิบายโรคแทรกซ้อนในสุนัขที่มี IE ได้ดีที่สุด?",
+    options: [
+      "a. สุนัขที่มี IE อาจมีโรคทางพฤติกรรม, CCDS หรือทั้งสองอย่าง",
+      "b. สุนัขที่มี IE มักมี CIE และ dysbiosis มากกว่า",
+      "c. โรคภูมิแพ้ในสุนัขมักพบร่วมกับ IE แต่ไม่พบในแมว",
+      "d. เฉพาะสุนัขที่มี IE ดื้อยามักมี CIE"
+    ],
+    correct: 0
+  }
+];
+
+let userAnswers = new Array(5).fill(null);
+
+function renderQuiz() {
+  const container = document.getElementById('quiz-container');
+  container.innerHTML = quizData.map((q, i) => `
+    <div class="bg-slate-50 p-4 rounded-xl border-2 border-slate-200">
+      <h3 class="font-bold text-gray-800 mb-3">${q.q}</h3>
+      <div class="space-y-2">
+        ${q.options.map((opt, j) => `
+          <div class="quiz-option bg-white p-3 rounded-lg border-2 border-slate-200 ${userAnswers[i] === j ? 'border-teal-500 bg-teal-50' : ''}" 
+               onclick="selectAnswer(${i}, ${j})" id="q${i}-opt${j}">
+            ${opt}
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function selectAnswer(qIdx, optIdx) {
+  userAnswers[qIdx] = optIdx;
+  document.querySelectorAll(`[id^="q${qIdx}-opt"]`).forEach(el => {
+    el.classList.remove('border-teal-500', 'bg-teal-50');
+  });
+  document.getElementById(`q${qIdx}-opt${optIdx}`).classList.add('border-teal-500', 'bg-teal-50');
+}
+
+function submitQuiz() {
+  if (userAnswers.includes(null)) {
+    alert('กรุณาตอบทุกข้อ');
+    return;
+  }
+  
+  let score = 0;
+  quizData.forEach((q, i) => {
+    const selected = document.getElementById(`q${i}-opt${userAnswers[i]}`);
+    const correct = document.getElementById(`q${i}-opt${q.correct}`);
+    if (userAnswers[i] === q.correct) {
+      selected.classList.add('correct');
+      score++;
+    } else {
+      selected.classList.add('incorrect');
+      correct.classList.add('correct');
+    }
+  });
+  
+  document.getElementById('submitBtn').classList.add('hidden');
+  document.getElementById('score-display').classList.remove('hidden');
+  document.getElementById('score-text').textContent = `${score}/5`;
+  
+  let emoji, message;
+  if (score === 5) { emoji = ''; message = 'ยอดเยี่ยม! คุณเข้าใจเนื้อหาอย่างถ่องแท้'; }
+  else if (score >= 3) { emoji = '👍'; message = 'ดีมาก! คุณเข้าใจเนื้อหาส่วนใหญ่'; }
+  else { emoji = '📚'; message = 'ลองทบทวนเนื้อหาอีกครั้งนะ'; }
+  
+  document.getElementById('score-emoji').textContent = emoji;
+  document.getElementById('score-message').textContent = message;
+  
+  document.getElementById('score-display').scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetQuiz() {
+  userAnswers = new Array(5).fill(null);
+  document.getElementById('submitBtn').classList.remove('hidden');
+  document.getElementById('score-display').classList.add('hidden');
+  renderQuiz();
+}
+
+// Charts
+let chartA, chartB;
+function initCharts() {
+  if (chartA) chartA.destroy();
+  if (chartB) chartB.destroy();
+  
+  const ctxA = document.getElementById('chartA');
+  if (ctxA) {
+    chartA = new Chart(ctxA, {
+      type: 'line',
+      data: {
+        labels: ['11/3/21\n6.4 kg', '11/7/21\n6.6 kg', '11/11/21\n6.4 kg', '11/15/21\n6.1 kg', '11/19/21\n5.9 kg'],
+        datasets: [
+          { label: 'ความอยากอาหาร', data: [3, 5, 4, 1, 1], borderColor: '#0d9488', backgroundColor: '#0d9488', tension: 0.3 },
+          { label: 'การดื่มน้ำ', data: [3, 5, 2, 1, 1], borderColor: '#0ea5e9', backgroundColor: '#0ea5e9', tension: 0.3 },
+          { label: 'อุจจาระ', data: [3, 5, 4, 1, 1], borderColor: '#1e40af', backgroundColor: '#1e40af', tension: 0.3 },
+          { label: 'การเลียพื้นผิว', data: [3, 5, 4, 1, 1], borderColor: '#ea580c', backgroundColor: '#ea580c', tension: 0.3 },
+          { label: 'การส่งเสียง', data: [3, 5, 4, 1, 1], borderColor: '#be123c', backgroundColor: '#be123c', tension: 0.3 },
+          { label: 'ความกล้า', data: [5, 5, 1, 2, 2], borderColor: '#f59e0b', backgroundColor: '#f59e0b', tension: 0.3 }
+        ]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: { min: 1, max: 5, title: { display: true, text: 'คะแนน (1-5)' } }
+        },
+        plugins: {
+          legend: { position: 'top' }
+        }
+      }
+    });
+  }
+  
+  const ctxB = document.getElementById('chartB');
+  if (ctxB) {
+    chartB = new Chart(ctxB, {
+      type: 'line',
+      data: {
+        labels: ['2/1/22\n7.7 kg', '2/5/22\n7.7 kg', '2/9/22\n7.8 kg', '2/13/22\n7.3 kg', '2/17/22\n7 kg'],
+        datasets: [
+          { label: 'ความอยากอาหาร', data: [5, 5, 1, 3, 5], borderColor: '#0d9488', backgroundColor: '#0d9488', tension: 0.3 },
+          { label: 'การดื่มน้ำ', data: [5, 5, 1, 3, 4], borderColor: '#0ea5e9', backgroundColor: '#0ea5e9', tension: 0.3 },
+          { label: 'อุจจาระ', data: [5, 5, 1, 3, 5], borderColor: '#1e40af', backgroundColor: '#1e40af', tension: 0.3 },
+          { label: 'การเลียพื้นผิว', data: [5, 5, 1, 3, 4], borderColor: '#ea580c', backgroundColor: '#ea580c', tension: 0.3 },
+          { label: 'การส่งเสียง', data: [5, 5, 2, 3, 5], borderColor: '#be123c', backgroundColor: '#be123c', tension: 0.3 },
+          { label: 'ความกล้า', data: [5, 5, 1, 1, 4], borderColor: '#f59e0b', backgroundColor: '#f59e0b', tension: 0.3 }
+        ]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: { min: 1, max: 5, title: { display: true, text: 'คะแนน (1-5)' } }
+        },
+        plugins: {
+          legend: { position: 'top' }
+        }
+      }
+    });
+  }
+}
+
+// Initialize
+renderQuiz();
+</script>
+
+</body>
+</html>
