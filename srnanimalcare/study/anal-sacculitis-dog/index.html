@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>การรักษาโรคถุงข้างทวารอักเสบในสุนัขแบบเฉพาะที่ | SRN Animal Care</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/prompt@latest/thai-700-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/sarabun@latest/thai-400-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/sarabun@latest/thai-700-normal.css">
+<style>
+  :root{
+    --teal-950:#0b3d3a;
+    --teal-900:#134e4a;
+    --teal-700:#0f766e;
+    --teal-500:#14b8a6;
+    --teal-100:#ccfbf1;
+    --teal-50:#f0fdfa;
+    --amber-500:#f59e0b;
+    --amber-100:#fef3c7;
+    --rose-500:#f43f5e;
+    --rose-100:#ffe4e6;
+    --cream:#fbf7ef;
+    --ink:#22302e;
+    --muted:#5b6b68;
+    --card:#ffffff;
+    --shadow:0 10px 30px rgba(15,118,110,.12);
+    --radius:18px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Sarabun',sans-serif;
+    background:var(--cream);
+    color:var(--ink);
+    line-height:1.75;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,h4,.font-head{font-family:'Prompt',sans-serif}
+  img{max-width:100%;display:block}
+  sup{color:var(--teal-700);font-weight:700}
+
+  /* ---------- progress bar ---------- */
+  #progressBar{
+    position:fixed;top:0;left:0;height:5px;width:0%;
+    background:linear-gradient(90deg,var(--teal-500),var(--amber-500));
+    z-index:1000;border-radius:0 4px 4px 0;
+    transition:width .1s linear;
+  }
+
+  /* ---------- nav ---------- */
+  header{
+    position:sticky;top:0;z-index:900;
+    background:rgba(251,247,239,.92);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(15,118,110,.12);
+  }
+  .nav-wrap{
+    max-width:1150px;margin:0 auto;
+    display:flex;align-items:center;gap:14px;
+    padding:10px 22px;
+  }
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--teal-900)}
+  .brand img{width:44px;height:44px;object-fit:contain;border-radius:12px;background:#fff;padding:4px;box-shadow:var(--shadow)}
+  .brand b{font-family:'Prompt';font-size:1.02rem;line-height:1.2}
+  .brand small{display:block;font-size:.72rem;color:var(--muted);font-weight:400}
+  nav{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap}
+  nav a{
+    text-decoration:none;color:var(--muted);font-size:.86rem;font-weight:700;
+    padding:7px 12px;border-radius:999px;transition:.25s;
+  }
+  nav a:hover{background:var(--teal-100);color:var(--teal-900)}
+  nav a.active{background:var(--teal-700);color:#fff}
+
+  /* ---------- hero ---------- */
+  .hero{
+    max-width:1150px;margin:0 auto;
+    padding:56px 22px 30px;
+    display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;
+  }
+  .hero-badge{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--amber-100);color:#92400e;
+    font-weight:700;font-size:.8rem;
+    padding:6px 14px;border-radius:999px;margin-bottom:16px;
+    border:1px solid #fde68a;
+  }
+  .hero h1{
+    font-size:clamp(1.6rem,3.4vw,2.5rem);
+    color:var(--teal-900);line-height:1.35;margin-bottom:6px;
+  }
+  .hero .en{
+    font-family:'Prompt';color:var(--teal-700);
+    font-size:1rem;margin-bottom:16px;
+  }
+  .hero p.lead{color:var(--muted);font-size:1rem;max-width:56ch}
+  .hero-chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+  .chip{
+    background:#fff;border:1px solid rgba(15,118,110,.15);
+    border-radius:14px;padding:10px 16px;box-shadow:var(--shadow);
+    font-size:.85rem;font-weight:700;color:var(--teal-900);
+    display:flex;align-items:center;gap:8px;
+  }
+  .chip .dot{width:9px;height:9px;border-radius:50%;background:var(--teal-500)}
+  .hero-art{position:relative}
+  .hero-art .frame{
+    background:#fff;border-radius:26px;padding:14px;box-shadow:var(--shadow);
+    border:1px solid rgba(15,118,110,.12);
+    transform:rotate(2deg);transition:transform .5s;
+  }
+  .hero-art .frame:hover{transform:rotate(0)}
+  .hero-art img{border-radius:18px}
+  .hero-art .sticker{
+    position:absolute;background:var(--teal-700);color:#fff;
+    font-family:'Prompt';font-weight:700;font-size:.8rem;
+    padding:8px 14px;border-radius:999px;box-shadow:var(--shadow);
+  }
+  .sticker.s1{top:-12px;left:-10px;background:var(--amber-500);color:#451a03}
+  .sticker.s2{bottom:-12px;right:6px}
+
+  /* ---------- sections ---------- */
+  section{max-width:1150px;margin:0 auto;padding:52px 22px}
+  .sec-head{display:flex;align-items:center;gap:14px;margin-bottom:8px}
+  .sec-num{
+    width:46px;height:46px;flex:0 0 46px;border-radius:14px;
+    background:var(--teal-700);color:#fff;
+    display:grid;place-items:center;
+    font-family:'Prompt';font-weight:700;font-size:1.15rem;
+    box-shadow:var(--shadow);
+  }
+  .sec-head h2{color:var(--teal-900);font-size:clamp(1.25rem,2.4vw,1.7rem)}
+  .sec-head small{display:block;color:var(--muted);font-weight:400;font-size:.85rem}
+  .sec-sub{color:var(--muted);max-width:70ch;margin-bottom:26px}
+
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.show{opacity:1;transform:none}
+
+  /* ---------- research cards ---------- */
+  .grid-2{display:grid;grid-template-columns:1.05fr .95fr;gap:22px;align-items:stretch}
+  .card{
+    background:var(--card);border-radius:var(--radius);
+    border:1px solid rgba(15,118,110,.12);
+    box-shadow:var(--shadow);padding:26px;
+  }
+  .card h3{color:var(--teal-900);margin-bottom:12px;font-size:1.08rem;display:flex;gap:10px;align-items:center}
+  .card h3 .ico{
+    width:34px;height:34px;flex:0 0 34px;border-radius:10px;
+    display:grid;place-items:center;font-size:1rem;
+    background:var(--teal-100);
+  }
+  .card p{color:var(--muted);font-size:.94rem}
+  .check-list{list-style:none;margin-top:12px;display:grid;gap:10px}
+  .check-list li{
+    display:flex;gap:10px;align-items:flex-start;
+    background:var(--teal-50);border:1px dashed rgba(15,118,110,.3);
+    padding:10px 14px;border-radius:12px;font-size:.9rem;color:var(--ink);
+  }
+  .check-list li b{color:var(--teal-700)}
+  .check-list .tick{
+    flex:0 0 22px;height:22px;border-radius:50%;
+    background:var(--teal-700);color:#fff;font-size:.72rem;
+    display:grid;place-items:center;margin-top:2px;
+  }
+
+  .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:22px}
+  .stat{
+    background:#fff;border-radius:var(--radius);padding:20px 14px;text-align:center;
+    border:1px solid rgba(15,118,110,.12);box-shadow:var(--shadow);
+    transition:transform .3s;
+  }
+  .stat:hover{transform:translateY(-5px)}
+  .stat .num{
+    font-family:'Prompt';font-weight:700;font-size:2.1rem;color:var(--teal-700);line-height:1.1;
+  }
+  .stat .num span{font-size:1rem;color:var(--muted)}
+  .stat .lbl{font-size:.8rem;color:var(--muted);margin-top:4px}
+  .stat.alt .num{color:var(--amber-500)}
+
+  /* ---------- treatment timeline ---------- */
+  .treat-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:26px;align-items:start}
+  .treat-img{position:sticky;top:86px}
+  .treat-img .frame{background:#fff;border-radius:22px;padding:12px;box-shadow:var(--shadow);border:1px solid rgba(15,118,110,.12)}
+  .treat-img img{border-radius:14px}
+  .treat-img figcaption{padding:10px 6px 2px;font-size:.8rem;color:var(--muted);text-align:center}
+  .steps{display:flex;flex-direction:column;gap:14px;position:relative}
+  .steps::before{
+    content:"";position:absolute;left:26px;top:20px;bottom:20px;width:3px;
+    background:linear-gradient(var(--teal-500),var(--amber-500));border-radius:3px;
+  }
+  .step{
+    position:relative;background:#fff;border-radius:16px;
+    border:1px solid rgba(15,118,110,.14);box-shadow:var(--shadow);
+    margin-left:56px;overflow:hidden;cursor:pointer;transition:border-color .3s;
+  }
+  .step:hover{border-color:var(--teal-500)}
+  .step .badge{
+    position:absolute;left:-44px;top:16px;width:32px;height:32px;border-radius:50%;
+    background:var(--teal-700);color:#fff;font-family:'Prompt';font-weight:700;
+    display:grid;place-items:center;font-size:.9rem;border:3px solid var(--cream);
+  }
+  .step-head{display:flex;align-items:center;gap:12px;padding:16px 18px}
+  .step-head .em{font-size:1.3rem}
+  .step-head h4{color:var(--teal-900);font-size:.98rem;flex:1}
+  .step-head .arr{transition:transform .35s;color:var(--teal-700);font-size:.9rem}
+  .step.open .arr{transform:rotate(180deg)}
+  .step-body{
+    max-height:0;overflow:hidden;transition:max-height .45s ease;
+    padding:0 18px;color:var(--muted);font-size:.9rem;
+  }
+  .step.open .step-body{max-height:220px;padding-bottom:16px}
+  .step-body .tag{
+    display:inline-block;margin-top:8px;background:var(--amber-100);color:#92400e;
+    font-size:.75rem;font-weight:700;border-radius:999px;padding:3px 12px;
+  }
+
+  /* ---------- results ---------- */
+  .result-wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:22px}
+  .big-avg{
+    background:linear-gradient(135deg,var(--teal-700),var(--teal-950));
+    color:#fff;border-radius:var(--radius);padding:30px;
+    display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;
+    box-shadow:var(--shadow);position:relative;overflow:hidden;
+  }
+  .big-avg::after{
+    content:"🐾";position:absolute;font-size:7rem;opacity:.08;right:-14px;bottom:-24px;
+  }
+  .big-avg .num{font-family:'Prompt';font-size:4rem;font-weight:700;line-height:1}
+  .big-avg .num small{font-size:1.4rem}
+  .big-avg .cap{margin-top:8px;font-size:.95rem;opacity:.9}
+  .big-avg .range{
+    margin-top:14px;background:rgba(255,255,255,.15);border-radius:999px;
+    padding:6px 18px;font-size:.85rem;
+  }
+  .bars{display:flex;flex-direction:column;gap:16px}
+  .bar-item .bar-top{display:flex;justify-content:space-between;font-size:.88rem;font-weight:700;color:var(--teal-900);margin-bottom:6px}
+  .bar-item .bar-top span:last-child{color:var(--muted);font-weight:400}
+  .track{height:14px;background:#e8e2d6;border-radius:999px;overflow:hidden}
+  .fill{
+    height:100%;width:0;border-radius:999px;
+    background:linear-gradient(90deg,var(--teal-500),var(--teal-700));
+    transition:width 1.2s cubic-bezier(.22,1,.36,1);
+  }
+  .fill.amber{background:linear-gradient(90deg,#fbbf24,var(--amber-500))}
+  .fill.rose{background:linear-gradient(90deg,#fb7185,var(--rose-500))}
+
+  /* ---------- risk ---------- */
+  .risk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .risk{
+    background:#fff;border-radius:var(--radius);padding:24px;
+    border-top:5px solid var(--teal-500);
+    border-left:1px solid rgba(15,118,110,.12);border-right:1px solid rgba(15,118,110,.12);border-bottom:1px solid rgba(15,118,110,.12);
+    box-shadow:var(--shadow);transition:transform .3s;
+  }
+  .risk:hover{transform:translateY(-6px)}
+  .risk .em{font-size:2rem}
+  .risk h4{color:var(--teal-900);margin:10px 0 8px;font-size:1rem}
+  .risk p{color:var(--muted);font-size:.88rem}
+  .risk .pill{
+    display:inline-block;margin-top:12px;font-size:.75rem;font-weight:700;
+    border-radius:999px;padding:4px 14px;
+  }
+  .pill.warn{background:var(--amber-100);color:#92400e}
+  .pill.info{background:var(--teal-100);color:var(--teal-900)}
+  .pill.alert{background:var(--rose-100);color:#9f1239}
+
+  /* ---------- takeaways ---------- */
+  .take-list{display:flex;flex-direction:column;gap:14px}
+  .take{
+    background:#fff;border-radius:16px;overflow:hidden;
+    border:1px solid rgba(15,118,110,.14);box-shadow:var(--shadow);
+  }
+  .take-head{
+    width:100%;display:flex;align-items:center;gap:14px;
+    padding:18px 20px;background:none;border:none;cursor:pointer;
+    font-family:'Prompt';font-size:.98rem;font-weight:700;color:var(--teal-900);text-align:left;
+  }
+  .take-head .no{
+    flex:0 0 36px;height:36px;border-radius:12px;background:var(--amber-100);color:#92400e;
+    display:grid;place-items:center;font-size:.95rem;
+  }
+  .take-head .plus{margin-left:auto;color:var(--teal-700);font-size:1.2rem;transition:transform .3s}
+  .take.open .plus{transform:rotate(45deg)}
+  .take-body{max-height:0;overflow:hidden;transition:max-height .5s ease;color:var(--muted);font-size:.92rem;padding:0 20px}
+  .take.open .take-body{max-height:400px;padding-bottom:20px}
+  .take-body .hl{
+    display:inline-block;background:var(--teal-100);color:var(--teal-900);
+    font-weight:700;border-radius:8px;padding:2px 10px;margin:2px 2px;
+  }
+
+  /* ---------- quiz ---------- */
+  .quiz-card{background:linear-gradient(160deg,#fff,var(--teal-50));border-radius:22px;padding:30px;box-shadow:var(--shadow);border:1px solid rgba(15,118,110,.14)}
+  .quiz-q{margin-bottom:26px}
+  .quiz-q h4{color:var(--teal-900);font-size:.98rem;margin-bottom:12px}
+  .quiz-q h4 .qno{
+    display:inline-grid;place-items:center;width:26px;height:26px;border-radius:8px;
+    background:var(--teal-700);color:#fff;font-size:.8rem;margin-right:8px;
+  }
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .opt{
+    background:#fff;border:2px solid rgba(15,118,110,.18);border-radius:12px;
+    padding:10px 14px;font-size:.88rem;cursor:pointer;transition:.25s;
+    font-family:'Sarabun';color:var(--ink);text-align:left;
+  }
+  .opt:hover:not(:disabled){border-color:var(--teal-500);background:var(--teal-50)}
+  .opt.correct{background:#d1fae5;border-color:#10b981;color:#065f46;font-weight:700}
+  .opt.wrong{background:var(--rose-100);border-color:var(--rose-500);color:#9f1239;font-weight:700}
+  .opt:disabled{cursor:default;opacity:.92}
+  .quiz-foot{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:8px}
+  #quizScore{
+    font-family:'Prompt';font-weight:700;color:var(--teal-900);font-size:1rem;
+    background:#fff;border-radius:999px;padding:8px 20px;box-shadow:var(--shadow);
+  }
+  #quizReset{
+    margin-left:auto;background:var(--teal-700);color:#fff;border:none;border-radius:999px;
+    padding:10px 22px;font-family:'Prompt';font-weight:700;font-size:.88rem;cursor:pointer;transition:.25s;
+  }
+  #quizReset:hover{background:var(--teal-900)}
+  #quizMsg{width:100%;font-size:.9rem;color:var(--muted)}
+
+  /* ---------- footer ---------- */
+  footer{
+    margin-top:40px;background:var(--teal-950);color:#cbe8e4;
+    padding:40px 22px;text-align:center;font-size:.85rem;
+  }
+  footer img{width:56px;margin:0 auto 12px;border-radius:14px;background:#fff;padding:6px}
+  footer b{color:#fff;font-family:'Prompt'}
+  footer .note{max-width:70ch;margin:12px auto 0;opacity:.75}
+
+  /* ---------- responsive ---------- */
+  @media(max-width:900px){
+    .hero,.grid-2,.treat-grid,.result-wrap{grid-template-columns:1fr}
+    .stats-row{grid-template-columns:repeat(2,1fr)}
+    .risk-grid{grid-template-columns:1fr}
+    .opts{grid-template-columns:1fr}
+    .treat-img{position:static}
+    nav{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div id="progressBar"></div>
+
+<header>
+  <div class="nav-wrap">
+    <a class="brand" href="#top">
+      <img src="https://yunhfdekcjosnfwndepu.supabase.co/storage/v1/object/public/DATA%20SRNanimalcare/Logo%20symbol.png" alt="SRN Animal Care Logo">
+      <span><b>SRN Animal Care</b><small>บทสรุปงานวิจัยทางคลินิก</small></span>
+    </a>
+    <nav id="mainNav">
+      <a href="#research">งานวิจัย</a>
+      <a href="#treatment">ขั้นตอนการรักษา</a>
+      <a href="#results">ผลลัพธ์</a>
+      <a href="#risk">ปัจจัยเสี่ยง</a>
+      <a href="#takeaways">ข้อสรุป</a>
+      <a href="#quiz">ทดสอบความเข้าใจ</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<div class="hero" id="top">
+  <div>
+    <span class="hero-badge">🐶 Clinical Summary · สรุปงานวิจัยสำหรับสัตวแพทย์</span>
+    <h1>การรักษาโรคถุงข้างทวารอักเสบในสุนัขแบบเฉพาะที่</h1>
+    <div class="en">Local Treatment of Anal Sacculitis in Dogs</div>
+    <p class="lead">
+      โรคถุงข้างทวารอักเสบ (Anal sacculitis) เป็นปัญหาที่พบบ่อยในสุนัข
+      งานวิจัยนี้ศึกษาการรักษาแบบเฉพาะที่ด้วยการล้างและฉีดสารละลายเข้าภายในถุงข้างทวาร
+      ร่วมกับการประเมินปัจจัยเสี่ยง เพื่อลดการใช้ยาปฏิชีวนะแบบกิน/ฉีดอย่างไม่จำเป็น
+    </p>
+    <div class="hero-chips">
+      <div class="chip"><span class="dot"></span> Retrospective study</div>
+      <div class="chip"><span class="dot" style="background:var(--amber-500)"></span> สุนัข 33 ตัว</div>
+      <div class="chip"><span class="dot" style="background:var(--rose-500)"></span> รักษาเฉพาะที่ (Intralesional)</div>
+    </div>
+  </div>
+  <div class="hero-art">
+    <div class="frame">
+      <img src="https://image.qwenlm.ai/public_source/0f8b679d-2f7a-4ef0-ba02-1ad20d9917de/100862005-6b3f-4e44-97bf-8acd1c1e06ca.png" alt="สุนัขบีเกิลกำลังถูกตรวจบริเวณทวาร">
+    </div>
+    <span class="sticker s1">พบบ่อยในสุนัข!</span>
+    <span class="sticker s2">Anal Sacculitis</span>
+  </div>
+</div>
+
+<!-- ============ 1 RESEARCH ============ -->
+<section id="research">
+  <div class="sec-head reveal">
+    <div class="sec-num">1</div>
+    <div><h2>งานวิจัย (The Research)</h2><small>ที่มา วิธีการวินิจฉัย และประวัติการรักษาก่อนมาพบ</small></div>
+  </div>
+  <p class="sec-sub reveal">
+    โรคถุงข้างทวารอักเสบ คือ <b>การอักเสบหรือการติดเชื้อของถุงข้างทวารโดยที่ผนังถุงยังไม่เสียหายและไม่เกิดฝี (abscess)</b>
+    ซึ่งพบบ่อยในสุนัข<sup>1</sup> การศึกษาแบบย้อนหลัง (retrospective study) นี้ประเมินการรักษาแบบ intralesional
+    ในสุนัข 33 ตัว พร้อมทั้งสำรวจปัจจัยเสี่ยงของการเกิดโรค
+  </p>
+
+  <div class="grid-2">
+    <div class="card reveal">
+      <h3><span class="ico">🔬</span> เกณฑ์การวินิจฉัย</h3>
+      <p>การวินิจฉัยอาศัยอาการทางคลินิก ร่วมกับการตรวจสิ่งคัดหลั่งจากถุงข้างทวาร ดังนี้</p>
+      <ul class="check-list">
+        <li><span class="tick">✓</span><span><b>อาการทางคลินิก:</b> เลียบริเวณรอบก้น, ลากก้นกับพื้น</span></li>
+        <li><span class="tick">✓</span><span><b>สิ่งคัดหลั่งผิดปกติ:</b> สีของสารคัดหลั่งเปลี่ยนไปจากปกติ</span></li>
+        <li><span class="tick">✓</span><span><b>กล้องจุลทรรศน์:</b> พบจำนวนเซลล์อักเสบเพิ่มขึ้น</span></li>
+        <li><span class="tick">✓</span><span><b>แบคทีเรีย:</b> พบจำนวนแบคทีเรียในสิ่งคัดหลั่งเพิ่มขึ้น</span></li>
+      </ul>
+    </div>
+    <div class="card reveal">
+      <h3><span class="ico">📋</span> ประวัติก่อนมาพบสัตวแพทย์</h3>
+      <p>สุนัขหลายตัวได้รับการรักษามาก่อนหน้า แต่อาการยังคงอยู่หรือกลับมาเป็นซ้ำ แสดงถึงความจำเป็นของการรักษาแบบเฉพาะที่</p>
+      <ul class="check-list">
+        <li><span class="tick">💊</span><span><b>18 ตัว</b> เคยได้รับยาปฏิชีวนะแบบ systemic อย่างน้อย 1 คอร์ส</span></li>
+        <li><span class="tick">💧</span><span><b>8 ตัว</b> เคยได้รับการล้างหรือฉีดสารเข้าถุงข้างทวารมาก่อน</span></li>
+        <li><span class="tick">↔️</span><span><b>26 ราย</b> เป็นโรคทั้งสองข้าง (bilateral)</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="stats-row reveal">
+    <div class="stat"><div class="num"><span data-count="33">0</span></div><div class="lbl">สุนัขในการศึกษา (ตัว)</div></div>
+    <div class="stat alt"><div class="num"><span data-count="26">0</span></div><div class="lbl">เป็นทั้งสองข้าง (ราย)</div></div>
+    <div class="stat"><div class="num"><span data-count="18">0</span></div><div class="lbl">เคยได้ systemic antibiotics (ตัว)</div></div>
+    <div class="stat alt"><div class="num"><span data-count="8">0</span></div><div class="lbl">เคยล้าง/ฉีดถุงข้างทวาร (ตัว)</div></div>
+  </div>
+</section>
+
+<!-- ============ 2 TREATMENT ============ -->
+<section id="treatment">
+  <div class="sec-head reveal">
+    <div class="sec-num">2</div>
+    <div><h2>ขั้นตอนการรักษา (Local Treatment)</h2><small>คลิกแต่ละขั้นตอนเพื่อดูรายละเอียด</small></div>
+  </div>
+  <p class="sec-sub reveal">การรักษาทำแบบเฉพาะที่โดยตรงกับถุงข้างทวาร โดยทำซ้ำทุก ๆ ประมาณ 2 สัปดาห์จนกว่าสิ่งคัดหลั่งจะกลับสู่ภาวะปกติ</p>
+
+  <div class="treat-grid">
+    <figure class="treat-img reveal">
+      <div class="frame">
+        <img src="https://image.qwenlm.ai/public_source/0f8b679d-2f7a-4ef0-ba02-1ad20d9917de/17c58d088-04b7-4284-b23a-ff0cfcb4e1e3.png" alt="อุปกรณ์การรักษา ถุงข้างทวารอักเสบ">
+      </div>
+      <figcaption>อุปกรณ์ที่ใช้: syringe 6 มล., urinary catheter 3.5-Fr, สารหล่อลื่น และ sterile saline</figcaption>
+    </figure>
+
+    <div class="steps reveal">
+      <div class="step open">
+        <span class="badge">1</span>
+        <div class="step-head"><span class="em">🤲</span><h4>บีบระบายสิ่งคัดหลั่ง (Manual expression)</h4><span class="arr">▼</span></div>
+        <div class="step-body">เริ่มต้นด้วยการบีบระบาย содержимоеภายในถุงข้างทวารออกด้วยมืออย่างนุ่มนวล เพื่อลดการสะสมของสารคัดหลั่งก่อนการล้าง<span class="tag">ขั้นเตรียมการ</span></div>
+      </div>
+      <div class="step">
+        <span class="badge">2</span>
+        <div class="step-head"><span class="em">🧷</span><h4>สอดสายสวนเข้าท่อนำถุงข้างทวาร</h4><span class="arr">▼</span></div>
+        <div class="step-body">ใช้สายสวนปัสสาวะขนาด <b>3.5-French</b> ที่ตัดสั้นและทาสารหล่อลื่นแล้ว สอดเข้าทางท่อนำของถุงข้างทวาร (anal sac duct)<span class="tag">3.5-French catheter</span></div>
+      </div>
+      <div class="step">
+        <span class="badge">3</span>
+        <div class="step-head"><span class="em">💧</span><h4>ล้างถุงข้างทวารด้วย sterile saline</h4><span class="arr">▼</span></div>
+        <div class="step-body">ล้างด้วย syringe ขนาด <b>6 มล.</b> ที่บรรจุ sterile saline ล้างจนกว่าภายในถุงจะสะอาด<span class="tag">Syringe 6 mL</span></div>
+      </div>
+      <div class="step">
+        <span class="badge">4</span>
+        <div class="step-head"><span class="em">💉</span><h4>ฉีดสารละลาย otic เข้าถุงข้างทวาร</h4><span class="arr">▼</span></div>
+        <div class="step-body">ให้สารละลาย otic ที่มีส่วนผสมของ <b>สเตียรอยด์ / ยาปฏิชีวนะ / ยาต้านเชื้อรา</b> ผ่านสายสวนจนถุงข้างทวารเต็ม (โดยทั่วไปใช้ประมาณ 0.75–1.25 มล.)<span class="tag">Steroid + Antibiotic + Antifungal</span></div>
+      </div>
+      <div class="step">
+        <span class="badge">5</span>
+        <div class="step-head"><span class="em">️</span><h4>นัดรักษาซ้ำทุก ~2 สัปดาห์</h4><span class="arr">▼</span></div>
+        <div class="step-body">ทำซ้ำประมาณทุก 2 สัปดาห์ จนกว่าสิ่งคัดหลั่งภายในถุงข้างทวารจะกลับสู่ภาวะปกติ ค่าเฉลี่ยตลอดคอร์สประมาณ 2.9 ครั้ง<span class="tag">ซ้ำทุก 2 สัปดาห์</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3 RESULTS ============ -->
+<section id="results">
+  <div class="sec-head reveal">
+    <div class="sec-num">3</div>
+    <div><h2>ผลลัพธ์การรักษา (Outcomes)</h2><small>จำนวนครั้งการรักษาและผลการติดตาม</small></div>
+  </div>
+  <p class="sec-sub reveal">ผลลัพธ์โดยรวมถือว่าน่าพอใจ สุนัขส่วนใหญ่หายขาดด้วยการรักษาเฉพาะที่เพียง 2–3 ครั้ง</p>
+
+  <div class="result-wrap reveal">
+    <div class="big-avg">
+      <div class="num"><span data-count="2.9" data-dec="1">0</span><small> ครั้ง</small></div>
+      <div class="cap">จำนวนครั้งการรักษาโดยเฉลี่ย</div>
+      <div class="range">พิสัย 1 – 6 ครั้ง</div>
+    </div>
+    <div class="bars" id="barsBox">
+      <div class="bar-item">
+        <div class="bar-top"><span>✅ หายตามประเมินสัตวแพทย์ (24 ตัว)</span><span>72.7%</span></div>
+        <div class="track"><div class="fill" data-w="100"></div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-top"><span>🏠 เจ้าของรายงานว่าหาย* (4 ตัว)</span><span>12.1%</span></div>
+        <div class="track"><div class="fill amber" data-w="17"></div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-top"><span>⚠️ รักษาไม่ครบคอร์ส (5 ตัว)</span><span>15.2%</span></div>
+        <div class="track"><div class="fill rose" data-w="21"></div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-top"><span> กลับเป็นซ้ำ แต่ตอบสนองดีเมื่อรักษาเพิ่ม (3 ตัว)</span><span>9.1%</span></div>
+        <div class="track"><div class="fill amber" data-w="13"></div></div>
+      </div>
+      <p style="font-size:.78rem;color:var(--muted)">* ใน 4 ตัวนี้ การหายยังไม่ได้รับการยืนยันทางคลินิกโดยสัตวแพทย์</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4 RISK ============ -->
+<section id="risk">
+  <div class="sec-head reveal">
+    <div class="sec-num">4</div>
+    <div><h2>ปัจจัยเสี่ยงและโรคที่พบร่วม</h2><small> Obesity · Stool quality · Atopic dermatitis</small></div>
+  </div>
+  <p class="sec-sub reveal">แม้โรคอ้วนและคุณภาพอุจจาระจะเคยถูกระบุว่าเกี่ยวข้องกับการเกิดโรค แต่การศึกษานี้ยังไม่สามารถสรุปความสัมพันธ์ได้ชัดเจน</p>
+
+  <div class="risk-grid reveal">
+    <div class="risk">
+      <div class="em">⚖️</div>
+      <h4>โรคอ้วน (Obesity)</h4>
+      <p>เคยถูกระบุว่าเป็นปัจจัยเสี่ยง<sup>2,3</sup> แต่การศึกษานี้<b>ไม่สามารถสรุปความสัมพันธ์ที่แน่ชัด</b>ระหว่างโรคอ้วนกับการเกิดถุงข้างทวารอักเสบได้</p>
+      <span class="pill warn">ยังสรุปไม่ได้</span>
+    </div>
+    <div class="risk">
+      <div class="em">🍽️</div>
+      <h4>คุณภาพอุจจาระไม่ดี</h4>
+      <p>มีสุนัขเพียง <b>7 ตัว</b> เท่านั้นที่มีอุจจาระคุณภาพไม่ดี ณ เวลาที่มาพบ แม้เคยถูกระบุว่าเป็นปัจจัยเสี่ยง<sup>2,3</sup></p>
+      <span class="pill info">พบ 7 ตัว</span>
+    </div>
+    <div class="risk">
+      <div class="em">🌿</div>
+      <h4>Atopic dermatitis</h4>
+      <p>เป็น<b>โรคร่วม (comorbidity) ที่พบบ่อยที่สุด</b>ในการศึกษานี้ สะท้อนความเชื่อมโยงระหว่างโรคภูมิแพ้กับการอักเสบของถุงข้างทวาร</p>
+      <span class="pill alert">โรคร่วมที่พบบ่อยสุด</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5 TAKEAWAYS ============ -->
+<section id="takeaways">
+  <div class="sec-head reveal">
+    <div class="sec-num">5</div>
+    <div><h2>ข้อสรุปสู่การปฏิบัติ (The Takeaways)</h2><small>คลิกเพื่อเปิดอ่านรายละเอียดของแต่ละข้อ</small></div>
+  </div>
+  <p class="sec-sub reveal">ประเด็นสำคัญที่สามารถนำไปประยุกต์ใช้ทางคลินิกได้ทันที</p>
+
+  <div class="take-list reveal">
+    <div class="take open">
+      <button class="take-head"><span class="no">1</span> วินิจฉัยแบบองค์รวม + ควบคุมโรคร่วม ลดการกลับเป็นซ้ำ<sup>4</sup><span class="plus">＋</span></button>
+      <div class="take-body">
+        ควรใช้ทั้ง <span class="hl">อาการทางคลินิก</span><span class="hl">การตรวจด้วยตาเปล่า</span><span class="hl">การตรวจทางกล้องจุลทรรศน์</span> ในการวินิจฉัย
+        และการจัดการโรคร่วม เช่น <span class="hl">ภูมิแพ้</span><span class="hl">อุจจาระนิ่ม</span><span class="hl">โรคอ้วน</span> อาจช่วยลดการกลับเป็นซ้ำได้
+      </div>
+    </div>
+    <div class="take">
+      <button class="take-head"><span class="no">2</span> รักษาเฉพาะที่ด้วย otic preparation ลดการใช้ systemic antibiotics<sup>5,6</sup><span class="plus">＋</span></button>
+      <div class="take-body">
+        การให้สารละลาย otic แบบเฉพาะที่ (โดยทั่วไป <span class="hl">0.75–1.25 มล.</span>) ส่งเสริมการใช้ยาปฏิชีวนะแบบ systemic อย่างเหมาะสมและคุ้มค่า
+        ซึ่งสำคัญมากใน <b>ผู้ป่วยโรคภูมิแพ้</b> ที่มักได้รับยาปฏิชีวนะจำนวนมากจาก bacterial pyoderma อยู่แล้ว
+      </div>
+    </div>
+    <div class="take">
+      <button class="take-head"><span class="no">3</span> การฉีดครั้งแรกอาจเจ็บ → แนะนำ moderate sedation<span class="plus">＋</span></button>
+      <div class="take-body">
+        การฉีดเข้าถุงข้างทวารครั้งแรกมักทำให้สุนัขเจ็บ จึงแนะนำให้วางสงบระดับปานกลาง ผู้เขียนนิยมใช้
+        <span class="hl">butorphanol + dexmedetomidine</span> ในครั้งแรก และใช้ <span class="hl">butorphanol เดี่ยว</span> ในครั้งถัดไป
+        นอกจากนี้สามารถใช้ <span class="hl">IV catheter ขนาด 20 หรือ 22 gauge (ถอดเข็มออก)</span> แทน urinary catheter ได้
+      </div>
+    </div>
+    <div class="take">
+      <button class="take-head"><span class="no">4</span> อาการเลีย/ลากก้น ไม่ได้เกิดจากโรคถุงข้างทวารเสมอไป<sup>7</sup><span class="plus">＋</span></button>
+      <div class="take-body">
+        หากบีบแล้วถุงข้างทวาร<b>ว่างเปล่า</b> หรืออาการไม่หายหลังบีบระบาย ควรนึกถึง <span class="hl">ปรสิตภายนอก</span> และ <span class="hl">ภูมิแพ้</span>
+        มีงานวิจัยพบว่าประมาณ <span class="hl">50%</span> ของสุนัขที่มีอาการคันรอบก้นซึ่งไม่หายหลังบีบถุงข้างทวาร
+        มีสาเหตุจาก environmental allergies หรือ food allergy
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6 QUIZ ============ -->
+<section id="quiz">
+  <div class="sec-head reveal">
+    <div class="sec-num">6</div>
+    <div><h2>ทดสอบความเข้าใจ</h2><small>เช็กว่าคุณจับประเด็นสำคัญได้ครบหรือไม่</small></div>
+  </div>
+  <p class="sec-sub reveal">เลือกคำตอบที่ถูกต้องแต่ละข้อ ระบบจะตรวจให้ทันที</p>
+
+  <div class="quiz-card reveal" id="quizCard">
+    <div class="quiz-q" data-ans="1">
+      <h4><span class="qno">Q1</span>โดยเฉลี่ย สุนัขแต่ละตัวได้รับการรักษากี่ครั้ง?</h4>
+      <div class="opts">
+        <button class="opt">1.5 ครั้ง</button>
+        <button class="opt">2.9 ครั้ง</button>
+        <button class="opt">4 ครั้ง</button>
+        <button class="opt">6 ครั้ง</button>
+      </div>
+    </div>
+    <div class="quiz-q" data-ans="1">
+      <h4><span class="qno">Q2</span>การฉีดเข้าถุงข้างทวาร "ครั้งแรก" ผู้เขียนแนะนำการวางสงบแบบใด?</h4>
+      <div class="opts">
+        <button class="opt">butorphanol เดี่ยว</button>
+        <button class="opt">butorphanol + dexmedetomidine</button>
+        <button class="opt">ไม่ต้องวางสงบ</button>
+        <button class="opt">วางยาสลบทั่วไป</button>
+      </div>
+    </div>
+    <div class="quiz-q" data-ans="0">
+      <h4><span class="qno">Q3</span>ปริมาณ otic preparation ที่ใช้โดยทั่วไปต่อการรักษาหนึ่งครั้งคือเท่าใด?</h4>
+      <div class="opts">
+        <button class="opt">0.75–1.25 มล.</button>
+        <button class="opt">6 มล.</button>
+        <button class="opt">10 มล.</button>
+        <button class="opt">0.1 มล.</button>
+      </div>
+    </div>
+    <div class="quiz-q" data-ans="2">
+      <h4><span class="qno">Q4</span>โรคร่วม (comorbidity) ที่พบบ่อยที่สุดในการศึกษานี้คืออะไร?</h4>
+      <div class="opts">
+        <button class="opt">โรคอ้วน</button>
+        <button class="opt">เบาหวาน</button>
+        <button class="opt">Atopic dermatitis</button>
+        <button class="opt">โรคหัวใจ</button>
+      </div>
+    </div>
+    <div class="quiz-foot">
+      <span id="quizScore">คะแนน: 0 / 4</span>
+      <button id="quizReset">↺ เริ่มใหม่</button>
+      <div id="quizMsg"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <img src="https://yunhfdekcjosnfwndepu.supabase.co/storage/v1/object/public/DATA%20SRNanimalcare/Logo%20symbol.png" alt="SRN Animal Care Logo">
+  <b>SRN Animal Care</b><br>
+  สรุปเนื้อหาจากบทความวิชาการ "Local Treatment of Anal Sacculitis in Dogs"
+  <p class="note">เนื้อหานี้จัดทำขึ้นเพื่อการศึกษาและสรุปองค์ความรู้ทางคลินิกเท่านั้น ไม่สามารถใช้แทนการวินิจฉัยและรักษาโดยสัตวแพทย์ได้ กรุณาพาสัตว์เลี้ยงเข้ารับการตรวจกับสัตวแพทย์โดยตรง</p>
+</footer>
+
+<script>
+  /* ---------- scroll progress ---------- */
+  var pBar = document.getElementById('progressBar');
+  window.addEventListener('scroll', function(){
+    var h = document.documentElement;
+    var pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+    pBar.style.width = pct + '%';
+  }, {passive:true});
+
+  /* ---------- reveal on scroll ---------- */
+  var revealObs = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){ en.target.classList.add('show'); revealObs.unobserve(en.target); }
+    });
+  }, {threshold:.15});
+  document.querySelectorAll('.reveal').forEach(function(el){ revealObs.observe(el); });
+
+  /* ---------- animated counters ---------- */
+  function animateCounter(el){
+    var target = parseFloat(el.getAttribute('data-count'));
+    var dec = parseInt(el.getAttribute('data-dec') || '0', 10);
+    var start = null, dur = 1400;
+    function frame(ts){
+      if(!start) start = ts;
+      var p = Math.min((ts - start)/dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = (target * eased).toFixed(dec);
+      if(p < 1) requestAnimationFrame(frame);
+      else el.textContent = target.toFixed(dec);
+    }
+    requestAnimationFrame(frame);
+  }
+  var countObs = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){ animateCounter(en.target); countObs.unobserve(en.target); }
+    });
+  }, {threshold:.6});
+  document.querySelectorAll('[data-count]').forEach(function(el){ countObs.observe(el); });
+
+  /* ---------- result bars ---------- */
+  var barsDone = false;
+  var barObs = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting && !barsDone){
+        barsDone = true;
+        document.querySelectorAll('.fill').forEach(function(f){
+          f.style.width = f.getAttribute('data-w') + '%';
+        });
+        barObs.disconnect();
+      }
+    });
+  }, {threshold:.4});
+  barObs.observe(document.getElementById('barsBox'));
+
+  /* ---------- treatment steps accordion ---------- */
+  document.querySelectorAll('.step').forEach(function(st){
+    st.querySelector('.step-head').addEventListener('click', function(){
+      var wasOpen = st.classList.contains('open');
+      document.querySelectorAll('.step').forEach(function(o){ o.classList.remove('open'); });
+      if(!wasOpen) st.classList.add('open');
+    });
+  });
+
+  /* ---------- takeaways accordion ---------- */
+  document.querySelectorAll('.take').forEach(function(tk){
+    tk.querySelector('.take-head').addEventListener('click', function(){
+      var wasOpen = tk.classList.contains('open');
+      document.querySelectorAll('.take').forEach(function(o){ o.classList.remove('open'); });
+      if(!wasOpen) tk.classList.add('open');
+    });
+  });
+
+  /* ---------- quiz ---------- */
+  var score = 0, answered = 0, totalQ = document.querySelectorAll('.quiz-q').length;
+  var scoreEl = document.getElementById('quizScore');
+  var msgEl = document.getElementById('quizMsg');
+
+  document.querySelectorAll('.quiz-q').forEach(function(q){
+    var correctIdx = parseInt(q.getAttribute('data-ans'), 10);
+    var opts = q.querySelectorAll('.opt');
+    opts.forEach(function(btn, idx){
+      btn.addEventListener('click', function(){
+        if(btn.disabled) return;
+        opts.forEach(function(b){ b.disabled = true; });
+        if(idx === correctIdx){
+          btn.classList.add('correct');
+          score++;
+        }else{
+          btn.classList.add('wrong');
+          opts[correctIdx].classList.add('correct');
+        }
+        answered++;
+        scoreEl.textContent = 'คะแนน: ' + score + ' / ' + totalQ;
+        if(answered === totalQ){
+          if(score === totalQ) msgEl.textContent = '🏆 ยอดเยี่ยม! คุณจับประเด็นงานวิจัยได้ครบทุกข้อ';
+          else if(score >= 3) msgEl.textContent = '👏 เก่งมาก! เกือบเต็มแล้ว ลองทบทวนข้อที่พลาดอีกครั้ง';
+          else msgEl.textContent = '📖 ลองเลื่อนกลับไปอ่านเนื้อหาด้านบนอีกครั้ง แล้วมาทดสอบใหม่นะ';
+        }
+      });
+    });
+  });
+
+  document.getElementById('quizReset').addEventListener('click', function(){
+    score = 0; answered = 0;
+    scoreEl.textContent = 'คะแนน: 0 / ' + totalQ;
+    msgEl.textContent = '';
+    document.querySelectorAll('.quiz-q .opt').forEach(function(b){
+      b.disabled = false;
+      b.classList.remove('correct','wrong');
+    });
+  });
+
+  /* ---------- active nav highlight ---------- */
+  var navLinks = document.querySelectorAll('#mainNav a');
+  var secObs = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){
+        navLinks.forEach(function(a){
+          a.classList.toggle('active', a.getAttribute('href') === '#' + en.target.id);
+        });
+      }
+    });
+  }, {rootMargin:'-40% 0px -55% 0px'});
+  ['research','treatment','results','risk','takeaways','quiz'].forEach(function(id){
+    var el = document.getElementById(id);
+    if(el) secObs.observe(el);
+  });
+</script>
+</body>
+</html>
