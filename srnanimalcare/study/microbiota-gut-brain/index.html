@@ -3,103 +3,228 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>บทบาทของแกน Microbiota–Gut–Brain Axis ในโรคทางพฤติกรรมและระบบประสาท</title>
+<title>MGBA Learning Hub - บทบาทของแกน Microbiota–Gut–Brain Axis</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/@fontsource/sarabun@4.5.10/index.min.css" rel="stylesheet">
 <style>
-  body { font-family: 'Sarabun', sans-serif; }
-  .tab-active { background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%); color: white; box-shadow: 0 4px 15px rgba(13,148,136,0.4); }
-  .tab-inactive { background: white; color: #475569; }
-  .tab-inactive:hover { background: #f1f5f9; }
-  .section { display: none; animation: fadeIn 0.5s ease-in; }
-  .section.active { display: block; }
+  :root {
+    --bg-primary: #f8fafc;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #f1f5f9;
+    --text-primary: #1e293b;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+    --border: #e2e8f0;
+    --accent: #0d9488;
+    --accent-light: #14b8a6;
+    --accent-dark: #0f766e;
+    --shadow: rgba(0,0,0,0.1);
+  }
+  [data-theme="dark"] {
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-tertiary: #334155;
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-muted: #64748b;
+    --border: #334155;
+    --accent: #14b8a6;
+    --accent-light: #5eead4;
+    --accent-dark: #0d9488;
+    --shadow: rgba(0,0,0,0.3);
+  }
+  body { font-family: 'Sarabun', sans-serif; background: var(--bg-primary); color: var(--text-primary); transition: all 0.3s; }
+  .bg-primary { background: var(--bg-primary); }
+  .bg-secondary { background: var(--bg-secondary); }
+  .bg-tertiary { background: var(--bg-tertiary); }
+  .text-primary { color: var(--text-primary); }
+  .text-secondary { color: var(--text-secondary); }
+  .text-muted { color: var(--text-muted); }
+  .border-custom { border-color: var(--border); }
+  .shadow-custom { box-shadow: 0 4px 20px var(--shadow); }
+  
+  /* Progress Bar */
+  #progress-bar { position: fixed; top: 0; left: 0; height: 4px; background: linear-gradient(90deg, #0d9488, #14b8a6, #5eead4); z-index: 1000; transition: width 0.2s; }
+  #progress-label { position: fixed; top: 6px; right: 16px; font-size: 11px; background: rgba(13,148,136,0.9); color: white; padding: 2px 8px; border-radius: 10px; z-index: 1000; }
+  
+  /* Mode Switch */
+  .mode-btn { transition: all 0.3s; }
+  .mode-btn.active { background: linear-gradient(135deg, #0d9488, #14b8a6); color: white; box-shadow: 0 4px 15px rgba(13,148,136,0.4); }
+  .mode-btn:not(.active) { background: var(--bg-tertiary); color: var(--text-secondary); }
+  
+  /* Tooltips */
+  .tooltip-trigger { border-bottom: 2px dotted var(--accent); cursor: help; position: relative; }
+  .tooltip-box { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: var(--bg-secondary); border: 2px solid var(--accent); border-radius: 8px; padding: 10px 14px; font-size: 13px; max-width: 280px; box-shadow: 0 4px 20px var(--shadow); z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+  .tooltip-trigger:hover .tooltip-box, .tooltip-trigger:focus .tooltip-box { opacity: 1; pointer-events: auto; }
+  
+  /* Tabs */
+  .tab-btn { transition: all 0.3s; }
+  .tab-btn.active { background: linear-gradient(135deg, #0d9488, #14b8a6); color: white; box-shadow: 0 4px 15px rgba(13,148,136,0.4); }
+  .tab-btn:not(.active) { background: var(--bg-secondary); color: var(--text-secondary); }
+  .tab-btn:not(.active):hover { background: var(--bg-tertiary); }
+  
+  /* Sections */
+  .view { display: none; animation: fadeIn 0.4s; }
+  .view.active { display: block; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-  .card { animation: slideUp 0.6s ease-out; }
-  .gradient-header { background: linear-gradient(135deg, #0f766e 0%, #14b8a6 50%, #5eead4 100%); }
+  
+  /* Mode-specific content */
+  .mode-content { display: none; }
+  body[data-mode="vet"] .mode-vet { display: block; }
+  body[data-mode="owner"] .mode-owner { display: block; }
+  body[data-mode="student"] .mode-student { display: block; }
+  body[data-mode="vet"] .mode-all, body[data-mode="owner"] .mode-all, body[data-mode="student"] .mode-all { display: block; }
+  
+  /* MGBA Diagram */
+  .pathway-node { cursor: pointer; transition: all 0.3s; }
+  .pathway-node:hover { filter: brightness(1.2); transform: scale(1.05); }
+  .pathway-line { stroke-dasharray: 5,5; animation: flow 2s linear infinite; }
+  @keyframes flow { to { stroke-dashoffset: -10; } }
+  .pathway-detail { display: none; }
+  .pathway-detail.active { display: block; animation: fadeIn 0.3s; }
+  
+  /* Quiz */
   .quiz-option { transition: all 0.3s; cursor: pointer; }
-  .quiz-option:hover { transform: translateX(5px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+  .quiz-option:hover { transform: translateX(5px); }
   .quiz-option.correct { background: #dcfce7; border-color: #22c55e; }
   .quiz-option.incorrect { background: #fee2e2; border-color: #ef4444; }
-  .score-circle { transition: all 1s ease; }
-  .floating { animation: float 3s ease-in-out infinite; }
-  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-  .pulse-dot { animation: pulse 2s infinite; }
-  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+  .quiz-explanation { display: none; margin-top: 12px; padding: 12px; background: var(--bg-tertiary); border-radius: 8px; border-left: 4px solid var(--accent); }
+  .quiz-explanation.show { display: block; animation: fadeIn 0.3s; }
+  
+  /* DISHAA */
+  .dishaa-option { cursor: pointer; transition: all 0.2s; }
+  .dishaa-option:hover { background: var(--bg-tertiary); }
+  .dishaa-option.selected { background: var(--accent); color: white; }
+  
+  /* Drug table */
+  .drug-row { transition: all 0.2s; cursor: pointer; }
+  .drug-row:hover { background: var(--bg-tertiary); }
+  .drug-detail { display: none; }
+  .drug-detail.show { display: table-row; }
+  
+  /* Food trial checklist */
+  .checklist-item { cursor: pointer; transition: all 0.2s; }
+  .checklist-item:hover { background: var(--bg-tertiary); }
+  .checklist-item.checked { background: #dcfce7; }
+  .checklist-item.checked .check-icon { color: #22c55e; }
+  
+  /* Floating button */
+  #back-to-top { position: fixed; bottom: 24px; right: 24px; width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #0d9488, #14b8a6); color: white; border: none; cursor: pointer; box-shadow: 0 4px 15px rgba(13,148,136,0.4); display: none; z-index: 100; transition: all 0.3s; }
+  #back-to-top:hover { transform: scale(1.1); }
+  
+  /* Print styles */
+  @media print {
+    #progress-bar, #progress-label, #back-to-top, nav, header, .no-print { display: none !important; }
+    body { background: white; color: black; }
+    .view { display: block !important; page-break-after: always; }
+  }
+  
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg-primary); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+  
+  /* Gradient header */
+  .gradient-header { background: linear-gradient(135deg, #0f766e 0%, #14b8a6 50%, #5eead4 100%); }
+  
+  /* Timer */
+  .timer-display { font-variant-numeric: tabular-nums; }
+  
+  /* Accordion */
   details summary { cursor: pointer; list-style: none; }
   details summary::-webkit-details-marker { display: none; }
-  .scroll-smooth { scroll-behavior: smooth; }
 </style>
 </head>
-<body class="bg-gradient-to-br from-slate-50 to-teal-50 min-h-screen">
+<body data-mode="vet" data-theme="light">
+
+<!-- Progress Bar -->
+<div id="progress-bar" style="width: 0%"></div>
+<div id="progress-label">0%</div>
 
 <!-- Header -->
-<header class="gradient-header text-white py-8 shadow-2xl">
-  <div class="max-w-6xl mx-auto px-4 flex items-center gap-6">
-    <img src="https://yunhfdekcjosnfwndepu.supabase.co/storage/v1/object/public/DATA%20SRNanimalcare/Logo%20symbol.png" alt="Logo" class="w-20 h-20 bg-white rounded-full p-2 shadow-lg floating">
-    <div>
-      <h1 class="text-3xl md:text-4xl font-bold mb-2">บทบาทของแกน Microbiota–Gut–Brain Axis</h1>
-      <p class="text-teal-100 text-lg">ในโรคทางพฤติกรรมและระบบประสาทของสุนัข</p>
-      <p class="text-teal-200 text-sm mt-2">Role of the Microbiota–Gut–Brain Axis in Behavioral and Neurologic Disorders</p>
+<header class="gradient-header text-white py-6 shadow-2xl">
+  <div class="max-w-6xl mx-auto px-4">
+    <div class="flex items-center justify-between flex-wrap gap-4">
+      <div class="flex items-center gap-4">
+        <img src="https://yunhfdekcjosnfwndepu.supabase.co/storage/v1/object/public/DATA%20SRNanimalcare/Logo%20symbol.png" alt="Logo" class="w-16 h-16 bg-white rounded-full p-2 shadow-lg">
+        <div>
+          <h1 class="text-2xl md:text-3xl font-bold">MGBA Learning Hub</h1>
+          <p class="text-teal-100 text-sm">บทบาทของแกน Microbiota–Gut–Brain Axis</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <!-- Mode Switch -->
+        <div class="bg-white/20 backdrop-blur rounded-full p-1 flex gap-1">
+          <button onclick="setMode('vet')" class="mode-btn active px-3 py-1.5 rounded-full text-xs font-semibold" data-mode="vet">🩺 Vet</button>
+          <button onclick="setMode('owner')" class="mode-btn px-3 py-1.5 rounded-full text-xs font-semibold" data-mode="owner"> Owner</button>
+          <button onclick="setMode('student')" class="mode-btn px-3 py-1.5 rounded-full text-xs font-semibold" data-mode="student">🎓 Student</button>
+        </div>
+        <!-- Dark Mode -->
+        <button onclick="toggleDarkMode()" class="bg-white/20 backdrop-blur p-2 rounded-full hover:bg-white/30 transition" title="Dark Mode">
+          <span id="theme-icon">🌙</span>
+        </button>
+      </div>
+    </div>
+    <!-- Mode Description -->
+    <div class="mt-4 bg-white/10 backdrop-blur rounded-lg p-3 text-sm">
+      <span id="mode-desc">🩺 โหมดสัตวแพทย์: เน้นข้อมูลทางคลินิก ขนาดยา และโปรโตคอลการรักษา</span>
     </div>
   </div>
 </header>
 
-<!-- Navigation Tabs -->
-<nav class="sticky top-0 z-40 bg-white shadow-md border-b border-teal-100">
-  <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap gap-2 justify-center">
-    <button onclick="showSection('intro')" id="tab-intro" class="tab-active px-4 py-2 rounded-full font-semibold text-sm md:text-base transition-all">🏠 บทนำ</button>
-    <button onclick="showSection('dysbiosis')" id="tab-dysbiosis" class="tab-inactive px-4 py-2 rounded-full font-semibold text-sm md:text-base transition-all"> Dysbiosis</button>
-    <button onclick="showSection('diseases')" id="tab-diseases" class="tab-inactive px-4 py-2 rounded-full font-semibold text-sm md:text-base transition-all">🩺 โรคที่เกี่ยวข้อง</button>
-    <button onclick="showSection('management')" id="tab-management" class="tab-inactive px-4 py-2 rounded-full font-semibold text-sm md:text-base transition-all">💊 การจัดการ</button>
-    <button onclick="showSection('case')" id="tab-case" class="tab-inactive px-4 py-2 rounded-full font-semibold text-sm md:text-base transition-all">📋 กรณีศึกษา</button>
-    <button onclick="showSection('quiz')" id="tab-quiz" class="tab-inactive px-4 py-2 rounded-full font-semibold text-sm md:text-base transition-all">📝 แบบทดสอบ</button>
+<!-- Navigation -->
+<nav class="sticky top-1 z-40 bg-secondary shadow-md border-b border-custom no-print">
+  <div class="max-w-6xl mx-auto px-4 py-3">
+    <div class="flex flex-wrap gap-2 justify-center">
+      <button onclick="showView('intro')" class="tab-btn active px-3 py-1.5 rounded-full text-sm font-semibold" data-view="intro">🏠 บทนำ</button>
+      <button onclick="showView('pathway')" class="tab-btn px-3 py-1.5 rounded-full text-sm font-semibold" data-view="pathway">🔬 MGBA Pathway</button>
+      <button onclick="showView('dysbiosis')" class="tab-btn px-3 py-1.5 rounded-full text-sm font-semibold" data-view="dysbiosis">🦠 Dysbiosis</button>
+      <button onclick="showView('diseases')" class="tab-btn px-3 py-1.5 rounded-full text-sm font-semibold" data-view="diseases">🩺 โรคที่เกี่ยวข้อง</button>
+      <button onclick="showView('management')" class="tab-btn px-3 py-1.5 rounded-full text-sm font-semibold" data-view="management">💊 การจัดการ</button>
+      <button onclick="showView('drugs')" class="tab-btn px-3 py-1.5 rounded-full text-sm font-semibold" data-view="drugs"> ยา</button>
+      <button onclick="showView('food-trial')" class="tab-btn px-3 py-1.5 rounded-full text-sm font-semibold" data-view="food-trial">🍽️ Food Trial</button>
+      <button onclick="showView('dishaa')" class="tab-btn px-3 py-1.5 rounded-full text-sm font-semibold" data-view="dishaa">🧠 DISHAA</button>
+      <button onclick="showView('case')" class="tab-btn px-3 py-1.5 rounded-full text-sm font-semibold" data-view="case">📋 กรณีศึกษา</button>
+      <button onclick="showView('quiz')" class="tab-btn px-3 py-1.5 rounded-full text-sm font-semibold" data-view="quiz"> Quiz</button>
+    </div>
   </div>
 </nav>
 
 <main class="max-w-6xl mx-auto px-4 py-8">
 
-<!-- SECTION: บทนำ -->
-<section id="intro" class="section active">
-  <div class="card bg-white rounded-2xl shadow-xl p-6 md:p-8 mb-6">
-    <h2 class="text-2xl font-bold text-teal-700 mb-4 flex items-center gap-2">📌 บทคัดย่อ (Abstract)</h2>
-    <p class="text-gray-700 leading-relaxed text-lg">
-      แกน <strong class="text-teal-600">Microbiota–Gut–Brain Axis (MGBA)</strong> อธิบายถึงเส้นทางการสื่อสารแบบสองทิศทางที่ช่วยให้จุลินทรีย์ในลำไส้มีอิทธิพลต่อการทำงานของระบบประสาท การรู้คิด และพฤติกรรม ในขณะที่สมองก็ควบคุมสรีรวิทยาของลำไส้และองค์ประกอบของจุลินทรีย์
+<!-- VIEW: Intro -->
+<section id="view-intro" class="view active">
+  <div class="bg-secondary rounded-2xl shadow-custom p-6 md:p-8 mb-6">
+    <h2 class="text-2xl font-bold text-accent mb-4">📌 บทคัดย่อ (Abstract)</h2>
+    <p class="text-secondary leading-relaxed text-lg mb-4">
+      แกน <span class="tooltip-trigger font-bold text-accent">MGBA<span class="tooltip-box"><strong>Microbiota-Gut-Brain Axis</strong><br>แกนสื่อสารสองทิศทางระหว่างจุลินทรีย์ในลำไส้-ลำไส้-สมอง ผ่านระบบประสาท ฮอร์โมน ภูมิคุ้มกัน และเมตาบอไลต์</span></span> อธิบายถึงเส้นทางการสื่อสารแบบสองทิศทางที่ช่วยให้จุลินทรีย์ในลำไส้มีอิทธิพลต่อการทำงานของระบบประสาท การรู้คิด และพฤติกรรม
     </p>
-    <p class="text-gray-700 leading-relaxed mt-4">
-      การศึกษาในสัตว์ฟันแทะและมนุษย์แสดงให้เห็นว่า MGBA อาจมีส่วนในการเกิด <span class="bg-yellow-100 px-2 py-1 rounded">ความวิตกกังวล, ภาวะซึมเศร้า, ออทิสติก, ไบโพลาร์, จิตเภท, พาร์กินสัน, ALS, กลุ่มอาการอ่อนเพลียเรื้อรัง และโรคลมชัก</span>
-    </p>
+    <div class="mode-owner bg-amber-50 border-l-4 border-amber-400 p-4 rounded-lg mb-4">
+      <p class="text-amber-800">🐾 <strong>สำหรับเจ้าของ:</strong> ลำไส้และสมองของสุนัขเชื่อมโยงกัน สุขภาพลำไส้ส่งผลต่อพฤติกรรมและ vice versa</p>
+    </div>
   </div>
 
-  <div class="card bg-gradient-to-r from-teal-50 to-cyan-50 rounded-2xl shadow-xl p-6 md:p-8 mb-6">
-    <h2 class="text-2xl font-bold text-teal-700 mb-6 flex items-center gap-2">🎯 ประเด็นสำคัญ (Take-Home Points)</h2>
+  <div class="bg-secondary rounded-2xl shadow-custom p-6 md:p-8 mb-6">
+    <h2 class="text-2xl font-bold text-accent mb-6">🎯 ประเด็นสำคัญ</h2>
     <div class="grid md:grid-cols-2 gap-4">
-      <div class="bg-white p-4 rounded-xl shadow-md border-l-4 border-teal-500">
-        <div class="text-3xl mb-2"></div>
-        <p class="text-gray-700">มีการศึกษาบทบาทของ MGBA ในสุนัขที่มี <strong>โรคทางพฤติกรรม, โรคลมชักไม่ทราบสาเหตุ (IE), และกลุ่มอาการสมองเสื่อมในสุนัข (CCDS)</strong></p>
+      <div class="bg-tertiary p-4 rounded-xl border-l-4 border-teal-500">
+        <p class="text-secondary">มีการศึกษาบทบาทของ MGBA ในสุนัขที่มี <strong>โรคทางพฤติกรรม, โรคลมชักไม่ทราบสาเหตุ (IE), และกลุ่มอาการสมองเสื่อมในสุนัข (CCDS)</strong></p>
       </div>
-      <div class="bg-white p-4 rounded-xl shadow-md border-l-4 border-cyan-500">
-        <div class="text-3xl mb-2">⚠️</div>
-        <p class="text-gray-700">Dysbiosis รบกวนการทำงานของ MGBA ทำให้เกิดการอักเสบของระบบประสาท ความเครียดออกซิเดชัน และทำลาย blood-brain barrier</p>
+      <div class="bg-tertiary p-4 rounded-xl border-l-4 border-cyan-500">
+        <p class="text-secondary"><span class="tooltip-trigger">Dysbiosis<span class="tooltip-box">ภาวะไม่สมดุลของจุลินทรีย์ในลำไส้ - ความหลากหลายลดลง แบคทีเรียดีลดลง เชื้อโรคเพิ่มขึ้น</span></span> รบกวนการทำงานของ MGBA ทำให้เกิดการอักเสบของระบบประสาท</p>
       </div>
-      <div class="bg-white p-4 rounded-xl shadow-md border-l-4 border-emerald-500">
-        <div class="text-3xl mb-2">💡</div>
-        <p class="text-gray-700">ธรรมชาติแบบสองทิศทางของ MGBA หมายความว่า <strong>การรักษาที่ลำไส้</strong> อาจช่วยรักษาโรคทางพฤติกรรมและระบบประสาทได้</p>
+      <div class="bg-tertiary p-4 rounded-xl border-l-4 border-emerald-500">
+        <p class="text-secondary">ธรรมชาติแบบสองทิศทางหมายความว่า <strong>การรักษาที่ลำไส้</strong> อาจช่วยรักษาโรคทางพฤติกรรมและระบบประสาทได้</p>
       </div>
-      <div class="bg-white p-4 rounded-xl shadow-md border-l-4 border-blue-500">
-        <div class="text-3xl mb-2">🎯</div>
-        <p class="text-gray-700">ผลลัพธ์ที่ดีที่สุดเกิดขึ้นเมื่อ <strong>รักษาจุลินทรีย์ในลำไส้และสุขภาพจิตพร้อมกัน</strong></p>
-      </div>
-      <div class="bg-white p-4 rounded-xl shadow-md border-l-4 border-purple-500 md:col-span-2">
-        <div class="text-3xl mb-2">📊</div>
-        <p class="text-gray-700">โรค MGBA มักมีโรคแทรกซ้อนร่วม ทำให้การจัดการเป็นเรื่องท้าทายและพยากรณ์โรคมักไม่ดี</p>
+      <div class="bg-tertiary p-4 rounded-xl border-l-4 border-blue-500">
+        <p class="text-secondary">ผลลัพธ์ที่ดีที่สุดเกิดขึ้นเมื่อ <strong>รักษาจุลินทรีย์ในลำไส้และสุขภาพจิตพร้อมกัน</strong></p>
       </div>
     </div>
   </div>
 
-  <div class="card bg-white rounded-2xl shadow-xl p-6 md:p-8">
-    <h2 class="text-2xl font-bold text-teal-700 mb-4">🔬 เส้นทางการสื่อสารของ MGBA</h2>
+  <div class="bg-secondary rounded-2xl shadow-custom p-6 md:p-8">
+    <h2 class="text-2xl font-bold text-accent mb-4">🔬 เส้นทางการสื่อสารของ MGBA</h2>
     <div class="grid md:grid-cols-4 gap-4">
       <div class="text-center p-4 bg-gradient-to-br from-teal-100 to-teal-200 rounded-xl">
         <div class="text-4xl mb-2">🧬</div>
@@ -112,25 +237,128 @@
         <p class="text-sm text-gray-600">เส้นประสาทเวกัส</p>
       </div>
       <div class="text-center p-4 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl">
-        <div class="text-4xl mb-2">️</div>
+        <div class="text-4xl mb-2">🛡️</div>
         <h3 class="font-bold text-blue-800">Immune System</h3>
         <p class="text-sm text-gray-600">ระบบภูมิคุ้มกัน</p>
       </div>
       <div class="text-center p-4 bg-gradient-to-br from-indigo-100 to-indigo-200 rounded-xl">
-        <div class="text-4xl mb-2"></div>
-        <h3 class="font-bold text-indigo-800">Microbial Metabolites</h3>
+        <div class="text-4xl mb-2">⚗️</div>
+        <h3 class="font-bold text-indigo-800">Metabolites</h3>
         <p class="text-sm text-gray-600">SCFA, สารสื่อประสาท</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- SECTION: Dysbiosis -->
-<section id="dysbiosis" class="section">
-  <div class="card bg-white rounded-2xl shadow-xl p-6 md:p-8 mb-6">
-    <h2 class="text-2xl font-bold text-teal-700 mb-4">🦠 Dysbiosis และ MGBA</h2>
-    <p class="text-gray-700 leading-relaxed mb-4">
-      ในบุคคลที่มีสุขภาพดี ระบบนิเวศของจุลินทรีย์จะอยู่ในสภาวะสมดุล เมื่อสมดุลถูกรบกวนจะนำไปสู่ภาวะ <strong class="text-red-600">Dysbiosis</strong> ซึ่งมีลักษณะคือ:
+<!-- VIEW: MGBA Pathway Diagram -->
+<section id="view-pathway" class="view">
+  <div class="bg-secondary rounded-2xl shadow-custom p-6 md:p-8 mb-6">
+    <h2 class="text-2xl font-bold text-accent mb-4">🔬 MGBA Pathway Diagram (Interactive)</h2>
+    <p class="text-secondary mb-4">คลิกที่แต่ละส่วนเพื่อดูรายละเอียด | สลับระหว่างสถานะปกติและ Dysbiosis</p>
+    
+    <div class="flex justify-center mb-4 gap-2">
+      <button onclick="setPathwayState('normal')" id="btn-normal" class="px-4 py-2 rounded-full bg-teal-500 text-white font-semibold">✅ ปกติ (Healthy)</button>
+      <button onclick="setPathwayState('dysbiosis')" id="btn-dysbiosis" class="px-4 py-2 rounded-full bg-gray-300 text-gray-700 font-semibold">⚠️ Dysbiosis</button>
+    </div>
+
+    <div class="bg-tertiary rounded-xl p-4 overflow-x-auto">
+      <svg viewBox="0 0 800 500" class="w-full h-auto" id="pathway-svg">
+        <!-- Background -->
+        <rect width="800" height="500" fill="var(--bg-tertiary)" rx="12"/>
+        
+        <!-- GUT Section -->
+        <rect x="20" y="150" width="220" height="200" fill="#dcfce7" stroke="#22c55e" stroke-width="2" rx="12"/>
+        <text x="130" y="180" text-anchor="middle" font-size="18" font-weight="bold" fill="#15803d">🦠 GUT (ลำไส้)</text>
+        
+        <!-- Gut nodes -->
+        <g class="pathway-node" onclick="showPathwayDetail('microbiota')">
+          <circle cx="80" cy="230" r="35" fill="#22c55e" stroke="#15803d" stroke-width="2"/>
+          <text x="80" y="235" text-anchor="middle" font-size="11" fill="white" font-weight="bold">Microbiota</text>
+        </g>
+        <g class="pathway-node" onclick="showPathwayDetail('scfa')">
+          <circle cx="180" cy="230" r="35" fill="#16a34a" stroke="#15803d" stroke-width="2"/>
+          <text x="180" y="230" text-anchor="middle" font-size="11" fill="white" font-weight="bold">SCFA</text>
+          <text x="180" y="245" text-anchor="middle" font-size="9" fill="white">GABA, 5-HT</text>
+        </g>
+        <g class="pathway-node" onclick="showPathwayDetail('gut-hormone')">
+          <circle cx="80" cy="310" r="30" fill="#4ade80" stroke="#15803d" stroke-width="2"/>
+          <text x="80" y="315" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Gut Hormones</text>
+        </g>
+        <g class="pathway-node" onclick="showPathwayDetail('immune-gut')">
+          <circle cx="180" cy="310" r="30" fill="#86efac" stroke="#15803d" stroke-width="2"/>
+          <text x="180" y="310" text-anchor="middle" font-size="10" fill="#15803d" font-weight="bold">Immune</text>
+          <text x="180" y="323" text-anchor="middle" font-size="9" fill="#15803d">Cells</text>
+        </g>
+        
+        <!-- VAGUS NERVE -->
+        <rect x="300" y="200" width="200" height="100" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="12"/>
+        <text x="400" y="230" text-anchor="middle" font-size="16" font-weight="bold" fill="#1d4ed8">⚡ VAGUS NERVE</text>
+        <text x="400" y="255" text-anchor="middle" font-size="12" fill="#1d4ed8">(เส้นประสาทเวกัส)</text>
+        <text x="400" y="280" text-anchor="middle" font-size="11" fill="#1d4ed8">Bidirectional signaling</text>
+        
+        <!-- BRAIN Section -->
+        <rect x="560" y="150" width="220" height="200" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="12"/>
+        <text x="670" y="180" text-anchor="middle" font-size="18" font-weight="bold" fill="#b45309"> BRAIN (สมอง)</text>
+        
+        <!-- Brain nodes -->
+        <g class="pathway-node" onclick="showPathwayDetail('behavior')">
+          <circle cx="620" cy="230" r="35" fill="#f59e0b" stroke="#b45309" stroke-width="2"/>
+          <text x="620" y="235" text-anchor="middle" font-size="11" fill="white" font-weight="bold">Behavior</text>
+        </g>
+        <g class="pathway-node" onclick="showPathwayDetail('cognition')">
+          <circle cx="720" cy="230" r="35" fill="#d97706" stroke="#b45309" stroke-width="2"/>
+          <text x="720" y="235" text-anchor="middle" font-size="11" fill="white" font-weight="bold">Cognition</text>
+        </g>
+        <g class="pathway-node" onclick="showPathwayDetail('mood')">
+          <circle cx="620" cy="310" r="30" fill="#fbbf24" stroke="#b45309" stroke-width="2"/>
+          <text x="620" y="315" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Mood</text>
+        </g>
+        <g class="pathway-node" onclick="showPathwayDetail('neuro-inflam')">
+          <circle cx="720" cy="310" r="30" fill="#fcd34d" stroke="#b45309" stroke-width="2"/>
+          <text x="720" y="305" text-anchor="middle" font-size="9" fill="#92400e" font-weight="bold">Neuro-</text>
+          <text x="720" y="318" text-anchor="middle" font-size="9" fill="#92400e" font-weight="bold">inflammation</text>
+        </g>
+        
+        <!-- Pathway lines (Gut → Vagus) -->
+        <line x1="215" y1="230" x2="300" y2="240" stroke="#3b82f6" stroke-width="3" class="pathway-line"/>
+        <line x1="215" y1="310" x2="300" y2="270" stroke="#3b82f6" stroke-width="2" class="pathway-line"/>
+        
+        <!-- Pathway lines (Vagus → Brain) -->
+        <line x1="500" y1="240" x2="585" y2="230" stroke="#f59e0b" stroke-width="3" class="pathway-line"/>
+        <line x1="500" y1="270" x2="585" y2="310" stroke="#f59e0b" stroke-width="2" class="pathway-line"/>
+        
+        <!-- Bidirectional arrows -->
+        <polygon points="295,235 305,240 295,245" fill="#3b82f6"/>
+        <polygon points="505,235 495,240 505,245" fill="#f59e0b"/>
+        
+        <!-- Dysbiosis warning (hidden by default) -->
+        <g id="dysbiosis-warning" style="display:none">
+          <rect x="20" y="380" width="760" height="80" fill="#fee2e2" stroke="#ef4444" stroke-width="2" rx="8"/>
+          <text x="400" y="410" text-anchor="middle" font-size="14" font-weight="bold" fill="#dc2626">️ DYSBIOSIS STATE</text>
+          <text x="400" y="430" text-anchor="middle" font-size="12" fill="#dc2626">Neuroinflammation ↑ | Oxidative Stress ↑ | BBB Integrity ↓ | Immune Dysregulation</text>
+          <text x="400" y="450" text-anchor="middle" font-size="11" fill="#dc2626">Behavioral disorders | Cognitive decline | Seizures</text>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Detail Panel -->
+    <div id="pathway-detail-panel" class="mt-6 bg-tertiary rounded-xl p-6 pathway-detail">
+      <h3 class="text-xl font-bold text-accent mb-3" id="detail-title"></h3>
+      <p class="text-secondary" id="detail-content"></p>
+      <div class="mode-vet mt-4 p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+        <strong class="text-blue-700">🩺 Clinical Note:</strong>
+        <span id="detail-clinical" class="text-blue-800"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIEW: Dysbiosis -->
+<section id="view-dysbiosis" class="view">
+  <div class="bg-secondary rounded-2xl shadow-custom p-6 md:p-8 mb-6">
+    <h2 class="text-2xl font-bold text-accent mb-4"> Dysbiosis และ MGBA</h2>
+    <p class="text-secondary leading-relaxed mb-4">
+      ในบุคคลที่มีสุขภาพดี ระบบนิเวศของจุลินทรีย์จะอยู่ในสภาวะสมดุล เมื่อสมดุลถูกรบกวนจะนำไปสู่ภาวะ <span class="tooltip-trigger font-bold text-red-600">Dysbiosis<span class="tooltip-box"><strong>Dysbiosis</strong><br>ภาวะไม่สมดุลของจุลินทรีย์ในลำไส้ ลักษณะ: ความหลากหลายลดลง, แบคทีเรียดีลดลง, เชื้อโรคเพิ่มขึ้น</span></span>
     </p>
     <div class="grid md:grid-cols-3 gap-4 mb-6">
       <div class="bg-red-50 p-4 rounded-xl border-2 border-red-200">
@@ -144,7 +372,7 @@
         <p class="text-sm text-gray-600">Depletion of beneficial bacteria</p>
       </div>
       <div class="bg-yellow-50 p-4 rounded-xl border-2 border-yellow-200">
-        <div class="text-2xl mb-2"></div>
+        <div class="text-2xl mb-2">🦠</div>
         <h3 class="font-bold text-yellow-700">เชื้อโรคเพิ่มขึ้น</h3>
         <p class="text-sm text-gray-600">Proliferation of pathogens</p>
       </div>
@@ -161,91 +389,89 @@
     </div>
   </div>
 
-  <div class="card bg-white rounded-2xl shadow-xl p-6 md:p-8">
-    <h2 class="text-2xl font-bold text-teal-700 mb-4">🔍 สาเหตุของ Dysbiosis</h2>
+  <div class="bg-secondary rounded-2xl shadow-custom p-6 md:p-8">
+    <h2 class="text-2xl font-bold text-accent mb-4">🔍 สาเหตุของ Dysbiosis</h2>
     <div class="grid md:grid-cols-2 gap-4">
-      <div class="flex items-center gap-3 p-4 bg-slate-50 rounded-xl">
+      <div class="flex items-center gap-3 p-4 bg-tertiary rounded-xl">
         <div class="text-3xl">😰</div>
         <div>
           <h4 class="font-bold">ความเครียดเรื้อรัง</h4>
-          <p class="text-sm text-gray-600">เพิ่มการทำงานของ sympathetic nervous system และ HPA axis</p>
+          <p class="text-sm text-secondary">เพิ่มการทำงานของ sympathetic nervous system และ HPA axis</p>
         </div>
       </div>
-      <div class="flex items-center gap-3 p-4 bg-slate-50 rounded-xl">
-        <div class="text-3xl">🦠</div>
-        <div>
-          <h4 class="font-bold">การติดเชื้อ</h4>
-          <p class="text-sm text-gray-600">Infections</p>
-        </div>
-      </div>
-      <div class="flex items-center gap-3 p-4 bg-slate-50 rounded-xl">
+      <div class="flex items-center gap-3 p-4 bg-tertiary rounded-xl">
         <div class="text-3xl"></div>
         <div>
-          <h4 class="font-bold">อาหารไม่ดี</h4>
-          <p class="text-sm text-gray-600">Poor diet</p>
+          <h4 class="font-bold">การติดเชื้อ</h4>
+          <p class="text-sm text-secondary">Infections</p>
         </div>
       </div>
-      <div class="flex items-center gap-3 p-4 bg-slate-50 rounded-xl">
+      <div class="flex items-center gap-3 p-4 bg-tertiary rounded-xl">
+        <div class="text-3xl">🍔</div>
+        <div>
+          <h4 class="font-bold">อาหารไม่ดี</h4>
+          <p class="text-sm text-secondary">Poor diet</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 p-4 bg-tertiary rounded-xl">
         <div class="text-3xl">💊</div>
         <div>
           <h4 class="font-bold">การใช้ยาปฏิชีวนะ</h4>
-          <p class="text-sm text-gray-600">Antibiotic use</p>
+          <p class="text-sm text-secondary">Antibiotic use</p>
         </div>
       </div>
-      <div class="flex items-center gap-3 p-4 bg-slate-50 rounded-xl">
-        <div class="text-3xl">️</div>
+      <div class="flex items-center gap-3 p-4 bg-tertiary rounded-xl">
+        <div class="text-3xl">🛋️</div>
         <div>
           <h4 class="font-bold">การไม่ออกกำลังกาย</h4>
-          <p class="text-sm text-gray-600">Inactivity</p>
+          <p class="text-sm text-secondary">Inactivity</p>
         </div>
       </div>
-      <div class="flex items-center gap-3 p-4 bg-slate-50 rounded-xl">
+      <div class="flex items-center gap-3 p-4 bg-tertiary rounded-xl">
         <div class="text-3xl">🌍</div>
         <div>
           <h4 class="font-bold">ปัจจัยสิ่งแวดล้อม</h4>
-          <p class="text-sm text-gray-600">Environmental factors</p>
+          <p class="text-sm text-secondary">Environmental factors</p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- SECTION: โรคที่เกี่ยวข้อง -->
-<section id="diseases" class="section">
-  <div class="card bg-white rounded-2xl shadow-xl p-6 md:p-8 mb-6">
-    <h2 class="text-2xl font-bold text-teal-700 mb-4"> โรคที่เกี่ยวข้องกับ MGBA และโรคแทรกซ้อน</h2>
-    <p class="text-gray-700 mb-4">
-      สุนัขที่มีโรคทางพฤติกรรม, CCDS และ/หรือ IE มักถูกการุณยฆาตเนื่องจากคุณภาพชีวิตที่ไม่ดี
-    </p>
+<!-- VIEW: Diseases -->
+<section id="view-diseases" class="view">
+  <div class="bg-secondary rounded-2xl shadow-custom p-6 md:p-8 mb-6">
+    <h2 class="text-2xl font-bold text-accent mb-4">🩺 โรคที่เกี่ยวข้องกับ MGBA</h2>
+    <p class="text-secondary mb-4">สุนัขที่มีโรคทางพฤติกรรม, CCDS และ/หรือ IE มักถูกการุณยฆาตเนื่องจากคุณภาพชีวิตที่ไม่ดี</p>
 
-    <h3 class="text-xl font-bold text-teal-600 mt-6 mb-3">📊 ตารางที่ 1: โรคที่เกี่ยวข้องกับ MGBA</h3>
+    <h3 class="text-xl font-bold text-accent mt-6 mb-3">📊 ตารางที่ 1: โรคที่เกี่ยวข้องกับ MGBA</h3>
     <div class="overflow-x-auto">
       <table class="w-full text-sm border-collapse">
         <thead>
           <tr class="bg-gradient-to-r from-gray-600 to-gray-700 text-white">
             <th class="p-3 text-left">โรคที่เกี่ยวข้อง</th>
-            <th class="p-3 text-left">อายุขัยเฉลี่ยหลังวินิจฉัย</th>
+            <th class="p-3 text-left">อายุขัยเฉลี่ย</th>
             <th class="p-3 text-left">สาเหตุหลักของการเสียชีวิต</th>
             <th class="p-3 text-left">ผลลัพธ์หลังการรักษา</th>
             <th class="p-3 text-left">ปัจจัยพยากรณ์โรคที่ไม่ดี</th>
           </tr>
         </thead>
         <tbody>
-          <tr class="bg-gray-50 border-b">
+          <tr class="bg-tertiary border-b border-custom">
             <td class="p-3 font-semibold">โรคลมชักไม่ทราบสาเหตุ (IE)</td>
             <td class="p-3">~5.5 ปี หลัง episode แรก</td>
             <td class="p-3">การการุณยฆาต (52% เกี่ยวข้องกับลมชัก)</td>
             <td class="p-3">~40% ปลอดชัก; 64.5% ลดลง ≥50%</td>
-            <td class="p-3">Cluster seizures, status epilepticus, เพศผู้ทำหมัน, สายพันธุ์บางชนิด</td>
+            <td class="p-3">Cluster seizures, status epilepticus, เพศผู้ทำหมัน</td>
           </tr>
-          <tr class="bg-white border-b">
+          <tr class="bg-secondary border-b border-custom">
             <td class="p-3 font-semibold">โรคทางพฤติกรรม</td>
             <td class="p-3">แปรผัน; ต้องรักษาตลอดชีวิต</td>
             <td class="p-3">การการุณยฆาตหรือการปล่อยทิ้ง</td>
             <td class="p-3">ส่วนใหญ่ดีขึ้น; ไม่มีรายใด "หายขาด"</td>
-            <td class="p-3">ความก้าวร้าวต่อมนุษย์, ความสามารถของเจ้าของ, การรักษาล่าช้า</td>
+            <td class="p-3">ความก้าวร้าวต่อมนุษย์, การรักษาล่าช้า</td>
           </tr>
-          <tr class="bg-gray-50">
+          <tr class="bg-tertiary">
             <td class="p-3 font-semibold">CCDS</td>
             <td class="p-3">ไม่ทำให้อายุขัยสั้นลง</td>
             <td class="p-3">การการุณยฆาตเพื่อคุณภาพชีวิต (ภายใน 2 ปี หากอาการรุนแรง)</td>
@@ -255,11 +481,11 @@
         </tbody>
       </table>
     </div>
-    <p class="text-xs text-gray-500 mt-2 italic">MGBA = microbiota–gut–brain axis</p>
+    <p class="text-xs text-muted mt-2 italic">MGBA = microbiota–gut–brain axis</p>
   </div>
 
-  <div class="card bg-white rounded-2xl shadow-xl p-6 md:p-8 mb-6">
-    <h3 class="text-xl font-bold text-teal-600 mb-3">📊 ตารางที่ 2: โรคแทรกซ้อนที่อาจเกิดขึ้น</h3>
+  <div class="bg-secondary rounded-2xl shadow-custom p-6 md:p-8 mb-6">
+    <h3 class="text-xl font-bold text-accent mb-3">📊 ตารางที่ 2: โรคแทรกซ้อนที่อาจเกิดขึ้น</h3>
     <div class="overflow-x-auto">
       <table class="w-full text-sm border-collapse">
         <thead>
@@ -270,56 +496,55 @@
         </thead>
         <tbody>
           <tr class="bg-gray-200"><td colspan="2" class="p-3 font-bold">โรคทางพฤติกรรม</td></tr>
-          <tr class="bg-white border-b">
+          <tr class="bg-secondary border-b border-custom">
             <td class="p-3">CIE (Chronic Inflammatory Enteropathy)</td>
             <td class="p-3">CIE และพฤติกรรมที่เกี่ยวข้องกับการแยกจาก</td>
           </tr>
-          <tr class="bg-gray-50 border-b">
+          <tr class="bg-tertiary border-b border-custom">
             <td class="p-3">โรคทางเดินอาหารอื่นๆ</td>
             <td class="p-3">กรดไหลย้อนและเลียพื้นผิวมากเกินไป</td>
           </tr>
           <tr class="bg-gray-200"><td colspan="2" class="p-3 font-bold">โรคลมชักไม่ทราบสาเหตุ (IE)</td></tr>
-          <tr class="bg-white border-b">
+          <tr class="bg-secondary border-b border-custom">
             <td class="p-3">โรคทางพฤติกรรม</td>
             <td class="p-3">IE และพฤติกรรมก้าวร้าว</td>
           </tr>
-          <tr class="bg-gray-50">
+          <tr class="bg-tertiary">
             <td class="p-3">CCDS</td>
             <td class="p-3">IE ในสุนัขอายุ 6 ปี ที่มี CCDS ระดับปานกลาง</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <p class="text-xs text-gray-500 mt-2 italic">CCDS = canine cognitive dysfunction syndrome; CIE = chronic inflammatory enteropathy; IE = idiopathic epilepsy</p>
   </div>
 
-  <div class="card bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl shadow-xl p-6 md:p-8">
-    <h2 class="text-2xl font-bold text-purple-700 mb-4">🔍 สัญญาณพฤติกรรมที่ไม่寻常ของโรคทางเดินอาหาร</h2>
+  <div class="bg-secondary rounded-2xl shadow-custom p-6 md:p-8">
+    <h2 class="text-2xl font-bold text-accent mb-4">🔍 สัญญาณพฤติกรรมที่ไม่寻常ของโรคทางเดินอาหาร</h2>
     <div class="grid md:grid-cols-2 gap-4">
-      <div class="bg-white p-4 rounded-xl shadow">
-        <h4 class="font-bold text-purple-700 mb-2">🍽️ Pica (กินสิ่งที่ไม่ใช่อาหาร)</h4>
-        <p class="text-sm text-gray-600">อาจเป็นสัญญาณของ gastroenteritis เรื้อรัง</p>
+      <div class="bg-tertiary p-4 rounded-xl shadow">
+        <h4 class="font-bold text-accent mb-2">🍽️ Pica (กินสิ่งที่ไม่ใช่อาหาร)</h4>
+        <p class="text-sm text-secondary">อาจเป็นสัญญาณของ gastroenteritis เรื้อรัง</p>
       </div>
-      <div class="bg-white p-4 rounded-xl shadow">
-        <h4 class="font-bold text-purple-700 mb-2">👅 การเลียมากเกินไป</h4>
-        <p class="text-sm text-gray-600">เลียอากาศ, เลียพื้นผิว, groom มากเกินไป - 14/19 สุนัขมีความผิดปกติทางเดินอาหาร</p>
+      <div class="bg-tertiary p-4 rounded-xl shadow">
+        <h4 class="font-bold text-accent mb-2"> การเลียมากเกินไป</h4>
+        <p class="text-sm text-secondary">เลียอากาศ, เลียพื้นผิว - 14/19 สุนัขมีความผิดปกติทางเดินอาหาร</p>
       </div>
-      <div class="bg-white p-4 rounded-xl shadow">
-        <h4 class="font-bold text-purple-700 mb-2"> Fly Biting</h4>
-        <p class="text-sm text-gray-600">พฤติกรรมกัดอากาศ - ส่วนใหญ่มีโรคทางเดินอาหารแฝง</p>
+      <div class="bg-tertiary p-4 rounded-xl shadow">
+        <h4 class="font-bold text-accent mb-2">🪰 Fly Biting</h4>
+        <p class="text-sm text-secondary">พฤติกรรมกัดอากาศ - ส่วนใหญ่มีโรคทางเดินอาหารแฝง</p>
       </div>
-      <div class="bg-white p-4 rounded-xl shadow">
-        <h4 class="font-bold text-purple-700 mb-2">⭐ Star Gazing</h4>
-        <p class="text-sm text-gray-600">จ้องมองท้องฟ้า - พบใน Yorkshire terrier ที่มีการไหลย้อน</p>
+      <div class="bg-tertiary p-4 rounded-xl shadow">
+        <h4 class="font-bold text-accent mb-2">⭐ Star Gazing</h4>
+        <p class="text-sm text-secondary">จ้องมองท้องฟ้า - พบใน Yorkshire terrier ที่มีการไหลย้อน</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- SECTION: การจัดการ -->
-<section id="management" class="section">
-  <div class="card bg-white rounded-2xl shadow-xl p-6 md:p-8 mb-6">
-    <h2 class="text-2xl font-bold text-teal-700 mb-4">💊 การรักษาที่เป็นไปได้</h2>
+<!-- VIEW: Management -->
+<section id="view-management" class="view">
+  <div class="bg-secondary rounded-2xl shadow-custom p-6 md:p-8 mb-6">
+    <h2 class="text-2xl font-bold text-accent mb-4">💊 การรักษาที่เป็นไปได้</h2>
     <div class="grid md:grid-cols-2 gap-4 mb-6">
       <div class="bg-blue-50 p-4 rounded-xl border-l-4 border-blue-500">
         <h3 class="font-bold text-blue-700 mb-2"> การรักษาที่สมอง</h3>
@@ -331,7 +556,7 @@
         </ul>
       </div>
       <div class="bg-green-50 p-4 rounded-xl border-l-4 border-green-500">
-        <h3 class="font-bold text-green-700 mb-2">🦠 การรักษาที่ลำไส้</h3>
+        <h3 class="font-bold text-green-700 mb-2"> การรักษาที่ลำไส้</h3>
         <ul class="text-sm text-gray-700 space-y-1">
           <li>• Prebiotics</li>
           <li>• Probiotics</li>
@@ -343,7 +568,7 @@
     </div>
 
     <div class="bg-amber-50 p-4 rounded-xl border-l-4 border-amber-500">
-      <h3 class="font-bold text-amber-700 mb-2"> ผลการศึกษา FMT ในสุนัข</h3>
+      <h3 class="font-bold text-amber-700 mb-2">📊 ผลการศึกษา FMT ในสุนัข</h3>
       <ul class="text-sm text-gray-700 space-y-2">
         <li>✅ สุนัข CIE: เจ้าของสังเกตเห็นกิจกรรมเพิ่มขึ้นและคุณภาพชีวิตดีขึ้น</li>
         <li>✅ สุนัข IE ดื้อยา 9 ตัว: พฤติกรรมและคุณภาพชีวิตดีขึ้นทั้งหมด, 4 ตัวมี seizure cluster days ลดลง 50%</li>
@@ -352,119 +577,304 @@
     </div>
   </div>
 
-  <div class="card bg-white rounded-2xl shadow-xl p-6 md:p-8 mb-6">
-    <h2 class="text-2xl font-bold text-teal-700 mb-4">📋 หลักการจัดการโรค MGBA</h2>
+  <div class="bg-secondary rounded-2xl shadow-custom p-6 md:p-8">
+    <h2 class="text-2xl font-bold text-accent mb-4">📋 หลักการจัดการโรค MGBA</h2>
     <div class="space-y-4">
-      <div class="flex items-start gap-3 p-4 bg-teal-50 rounded-xl">
-        <div class="text-2xl">1️⃣</div>
+      <div class="flex items-start gap-3 p-4 bg-tertiary rounded-xl">
+        <div class="text-2xl">1️</div>
         <div>
-          <h4 class="font-bold text-teal-700">รักษาทั้งสองภาวะพร้อมกัน</h4>
-          <p class="text-sm text-gray-600">เมื่อมีทั้ง CIE และปัญหาสุขภาพจิต ต้องจัดการทั้งสองอย่างพร้อมกัน</p>
+          <h4 class="font-bold text-accent">รักษาทั้งสองภาวะพร้อมกัน</h4>
+          <p class="text-sm text-secondary">เมื่อมีทั้ง CIE และปัญหาสุขภาพจิต ต้องจัดการทั้งสองอย่างพร้อมกัน</p>
         </div>
       </div>
-      <div class="flex items-start gap-3 p-4 bg-teal-50 rounded-xl">
-        <div class="text-2xl">2️⃣</div>
+      <div class="flex items-start gap-3 p-4 bg-tertiary rounded-xl">
+        <div class="text-2xl">2️</div>
         <div>
-          <h4 class="font-bold text-teal-700">ใช้แนวทาง Food Allergy Trial</h4>
-          <p class="text-sm text-gray-600">จำกัดอาหารเฉพาะที่เลือก งด treats, chews, supplements อื่นๆ</p>
+          <h4 class="font-bold text-accent">ใช้แนวทาง Food Allergy Trial</h4>
+          <p class="text-sm text-secondary">จำกัดอาหารเฉพาะที่เลือก งด treats, chews, supplements อื่นๆ</p>
         </div>
       </div>
-      <div class="flex items-start gap-3 p-4 bg-teal-50 rounded-xl">
+      <div class="flex items-start gap-3 p-4 bg-tertiary rounded-xl">
         <div class="text-2xl">3️⃣</div>
         <div>
-          <h4 class="font-bold text-teal-700">เปลี่ยนแปลงทีละอย่าง</h4>
-          <p class="text-sm text-gray-600">เปลี่ยนยาหรืออาหารทีละอย่าง เพื่อประเมินผลได้ชัดเจน</p>
+          <h4 class="font-bold text-accent">เปลี่ยนแปลงทีละอย่าง</h4>
+          <p class="text-sm text-secondary">เปลี่ยนยาหรืออาหารทีละอย่าง เพื่อประเมินผลได้ชัดเจน</p>
         </div>
       </div>
-      <div class="flex items-start gap-3 p-4 bg-teal-50 rounded-xl">
+      <div class="flex items-start gap-3 p-4 bg-tertiary rounded-xl">
         <div class="text-2xl">4️⃣</div>
         <div>
-          <h4 class="font-bold text-teal-700">บันทึกคะแนนทุกวัน</h4>
-          <p class="text-sm text-gray-600">บันทึกอาการทางเดินอาหารและพฤติกรรมเป็นตัวเลข เพื่อติดตามแนวโน้ม</p>
+          <h4 class="font-bold text-accent">บันทึกคะแนนทุกวัน</h4>
+          <p class="text-sm text-secondary">บันทึกอาการทางเดินอาหารและพฤติกรรมเป็นตัวเลข เพื่อติดตามแนวโน้ม</p>
         </div>
       </div>
-      <div class="flex items-start gap-3 p-4 bg-teal-50 rounded-xl">
+      <div class="flex items-start gap-3 p-4 bg-tertiary rounded-xl">
         <div class="text-2xl">5️⃣</div>
         <div>
-          <h4 class="font-bold text-teal-700">เตรียม "Rescue" medications</h4>
-          <p class="text-sm text-gray-600">มียาและแผนโภชนาการสำรองสำหรับเหตุการณ์ไม่คาดฝัน</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl shadow-xl p-6 md:p-8">
-    <h2 class="text-2xl font-bold text-indigo-700 mb-4">📊 Box A: ระบบติดตามที่เจ้าของสร้างเอง</h2>
-    <div class="grid md:grid-cols-2 gap-6">
-      <div>
-        <h3 class="font-bold text-indigo-600 mb-3">🧠 พฤติกรรม</h3>
-        <div class="space-y-3">
-          <details class="bg-white p-3 rounded-lg shadow">
-            <summary class="font-semibold"> การเลียพื้นผิว</summary>
-            <ul class="mt-2 text-sm space-y-1 text-gray-600">
-              <li>1 = เลีย obsessively หลังอาหารทุกมื้อ</li>
-              <li>3 = เลีย obsessively ตอนกลางคืน</li>
-              <li>5 = ไม่เลีย พักผ่อนสบายหลังอาหาร</li>
-            </ul>
-          </details>
-          <details class="bg-white p-3 rounded-lg shadow">
-            <summary class="font-semibold">️ การส่งเสียง</summary>
-            <ul class="mt-2 text-sm space-y-1 text-gray-600">
-              <li>1 = ครางและเห่าหลังอาหาร</li>
-              <li>3 = ครางและเห่าหลังมื้อสุดท้าย</li>
-              <li>5 = เงียบและพักผ่อนหลังอาหาร</li>
-            </ul>
-          </details>
-          <details class="bg-white p-3 rounded-lg shadow">
-            <summary class="font-semibold">💪 ความกล้า</summary>
-            <ul class="mt-2 text-sm space-y-1 text-gray-600">
-              <li>1 = อยู่ภายใน 3 ฟุตจากเจ้าของ</li>
-              <li>3 = รอให้เจ้าของออกไปก่อน</li>
-              <li>5 = เข้า dog yard ได้เอง</li>
-            </ul>
-          </details>
-        </div>
-      </div>
-      <div>
-        <h3 class="font-bold text-indigo-600 mb-3">️ ทางเดินอาหาร</h3>
-        <div class="space-y-3">
-          <details class="bg-white p-3 rounded-lg shadow">
-            <summary class="font-semibold">🍽️ ความอยากอาหาร</summary>
-            <ul class="mt-2 text-sm space-y-1 text-gray-600">
-              <li>1 = ปฏิเสธอาหาร</li>
-              <li>3 = เลือกกิน</li>
-              <li>5 = กินทุกมื้อเอง</li>
-            </ul>
-          </details>
-          <details class="bg-white p-3 rounded-lg shadow">
-            <summary class="font-semibold">💧 การดื่มน้ำ</summary>
-            <ul class="mt-2 text-sm space-y-1 text-gray-600">
-              <li>1 = สำลักหลังดื่ม</li>
-              <li>3 = กลัว/ปฏิเสธดื่มจากชาม</li>
-              <li>5 = ดื่มจากชามสุนัขปกติ</li>
-            </ul>
-          </details>
-          <details class="bg-white p-3 rounded-lg shadow">
-            <summary class="font-semibold">💩 อุจจาระ</summary>
-            <ul class="mt-2 text-sm space-y-1 text-gray-600">
-              <li>1 = เหลว</li>
-              <li>3 = บางส่วนนิ่ม บางส่วนปกติ</li>
-              <li>5 = ปกติทั้งหมด</li>
-            </ul>
-          </details>
+          <h4 class="font-bold text-accent">เตรียม "Rescue" medications</h4>
+          <p class="text-sm text-secondary">มียาและแผนโภชนาการสำรองสำหรับเหตุการณ์ไม่คาดฝัน</p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- SECTION: กรณีศึกษา -->
-<section id="case" class="section">
-  <div class="card bg-white rounded-2xl shadow-xl p-6 md:p-8 mb-6">
-    <h2 class="text-2xl font-bold text-teal-700 mb-4">📋 กรณีศึกษา: Bliss สุนัขพันธุ์ Poodle</h2>
+<!-- VIEW: Drug Reference -->
+<section id="view-drugs" class="view">
+  <div class="bg-secondary rounded-2xl shadow-custom p-6 md:p-8">
+    <h2 class="text-2xl font-bold text-accent mb-4">💉 Drug Reference Table</h2>
+    <p class="text-secondary mb-4">ค้นหาและกรองข้อมูลยาที่เกี่ยวข้องกับการจัดการโรค MGBA</p>
+    
+    <div class="flex flex-wrap gap-3 mb-4">
+      <input type="text" id="drug-search" placeholder="🔍 ค้นชื่อยา, กลุ่ม, ข้อบ่งใช้..." class="flex-1 min-w-[200px] px-4 py-2 rounded-lg border-2 border-custom bg-primary text-primary focus:border-accent focus:outline-none" oninput="filterDrugs()">
+      <select id="drug-filter" class="px-4 py-2 rounded-lg border-2 border-custom bg-primary text-primary focus:border-accent focus:outline-none" onchange="filterDrugs()">
+        <option value="">ทุกกลุ่ม</option>
+        <option value="Anxiolytic">Anxiolytic</option>
+        <option value="Anticonvulsant">Anticonvulsant</option>
+        <option value="Antidepressant">Antidepressant</option>
+        <option value="Sedative">Sedative</option>
+        <option value="MAO-B Inhibitor">MAO-B Inhibitor</option>
+        <option value="Probiotic">Probiotic</option>
+      </select>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm border-collapse">
+        <thead>
+          <tr class="bg-gradient-to-r from-gray-600 to-gray-700 text-white">
+            <th class="p-3 text-left cursor-pointer" onclick="sortDrugs('name')">ยา ↕</th>
+            <th class="p-3 text-left">กลุ่ม</th>
+            <th class="p-3 text-left">ข้อบ่งใช้</th>
+            <th class="p-3 text-left">ขนาดยา</th>
+            <th class="p-3 text-left">ความถี่</th>
+          </tr>
+        </thead>
+        <tbody id="drug-table-body">
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
+    </div>
+    
+    <div id="drug-detail-panel" class="mt-6 bg-tertiary rounded-xl p-6 pathway-detail">
+      <h3 class="text-xl font-bold text-accent mb-3" id="drug-detail-name"></h3>
+      <div class="grid md:grid-cols-2 gap-4 text-secondary">
+        <div><strong>กลไก:</strong> <span id="drug-detail-mechanism"></span></div>
+        <div><strong>ผลข้างเคียง:</strong> <span id="drug-detail-side"></span></div>
+        <div><strong>ข้อห้ามใช้:</strong> <span id="drug-detail-contraindication"></span></div>
+        <div><strong>MGBA Relevance:</strong> <span id="drug-detail-mgba"></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIEW: Food Trial -->
+<section id="view-food-trial" class="view">
+  <div class="bg-secondary rounded-2xl shadow-custom p-6 md:p-8">
+    <h2 class="text-2xl font-bold text-accent mb-4">️ Food Allergy Trial Protocol</h2>
+    <p class="text-secondary mb-6">โปรโตคอลแบบ step-by-step สำหรับการจัดการอาหารในสุนัข MGBA disease</p>
+
+    <!-- Timer -->
+    <div class="bg-gradient-to-r from-teal-50 to-cyan-50 p-4 rounded-xl mb-6 border-l-4 border-teal-500">
+      <h3 class="font-bold text-teal-700 mb-2">⏱️ Trial Timer</h3>
+      <div class="flex flex-wrap items-center gap-3">
+        <div class="timer-display text-3xl font-bold text-teal-700" id="timer-display">00:00:00</div>
+        <button onclick="startTimer()" class="px-4 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600">▶️ เริ่ม</button>
+        <button onclick="pauseTimer()" class="px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600">️ หยุด</button>
+        <button onclick="resetTimer()" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">🔄 รีเซ็ต</button>
+        <span class="text-sm text-secondary">ระยะเวลาแนะนำ: 8-12 สัปดาห์</span>
+      </div>
+    </div>
+
+    <!-- Phases -->
+    <div class="space-y-6">
+      <!-- Phase 1 -->
+      <div class="bg-tertiary rounded-xl p-5">
+        <h3 class="font-bold text-accent text-lg mb-3">Phase 1: Preparation (Week 0)</h3>
+        <div class="space-y-2" id="phase1-checklist">
+          <div class="checklist-item flex items-center gap-3 p-3 rounded-lg bg-secondary" onclick="toggleCheck(this)">
+            <span class="check-icon text-xl"></span>
+            <span>เลือก novel protein หรือ hydrolyzed diet</span>
+          </div>
+          <div class="checklist-item flex items-center gap-3 p-3 rounded-lg bg-secondary" onclick="toggleCheck(this)">
+            <span class="check-icon text-xl">⬜</span>
+            <span>งด treats, chews, supplements อื่นๆ</span>
+          </div>
+          <div class="checklist-item flex items-center gap-3 p-3 rounded-lg bg-secondary" onclick="toggleCheck(this)">
+            <span class="check-icon text-xl">⬜</span>
+            <span>อ่าน label อาหารปัจจุบัน</span>
+          </div>
+          <div class="checklist-item flex items-center gap-3 p-3 rounded-lg bg-secondary" onclick="toggleCheck(this)">
+            <span class="check-icon text-xl"></span>
+            <span>เตรียม journal สำหรับบันทึก</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 2 -->
+      <div class="bg-tertiary rounded-xl p-5">
+        <h3 class="font-bold text-accent text-lg mb-3">Phase 2: Elimination (Week 1-8)</h3>
+        <div class="space-y-2" id="phase2-checklist">
+          <div class="checklist-item flex items-center gap-3 p-3 rounded-lg bg-secondary" onclick="toggleCheck(this)">
+            <span class="check-icon text-xl">⬜</span>
+            <span>เปลี่ยนอาหาร 100%</span>
+          </div>
+          <div class="checklist-item flex items-center gap-3 p-3 rounded-lg bg-secondary" onclick="toggleCheck(this)">
+            <span class="check-icon text-xl">⬜</span>
+            <span>บันทึกอาการทุกวัน</span>
+          </div>
+          <div class="checklist-item flex items-center gap-3 p-3 rounded-lg bg-secondary" onclick="toggleCheck(this)">
+            <span class="check-icon text-xl"></span>
+            <span>ชั่งน้ำหนักทุกสัปดาห์</span>
+          </div>
+          <div class="checklist-item flex items-center gap-3 p-3 rounded-lg bg-secondary" onclick="toggleCheck(this)">
+            <span class="check-icon text-xl">⬜</span>
+            <span>ไม่มีอาหารอื่นเลย</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 3 -->
+      <div class="bg-tertiary rounded-xl p-5">
+        <h3 class="font-bold text-accent text-lg mb-3">Phase 3: Challenge (Week 9-10)</h3>
+        <div class="space-y-2" id="phase3-checklist">
+          <div class="checklist-item flex items-center gap-3 p-3 rounded-lg bg-secondary" onclick="toggleCheck(this)">
+            <span class="check-icon text-xl"></span>
+            <span>กลับไปกินอาหารเดิม</span>
+          </div>
+          <div class="checklist-item flex items-center gap-3 p-3 rounded-lg bg-secondary" onclick="toggleCheck(this)">
+            <span class="check-icon text-xl">⬜</span>
+            <span>สังเกตอาการ 2 สัปดาห์</span>
+          </div>
+          <div class="checklist-item flex items-center gap-3 p-3 rounded-lg bg-secondary" onclick="toggleCheck(this)">
+            <span class="check-icon text-xl">⬜</span>
+            <span>บันทึกการเปลี่ยนแปลง</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 4 -->
+      <div class="bg-tertiary rounded-xl p-5">
+        <h3 class="font-bold text-accent text-lg mb-3">Phase 4: Re-challenge (Week 11-12)</h3>
+        <div class="space-y-2" id="phase4-checklist">
+          <div class="checklist-item flex items-center gap-3 p-3 rounded-lg bg-secondary" onclick="toggleCheck(this)">
+            <span class="check-icon text-xl">⬜</span>
+            <span>กลับไปกิน diet ใหม่</span>
+          </div>
+          <div class="checklist-item flex items-center gap-3 p-3 rounded-lg bg-secondary" onclick="toggleCheck(this)">
+            <span class="check-icon text-xl">⬜</span>
+            <span>ยืนยันผล</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-6 flex gap-3">
+      <button onclick="printFoodTrial()" class="px-6 py-2 bg-accent text-white rounded-lg hover:bg-accent-dark">🖨️ Print Protocol</button>
+      <button onclick="resetChecklist()" class="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600">🔄 Reset All</button>
+    </div>
+  </div>
+</section>
+
+<!-- VIEW: DISHAA -->
+<section id="view-dishaa" class="view">
+  <div class="bg-secondary rounded-2xl shadow-custom p-6 md:p-8">
+    <h2 class="text-2xl font-bold text-accent mb-2">🧠 DISHAA Assessment Tool</h2>
+    <p class="text-secondary mb-2">แบบประเมิน Canine Cognitive Dysfunction Syndrome (CCDS)</p>
+    <p class="text-xs text-muted mb-6">D = Disorientation, I = Interactions, S = Sleep, H = House soiling, A = Activity, A = Anxiety</p>
+
+    <div class="grid md:grid-cols-2 gap-6">
+      <!-- Form -->
+      <div class="space-y-4">
+        <div class="bg-tertiary p-4 rounded-xl">
+          <h3 class="font-bold text-accent mb-3">1. 🌀 Disorientation (สับสน)</h3>
+          <div class="space-y-2" id="dishaa-d">
+            <div class="dishaa-option p-2 rounded border border-custom" onclick="selectDishaa('d', 0, this)">0 - ปกติ</div>
+            <div class="dishaa-option p-2 rounded border border-custom" onclick="selectDishaa('d', 1, this)">1 - บางครั้งสับสน</div>
+            <div class="dishaa-option p-2 rounded border border-custom" onclick="selectDishaa('d', 2, this)">2 - บ่อยครั้งที่สับสน</div>
+            <div class="dishaa-option p-2 rounded border border-custom" onclick="selectDishaa('d', 3, this)">3 - สับสนตลอดเวลา</div>
+          </div>
+        </div>
+
+        <div class="bg-tertiary p-4 rounded-xl">
+          <h3 class="font-bold text-accent mb-3">2. 🤝 Social Interactions</h3>
+          <div class="space-y-2" id="dishaa-i">
+            <div class="dishaa-option p-2 rounded border border-custom" onclick="selectDishaa('i', 0, this)">0 - ปกติ</div>
+            <div class="dishaa-option p-2 rounded border border-custom" onclick="selectDishaa('i', 1, this)">1 - ลดการทักทายบ้าง</div>
+            <div class="dishaa-option p-2 rounded border border-custom" onclick="selectDishaa('i', 2, this)">2 - หลีกเลี่ยงการปฏิสัมพันธ์</div>
+            <div class="dishaa-option p-2 rounded border border-custom" onclick="selectDishaa('i', 3, this)">3 - ไม่สนใจเจ้าของเลย</div>
+          </div>
+        </div>
+
+        <div class="bg-tertiary p-4 rounded-xl">
+          <h3 class="font-bold text-accent mb-3">3. 😴 Sleep-Wake Cycles</h3>
+          <div class="space-y-2" id="dishaa-s">
+            <div class="dishaa-option p-2 rounded border border-custom" onclick="selectDishaa('s', 0, this)">0 - ปกติ</div>
+            <div class="dishaa-option p-2 rounded border border-custom" onclick="selectDishaa('s', 1, this)">1 - ตื่นกลางคืนบ้าง</div>
+            <div class="dishaa-option p-2 rounded border border-custom" onclick="selectDishaa('s', 2, this)">2 - นอนกลางวันมาก ตื่นกลางคืน</div>
+            <div class="dishaa-option p-2 rounded border border-custom" onclick="selectDishaa('s', 3, this)">3 - สับสนกลางวัน-กลางคืน</div>
+          </div>
+        </div>
+
+        <div class="bg-tertiary p-4 rounded-xl">
+          <h3 class="font-bold text-accent mb-3">4. 🏠 House Soiling</h3>
+          <div class="space-y-2" id="dishaa-h">
+            <div class="dishaa-option p-2 rounded border border-custom" onclick="selectDishaa('h', 0, this)">0 - ปกติ</div>
+            <div class="dishaa-option p-2 rounded border border-custom" onclick="selectDishaa('h', 1, this)">1 - บางครั้งขับถ่ายไม่เป็นที่</div>
+            <div class="dishaa-option p-2 rounded border border-custom" onclick="selectDishaa('h', 2, this)">2 - บ่อยครั้งที่ขับถ่ายในบ้าน</div>
+            <div class="dishaa-option p-2 rounded border border-custom" onclick="selectDishaa('h', 3, this)">3 - ขับถ่ายในบ้านเป็นประจำ</div>
+          </div>
+        </div>
+
+        <div class="bg-tertiary p-4 rounded-xl">
+          <h3 class="font-bold text-accent mb-3">5. 🏃 Activity Level</h3>
+          <div class="space-y-2" id="dishaa-a1">
+            <div class="dishaa-option p-2 rounded border border-custom" onclick="selectDishaa('a1', 0, this)">0 - ปกติ</div>
+            <div class="dishaa-option p-2 rounded border border-custom" onclick="selectDishaa('a1', 1, this)">1 - ลดกิจกรรมบ้าง</div>
+            <div class="dishaa-option p-2 rounded border border-custom" onclick="selectDishaa('a1', 2, this)">2 - เดินไร้จุดหมาย</div>
+            <div class="dishaa-option p-2 rounded border border-custom" onclick="selectDishaa('a1', 3, this)">3 - ไม่สนใจสิ่งแวดล้อม</div>
+          </div>
+        </div>
+
+        <div class="bg-tertiary p-4 rounded-xl">
+          <h3 class="font-bold text-accent mb-3">6. 😰 Anxiety</h3>
+          <div class="space-y-2" id="dishaa-a2">
+            <div class="dishaa-option p-2 rounded border border-custom" onclick="selectDishaa('a2', 0, this)">0 - ปกติ</div>
+            <div class="dishaa-option p-2 rounded border border-custom" onclick="selectDishaa('a2', 1, this)">1 - กระวนกระวายบ้าง</div>
+            <div class="dishaa-option p-2 rounded border border-custom" onclick="selectDishaa('a2', 2, this)">2 - เห่าโดยไม่มีสาเหตุ</div>
+            <div class="dishaa-option p-2 rounded border border-custom" onclick="selectDishaa('a2', 3, this)">3 - กลัวสิ่งที่ไม่เคยกลัว</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="space-y-4">
+        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 p-6 rounded-xl border-2 border-teal-200">
+          <h3 class="font-bold text-teal-700 text-lg mb-3">📊 ผลการประเมิน</h3>
+          <div class="text-5xl font-bold text-teal-600 mb-2" id="dishaa-total">0</div>
+          <div class="text-sm text-secondary mb-4">คะแนนรวม (สูงสุด 18)</div>
+          <div class="p-3 rounded-lg" id="dishaa-interpretation">
+            <strong>กรอกแบบประเมินเพื่อดูผล</strong>
+          </div>
+        </div>
+
+        <div class="bg-tertiary p-4 rounded-xl">
+          <h3 class="font-bold text-accent mb-3">🕸️ Radar Chart</h3>
+          <canvas id="dishaa-chart" height="300"></canvas>
+        </div>
+
+        <button onclick="printDishaa()" class="w-full px-6 py-3 bg-accent text-white rounded-lg hover:bg-accent-dark font-semibold">🖨️ Print Results</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIEW: Case Study -->
+<section id="view-case" class="view">
+  <div class="bg-secondary rounded-2xl shadow-custom p-6 md:p-8 mb-6">
+    <h2 class="text-2xl font-bold text-accent mb-4"> กรณีศึกษา: Bliss สุนัขพันธุ์ Poodle</h2>
     <div class="bg-gradient-to-r from-teal-50 to-cyan-50 p-4 rounded-xl mb-4">
       <h3 class="font-bold text-teal-700 mb-2">🐕 ข้อมูลสุนัข</h3>
-      <ul class="text-gray-700 space-y-1">
+      <ul class="text-secondary space-y-1">
         <li>• <strong>ชื่อ:</strong> Bliss</li>
         <li>• <strong>สายพันธุ์:</strong> Miniature Poodle</li>
         <li>• <strong>อายุ:</strong> 3 ปี เพศผู้ไม่ทำหมัน</li>
@@ -475,13 +885,13 @@
     </div>
 
     <div class="bg-red-50 p-4 rounded-xl mb-4 border-l-4 border-red-400">
-      <h3 class="font-bold text-red-700 mb-2">⚠️ อาการ</h3>
-      <p class="text-gray-700">ปฏิเสธอาหารและน้ำ, เรอซ้ำ, อาเจียนน้ำดี, อุจจาระเหลวมีเลือดและเมือก, anorexia สมบูรณ์, ไม่ยอมดื่มจากชาม, ท้องเสียเหลว, น้ำหนักลด</p>
+      <h3 class="font-bold text-red-700 mb-2">️ อาการ</h3>
+      <p class="text-secondary">ปฏิเสธอาหารและน้ำ, เรอซ้ำ, อาเจียนน้ำดี, อุจจาระเหลวมีเลือดและเมือก, anorexia สมบูรณ์, ไม่ยอมดื่มจากชาม, ท้องเสียเหลว, น้ำหนักลด</p>
     </div>
 
     <div class="bg-blue-50 p-4 rounded-xl mb-4 border-l-4 border-blue-400">
       <h3 class="font-bold text-blue-700 mb-2">💊 แผนการรักษาเดิม</h3>
-      <ul class="text-gray-700 text-sm space-y-1">
+      <ul class="text-secondary text-sm space-y-1">
         <li>• Buspirone 7.5 mg q12h</li>
         <li>• Gabapentin 25 mg q12h</li>
         <li>• Rescue: Alprazolam, Gabapentin, Sileo</li>
@@ -491,7 +901,7 @@
 
     <div class="bg-green-50 p-4 rounded-xl border-l-4 border-green-400">
       <h3 class="font-bold text-green-700 mb-2">✅ แผนโภชนาการใหม่</h3>
-      <ul class="text-gray-700 text-sm space-y-1">
+      <ul class="text-secondary text-sm space-y-1">
         <li>• Diet trials เพื่อหาอาหารที่เหมาะสม</li>
         <li>• เป้าหมาย BCS 6/9</li>
         <li>• High-value treats สำหรับ desensitization</li>
@@ -502,51 +912,51 @@
     </div>
   </div>
 
-  <div class="card bg-white rounded-2xl shadow-xl p-6 md:p-8 mb-6">
-    <h2 class="text-2xl font-bold text-teal-700 mb-4">📈 Figure A: การติดตาม 11/3/21 - 11/19/21</h2>
-    <p class="text-gray-600 mb-4 text-sm">ช่วงที่เปลี่ยนเป็น homemade diet - อาการแย่ลง</p>
-    <div class="bg-gray-50 p-4 rounded-xl">
+  <div class="bg-secondary rounded-2xl shadow-custom p-6 md:p-8 mb-6">
+    <h2 class="text-2xl font-bold text-accent mb-4">📈 Figure A: การติดตาม 11/3/21 - 11/19/21</h2>
+    <p class="text-secondary mb-4 text-sm">ช่วงที่เปลี่ยนเป็น homemade diet - อาการแย่ลง</p>
+    <div class="bg-tertiary p-4 rounded-xl">
       <canvas id="chartA" height="300"></canvas>
     </div>
   </div>
 
-  <div class="card bg-white rounded-2xl shadow-xl p-6 md:p-8 mb-6">
-    <h2 class="text-2xl font-bold text-teal-700 mb-4">📈 Figure B: การติดตาม 2/1/22 - 2/17/22</h2>
-    <p class="text-gray-600 mb-4 text-sm">ช่วงที่เปลี่ยนเป็น hydrolyzed diet - อาการดีขึ้น (พื้นที่สีเทา = วัน groom)</p>
-    <div class="bg-gray-50 p-4 rounded-xl relative">
+  <div class="bg-secondary rounded-2xl shadow-custom p-6 md:p-8 mb-6">
+    <h2 class="text-2xl font-bold text-accent mb-4">📈 Figure B: การติดตาม 2/1/22 - 2/17/22</h2>
+    <p class="text-secondary mb-4 text-sm">ช่วงที่เปลี่ยนเป็น hydrolyzed diet - อาการดีขึ้น (พื้นที่สีเทา = วัน groom)</p>
+    <div class="bg-tertiary p-4 rounded-xl relative">
       <canvas id="chartB" height="300"></canvas>
     </div>
   </div>
 
-  <div class="card bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl shadow-xl p-6 md:p-8">
+  <div class="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl shadow-custom p-6 md:p-8">
     <h2 class="text-2xl font-bold text-emerald-700 mb-4">🎉 ผลลัพธ์</h2>
-    <p class="text-gray-700 leading-relaxed">
+    <p class="text-secondary leading-relaxed">
       หลังจากติดตามและปรึกษากับทีมสัตวแพทย์เป็นเวลา <strong>3 ปี</strong> Bliss และครอบครัวย้ายไปฝรั่งเศส ปัจจุบัน Bliss ยังคงกิน hydrolyzed diet, ได้รับยาปรับพฤติกรรม และมี<strong class="text-emerald-600">คุณภาพชีวิตที่ดี</strong> ตามที่เจ้าของรายงาน
     </p>
   </div>
 </section>
 
-<!-- SECTION: แบบทดสอบ -->
-<section id="quiz" class="section">
-  <div class="card bg-white rounded-2xl shadow-xl p-6 md:p-8 mb-6">
-    <h2 class="text-2xl font-bold text-teal-700 mb-6 flex items-center gap-2"> แบบทดสอบ (Quiz)</h2>
+<!-- VIEW: Quiz -->
+<section id="view-quiz" class="view">
+  <div class="bg-secondary rounded-2xl shadow-custom p-6 md:p-8">
+    <h2 class="text-2xl font-bold text-accent mb-6">📝 แบบทดสอบ (Quiz)</h2>
     <div id="quiz-container" class="space-y-6">
-      <!-- Questions will be injected here -->
+      <!-- Populated by JS -->
     </div>
-    <div class="mt-8 flex justify-center">
+    <div class="mt-8 flex justify-center gap-3">
       <button onclick="submitQuiz()" id="submitBtn" class="bg-gradient-to-r from-teal-500 to-cyan-500 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:shadow-xl transition-all hover:scale-105">
         ส่งคำตอบ
       </button>
+      <button onclick="resetQuiz()" class="bg-gray-500 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:shadow-xl transition-all">
+         ทำใหม่
+      </button>
     </div>
-    <div id="score-display" class="hidden mt-6 text-center">
-      <div class="bg-gradient-to-r from-teal-100 to-cyan-100 p-6 rounded-2xl">
+    <div id="score-display" class="hidden mt-6">
+      <div class="bg-gradient-to-r from-teal-100 to-cyan-100 p-6 rounded-2xl text-center">
         <div class="text-6xl mb-2" id="score-emoji">🎉</div>
         <h3 class="text-2xl font-bold text-teal-700">คะแนนของคุณ</h3>
         <div class="text-5xl font-bold text-teal-600 my-4" id="score-text">0/5</div>
-        <p class="text-gray-600" id="score-message"></p>
-        <button onclick="resetQuiz()" class="mt-4 bg-teal-500 text-white px-6 py-2 rounded-full hover:bg-teal-600 transition">
-          ทำใหม่
-        </button>
+        <p class="text-secondary" id="score-message"></p>
       </div>
     </div>
   </div>
@@ -554,37 +964,374 @@
 
 </main>
 
-<footer class="bg-gradient-to-r from-teal-700 to-cyan-700 text-white py-6 mt-12">
+<!-- Back to Top -->
+<button id="back-to-top" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑</button>
+
+<footer class="bg-gradient-to-r from-teal-700 to-cyan-700 text-white py-6 mt-12 no-print">
   <div class="max-w-6xl mx-auto px-4 text-center">
-    <p class="text-sm">📚 สรุปจากบทความ: Role of the Microbiota–Gut–Brain Axis in Behavioral and Neurologic Disorders</p>
+    <p class="text-sm">📚 MGBA Learning Hub - บทบาทของแกน Microbiota–Gut–Brain Axis</p>
     <p class="text-xs text-teal-200 mt-2">สร้างเพื่อการศึกษาเท่านั้น</p>
   </div>
 </footer>
 
 <script>
-// Tab Navigation
-function showSection(id) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('[id^="tab-"]').forEach(t => {
-    t.classList.remove('tab-active');
-    t.classList.add('tab-inactive');
-  });
-  document.getElementById(id).classList.add('active');
-  document.getElementById('tab-' + id).classList.remove('tab-inactive');
-  document.getElementById('tab-' + id).classList.add('tab-active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+// ============ STATE MANAGEMENT ============
+const AppState = {
+  mode: 'vet',
+  theme: 'light',
+  currentView: 'intro',
+  dishaaScores: { d: 0, i: 0, s: 0, h: 0, a1: 0, a2: 0 },
+  quizAnswers: new Array(5).fill(null),
+  pathwayState: 'normal',
   
-  if (id === 'case') {
+  save() {
+    localStorage.setItem('mbga-state', JSON.stringify({
+      mode: this.mode,
+      theme: this.theme
+    }));
+  },
+  
+  load() {
+    const saved = localStorage.getItem('mbga-state');
+    if (saved) {
+      const data = JSON.parse(saved);
+      this.mode = data.mode || 'vet';
+      this.theme = data.theme || 'light';
+    }
+  }
+};
+
+// ============ MODE SWITCH ============
+const modeDescriptions = {
+  vet: ' โหมดสัตวแพทย์: เน้นข้อมูลทางคลินิก ขนาดยา และโปรโตคอลการรักษา',
+  owner: '🐾 โหมดเจ้าของ: ภาษาเข้าใจง่าย เน้นการสังเกตและการดูแล',
+  student: '🎓 โหมดนักศึกษา: เน้นการเรียนรู้ คำอธิบาย และแบบทดสอบ'
+};
+
+function setMode(mode) {
+  AppState.mode = mode;
+  document.body.setAttribute('data-mode', mode);
+  document.querySelectorAll('.mode-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.mode === mode);
+  });
+  document.getElementById('mode-desc').textContent = modeDescriptions[mode];
+  AppState.save();
+}
+
+// ============ DARK MODE ============
+function toggleDarkMode() {
+  AppState.theme = AppState.theme === 'light' ? 'dark' : 'light';
+  document.body.setAttribute('data-theme', AppState.theme);
+  document.getElementById('theme-icon').textContent = AppState.theme === 'light' ? '' : '☀️';
+  AppState.save();
+  // Re-render charts if needed
+  if (AppState.currentView === 'case') {
     setTimeout(initCharts, 100);
+  }
+  if (AppState.currentView === 'dishaa') {
+    setTimeout(initDishaaChart, 100);
   }
 }
 
-// Quiz Data
+// ============ VIEW NAVIGATION ============
+function showView(viewId) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+  document.getElementById('view-' + viewId).classList.add('active');
+  document.querySelector(`.tab-btn[data-view="${viewId}"]`).classList.add('active');
+  AppState.currentView = viewId;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  
+  if (viewId === 'case') setTimeout(initCharts, 100);
+  if (viewId === 'dishaa') setTimeout(initDishaaChart, 100);
+  if (viewId === 'drugs') renderDrugs();
+}
+
+// ============ PROGRESS BAR ============
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = (scrollTop / docHeight) * 100;
+  document.getElementById('progress-bar').style.width = progress + '%';
+  document.getElementById('progress-label').textContent = Math.round(progress) + '%';
+  
+  // Back to top button
+  document.getElementById('back-to-top').style.display = scrollTop > 300 ? 'block' : 'none';
+});
+
+// ============ MGBA PATHWAY DIAGRAM ============
+const pathwayDetails = {
+  'microbiota': {
+    title: '🦠 Gut Microbiota (จุลินทรีย์ในลำไส้)',
+    content: 'ชุมชนจุลินทรีย์กว่า 100 trillion cells ในทางเดินอาหาร ผลิต metabolites สำคัญเช่น SCFA (butyrate, propionate, acetate), GABA, serotonin precursors',
+    clinical: 'Dysbiosis → ลด SCFA → เพิ่ม intestinal permeability → systemic inflammation → neuroinflammation'
+  },
+  'scfa': {
+    title: '️ SCFA & Neurotransmitters',
+    content: 'Short-chain fatty acids (butyrate, propionate, acetate) ผลิตโดยแบคทีเรียดี มีบทบาทสำคัญในการลดการอักเสบและรักษา BBB integrity',
+    clinical: 'Butyrate levels ↓ ในสุนัข CIE → เสริม probiotics/prebiotics เพื่อเพิ่ม SCFA production'
+  },
+  'gut-hormone': {
+    title: ' Gut Hormones',
+    content: 'Ghrelin, leptin, CCK, GLP-1, PYY ส่งสัญญาณจากลำไส้ไปสมองผ่าน bloodstream และ vagus nerve',
+    clinical: 'Chronic GI disease → altered gut hormone signaling → appetite changes, anxiety'
+  },
+  'immune-gut': {
+    title: '🛡️ Gut Immune System',
+    content: '70% ของ immune cells อยู่ในลำไส้ Gut-associated lymphoid tissue (GALT) สื่อสารกับ brain immune system',
+    clinical: 'CIE → chronic immune activation → cytokines (IL-1β, IL-6, TNF-α) → cross BBB → neuroinflammation'
+  },
+  'behavior': {
+    title: '🎭 Behavior (พฤติกรรม)',
+    content: 'Anxiety, fear, aggression, compulsive behaviors, separation-related disorders ล้วนได้รับอิทธิพลจาก MGBA',
+    clinical: '20-30% ของ canine behavioral disorders มี GI comorbidity → treat both simultaneously'
+  },
+  'cognition': {
+    title: '🧠 Cognition (การรู้คิด)',
+    content: 'Memory, learning, spatial awareness, problem-solving abilities ได้รับผลกระทบจาก gut health',
+    clinical: 'CCDS dogs → altered microbiota (↓ Fusobacteria, ↑ Actinobacteria) → cognitive decline'
+  },
+  'mood': {
+    title: ' Mood (อารมณ์)',
+    content: 'Serotonin 90% ผลิตในลำไส้ Dopamine, GABA ก็ผลิตโดย gut microbes',
+    clinical: 'Dysbiosis → ↓ serotonin production → depression, anxiety in dogs'
+  },
+  'neuro-inflam': {
+    title: '🔥 Neuroinflammation',
+    content: 'การอักเสบของระบบประสาทจาก cytokines, oxidative stress, microglial activation',
+    clinical: 'Chronic neuroinflammation → neuronal damage → seizures, cognitive decline, behavioral changes'
+  }
+};
+
+function setPathwayState(state) {
+  AppState.pathwayState = state;
+  document.getElementById('btn-normal').className = state === 'normal' ? 'px-4 py-2 rounded-full bg-teal-500 text-white font-semibold' : 'px-4 py-2 rounded-full bg-gray-300 text-gray-700 font-semibold';
+  document.getElementById('btn-dysbiosis').className = state === 'dysbiosis' ? 'px-4 py-2 rounded-full bg-red-500 text-white font-semibold' : 'px-4 py-2 rounded-full bg-gray-300 text-gray-700 font-semibold';
+  document.getElementById('dysbiosis-warning').style.display = state === 'dysbiosis' ? 'block' : 'none';
+}
+
+function showPathwayDetail(key) {
+  const detail = pathwayDetails[key];
+  document.getElementById('detail-title').textContent = detail.title;
+  document.getElementById('detail-content').textContent = detail.content;
+  document.getElementById('detail-clinical').textContent = detail.clinical;
+  document.getElementById('pathway-detail-panel').classList.add('active');
+}
+
+// ============ DRUG REFERENCE ============
+const drugData = [
+  { name: 'Buspirone', brand: 'BuSpar', class: 'Anxiolytic', indication: 'Generalized anxiety, fear', dose: '0.5-1 mg/kg', freq: 'q12h', mechanism: '5-HT1A partial agonist', side: 'GI upset, dizziness', contraindication: 'Liver disease, MAO inhibitors', mgba: 'May alter gut serotonin signaling' },
+  { name: 'Gabapentin', brand: 'Neurontin', class: 'Anticonvulsant/Anxiolytic', indication: 'Anxiety, pain, seizures', dose: '5-10 mg/kg', freq: 'q8-12h', mechanism: 'Calcium channel modulator', side: 'Sedation, ataxia', contraindication: 'Renal disease (dose adjust)', mgba: 'Minimal direct gut effects' },
+  { name: 'Alprazolam', brand: 'Xanax', class: 'Anxiolytic (BZD)', indication: 'Panic, noise phobia (rescue)', dose: '0.01-0.1 mg/kg', freq: 'PRN', mechanism: 'GABA-A receptor agonist', side: 'Sedation, paradoxical excitation', contraindication: 'Liver disease, aggressive dogs', mgba: 'Short-acting, minimal gut impact' },
+  { name: 'Dexmedetomidine (Sileo)', brand: 'Sileo', class: 'Sedative/Anxiolytic', indication: 'Noise aversion (rescue)', dose: '125 mcg/m²', freq: 'Oromucosal PRN', mechanism: 'Alpha-2 agonist', side: 'Sedation, bradycardia', contraindication: 'Cardiac disease, hypotension', mgba: 'Reduces stress-induced gut dysfunction' },
+  { name: 'Selegiline', brand: 'Anipryl', class: 'MAO-B Inhibitor', indication: 'CCDS, cognitive decline', dose: '1-2 mg/kg', freq: 'q24h (AM)', mechanism: 'MAO-B inhibitor → ↑ dopamine', side: 'GI upset, restlessness', contraindication: 'MAO inhibitors, SSRIs', mgba: '77% improvement in CCDS signs' },
+  { name: 'Fluoxetine', brand: 'Reconcile', class: 'Antidepressant (SSRI)', indication: 'Anxiety, compulsive disorders', dose: '1-2 mg/kg', freq: 'q24h', mechanism: 'Serotonin reuptake inhibitor', side: 'Anorexia, lethargy', contraindication: 'MAO inhibitors, seizure disorders', mgba: 'Alters gut serotonin (90% in gut)' },
+  { name: 'Sertraline', brand: 'Zoloft', class: 'Antidepressant (SSRI)', indication: 'Anxiety, aggression', dose: '1-2 mg/kg', freq: 'q24h', mechanism: 'Serotonin reuptake inhibitor', side: 'GI upset, sedation', contraindication: 'MAO inhibitors', mgba: 'Similar to fluoxetine' },
+  { name: 'Trazodone', brand: 'Desyrel', class: 'Antidepressant/Sedative', indication: 'Anxiety, situational stress', dose: '3-7 mg/kg', freq: 'q8-12h PRN', mechanism: 'SERT antagonist, 5-HT agonist', side: 'Sedation, GI upset', contraindication: 'MAO inhibitors', mgba: 'Useful for acute stress events' },
+  { name: 'Visbiome Vet', brand: 'Visbiome', class: 'Probiotic', indication: 'CIE, dysbiosis, MGBA support', dose: '1 capsule', freq: 'q24h', mechanism: 'Multi-strain probiotic', side: 'Rare: transient gas', contraindication: 'Immunocompromised (caution)', mgba: 'Restores microbiota balance, ↑ SCFA' },
+  { name: 'Phenobarbital', brand: 'Luminal', class: 'Anticonvulsant', indication: 'Idiopathic epilepsy', dose: '2-4 mg/kg', freq: 'q12h', mechanism: 'GABA-A enhancement', side: 'Sedation, hepatotoxicity, PU/PD', contraindication: 'Liver disease', mgba: 'Monitor liver, may affect gut motility' },
+  { name: 'Levetiracetam', brand: 'Keppra', class: 'Anticonvulsant', indication: 'Idiopathic epilepsy (adjunct)', dose: '20 mg/kg', freq: 'q8h', mechanism: 'SV2A binding', side: 'Minimal side effects', contraindication: 'Renal disease (dose adjust)', mgba: 'Well-tolerated, minimal gut effects' },
+  { name: 'Zonisamide', brand: 'Zonegran', class: 'Anticonvulsant', indication: 'Idiopathic epilepsy', dose: '5-10 mg/kg', freq: 'q12-24h', mechanism: 'Na+ channel blocker', side: 'Sedation, anorexia', contraindication: 'Sulfa allergy, liver disease', mgba: 'Monitor GI signs' }
+];
+
+let currentDrugSort = 'name';
+let currentDrugSortAsc = true;
+
+function renderDrugs() {
+  const search = document.getElementById('drug-search').value.toLowerCase();
+  const filter = document.getElementById('drug-filter').value;
+  
+  let filtered = drugData.filter(d => {
+    const matchSearch = d.name.toLowerCase().includes(search) || 
+                       d.class.toLowerCase().includes(search) ||
+                       d.indication.toLowerCase().includes(search);
+    const matchFilter = !filter || d.class.includes(filter);
+    return matchSearch && matchFilter;
+  });
+  
+  // Sort
+  filtered.sort((a, b) => {
+    const aVal = a[currentDrugSort].toLowerCase();
+    const bVal = b[currentDrugSort].toLowerCase();
+    return currentDrugSortAsc ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+  });
+  
+  const tbody = document.getElementById('drug-table-body');
+  tbody.innerHTML = filtered.map((d, i) => `
+    <tr class="drug-row border-b border-custom bg-secondary" onclick="showDrugDetail(${drugData.indexOf(d)})">
+      <td class="p-3 font-semibold">${d.name}<br><span class="text-xs text-muted">${d.brand}</span></td>
+      <td class="p-3"><span class="px-2 py-1 bg-teal-100 text-teal-700 rounded text-xs">${d.class}</span></td>
+      <td class="p-3">${d.indication}</td>
+      <td class="p-3 font-mono text-sm">${d.dose}</td>
+      <td class="p-3">${d.freq}</td>
+    </tr>
+  `).join('');
+}
+
+function showDrugDetail(idx) {
+  const d = drugData[idx];
+  document.getElementById('drug-detail-name').textContent = `${d.name} (${d.brand})`;
+  document.getElementById('drug-detail-mechanism').textContent = d.mechanism;
+  document.getElementById('drug-detail-side').textContent = d.side;
+  document.getElementById('drug-detail-contraindication').textContent = d.contraindication;
+  document.getElementById('drug-detail-mgba').textContent = d.mgba;
+  document.getElementById('drug-detail-panel').classList.add('active');
+}
+
+function filterDrugs() {
+  renderDrugs();
+}
+
+function sortDrugs(field) {
+  if (currentDrugSort === field) {
+    currentDrugSortAsc = !currentDrugSortAsc;
+  } else {
+    currentDrugSort = field;
+    currentDrugSortAsc = true;
+  }
+  renderDrugs();
+}
+
+// ============ FOOD TRIAL ============
+let timerInterval = null;
+let timerSeconds = 0;
+
+function startTimer() {
+  if (timerInterval) return;
+  timerInterval = setInterval(() => {
+    timerSeconds++;
+    updateTimerDisplay();
+  }, 1000);
+}
+
+function pauseTimer() {
+  clearInterval(timerInterval);
+  timerInterval = null;
+}
+
+function resetTimer() {
+  pauseTimer();
+  timerSeconds = 0;
+  updateTimerDisplay();
+}
+
+function updateTimerDisplay() {
+  const h = Math.floor(timerSeconds / 3600);
+  const m = Math.floor((timerSeconds % 3600) / 60);
+  const s = timerSeconds % 60;
+  document.getElementById('timer-display').textContent = 
+    `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+function toggleCheck(el) {
+  el.classList.toggle('checked');
+  const icon = el.querySelector('.check-icon');
+  icon.textContent = el.classList.contains('checked') ? '✅' : '';
+}
+
+function resetChecklist() {
+  document.querySelectorAll('.checklist-item').forEach(item => {
+    item.classList.remove('checked');
+    item.querySelector('.check-icon').textContent = '⬜';
+  });
+}
+
+function printFoodTrial() {
+  window.print();
+}
+
+// ============ DISHAA TOOL ============
+let dishaaChart = null;
+
+function selectDishaa(category, score, el) {
+  AppState.dishaaScores[category] = score;
+  // Update UI
+  const container = el.parentElement;
+  container.querySelectorAll('.dishaa-option').forEach(opt => opt.classList.remove('selected'));
+  el.classList.add('selected');
+  updateDishaaResults();
+}
+
+function updateDishaaResults() {
+  const scores = AppState.dishaaScores;
+  const total = scores.d + scores.i + scores.s + scores.h + scores.a1 + scores.a2;
+  document.getElementById('dishaa-total').textContent = total;
+  
+  let interpretation, color;
+  if (total <= 5) {
+    interpretation = '✅ Normal aging - การเปลี่ยนแปลงตามวัยปกติ';
+    color = 'bg-green-100 text-green-800';
+  } else if (total <= 10) {
+    interpretation = '⚠️ Mild CCDS - สมองเสื่อมระดับเบา ควรปรึกษาสัตวแพทย์';
+    color = 'bg-yellow-100 text-yellow-800';
+  } else if (total <= 15) {
+    interpretation = ' Moderate CCDS - สมองเสื่อมระดับปานกลาง ต้องการการรักษา';
+    color = 'bg-orange-100 text-orange-800';
+  } else {
+    interpretation = ' Severe CCDS - สมองเสื่อมรุนแรง ต้องการการจัดการอย่างเร่งด่วน';
+    color = 'bg-red-100 text-red-800';
+  }
+  
+  const interpEl = document.getElementById('dishaa-interpretation');
+  interpEl.textContent = interpretation;
+  interpEl.className = 'p-3 rounded-lg ' + color;
+  
+  if (dishaaChart) {
+    dishaaChart.data.datasets[0].data = [scores.d, scores.i, scores.s, scores.h, scores.a1, scores.a2];
+    dishaaChart.update();
+  }
+}
+
+function initDishaaChart() {
+  const ctx = document.getElementById('dishaa-chart');
+  if (!ctx) return;
+  if (dishaaChart) dishaaChart.destroy();
+  
+  const isDark = AppState.theme === 'dark';
+  const textColor = isDark ? '#f1f5f9' : '#1e293b';
+  
+  dishaaChart = new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: ['Disorientation', 'Interactions', 'Sleep', 'House Soiling', 'Activity', 'Anxiety'],
+      datasets: [{
+        label: 'DISHAA Score',
+        data: [0, 0, 0, 0, 0, 0],
+        backgroundColor: 'rgba(13, 148, 136, 0.2)',
+        borderColor: '#0d9488',
+        borderWidth: 2,
+        pointBackgroundColor: '#0d9488'
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        r: {
+          beginAtZero: true,
+          max: 3,
+          ticks: { color: textColor, stepSize: 1 },
+          grid: { color: isDark ? '#334155' : '#e2e8f0' },
+          pointLabels: { color: textColor, font: { size: 11 } }
+        }
+      },
+      plugins: {
+        legend: { labels: { color: textColor } }
+      }
+    }
+  });
+}
+
+function printDishaa() {
+  window.print();
+}
+
+// ============ QUIZ ============
 const quizData = [
   {
     q: "1. ข้อใดสัมพันธ์กับความผิดปกติของ MGBA?",
     options: ["a. Dysbiosis", "b. Parvovirus infection", "c. Intervertebral disk disease", "d. Dental disease"],
-    correct: 0
+    correct: 0,
+    explanation: "✅ Dysbiosis (ภาวะไม่สมดุลของจุลินทรีย์) เป็นสาเหตุหลักของความผิดปกติ MGBA ทำให้เกิด neuroinflammation, oxidative stress และทำลาย blood-brain barrier"
   },
   {
     q: "2. ข้อใดอธิบายคำแนะนำด้านอาหารสำหรับสุนัขที่มีโรค MGBA ได้ดีที่สุด?",
@@ -594,12 +1341,14 @@ const quizData = [
       "c. ควรแนะนำอาหารรักษาที่มีส่วนผสมเฉพาะเพื่อสนับสนุนสุขภาพทางเดินอาหารและสมอง",
       "d. อาหารไขมันสูงทั่วไปมีประโยชน์ต่อสุนัข IE"
     ],
-    correct: 2
+    correct: 2,
+    explanation: "✅ Veterinary therapeutic diets with functional ingredients (เช่น hydrolyzed protein, prebiotics, omega-3) มีหลักฐานสนับสนุนว่าช่วยทั้ง GI และ brain health ใน MGBA diseases"
   },
   {
     q: "3. ข้อใดไม่ถือเป็นการรักษาที่ลำไส้และจุลินทรีย์โดยตรง?",
     options: ["a. Prebiotics", "b. Alprazolam", "c. Probiotics", "d. Fecal microbiota transplantation"],
-    correct: 1
+    correct: 1,
+    explanation: "✅ Alprazolam เป็น anxiolytic (benzodiazepine) ที่ออกฤทธิ์ที่สมองผ่าน GABA-A receptor ไม่ใช่ gut-targeted treatment ส่วน prebiotics, probiotics, FMT ล้วนเป็น gut/microbiota treatments"
   },
   {
     q: "4. ข้อใดเกี่ยวกับโรคแทรกซ้อนในสุนัขที่มีโรคทางพฤติกรรมถูกต้องที่สุด?",
@@ -609,7 +1358,8 @@ const quizData = [
       "c. สุนัขที่เกิดจากการผ่าคลอดมักมี dysbiosis และโรคทางพฤติกรรม",
       "d. CIE และโรคทางเดินอาหารอื่นๆ สามารถเป็นโรคแทรกซ้อนในสุนัขที่มีโรคทางพฤติกรรม"
     ],
-    correct: 3
+    correct: 3,
+    explanation: "✅ CIE และ GI diseases อื่นๆ พบร่วมกับ behavioral disorders บ่อย (comorbidity) การศึกษาของ Ludvigsson et al. พบว่าสุนัข CIE มี negative activation score สูงกว่าสุนัขสุขภาพดี"
   },
   {
     q: "5. ข้อใดอธิบายโรคแทรกซ้อนในสุนัขที่มี IE ได้ดีที่สุด?",
@@ -619,31 +1369,33 @@ const quizData = [
       "c. โรคภูมิแพ้ในสุนัขมักพบร่วมกับ IE แต่ไม่พบในแมว",
       "d. เฉพาะสุนัขที่มี IE ดื้อยามักมี CIE"
     ],
-    correct: 0
+    correct: 0,
+    explanation: "✅ สุนัข IE มักมี 'neurobehavioral comorbidities' ได้แก่ behavioral disorders และ/หรือ early-onset CCDS (Belén et al.) ทำให้การจัดการซับซ้อนขึ้น"
   }
 ];
-
-let userAnswers = new Array(5).fill(null);
 
 function renderQuiz() {
   const container = document.getElementById('quiz-container');
   container.innerHTML = quizData.map((q, i) => `
-    <div class="bg-slate-50 p-4 rounded-xl border-2 border-slate-200">
-      <h3 class="font-bold text-gray-800 mb-3">${q.q}</h3>
+    <div class="bg-tertiary p-4 rounded-xl border-2 border-custom" id="quiz-q${i}">
+      <h3 class="font-bold text-primary mb-3">${q.q}</h3>
       <div class="space-y-2">
         ${q.options.map((opt, j) => `
-          <div class="quiz-option bg-white p-3 rounded-lg border-2 border-slate-200 ${userAnswers[i] === j ? 'border-teal-500 bg-teal-50' : ''}" 
+          <div class="quiz-option bg-secondary p-3 rounded-lg border-2 border-custom ${AppState.quizAnswers[i] === j ? 'border-teal-500 bg-teal-50' : ''}" 
                onclick="selectAnswer(${i}, ${j})" id="q${i}-opt${j}">
             ${opt}
           </div>
         `).join('')}
+      </div>
+      <div class="quiz-explanation" id="q${i}-explanation">
+        ${q.explanation}
       </div>
     </div>
   `).join('');
 }
 
 function selectAnswer(qIdx, optIdx) {
-  userAnswers[qIdx] = optIdx;
+  AppState.quizAnswers[qIdx] = optIdx;
   document.querySelectorAll(`[id^="q${qIdx}-opt"]`).forEach(el => {
     el.classList.remove('border-teal-500', 'bg-teal-50');
   });
@@ -651,32 +1403,34 @@ function selectAnswer(qIdx, optIdx) {
 }
 
 function submitQuiz() {
-  if (userAnswers.includes(null)) {
+  if (AppState.quizAnswers.includes(null)) {
     alert('กรุณาตอบทุกข้อ');
     return;
   }
   
   let score = 0;
   quizData.forEach((q, i) => {
-    const selected = document.getElementById(`q${i}-opt${userAnswers[i]}`);
+    const selected = document.getElementById(`q${i}-opt${AppState.quizAnswers[i]}`);
     const correct = document.getElementById(`q${i}-opt${q.correct}`);
-    if (userAnswers[i] === q.correct) {
+    const explanation = document.getElementById(`q${i}-explanation`);
+    
+    if (AppState.quizAnswers[i] === q.correct) {
       selected.classList.add('correct');
       score++;
     } else {
       selected.classList.add('incorrect');
       correct.classList.add('correct');
     }
+    explanation.classList.add('show');
   });
   
-  document.getElementById('submitBtn').classList.add('hidden');
   document.getElementById('score-display').classList.remove('hidden');
   document.getElementById('score-text').textContent = `${score}/5`;
   
   let emoji, message;
-  if (score === 5) { emoji = ''; message = 'ยอดเยี่ยม! คุณเข้าใจเนื้อหาอย่างถ่องแท้'; }
-  else if (score >= 3) { emoji = '👍'; message = 'ดีมาก! คุณเข้าใจเนื้อหาส่วนใหญ่'; }
-  else { emoji = '📚'; message = 'ลองทบทวนเนื้อหาอีกครั้งนะ'; }
+  if (score === 5) { emoji = '🏆'; message = 'ยอดเยี่ยม! คุณเข้าใจเนื้อหาอย่างถ่องแท้'; }
+  else if (score >= 3) { emoji = ''; message = 'ดีมาก! คุณเข้าใจเนื้อหาส่วนใหญ่'; }
+  else { emoji = ''; message = 'ลองทบทวนเนื้อหาอีกครั้งนะ'; }
   
   document.getElementById('score-emoji').textContent = emoji;
   document.getElementById('score-message').textContent = message;
@@ -685,75 +1439,80 @@ function submitQuiz() {
 }
 
 function resetQuiz() {
-  userAnswers = new Array(5).fill(null);
-  document.getElementById('submitBtn').classList.remove('hidden');
+  AppState.quizAnswers = new Array(5).fill(null);
   document.getElementById('score-display').classList.add('hidden');
   renderQuiz();
 }
 
-// Charts
+// ============ CHARTS (Case Study) ============
 let chartA, chartB;
 function initCharts() {
+  const ctxA = document.getElementById('chartA');
+  const ctxB = document.getElementById('chartB');
+  if (!ctxA || !ctxB) return;
+  
   if (chartA) chartA.destroy();
   if (chartB) chartB.destroy();
   
-  const ctxA = document.getElementById('chartA');
-  if (ctxA) {
-    chartA = new Chart(ctxA, {
-      type: 'line',
-      data: {
-        labels: ['11/3/21\n6.4 kg', '11/7/21\n6.6 kg', '11/11/21\n6.4 kg', '11/15/21\n6.1 kg', '11/19/21\n5.9 kg'],
-        datasets: [
-          { label: 'ความอยากอาหาร', data: [3, 5, 4, 1, 1], borderColor: '#0d9488', backgroundColor: '#0d9488', tension: 0.3 },
-          { label: 'การดื่มน้ำ', data: [3, 5, 2, 1, 1], borderColor: '#0ea5e9', backgroundColor: '#0ea5e9', tension: 0.3 },
-          { label: 'อุจจาระ', data: [3, 5, 4, 1, 1], borderColor: '#1e40af', backgroundColor: '#1e40af', tension: 0.3 },
-          { label: 'การเลียพื้นผิว', data: [3, 5, 4, 1, 1], borderColor: '#ea580c', backgroundColor: '#ea580c', tension: 0.3 },
-          { label: 'การส่งเสียง', data: [3, 5, 4, 1, 1], borderColor: '#be123c', backgroundColor: '#be123c', tension: 0.3 },
-          { label: 'ความกล้า', data: [5, 5, 1, 2, 2], borderColor: '#f59e0b', backgroundColor: '#f59e0b', tension: 0.3 }
-        ]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: { min: 1, max: 5, title: { display: true, text: 'คะแนน (1-5)' } }
-        },
-        plugins: {
-          legend: { position: 'top' }
-        }
-      }
-    });
-  }
+  const isDark = AppState.theme === 'dark';
+  const textColor = isDark ? '#f1f5f9' : '#1e293b';
+  const gridColor = isDark ? '#334155' : '#e2e8f0';
   
-  const ctxB = document.getElementById('chartB');
-  if (ctxB) {
-    chartB = new Chart(ctxB, {
-      type: 'line',
-      data: {
-        labels: ['2/1/22\n7.7 kg', '2/5/22\n7.7 kg', '2/9/22\n7.8 kg', '2/13/22\n7.3 kg', '2/17/22\n7 kg'],
-        datasets: [
-          { label: 'ความอยากอาหาร', data: [5, 5, 1, 3, 5], borderColor: '#0d9488', backgroundColor: '#0d9488', tension: 0.3 },
-          { label: 'การดื่มน้ำ', data: [5, 5, 1, 3, 4], borderColor: '#0ea5e9', backgroundColor: '#0ea5e9', tension: 0.3 },
-          { label: 'อุจจาระ', data: [5, 5, 1, 3, 5], borderColor: '#1e40af', backgroundColor: '#1e40af', tension: 0.3 },
-          { label: 'การเลียพื้นผิว', data: [5, 5, 1, 3, 4], borderColor: '#ea580c', backgroundColor: '#ea580c', tension: 0.3 },
-          { label: 'การส่งเสียง', data: [5, 5, 2, 3, 5], borderColor: '#be123c', backgroundColor: '#be123c', tension: 0.3 },
-          { label: 'ความกล้า', data: [5, 5, 1, 1, 4], borderColor: '#f59e0b', backgroundColor: '#f59e0b', tension: 0.3 }
-        ]
+  chartA = new Chart(ctxA, {
+    type: 'line',
+    data: {
+      labels: ['11/3/21\n6.4 kg', '11/7/21\n6.6 kg', '11/11/21\n6.4 kg', '11/15/21\n6.1 kg', '11/19/21\n5.9 kg'],
+      datasets: [
+        { label: 'ความอยากอาหาร', data: [3, 5, 4, 1, 1], borderColor: '#0d9488', backgroundColor: '#0d9488', tension: 0.3 },
+        { label: 'การดื่มน้ำ', data: [3, 5, 2, 1, 1], borderColor: '#0ea5e9', backgroundColor: '#0ea5e9', tension: 0.3 },
+        { label: 'อุจจาระ', data: [3, 5, 4, 1, 1], borderColor: '#1e40af', backgroundColor: '#1e40af', tension: 0.3 },
+        { label: 'การเลียพื้นผิว', data: [3, 5, 4, 1, 1], borderColor: '#ea580c', backgroundColor: '#ea580c', tension: 0.3 },
+        { label: 'การส่งเสียง', data: [3, 5, 4, 1, 1], borderColor: '#be123c', backgroundColor: '#be123c', tension: 0.3 },
+        { label: 'ความกล้า', data: [5, 5, 1, 2, 2], borderColor: '#f59e0b', backgroundColor: '#f59e0b', tension: 0.3 }
+      ]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: { min: 1, max: 5, title: { display: true, text: 'คะแนน (1-5)', color: textColor }, ticks: { color: textColor }, grid: { color: gridColor } },
+        x: { ticks: { color: textColor }, grid: { color: gridColor } }
       },
-      options: {
-        responsive: true,
-        scales: {
-          y: { min: 1, max: 5, title: { display: true, text: 'คะแนน (1-5)' } }
-        },
-        plugins: {
-          legend: { position: 'top' }
-        }
-      }
-    });
-  }
+      plugins: { legend: { labels: { color: textColor } } }
+    }
+  });
+  
+  chartB = new Chart(ctxB, {
+    type: 'line',
+    data: {
+      labels: ['2/1/22\n7.7 kg', '2/5/22\n7.7 kg', '2/9/22\n7.8 kg', '2/13/22\n7.3 kg', '2/17/22\n7 kg'],
+      datasets: [
+        { label: 'ความอยากอาหาร', data: [5, 5, 1, 3, 5], borderColor: '#0d9488', backgroundColor: '#0d9488', tension: 0.3 },
+        { label: 'การดื่มน้ำ', data: [5, 5, 1, 3, 4], borderColor: '#0ea5e9', backgroundColor: '#0ea5e9', tension: 0.3 },
+        { label: 'อุจจาระ', data: [5, 5, 1, 3, 5], borderColor: '#1e40af', backgroundColor: '#1e40af', tension: 0.3 },
+        { label: 'การเลียพื้นผิว', data: [5, 5, 1, 3, 4], borderColor: '#ea580c', backgroundColor: '#ea580c', tension: 0.3 },
+        { label: 'การส่งเสียง', data: [5, 5, 2, 3, 5], borderColor: '#be123c', backgroundColor: '#be123c', tension: 0.3 },
+        { label: 'ความกล้า', data: [5, 5, 1, 1, 4], borderColor: '#f59e0b', backgroundColor: '#f59e0b', tension: 0.3 }
+      ]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: { min: 1, max: 5, title: { display: true, text: 'คะแนน (1-5)', color: textColor }, ticks: { color: textColor }, grid: { color: gridColor } },
+        x: { ticks: { color: textColor }, grid: { color: gridColor } }
+      },
+      plugins: { legend: { labels: { color: textColor } } }
+    }
+  });
 }
 
-// Initialize
-renderQuiz();
+// ============ INIT ============
+window.addEventListener('load', () => {
+  AppState.load();
+  setMode(AppState.mode);
+  if (AppState.theme === 'dark') toggleDarkMode();
+  renderQuiz();
+  renderDrugs();
+});
 </script>
 
 </body>
