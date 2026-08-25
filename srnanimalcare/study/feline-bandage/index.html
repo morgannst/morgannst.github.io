@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FelineBandage Pro — Clinical Dashboard | SRN Animal Care</title>
+<meta name="description" content="Clinical dashboard for feline bandage complications assessment and monitoring">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@500;600;700;800&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --teal-900:#0f3d3a;--teal-800:#115e59;--teal-700:#0f766e;--teal-600:#0d9488;--teal-500:#14b8a6;--teal-100:#ccfbf1;--teal-50:#f0fdfa;
+  --amber-500:#f59e0b;--amber-100:#fef3c7;--amber-50:#fffbeb;
+  --red-500:#e11d48;--red-100:#ffe4e6;--red-50:#fff1f2;
+  --green-500:#10b981;--green-100:#d1fae5;
+  --blue-500:#3b82f6;--blue-100:#dbeafe;
+  --ink:#1a2e2c;--muted:#6b817e;--light-mut:#9eb0ad;
+  --bg:#f8fafc;--card:#ffffff;--border:#e2e8f0;
+  --radius:12px;--radius-sm:8px;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.08);
+  --shadow:0 4px 20px rgba(15,61,58,.08);
+  --shadow-lg:0 10px 40px rgba(15,61,58,.12);
+  --sidebar-w:260px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6}
+h1,h2,h3,h4,.num{font-family:'Prompt',sans-serif;font-weight:700}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+a{color:inherit;text-decoration:none}
+input,select,textarea{font-family:inherit;font-size:inherit}
+
+/* ===== LAYOUT ===== */
+.app{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:100vh}
+@media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0);position:fixed;top:0;left:0;bottom:0;z-index:100}}
+
+/* ===== SIDEBAR ===== */
+.sidebar{background:var(--teal-900);color:#e8f5f3;padding:24px 0;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
+.brand{padding:0 20px 20px;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:16px;display:flex;align-items:center;gap:12px}
+.brand img{width:42px;height:42px;object-fit:contain;border-radius:10px;background:#fff;padding:3px}
+.brand-txt h1{font-size:1rem;color:#fff;line-height:1.2}
+.brand-txt span{font-size:.7rem;color:#7dd3c7;display:block}
+.nav{flex:1;padding:0 8px}
+.nav-item{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;color:#c6e4e0;font-weight:500;font-size:.92rem;margin-bottom:3px;transition:.18s;cursor:pointer;width:100%;text-align:left}
+.nav-item:hover{background:rgba(255,255,255,.08);color:#fff}
+.nav-item.active{background:var(--teal-600);color:#fff;box-shadow:0 4px 12px rgba(13,148,136,.4)}
+.nav-item .ico{font-size:1.1rem;width:22px;text-align:center}
+.nav-section{font-size:.68rem;color:#5ea89f;padding:14px 16px 6px;text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+.sidebar-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,.1);margin-top:12px;font-size:.75rem;color:#7dd3c7}
+.hamburger{display:none;position:fixed;top:12px;left:12px;z-index:101;background:var(--teal-900);color:#fff;width:42px;height:42px;border-radius:10px;font-size:1.2rem;align-items:center;justify-content:center}
+@media(max-width:900px){.hamburger{display:flex}}
+
+/* ===== MAIN ===== */
+.main{padding:28px 36px 60px;overflow-x:hidden}
+@media(max-width:900px){.main{padding:70px 18px 40px}}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px}
+.topbar h2{font-size:1.45rem;color:var(--teal-900)}
+.topbar .meta{font-size:.85rem;color:var(--muted);margin-top:4px}
+.topbar-right{display:flex;gap:10px;align-items:center}
+.btn{padding:9px 18px;border-radius:8px;font-weight:600;font-size:.88rem;transition:.18s;display:inline-flex;align-items:center;gap:7px}
+.btn-primary{background:var(--teal-600);color:#fff}
+.btn-primary:hover{background:var(--teal-700)}
+.btn-ghost{background:transparent;color:var(--teal-700);border:1.5px solid var(--border)}
+.btn-ghost:hover{border-color:var(--teal-600);background:var(--teal-50)}
+.btn-danger{background:var(--red-500);color:#fff}
+.badge{background:var(--teal-100);color:var(--teal-800);padding:3px 10px;border-radius:20px;font-size:.72rem;font-weight:700;font-family:'Prompt'}
+
+/* ===== PAGE CONTAINER ===== */
+.page{display:none;animation:fadeIn .3s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ===== DASHBOARD ===== */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px}
+.kpi{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow-sm);border-left:4px solid var(--teal-600);transition:.2s}
+.kpi:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.kpi.red{border-left-color:var(--red-500)}
+.kpi.amber{border-left-color:var(--amber-500)}
+.kpi.green{border-left-color:var(--green-500)}
+.kpi .lbl{font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;font-weight:600}
+.kpi .val{font-family:'Prompt';font-size:2rem;font-weight:800;color:var(--teal-900);line-height:1.2;margin-top:4px}
+.kpi.red .val{color:var(--red-500)}
+.kpi.amber .val{color:var(--amber-500)}
+.kpi .sub{font-size:.8rem;color:var(--muted);margin-top:3px}
+
+.dash-grid{display:grid;grid-template-columns:2fr 1fr;gap:20px;margin-bottom:24px}
+@media(max-width:1000px){.dash-grid{grid-template-columns:1fr}}
+.panel{background:var(--card);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow-sm)}
+.panel h3{font-size:1rem;color:var(--teal-900);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.panel h3 .dot{width:8px;height:8px;border-radius:50%;background:var(--teal-600)}
+
+/* donut */
+.donut-wrap{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.donut-wrap svg{width:180px;height:180px;flex:none}
+.donut-wrap svg .seg{fill:none;stroke-width:24;stroke-dasharray:0 440;transition:stroke-dasharray 1s ease}
+.page.active .donut-wrap svg .seg{stroke-dasharray:var(--v) 440}
+.seg-mild{stroke:#14b8a6;--v:283.2}
+.seg-mod{stroke:#f59e0b;--v:143.8;stroke-dashoffset:-283.2}
+.seg-sev{stroke:#e11d48;--v:12.8;stroke-dashoffset:-427}
+.legend-col{flex:1;min-width:180px}
+.leg-row{display:flex;align-items:center;gap:10px;padding:8px 0}
+.leg-dot{width:12px;height:12px;border-radius:4px;flex:none}
+.leg-row b{font-family:'Prompt';font-size:.9rem}
+.leg-row small{color:var(--muted);font-size:.78rem;display:block}
+
+/* recent list */
+.log-list{list-style:none}
+.log-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
+.log-item:last-child{border-bottom:none}
+.log-item .av{width:38px;height:38px;border-radius:50%;background:var(--teal-100);display:grid;place-items:center;font-size:1.1rem;flex:none}
+.log-item .info{flex:1}
+.log-item .info b{font-size:.9rem;display:block}
+.log-item .info small{color:var(--muted);font-size:.78rem}
+.log-item .score{font-family:'Prompt';font-weight:700;color:var(--teal-700);align-self:center}
+
+/* quick actions */
+.qa-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.qa{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:18px;text-align:left;transition:.2s;display:flex;flex-direction:column;gap:6px}
+.qa:hover{border-color:var(--teal-600);transform:translateY(-2px);box-shadow:var(--shadow)}
+.qa .q-ico{font-size:1.4rem}
+.qa b{font-size:.92rem;color:var(--teal-900)}
+.qa small{font-size:.78rem;color:var(--muted)}
+
+/* ===== ASSESSMENT TOOL ===== */
+.form-card{background:var(--card);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow);max-width:900px}
+.form-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+@media(max-width:700px){.form-grid{grid-template-columns:1fr}}
+.field label{display:block;font-size:.82rem;font-weight:600;color:var(--muted);margin-bottom:5px}
+.field input,.field select{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;transition:.18s;background:#fff}
+.field input:focus,.field select:focus{outline:none;border-color:var(--teal-600);box-shadow:0 0 0 3px rgba(13,148,136,.12)}
+
+.assess-params{margin-top:24px}
+.param{background:var(--bg);border-radius:10px;padding:16px;margin-bottom:12px}
+.param-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.param-head b{font-size:.95rem;color:var(--teal-900)}
+.param-head .hint{font-size:.75rem;color:var(--muted);cursor:help;border-bottom:1px dotted var(--muted)}
+.scale{display:flex;gap:8px;flex-wrap:wrap}
+.scale label{flex:1;min-width:70px;background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:8px 10px;text-align:center;font-size:.8rem;cursor:pointer;transition:.18s;font-weight:500}
+.scale label:hover{border-color:var(--teal-500);background:var(--teal-50)}
+.scale input{display:none}
+.scale input:checked + span{background:var(--teal-600);color:#fff;font-weight:700}
+.scale label span{display:block;padding:6px 4px;border-radius:6px}
+
+/* score bar */
+.score-bar{margin-top:20px;padding:18px;background:linear-gradient(135deg,var(--teal-50),var(--amber-50));border-radius:10px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.score-bar .sc-label{font-size:.85rem;color:var(--muted)}
+.score-bar .sc-val{font-family:'Prompt';font-size:2rem;font-weight:800;color:var(--teal-700)}
+.score-bar.low .sc-val{color:var(--red-500)}
+.score-bar.mid .sc-val{color:var(--amber-500)}
+.score-bar.hi .sc-val{color:var(--green-500)}
+.interp{font-size:.85rem;font-weight:600;margin-top:4px}
+
+/* ===== MONITORING ===== */
+.timeline{position:relative;padding-left:40px;margin-top:16px}
+.timeline::before{content:'';position:absolute;left:14px;top:6px;bottom:6px;width:2px;background:var(--teal-100)}
+.tl-item{position:relative;padding-bottom:24px}
+.tl-item:last-child{padding-bottom:0}
+.tl-item::before{content:'';position:absolute;left:-33px;top:4px;width:16px;height:16px;border-radius:50%;background:var(--teal-600);border:3px solid var(--teal-100)}
+.tl-item.urgent::before{background:var(--red-500);border-color:var(--red-100)}
+.tl-item.warn::before{background:var(--amber-500);border-color:var(--amber-100)}
+.tl-time{font-family:'Prompt';font-size:.8rem;color:var(--teal-700);font-weight:700}
+.tl-title{font-size:1rem;font-weight:700;color:var(--teal-900);margin:3px 0}
+.tl-desc{font-size:.88rem;color:var(--muted)}
+
+/* decision tree */
+.dt-node{background:var(--card);border-radius:var(--radius);padding:18px;margin-bottom:14px;border-left:4px solid var(--teal-600);box-shadow:var(--shadow-sm)}
+.dt-node.question{border-left-color:var(--blue-500);background:linear-gradient(135deg,var(--blue-100),#fff)}
+.dt-node.action-green{border-left-color:var(--green-500);background:linear-gradient(135deg,var(--green-100),#fff)}
+.dt-node.action-amber{border-left-color:var(--amber-500);background:linear-gradient(135deg,var(--amber-100),#fff)}
+.dt-node.action-red{border-left-color:var(--red-500);background:linear-gradient(135deg,var(--red-100),#fff)}
+.dt-node h4{font-size:.95rem;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.dt-options{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.dt-btn{background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:8px 14px;font-size:.85rem;font-weight:600;transition:.18s}
+.dt-btn:hover{border-color:var(--teal-600);background:var(--teal-50)}
+
+/* ===== EVIDENCE ===== */
+.ev-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
+@media(max-width:800px){.ev-grid{grid-template-columns:1fr}}
+.cmp-table{width:100%;border-collapse:collapse;font-size:.88rem}
+.cmp-table th,.cmp-table td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--border)}
+.cmp-table th{background:var(--teal-50);color:var(--teal-900);font-family:'Prompt';font-weight:600}
+.cmp-table tr:hover{background:var(--teal-50)}
+.cmp-table .bad{color:var(--red-500);font-weight:700}
+.cmp-table .good{color:var(--green-500);font-weight:700}
+
+.ev-grade{display:inline-flex;align-items:center;gap:8px;background:var(--amber-100);color:#92400e;padding:6px 14px;border-radius:999px;font-size:.82rem;font-weight:700}
+.ref-list{list-style:none;padding-left:0}
+.ref-list li{padding:10px 0;border-bottom:1px solid var(--border);font-size:.88rem}
+.ref-list li:last-child{border-bottom:none}
+.ref-list b{color:var(--teal-800)}
+
+/* ===== CLIENT RESOURCES ===== */
+.handout{background:#fff;border:1.5px dashed var(--teal-600);border-radius:var(--radius);padding:36px;max-width:800px;margin:0 auto}
+.handout .h-header{text-align:center;border-bottom:2px solid var(--teal-600);padding-bottom:18px;margin-bottom:20px}
+.handout .h-header img{width:60px;height:60px;margin-bottom:8px}
+.handout .h-header h3{font-size:1.2rem;color:var(--teal-900)}
+.handout h4{color:var(--teal-800);margin:18px 0 8px;font-size:1rem}
+.handout ul{padding-left:22px}
+.handout .warn-box{background:var(--red-50);border-left:4px solid var(--red-500);padding:12px 16px;border-radius:6px;margin:14px 0}
+.handout .sign-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:10px}
+.handout .sign-card{background:var(--bg);padding:12px;border-radius:8px;text-align:center;font-size:.85rem}
+.handout .sign-card .emo{font-size:1.8rem;display:block;margin-bottom:4px}
+.handout-footer{margin-top:24px;padding-top:16px;border-top:1px dashed var(--teal-600);font-size:.8rem;color:var(--muted);text-align:center}
+
+/* ===== QUIZ ===== */
+.quiz-card{background:var(--card);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow-sm);margin-bottom:14px}
+.quiz-card .q-num{font-family:'Prompt';font-size:.78rem;color:var(--teal-600);font-weight:700;margin-bottom:4px}
+.quiz-card h4{font-size:.98rem;margin-bottom:12px}
+.q-opt{display:block;width:100%;text-align:left;padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;margin-bottom:8px;background:#fafafa;transition:.18s;font-size:.9rem}
+.q-opt:hover:not(:disabled){border-color:var(--teal-600);background:var(--teal-50)}
+.q-opt.correct{border-color:var(--green-500);background:var(--green-100);font-weight:700}
+.q-opt.wrong{border-color:var(--red-500);background:var(--red-100)}
+.q-opt:disabled{cursor:default}
+.q-exp{display:none;background:var(--amber-50);border-left:3px solid var(--amber-500);padding:10px 14px;border-radius:6px;margin-top:8px;font-size:.85rem}
+.q-exp.show{display:block}
+
+.quiz-result{background:linear-gradient(135deg,var(--teal-900),var(--teal-700));color:#fff;padding:30px;border-radius:var(--radius);text-align:center;margin-top:20px;display:none}
+.quiz-result.show{display:block}
+.quiz-result h3{font-size:1.6rem;margin-bottom:10px}
+.quiz-result .sc-big{font-family:'Prompt';font-size:3rem;font-weight:800;color:#fcd34d}
+.quiz-result p{opacity:.9;max-width:500px;margin:10px auto}
+
+/* ===== MODAL ===== */
+.modal-bg{position:fixed;inset:0;background:rgba(15,61,58,.55);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-bg.show{display:flex;animation:fadeIn .2s}
+.modal{background:#fff;border-radius:var(--radius);max-width:500px;width:100%;padding:26px;box-shadow:var(--shadow-lg);max-height:90vh;overflow-y:auto}
+.modal h3{margin-bottom:14px;color:var(--teal-900)}
+.modal-actions{display:flex;gap:10px;margin-top:18px;justify-content:flex-end}
+
+/* print */
+@media print{
+  .sidebar,.topbar,.btn,.hamburger{display:none!important}
+  .main{padding:0}
+  .page{display:none}
+  #printTarget{display:block!important}
+  .handout{border:1px solid #000}
+}
+</style>
+</head>
+<body>
+
+<button class="hamburger" id="hamburger">☰</button>
+
+<div class="app">
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <img src="https://yunhfdekcjosnfwndepu.supabase.co/storage/v1/object/public/DATA%20SRNanimalcare/Logo%20symbol.png" alt="SRN" onerror="this.style.display='none'">
+      <div class="brand-txt"><h1>FelineBandage Pro</h1><span>SRN Animal Care • v1.0</span></div>
+    </div>
+    <nav class="nav">
+      <div class="nav-section">Main</div>
+      <button class="nav-item active" data-page="dashboard"><span class="ico">📊</span>Dashboard</button>
+      <button class="nav-item" data-page="assessment"><span class="ico">🩺</span>Assessment Tool</button>
+      <button class="nav-item" data-page="monitoring"><span class="ico">⏱️</span>Monitoring Protocol</button>
+      <div class="nav-section">Knowledge</div>
+      <button class="nav-item" data-page="evidence"><span class="ico">📚</span>Evidence Base</button>
+      <button class="nav-item" data-page="quiz"><span class="ico">🎓</span>Quiz & CME</button>
+      <div class="nav-section">Client</div>
+      <button class="nav-item" data-page="handout"><span class="ico">📄</span>Owner Handout</button>
+    </nav>
+    <div class="sidebar-footer">
+      <strong>Clinical Reference</strong><br>
+      Clayton et al. VCOT 2026<br>
+      © 2026 SRN Animal Care
+    </div>
+  </aside>
+
+  <!-- ===== MAIN ===== -->
+  <main class="main">
+
+    <!-- =============== DASHBOARD =============== -->
+    <section class="page active" id="page-dashboard">
+      <div class="topbar">
+        <div>
+          <h2>📊 Clinical Dashboard</h2>
+          <div class="meta">ภาพรวมข้อมูลภาวะแทรกซ้อนจากการพันผ้าในแมว • อ้างอิง Clayton et al. 2026 (n=152)</div>
+        </div>
+        <div class="topbar-right">
+          <span class="badge">🟢 Live</span>
+          <button class="btn btn-primary" onclick="navigate('assessment')">＋ New Assessment</button>
+        </div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi red"><div class="lbl">Overall Complication Rate</div><div class="val">68.4<small style="font-size:1rem">%</small></div><div class="sub">104/152 cats</div></div>
+        <div class="kpi amber"><div class="lbl">Severe Complications</div><div class="val">2.9<small style="font-size:1rem">%</small></div><div class="sub">เนื้อตาย / ขาดเลือด</div></div>
+        <div class="kpi amber"><div class="lbl">Splint Risk Factor</div><div class="val">3.4<small style="font-size:1rem">×</small></div><div class="sub">Odds of severe complication</div></div>
+        <div class="kpi green"><div class="lbl">Mild Cases</div><div class="val">64.4<small style="font-size:1rem">%</small></div><div class="sub">จัดการได้ไม่ยาก</div></div>
+      </div>
+
+      <div class="dash-grid">
+        <div class="panel">
+          <h3><span class="dot"></span>Severity Distribution (from study)</h3>
+          <div class="donut-wrap">
+            <svg viewBox="0 0 200 200">
+              <g transform="rotate(-90 100 100)">
+                <circle class="seg seg-mild" cx="100" cy="100" r="70"></circle>
+                <circle class="seg seg-mod" cx="100" cy="100" r="70"></circle>
+                <circle class="seg seg-sev" cx="100" cy="100" r="70"></circle>
+              </g>
+            </svg>
+            <div class="legend-col">
+              <div class="leg-row"><span class="leg-dot" style="background:#14b8a6"></span><div><b>Mild — 64.4%</b><small>ผ้าเลื่อน, บวมเล็กน้อย, ระคายเคือง</small></div></div>
+              <div class="leg-row"><span class="leg-dot" style="background:#f59e0b"></span><div><b>Moderate — 32.7%</b><small>แผลกดทับ, ต้องเปลี่ยนผ้า</small></div></div>
+              <div class="leg-row"><span class="leg-dot" style="background:#e11d48"></span><div><b>Severe — 2.9%</b><small>ขาดเลือด, เนื้อตาย</small></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3><span class="dot"></span>Recent Assessments</h3>
+          <ul class="log-list" id="recentLogs">
+            <li style="padding:16px;text-align:center;color:var(--muted);font-size:.88rem">ยังไม่มีบันทึก — เริ่มประเมินเลย!</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 style="margin-bottom:14px;color:var(--teal-900)">🚀 Quick Actions</h3>
+      <div class="qa-grid">
+        <button class="qa" onclick="navigate('assessment')"><span class="q-ico">🩺</span><b>New Assessment</b><small>ประเมินผ้าพันผู้ป่วย</small></button>
+        <button class="qa" onclick="navigate('monitoring')"><span class="q-ico">⏱️</span><b>Monitoring Schedule</b><small>ตารางตรวจซ้ำ</small></button>
+        <button class="qa" onclick="navigate('handout')"><span class="q-ico">📄</span><b>Print Handout</b><small>ใบความรู้เจ้าของ</small></button>
+        <button class="qa" onclick="navigate('quiz')"><span class="q-ico">🎓</span><b>Take Quiz</b><small>ทดสอบความรู้ 10 ข้อ</small></button>
+      </div>
+    </section>
+
+    <!-- =============== ASSESSMENT TOOL =============== -->
+    <section class="page" id="page-assessment">
+      <div class="topbar">
+        <div>
+          <h2>🩺 Bandage Assessment Tool</h2>
+          <div class="meta">แบบประเมินผ้าพันสำหรับแมว • บันทึกผลอัตโนมัติ</div>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-ghost" onclick="resetAssessment()">🔄 รีเซ็ต</button>
+          <button class="btn btn-primary" onclick="saveAssessment()">💾 บันทึก</button>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div class="form-head">
+          <div><b>Patient Information</b></div>
+          <span class="badge" id="assDate"></span>
+        </div>
+        <div class="form-grid">
+          <div class="field"><label>ชื่อสัตว์ / Case ID</label><input type="text" id="ptName" placeholder="e.g., Mimi, #2026-0842"></div>
+          <div class="field"><label>อายุ (ปี)</label><input type="number" id="ptAge" placeholder="e.g., 4" min="0" max="30"></div>
+          <div class="field"><label>ชนิดหัตถการ</label>
+            <select id="ptProcedure">
+              <option>— เลือก —</option>
+              <option>Femur fracture ORIF</option>
+              <option>Tibia fracture ORIF</option>
+              <option>Stifle luxation repair</option>
+              <option>Tarsal arthrodesis</option>
+              <option>External coaptation only (no surgery)</option>
+              <option>Other orthopaedic</option>
+            </select>
+          </div>
+          <div class="field"><label>ชนิดการดาม</label>
+            <select id="ptSplint">
+              <option value="none">ไม่มี splint (bandage only)</option>
+              <option value="splint">Splint</option>
+              <option value="cast">Cast</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="assess-params">
+          <h3 style="margin-bottom:12px;color:var(--teal-900)">📋 5-Point Bandage Assessment</h3>
+
+          <div class="param">
+            <div class="param-head">
+              <b>1. Perfusion (การไหลเวียนเลือด)</b>
+              <span class="hint" title="ตรวจ CRT, อุณหภูมิ, สีของปลายเท้า, digital pulse">ℹ️ CRT / temp / color</span>
+            </div>
+            <div class="scale">
+              <label><input type="radio" name="p1" value="3"><span>3 — ปกติ</span></label>
+              <label><input type="radio" name="p1" value="2"><span>2 — ลดเล็กน้อย</span></label>
+              <label><input type="radio" name="p1" value="1"><span>1 — ลดมาก</span></label>
+              <label><input type="radio" name="p1" value="0"><span>0 — ไม่มี 🚨</span></label>
+            </div>
+          </div>
+
+          <div class="param">
+            <div class="param-head">
+              <b>2. Skin Integrity (ความสมบูรณ์ของผิวหนัง)</b>
+              <span class="hint" title="ดูแผลกดทับ, การถลอก, maceration, dermatitis">ℹ️ sores / abrasions</span>
+            </div>
+            <div class="scale">
+              <label><input type="radio" name="p2" value="3"><span>3 — ปกติ</span></label>
+              <label><input type="radio" name="p2" value="2"><span>2 — แดงเล็กน้อย</span></label>
+              <label><input type="radio" name="p2" value="1"><span>1 — แผลถลอก</span></label>
+              <label><input type="radio" name="p2" value="0"><span>0 — แผลลึก 🚨</span></label>
+            </div>
+          </div>
+
+          <div class="param">
+            <div class="param-head">
+              <b>3. Swelling (อาการบวม)</b>
+              <span class="hint" title="เปรียบเทียบ 2 ข้าง, ตรวจ pitting edema">ℹ️ compare limbs</span>
+            </div>
+            <div class="scale">
+              <label><input type="radio" name="p3" value="3"><span>3 — ไม่มี</span></label>
+              <label><input type="radio" name="p3" value="2"><span>2 — เล็กน้อย</span></label>
+              <label><input type="radio" name="p3" value="1"><span>1 — ปานกลาง</span></label>
+              <label><input type="radio" name="p3" value="0"><span>0 — มาก 🚨</span></label>
+            </div>
+          </div>
+
+          <div class="param">
+            <div class="param-head">
+              <b>4. Bandage Integrity (สภาพผ้าพัน)</b>
+              <span class="hint" title="แน่น/หลวม, แห้ง/ชื้น, สดวก/เลื่อน">ℹ️ tightness / wet / slip</span>
+            </div>
+            <div class="scale">
+              <label><input type="radio" name="p4" value="3"><span>3 — ปกติ</span></label>
+              <label><input type="radio" name="p4" value="2"><span>2 — เลื่อนเล็กน้อย</span></label>
+              <label><input type="radio" name="p4" value="1"><span>1 — ชื้น/หลวม</span></label>
+              <label><input type="radio" name="p4" value="0"><span>0 — เสียหาย 🚨</span></label>
+            </div>
+          </div>
+
+          <div class="param">
+            <div class="param-head">
+              <b>5. Patient Comfort (ความสบายตัว)</b>
+              <span class="hint" title="behavioral signs of pain, appetite, mobility">ℹ️ pain / behavior</span>
+            </div>
+            <div class="scale">
+              <label><input type="radio" name="p5" value="3"><span>3 — ปกติ</span></label>
+              <label><input type="radio" name="p5" value="2"><span>2 — ไม่สบายนิดหน่อย</span></label>
+              <label><input type="radio" name="p5" value="1"><span>1 — เจ็บปานกลาง</span></label>
+              <label><input type="radio" name="p5" value="0"><span>0 — เจ็บมาก 🚨</span></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="score-bar" id="scoreBar">
+          <div>
+            <div class="sc-label">Total Score (max 15)</div>
+            <div class="sc-val" id="scVal">—</div>
+          </div>
+          <div style="text-align:right">
+            <div class="sc-label">การตีความ</div>
+            <div class="interp" id="scInterp">กรุณาประเมิน</div>
+          </div>
+        </div>
+
+        <div class="field" style="margin-top:18px">
+          <label>Clinical Notes</label>
+          <textarea id="ptNotes" rows="3" style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;resize:vertical" placeholder="บันทึกเพิ่มเติม..."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============== MONITORING =============== -->
+    <section class="page" id="page-monitoring">
+      <div class="topbar">
+        <div>
+          <h2>⏱️ Monitoring Protocol</h2>
+          <div class="meta">ตารางการตรวจผ้าพัน และ Decision Tree สำหรับภาวะแทรกซ้อน</div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-bottom:20px">
+        <h3><span class="dot"></span>Monitoring Schedule (Recommended)</h3>
+        <div class="timeline">
+          <div class="tl-item urgent">
+            <div class="tl-time">0–24 ชั่วโมงแรก</div>
+            <div class="tl-title">ตรวจทุก 4–6 ชั่วโมง</div>
+            <div class="tl-desc">ตรวจ perfusion, swelling, bandage integrity อย่างละเอียด ภาวะแทรกซ้อนรุนแรงมักเกิดในช่วงนี้</div>
+          </div>
+          <div class="tl-item warn">
+            <div class="tl-time">วันที่ 1–3</div>
+            <div class="tl-title">ตรวจทุกวัน</div>
+            <div class="tl-desc">ประเมิน skin integrity และ comfort อาจต้อง re-bandage หากมีปัญหา</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-time">วันที่ 4–7</div>
+            <div class="tl-title">ตรวจทุก 2–3 วัน</div>
+            <div class="tl-desc">หากไม่มีปัญหา ให้ตรวจเป็นระยะ ระวัง maceration จากความชื้นสะสม</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-time">หลังวันที่ 7</div>
+            <div class="tl-title">ตรวจทุก 3–5 วัน</div>
+            <div class="tl-desc">พิจารณาถอดผ้าพันเมื่อพร้อม — ยิ่งนาน ยิ่งเสี่ยงภาวะแทรกซ้อน</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3><span class="dot"></span>🚨 Red Flag Decision Tree</h3>
+        <p style="color:var(--muted);margin-bottom:18px">คลิกตัวเลือกเพื่อดูแนวทางดำเนินการ</p>
+        <div id="decisionTree"></div>
+      </div>
+    </section>
+
+    <!-- =============== EVIDENCE =============== -->
+    <section class="page" id="page-evidence">
+      <div class="topbar">
+        <div>
+          <h2>📚 Evidence Base</h2>
+          <div class="meta">ข้อมูลงานวิจัย เปรียบเทียบแมว vs สุนัข และข้อจำกัด</div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-bottom:20px">
+        <h3><span class="dot"></span>Primary Study</h3>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px">
+          <span class="badge">Retrospective</span>
+          <span class="badge">Multi-center</span>
+          <span class="ev-grade">⚖️ Level III Evidence</span>
+        </div>
+        <p style="margin-top:14px"><b>Clayton D, Costello S, Olive M, et al.</b> Incidence of Bandage-Associated Complications in Cats following Clean Orthopaedic Procedures: A Retrospective Study of 152 Cases. <i>Vet Comp Orthop Traumatol.</i> 2026;39(2):126-132. doi:10.1055/a-2655-9218</p>
+        <ul style="margin-top:10px;padding-left:22px;font-size:.9rem;color:var(--muted)">
+          <li>ประชากร: แมว 152 ตัว (client-owned) หลังหัตถการ clean orthopaedic</li>
+          <li>การออกแบบ: multi-institutional retrospective case series</li>
+          <li>ผลลัพธ์หลัก: incidence, severity, predictors of complications</li>
+        </ul>
+      </div>
+
+      <div class="ev-grid">
+        <div class="panel">
+          <h3><span class="dot"></span>🐈 แมว vs 🐕 สุนัข</h3>
+          <table class="cmp-table">
+            <thead><tr><th>ประเด็น</th><th>แมว</th><th>สุนัข</th></tr></thead>
+            <tbody>
+              <tr><td>การทนต่อการพันผ้า</td><td class="bad">ต่ำ</td><td class="good">ปานกลาง-สูง</td></tr>
+              <tr><td>Complication rate</td><td class="bad">~68%</td><td class="good">~30-45%*</td></tr>
+              <tr><td>Grooming behavior</td><td class="bad">เลียผ้าพันบ่อย</td><td class="good">ปานกลาง</td></tr>
+              <tr><td>Stress response</td><td class="bad">สูงเมื่อจำกัด</td><td class="good">ต่ำกว่า</td></tr>
+              <tr><td>Ischemic injury risk</td><td class="bad">สูงกว่า</td><td class="good">ต่ำกว่า</td></tr>
+            </tbody>
+          </table>
+          <p style="font-size:.75rem;color:var(--muted);margin-top:8px">* จาก literature โดยรวม อัตราขึ้นอยู่กับ study</p>
+        </div>
+
+        <div class="panel">
+          <h3><span class="dot"></span>⚠️ Study Limitations</h3>
+          <ul style="padding-left:22px;font-size:.9rem">
+            <li>Retrospective — อาจมี selection / recall bias</li>
+            <li>ไม่เก็บข้อมูล breed, BCS, pain score อย่างละเอียด</li>
+            <li>ความหลากหลายของสถาบัน ผู้พันผ้า และ protocol</li>
+            <li>ไม่มีการ randomize หรือ control group</li>
+            <li>ไม่ได้เปรียบเทียบ head-to-head กับสุนัขในกลุ่มเดียวกัน</li>
+          </ul>
+          <div class="ev-grade" style="margin-top:14px">📌 Recommendation: Grade B (ควรใช้ในคลินิก แต่ต้องระวัง)</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3><span class="dot"></span>📖 Further Reading</h3>
+        <ul class="ref-list">
+          <li><b>Anderson DM, White RA.</b> Ischemic bandage injuries: a case series. <i>Vet Surg.</i> 2000;29(6):488-98.</li>
+          <li><b>Meeson RL, et al.</b> Soft-tissue injuries associated with cast application. <i>VCOT.</i> 2011;24(2):126-131.</li>
+          <li><b>Langley-Hobbs SJ, et al.</b> Feline Orthopedic Surgery and Musculoskeletal Disease. 2nd ed. Saunders Elsevier; 2020.</li>
+          <li><b>Glyde MR, et al.</b> Internal fixation in feline orthopaedics: is bandaging still necessary? <i>Aust Vet Pract.</i> 2018;48(4):145-150.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- =============== QUIZ =============== -->
+    <section class="page" id="page-quiz">
+      <div class="topbar">
+        <div>
+          <h2>🎓 Quiz & CME</h2>
+          <div class="meta">ทดสอบความรู้ 10 ข้อ • สำหรับ CPD/CME</div>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-ghost" onclick="resetQuiz()">🔄 เริ่มใหม่</button>
+        </div>
+      </div>
+
+      <div id="quizContainer"></div>
+
+      <div class="quiz-result" id="quizResult">
+        <h3>🏆 ผลการทดสอบ</h3>
+        <div class="sc-big" id="quizScoreBig">0/10</div>
+        <p id="quizMsg"></p>
+        <button class="btn btn-primary" style="margin-top:14px" onclick="resetQuiz()">ทำใหม่</button>
+      </div>
+    </section>
+
+    <!-- =============== CLIENT HANDOUT =============== -->
+    <section class="page" id="page-handout">
+      <div class="topbar">
+        <div>
+          <h2>📄 Owner Handout</h2>
+          <div class="meta">ใบความรู้สำหรับเจ้าของแมว — พิมพ์และแจกได้</div>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-ghost" onclick="window.print()">🖨️ Print</button>
+        </div>
+      </div>
+
+      <div class="handout" id="printTarget">
+        <div class="h-header">
+          <img src="https://yunhfdekcjosnfwndepu.supabase.co/storage/v1/object/public/DATA%20SRNanimalcare/Logo%20symbol.png" alt="SRN" onerror="this.style.display='none'">
+          <h3>🐾 การดูแลแมวที่พันผ้าหลังผ่าตัดกระดูก</h3>
+          <p style="font-size:.85rem;color:var(--muted);margin-top:4px">คำแนะนำสำหรับเจ้าของ — โปรดอ่านและปฏิบัติตามอย่างเคร่งครัด</p>
+        </div>
+
+        <h4>🎯 วัตถุประสงค์ของการพันผ้า</h4>
+        <ul>
+          <li>ปกป้องแผลผ่าตัดจากการเลียและติดเชื้อ</li>
+          <li>พยุงและจำกัดการเคลื่อนไหวของขาที่ผ่าตัด</li>
+          <li>ลดอาการบวมในช่วงแรกหลังผ่าตัด</li>
+        </ul>
+
+        <h4>🏠 การดูแลที่บ้าน</h4>
+        <ul>
+          <li><b>ห้ามผ้าเปียก</b> — หากผ้าเปียกหรือชื้น ให้รีบแจ้งสัตวแพทย์ทันที</li>
+          <li><b>ขังในกรงหรือห้องเล็ก</b> ในช่วงแรก เพื่อป้องกันการกระโดด/ปีน</li>
+          <li><b>ห้ามเลียผ้าพัน</b> — อาจต้องใส่ Elizabethan collar (collar คอ) ตลอดเวลา</li>
+          <li>ตรวจดูปลายเท้าทุกวัน — ควรรู้สึกอุ่น สีชมพู ไม่บวม</li>
+        </ul>
+
+        <h4>🚨 สัญญาณอันตราย — รีบพามาโรงพยาบาลทันที!</h4>
+        <div class="warn-box">
+          หากพบอาการใดอาการหนึ่งต่อไปนี้ <b>ห้ามรอจนครบวันนัด</b> — ให้ติดต่อคลินิกทันที
+        </div>
+        <div class="sign-grid">
+          <div class="sign-card"><span class="emo">🦶</span><b>ปลายเท้าเย็น</b>หรือเปลี่ยนสีเป็นม่วง/ซีด</div>
+          <div class="sign-card"><span class="emo">💧</span><b>บวมมาก</b>เหนือหรือใต้ผ้าพัน</div>
+          <div class="sign-card"><span class="emo">👃</span><b>มีกลิ่นเหม็น</b>หรือสารคัดหลั่งซึมออกมา</div>
+          <div class="sign-card"><span class="emo">😿</span>แมว<b>ร้อง/เลีย/กัดผ้า</b>ไม่หยุด</div>
+          <div class="sign-card"><span class="emo">🚫</span>แมว<b>ไม่ใช้ขา</b>เลย หรือเจ็บมากเวลาสัมผัส</div>
+          <div class="sign-card"><span class="emo">🍽️</span><b>ไม่กินอาหาร</b>หรือซึมลง</div>
+        </div>
+
+        <h4>📅 ตารางนัดตรวจซ้ำ</h4>
+        <p>ตามดุลยพินิจของสัตวแพทย์ผู้รักษา — ส่วนใหญ่นัดตรวจทุก 2–3 วัน ในช่วง 1 สัปดาห์แรก</p>
+
+        <div class="handout-footer">
+          <p>⚕️ ใบความรู้นี้จัดทำโดย SRN Animal Care — อ้างอิงงานวิจัย Clayton et al. (2026)<br>
+          หากมีข้อสงสัย กรุณาติดต่อสัตวแพทย์ผู้ดูแลโดยตรง</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ===== MODAL ===== -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <h3 id="modalTitle"></h3>
+    <div id="modalBody"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">ปิด</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== NAVIGATION =====
+const pages = document.querySelectorAll('.page');
+const navItems = document.querySelectorAll('.nav-item');
+function navigate(pageId){
+  pages.forEach(p => p.classList.toggle('active', p.id === 'page-' + pageId));
+  navItems.forEach(n => n.classList.toggle('active', n.dataset.page === pageId));
+  window.scrollTo({top:0,behavior:'smooth'});
+  document.getElementById('sidebar').classList.remove('open');
+  if (pageId === 'dashboard') renderRecentLogs();
+  if (pageId === 'monitoring') renderDecisionTree();
+  if (pageId === 'quiz') renderQuiz();
+}
+navItems.forEach(n => n.addEventListener('click', () => navigate(n.dataset.page)));
+document.getElementById('hamburger').addEventListener('click', () =>
+  document.getElementById('sidebar').classList.toggle('open'));
+
+// ===== MODAL =====
+function openModal(title, body){
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').innerHTML = body;
+  document.getElementById('modalBg').classList.add('show');
+}
+function closeModal(){ document.getElementById('modalBg').classList.remove('show'); }
+document.getElementById('modalBg').addEventListener('click', e => {
+  if (e.target.id === 'modalBg') closeModal();
+});
+
+// ===== ASSESSMENT TOOL =====
+document.getElementById('assDate').textContent = new Date().toLocaleDateString('th-TH',{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+
+function calcScore(){
+  let total = 0, answered = 0;
+  ['p1','p2','p3','p4','p5'].forEach(k => {
+    const r = document.querySelector('input[name="'+k+'"]:checked');
+    if (r){ total += parseInt(r.value); answered++; }
+  });
+  const scVal = document.getElementById('scVal');
+  const scInterp = document.getElementById('scInterp');
+  const bar = document.getElementById('scoreBar');
+  if (answered === 0){ scVal.textContent = '—'; scInterp.textContent = 'กรุณาประเมิน'; bar.className = 'score-bar'; return; }
+  scVal.textContent = total + ' / 15';
+  bar.classList.remove('low','mid','hi');
+  if (total <= 7){ bar.classList.add('low'); scInterp.innerHTML = '<span style="color:var(--red-500)">🚨 ต้องดำเนินการด่วน — คลายหรือเปลี่ยนผ้าพัน</span>'; }
+  else if (total <= 11){ bar.classList.add('mid'); scInterp.innerHTML = '<span style="color:var(--amber-500)">⚠️ เฝ้าระวังใกล้ชิด — ตรวจซ้ำทุก 6 ชม.</span>'; }
+  else { bar.classList.add('hi'); scInterp.innerHTML = '<span style="color:var(--green-500)">✅ อยู่ในเกณฑ์ดี — ดำเนินการตามตารางปกติ</span>'; }
+}
+document.querySelectorAll('.scale input').forEach(r => r.addEventListener('change', calcScore));
+
+function saveAssessment(){
+  const name = document.getElementById('ptName').value.trim() || 'Untitled';
+  const procedure = document.getElementById('ptProcedure').value;
+  const splint = document.getElementById('ptSplint').value;
+  const notes = document.getElementById('ptNotes').value;
+  let total = 0;
+  ['p1','p2','p3','p4','p5'].forEach(k => {
+    const r = document.querySelector('input[name="'+k+'"]:checked');
+    if (r) total += parseInt(r.value);
+  });
+  if (total === 0){ alert('กรุณาประเมินอย่างน้อย 1 หัวข้อ'); return; }
+
+  const logs = JSON.parse(localStorage.getItem('fbLogs') || '[]');
+  logs.unshift({
+    id: Date.now(), name, procedure, splint, total, notes,
+    date: new Date().toLocaleString('th-TH')
+  });
+  localStorage.setItem('fbLogs', JSON.stringify(logs.slice(0,50)));
+  openModal('💾 บันทึกสำเร็จ', `<p>บันทึกการประเมินของ <b>${name}</b> แล้ว</p><p>คะแนนรวม: <b>${total}/15</b></p><p style="margin-top:10px;color:var(--muted);font-size:.85rem">ดูได้ใน Dashboard → Recent Assessments</p>`);
+  resetAssessment();
+  navigate('dashboard');
+}
+
+function resetAssessment(){
+  document.getElementById('ptName').value = '';
+  document.getElementById('ptAge').value = '';
+  document.getElementById('ptProcedure').value = '— เลือก —';
+  document.getElementById('ptSplint').value = 'none';
+  document.getElementById('ptNotes').value = '';
+  document.querySelectorAll('.scale input').forEach(r => r.checked = false);
+  calcScore();
+}
+
+function renderRecentLogs(){
+  const list = document.getElementById('recentLogs');
+  const logs = JSON.parse(localStorage.getItem('fbLogs') || '[]');
+  if (logs.length === 0){
+    list.innerHTML = '<li style="padding:16px;text-align:center;color:var(--muted);font-size:.88rem">ยังไม่มีบันทึก — เริ่มประเมินเลย!</li>';
+    return;
+  }
+  list.innerHTML = logs.slice(0,5).map(l => `
+    <li class="log-item">
+      <div class="av">🐈</div>
+      <div class="info">
+        <b>${l.name}</b>
+        <small>${l.date} • ${l.procedure || 'Ortho'} ${l.splint !== 'none' ? '• '+l.splint : ''}</small>
+      </div>
+      <div class="score">${l.total}/15</div>
+    </li>`).join('');
+}
+
+// ===== DECISION TREE =====
+const tree = {
+  start:{type:'question',q:'🔍 อาการแรกที่พบคืออะไร?',opts:[
+    {label:'ปลายเท้าบวม/เย็น/เปลี่ยนสี',next:'q1'},
+    {label:'มีสารคัดหลั่ง/กลิ่น/ชื้น',next:'q2'},
+    {label:'แมวเลีย/กัดผ้าไม่หยุด',next:'q3'},
+    {label:'ไม่ใช้ขา / เจ็บมาก',next:'q4'}
+  ]},
+  q1:{type:'question',q:'ปลายเท้าเย็นและซีด หรืออุ่นแต่บวม?',opts:[
+    {label:'เย็น + ซีด + CRT > 3s',next:'a1red'},
+    {label:'อุ่นแต่บวมเล็กน้อย',next:'a1amber'}
+  ]},
+  q2:{type:'question',q:'ลักษณะของสารคัดหลั่งเป็นอย่างไร?',opts:[
+    {label:'ใส/เลือดจาง',next:'a2green'},
+    {label:'ขุ่น/เหม็น/มีหนอง',next:'a2red'}
+  ]},
+  q3:{type:'question',q:'ผ้าพันยังคงอยู่ในตำแหน่งดีหรือไม่?',opts:[
+    {label:'ดี',next:'a3amber'},
+    {label:'เลื่อน/หลวม',next:'a3red'}
+  ]},
+  q4:{type:'action-red',title:'🚨 ประเมินภาวะแทรกซ้อนรุนแรง',body:'อาจเป็น ischemic injury หรือ fracture displacement — <b>ถอดผ้าพันออกทันที</b>, ตรวจ X-ray, ให้ analgesic, ประเมิน vascular status'},
+  a1red:{type:'action-red',title:'🚨 คลาย/ถอดผ้าพันทันที',body:'สงสัย arterial/venous compromise — อย่ารอ ตรวจ Doppler/pulse, re-bandage หลวมกว่าเดิม, นัดตรวจซ้ำ 6 ชม.'},
+  a1amber:{type:'action-amber',title:'⚠️ เฝ้าระวังใกล้ชิด',body:'อาจเป็น dependent edema — ยกขาสูง, ตรวจซ้ำทุก 6 ชม. หากไม่ดีขึ้นภายใน 24 ชม. ให้ re-bandage'},
+  a2green:{type:'action-green',title:'✅ เปลี่ยนผ้าพันตามตาราง',body:'สารคัดหลั่งปกติหลังผ่าตัด — ทำความสะอาดแผล, re-bandage, ติดตามตาม schedule'},
+  a2red:{type:'action-red',title:'🚨 สงสัยติดเชื้อ / dehiscence',body:'เปิดแผลตรวจ, ทำ culture, พิจารณา antibiotic, อาจต้องเปลี่ยนแผนการรักษา'},
+  a3amber:{type:'action-amber',title:'⚠️ ให้ sedation + E-collar',body:'อาจเป็น anxiety/pain — ประเมิน pain score, ให้ analgesic, ใส่ Elizabethan collar'},
+  a3red:{type:'action-amber',title:'⚠️ Re-bandage ทันที',body:'ผ้าพันที่เลื่อนอาจรัดเฉพาะจุด → pressure necrosis — ถอดออก ตรวจ skin, re-bandage ใหม่'}
+};
+
+function renderDecisionTree(){
+  const root = document.getElementById('decisionTree');
+  root.innerHTML = '';
+  showNode('start', root);
+}
+function showNode(id, container){
+  const n = tree[id];
+  const el = document.createElement('div');
+  el.className = 'dt-node ' + (n.type || '');
+  if (n.type === 'question'){
+    el.innerHTML = `<h4>❓ ${n.q}</h4><div class="dt-options">${n.opts.map(o => `<button class="dt-btn">${o.label}</button>`).join('')}</div>`;
+    container.appendChild(el);
+    el.querySelectorAll('.dt-btn').forEach((b,i) => b.addEventListener('click', () => showNode(n.opts[i].next, container)));
+  } else {
+    el.innerHTML = `<h4>${n.title}</h4><p style="font-size:.9rem;margin-top:6px">${n.body}</p>`;
+    container.appendChild(el);
+  }
+}
+
+// ===== QUIZ =====
+const quizData = [
+  {q:'1. อัตราภาวะแทรกซ้อนจากการพันผ้าในแมวตามงานวิจัย Clayton 2026 คือเท่าใด?',o:['48%','58%','68.4%','82%'],a:2,e:'104 จาก 152 ตัว = 68.4%'},
+  {q:'2. ปัจจัยใดเพิ่มความเสี่ยงต่อภาวะแทรกซ้อนรุนแรง?',o:['การใช้ splint','อายุ','เพศ','น้ำหนักตัว'],a:0,e:'Splint เพิ่ม odds 3.4 เท่า'},
+  {q:'3. ภาวะแทรกซ้อนส่วนใหญ่อยู่ในระดับใด?',o:['Severe','Moderate','Mild','เท่าๆ กัน'],a:2,e:'Mild 64.4%, Moderate 32.7%, Severe 2.9%'},
+  {q:'4. ข้อใดไม่ใช่ข้อจำกัดของงานวิจัย?',o:['Retrospective design','Sample size น้อย','ไม่มี control group','Prospective randomized'],a:3,e:'งานวิจัยนี้เป็น retrospective ไม่ใช่ RCT'},
+  {q:'5. ในช่วง 24 ชั่วโมงแรกควรตรวจผ้าพันบ่อยแค่ไหน?',o:['วันละครั้ง','ทุก 4-6 ชม.','ทุก 12 ชม.','เมื่อเจ้าของร้องขอ'],a:1,e:'ภาวะแทรกซ้อนรุนแรงมักเกิดในช่วงแรก'},
+  {q:'6. ปลายเท้าที่ "เย็น ซีด CRT > 3 วินาที" บ่งบอกอะไร?',o:['ปกติ','Edema','Arterial/venous compromise','Pain'],a:2,e:'ต้องคลาย/ถอดผ้าทันที'},
+  {q:'7. Maceration หมายถึงอะไร?',o:['ผิวหนังแห้ง','ผิวหนังเปื่อยจากความชื้น','ผิวหนังไหม้','ผิวหนังติดเชื้อ'],a:1,e:'เกิดจากความชื้นสะสมใต้ผ้าพัน'},
+  {q:'8. ข้อใดเป็นสัญญาณอันตรายที่เจ้าของควรแจ้งสัตวแพทย์ทันที?',o:['แมวนอนหลับ','ปลายเท้าเย็นและเปลี่ยนสี','แมวกินอาหาร','แมวเลียขน'],a:1,e:'สัญญาณของ ischemia'},
+  {q:'9. 5-point bandage assessment ประกอบด้วยอะไรบ้าง?',o:['Perfusion, Skin, Swelling, Integrity, Comfort','Temperature, Pulse, Respiration, BP, Weight','Pain, Anxiety, Mobility, Appetite, Hydration','Bandage size, color, smell, tightness, duration'],a:0,e:'5 ด้านหลักทางคลินิก'},
+  {q:'10. ข้อสรุปหลักของบทความนี้คืออะไร?',o:['ห้ามพันผ้าให้แมว','แมวเสี่ยงสูง ต้องเลือกเคสและเฝ้าระวังดี','ผ้าพันไม่มีประโยชน์ในแมว','Splint ปลอดภัยกว่า cast'],a:1,e:'Appropriate case selection + monitoring strategies'}
+];
+
+let quizState = {};
+function renderQuiz(){
+  const c = document.getElementById('quizContainer');
+  c.innerHTML = '';
+  quizState = {};
+  quizData.forEach((q,i) => {
+    const card = document.createElement('div');
+    card.className = 'quiz-card';
+    card.innerHTML = `
+      <div class="q-num">Question ${i+1} of ${quizData.length}</div>
+      <h4>${q.q}</h4>
+      <div class="q-opts">${q.o.map((op,j) => `<button class="q-opt" data-q="${i}" data-i="${j}">${op}</button>`).join('')}</div>
+      <div class="q-exp" id="exp-${i}">💡 ${q.e}</div>
+    `;
+    c.appendChild(card);
+    card.querySelectorAll('.q-opt').forEach(btn => {
+      btn.addEventListener('click', () => answerQuiz(i, +btn.dataset.i));
+    });
+  });
+}
+
+function answerQuiz(qi, ai){
+  if (quizState[qi] !== undefined) return;
+  quizState[qi] = ai;
+  const correct = quizData[qi].a;
+  const card = document.querySelectorAll('.quiz-card')[qi];
+  const btns = card.querySelectorAll('.q-opt');
+  btns.forEach((b,i) => {
+    b.disabled = true;
+    if (i === correct) b.classList.add('correct');
+    if (i === ai && ai !== correct) b.classList.add('wrong');
+  });
+  document.getElementById('exp-' + qi).classList.add('show');
+  if (Object.keys(quizState).length === quizData.length) showQuizResult();
+}
+
+function showQuizResult(){
+  const score = Object.entries(quizState).filter(([qi,ai]) => ai === quizData[+qi].a).length;
+  const res = document.getElementById('quizResult');
+  document.getElementById('quizScoreBig').textContent = score + '/' + quizData.length;
+  let msg = '';
+  if (score === quizData.length) msg = '🏆 ยอดเยี่ยม! คุณเข้าใจเนื้อหาครบถ้วน';
+  else if (score >= 8) msg = '⭐ ดีมาก! ทบทวนส่วนที่พลาดอีกนิด';
+  else if (score >= 5) msg = '👍 พอใช้ — ลองอ่านบทความอีกสักครั้ง';
+  else msg = '📖 ควรศึกษาเนื้อหาเพิ่มเติมก่อนนำไปใช้ในคลินิก';
+  document.getElementById('quizMsg').textContent = msg;
+  res.classList.add('show');
+  setTimeout(() => res.scrollIntoView({behavior:'smooth'}), 100);
+}
+
+function resetQuiz(){
+  renderQuiz();
+  document.getElementById('quizResult').classList.remove('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ===== INIT =====
+renderRecentLogs();
+renderQuiz();
+renderDecisionTree();
+</script>
+</body>
+</html>
