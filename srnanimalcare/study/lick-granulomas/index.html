@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lick Granulomas (Acral Lick Dermatitis) — บททบทวนทางคลินิก | SRN Animal Care</title>
+<meta name="description" content="บททบทวนทางคลินิก: การวินิจฉัยและการจัดการ Acral Lick Dermatitis ในสุนัข เรียบเรียงเป็นภาษาไทย">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700&family=Noto+Serif+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f7f5ef; --card:#fffdf8; --ink:#1d2b33; --muted:#5b6672;
+  --navy:#14323f; --navy-soft:#e8eef0; --gold:#a9812e; --gold-soft:#f4ead3;
+  --rule:#d9d2c0; --zebra:#f2eee3; --maroon:#7c352c; --maroon-soft:#f4e7e4;
+  --radius:8px; --shadow:0 2px 10px rgba(29,43,51,.07);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:78px}
+body{font-family:'Noto Serif Thai',serif;background:var(--paper);color:var(--ink);font-size:16px;line-height:1.95}
+h1,h2,h3,h4,.k{font-family:'Kanit',sans-serif}
+img{max-width:100%;display:block}
+a{color:var(--navy)}
+
+#progress{position:fixed;top:0;left:0;height:3px;width:0;background:var(--gold);z-index:1200}
+
+/* ---------- header ---------- */
+header{position:sticky;top:0;z-index:1100;background:rgba(255,253,248,.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--rule)}
+.bar{max-width:1020px;margin:auto;display:flex;align-items:center;gap:12px;padding:10px 20px}
+.logo{height:42px;width:42px;object-fit:contain;background:#fff;border:1px solid var(--rule);border-radius:6px;padding:4px}
+.brand{line-height:1.25}
+.brand b{font-family:'Kanit';font-weight:600;color:var(--navy);font-size:.98rem}
+.brand small{display:block;color:var(--muted);font-size:.7rem;letter-spacing:.6px;font-family:'Kanit'}
+.bar .right{margin-left:auto;display:flex;gap:8px;align-items:center}
+.btn{font-family:'Kanit';font-size:.82rem;font-weight:500;border:1px solid var(--navy);background:var(--navy);color:#fff;padding:7px 14px;border-radius:6px;cursor:pointer;transition:.2s}
+.btn.ghost{background:transparent;color:var(--navy)}
+.btn:hover{opacity:.85}
+nav{border-top:1px solid var(--rule);background:#fffdf8}
+.nav-in{max-width:1020px;margin:auto;display:flex;gap:2px;overflow-x:auto;padding:6px 14px;scrollbar-width:none}
+.nav-in::-webkit-scrollbar{display:none}
+nav a{font-family:'Kanit';font-size:.8rem;font-weight:500;color:var(--ink);text-decoration:none;padding:6px 11px;border-radius:5px;white-space:nowrap}
+nav a:hover{background:var(--navy-soft)}
+nav a.active{background:var(--navy);color:#fff}
+
+/* ---------- layout ---------- */
+.wrap{max-width:1020px;margin:auto;padding:0 22px}
+section{padding:52px 0 4px}
+h2.sec{font-size:1.3rem;font-weight:600;color:var(--navy);padding-bottom:10px;margin-bottom:20px;border-bottom:4px double var(--gold)}
+h2.sec .no{color:var(--gold);margin-right:8px}
+p{margin-bottom:14px;text-align:justify}
+.small{font-size:.86rem;color:var(--muted)}
+.note{font-size:.84rem;color:var(--muted);font-style:italic}
+
+/* ---------- title block ---------- */
+.titleblock{padding:48px 0 6px}
+.eyebrow{font-family:'Kanit';font-size:.74rem;letter-spacing:2.2px;color:var(--gold);font-weight:600;margin-bottom:12px}
+h1.doc{font-size:clamp(1.7rem,3.6vw,2.5rem);font-weight:700;color:var(--navy);line-height:1.35}
+h1.doc span{display:block;font-size:.62em;font-weight:500;color:var(--maroon);margin-top:4px}
+.authors{margin:16px 0 4px;font-family:'Kanit';font-size:.9rem;color:var(--ink)}
+.authors em{color:var(--muted);font-style:normal;font-size:.82rem}
+.meta{font-family:'Kanit';font-size:.78rem;color:var(--muted);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:8px 2px;display:flex;flex-wrap:wrap;gap:6px 18px}
+
+/* ---------- abstract ---------- */
+.abstract{margin:26px 0 8px;background:var(--card);border:1px solid var(--navy);border-radius:var(--radius);padding:24px 28px;box-shadow:var(--shadow)}
+.abstract h3{font-size:1rem;font-weight:600;color:var(--navy);letter-spacing:.5px;margin-bottom:8px}
+.abstract p{font-size:.92rem;margin-bottom:10px}
+.keywords{font-size:.85rem;border-top:1px dashed var(--rule);padding-top:10px}
+.keywords b{color:var(--gold)}
+
+/* ---------- toc ---------- */
+.toc{margin:22px 0;background:var(--navy-soft);border:1px solid var(--rule);border-radius:var(--radius);padding:18px 24px}
+.toc h3{font-size:.95rem;font-weight:600;color:var(--navy);margin-bottom:10px}
+.toc ol{list-style:none;columns:2;gap:34px;font-family:'Kanit';font-size:.86rem}
+.toc li{margin-bottom:5px;break-inside:avoid}
+.toc a{color:var(--ink);text-decoration:none;border-bottom:1px dotted var(--muted)}
+.toc a:hover{color:var(--gold)}
+.toc .n{color:var(--gold);font-weight:600;margin-right:6px}
+
+/* ---------- tables ---------- */
+.tbl{width:100%;border-collapse:collapse;background:var(--card);box-shadow:var(--shadow);border:1px solid var(--rule);margin:6px 0 18px;font-size:.9rem}
+.tbl th{background:var(--navy);color:#f3efe4;font-family:'Kanit';font-weight:500;font-size:.82rem;text-align:left;padding:10px 14px;letter-spacing:.3px}
+.tbl td{border:1px solid var(--rule);padding:10px 14px;vertical-align:top}
+.tbl tbody tr:nth-child(odd) td{background:var(--zebra)}
+.tbl td:first-child{font-family:'Kanit';font-weight:500;color:var(--navy);white-space:nowrap}
+.tbl.tight td:first-child{white-space:normal}
+tr.main td{cursor:pointer}
+tr.main td:first-child::before{content:"＋";color:var(--gold);font-weight:700;margin-right:8px;font-family:'Kanit'}
+tr.main.open td:first-child::before{content:"－"}
+tr.main:hover td{background:var(--navy-soft)!important}
+tr.detail{display:none}
+tr.detail.open{display:table-row}
+tr.detail td{background:#fbf8f0!important;font-size:.87rem;color:#3c4a54;border-left:4px solid var(--gold)}
+
+/* ---------- statement ---------- */
+.statement{background:var(--maroon-soft);border:1px solid var(--maroon);border-left:6px solid var(--maroon);border-radius:var(--radius);padding:20px 26px;margin:26px 0}
+.statement .k{font-size:.8rem;letter-spacing:1.6px;color:var(--maroon);font-weight:600}
+.statement h3{font-size:1.12rem;font-weight:600;color:var(--maroon);margin:4px 0 6px}
+.statement p{font-size:.93rem;margin:0}
+
+.caution{background:var(--gold-soft);border:1px dashed var(--gold);border-radius:var(--radius);padding:14px 20px;font-size:.9rem;margin:16px 0}
+.caution b{color:var(--gold)}
+
+/* ---------- lists ---------- */
+ol.principles{margin:0 0 18px 22px;font-size:.94rem}
+ol.principles li{margin-bottom:8px;padding-left:6px}
+ol.principles li::marker{font-family:'Kanit';font-weight:600;color:var(--gold)}
+ul.hist{margin:0 0 18px 20px;font-size:.92rem}
+ul.hist li{margin-bottom:5px}
+
+/* ---------- figures ---------- */
+.plate{background:#232a30;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);margin-bottom:18px}
+.plate .grid{display:grid;gap:3px}
+.plate .grid.g2{grid-template-columns:1fr 1fr}
+.plate .grid.g3{grid-template-columns:1fr 1fr 1fr}
+.cell{position:relative;height:250px;cursor:zoom-in;background:#232a30}
+.cell img{width:100%;height:100%;object-fit:cover}
+.cell .ph{display:none;position:absolute;inset:0;align-items:center;justify-content:center;flex-direction:column;gap:8px;color:#7e93a0;font-family:'Kanit';font-size:.78rem;text-align:center;padding:10px}
+.cell.noimg img{visibility:hidden}
+.cell.noimg .ph{display:flex}
+.cell .tag{position:absolute;top:8px;left:8px;background:var(--gold);color:#241a05;font-family:'Kanit';font-weight:700;width:28px;height:28px;border-radius:5px;display:grid;place-items:center;font-size:.9rem;z-index:2}
+figcaption.fcap{font-size:.84rem;color:var(--muted);margin:-8px 0 20px;text-align:justify}
+figcaption.fcap b{color:var(--navy)}
+
+/* ---------- checklist ---------- */
+.chk{background:var(--card);border:1px solid var(--rule);border-radius:var(--radius);padding:22px 26px;box-shadow:var(--shadow);margin:22px 0}
+.chk h3{font-size:1rem;font-weight:600;color:var(--navy)}
+.chk .barwrap{height:8px;background:var(--zebra);border:1px solid var(--rule);border-radius:99px;overflow:hidden;margin:12px 0 6px}
+#chkBar{height:100%;width:0;background:var(--gold);transition:.4s}
+#chkCount{font-family:'Kanit';font-size:.78rem;color:var(--muted)}
+.chk label{display:flex;gap:12px;align-items:flex-start;padding:9px 2px;border-bottom:1px solid var(--zebra);font-size:.9rem;cursor:pointer}
+.chk label:last-child{border:none}
+.chk input{display:none}
+.chk .box{flex:none;width:20px;height:20px;border:1.5px solid var(--navy);border-radius:4px;margin-top:4px;display:grid;place-items:center;color:transparent;font-size:.75rem;transition:.2s;background:#fff}
+.chk input:checked + .box{background:var(--navy);color:#fff}
+.chk input:checked ~ .txt{color:var(--muted);text-decoration:line-through}
+
+/* ---------- stats ---------- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:20px 0}
+.stat{background:var(--card);border:1px solid var(--rule);border-top:4px solid var(--navy);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow)}
+.stat b{font-family:'Kanit';font-size:1.5rem;font-weight:700;color:var(--navy)}
+.stat p{font-size:.82rem;color:var(--muted);margin:2px 0 0;text-align:left}
+
+/* ---------- quiz ---------- */
+.q{background:var(--card);border:1px solid var(--rule);border-radius:var(--radius);padding:20px 24px;margin-bottom:16px;box-shadow:var(--shadow)}
+.q h4{font-size:.96rem;font-weight:600;margin-bottom:12px}
+.q h4 .qn{font-family:'Kanit';color:var(--gold);margin-right:8px}
+.opt{display:block;width:100%;text-align:left;background:#fff;border:1px solid var(--rule);border-radius:6px;padding:10px 14px;margin-bottom:7px;font-family:'Noto Serif Thai';font-size:.88rem;cursor:pointer;transition:.2s}
+.opt:hover{border-color:var(--navy)}
+.opt.good{background:#e9f3ea;border-color:#3d7a4c;color:#28552f;font-weight:600}
+.opt.bad{background:var(--maroon-soft);border-color:var(--maroon);color:var(--maroon)}
+.q .explain{display:none;margin-top:10px;background:var(--navy-soft);border-left:4px solid var(--navy);padding:10px 16px;font-size:.86rem}
+.q.answered .explain{display:block}
+.q.answered .opt{pointer-events:none}
+#score{display:none;background:var(--navy);color:#f3efe4;border-radius:var(--radius);padding:18px 24px;font-family:'Kanit';font-size:.95rem;margin-top:8px}
+#score.show{display:block}
+#score b{color:var(--gold);font-size:1.2rem}
+
+/* ---------- footer ---------- */
+footer{margin-top:64px;border-top:4px double var(--gold);background:var(--navy);color:#cfdbe0;padding:34px 0}
+.foot{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.foot .logo{border:none}
+.foot p{font-size:.8rem;margin:0;text-align:left;max-width:680px}
+.foot .k{color:var(--gold)}
+
+#toTop{position:fixed;right:20px;bottom:20px;width:46px;height:46px;border-radius:6px;border:1px solid var(--navy);background:var(--navy);color:#fff;cursor:pointer;font-size:1rem;opacity:0;pointer-events:none;transition:.3s;z-index:1000}
+#toTop.show{opacity:1;pointer-events:auto}
+
+#lightbox{position:fixed;inset:0;background:rgba(20,26,31,.92);z-index:1300;display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px;padding:24px}
+#lightbox.show{display:flex}
+#lightbox img{max-height:76vh;max-width:92vw;border:5px solid #fff;border-radius:4px}
+#lightbox p{color:#e6edf0;font-family:'Kanit';font-size:.88rem;text-align:center;max-width:760px}
+#lbClose{position:absolute;top:16px;right:20px;width:42px;height:42px;border-radius:6px;border:none;background:#fff;cursor:pointer;font-size:1.1rem}
+
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+
+@media(max-width:760px){
+  .toc ol{columns:1}
+  .plate .grid.g2,.plate .grid.g3{grid-template-columns:1fr}
+  .cell{height:220px}
+  .tbl td:first-child{white-space:normal}
+}
+@media print{
+  header,#toTop,#progress,.btn,.chk .barwrap,#quiz{display:none!important}
+  body{background:#fff}
+  tr.detail{display:table-row!important}
+  .reveal{opacity:1!important;transform:none!important}
+  section{padding:20px 0}
+}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<header>
+  <div class="bar">
+    <img class="logo" src="https://yunhfdekcjosnfwndepu.supabase.co/storage/v1/object/public/DATA%20SRNanimalcare/Logo%20symbol.png" alt="โลโก้ SRN Animal Care">
+    <div class="brand"><b>SRN Animal Care</b><small>ACADEMIC CASE REVIEW · VETERINARY DERMATOLOGY</small></div>
+    <div class="right"><button class="btn ghost" onclick="window.print()">บันทึกเป็น PDF</button></div>
+  </div>
+  <nav><div class="nav-in" id="nav">
+    <a href="#s1">1. ข้อมูลผู้ป่วย</a>
+    <a href="#s2">2. การตรวจร่างกาย</a>
+    <a href="#s3">3. การวินิจฉัยแยก</a>
+    <a href="#s4">4. การตรวจเพิ่มเติม</a>
+    <a href="#s5">5. ภาพถ่าย</a>
+    <a href="#s6">6. การวินิจฉัยสุดท้าย</a>
+    <a href="#s7">7. การรักษา</a>
+    <a href="#s8">8. ผลการรักษา</a>
+    <a href="#s9">9. อภิปราย</a>
+    <a href="#s10">10. สรุป</a>
+    <a href="#ref">เอกสารอ้างอิง</a>
+    <a href="#quiz">แบบทดสอบ</a>
+  </div></nav>
+</header>
+
+<main class="wrap">
+
+  <!-- ================= TITLE ================= -->
+  <div class="titleblock">
+    <div class="eyebrow">CASE REVIEW · DERMATOLOGY · PEER-REVIEWED SUMMARY</div>
+    <h1 class="doc">Lick Granulomas <span>Acral Lick Dermatitis ในสุนัข: รายงานเคสและหลักการจัดการอย่างเป็นระบบ</span></h1>
+    <div class="authors">เรียบเรียงจากต้นฉบับโดย Amelia G. White, DVM, MS, DACVD และ Faith H. Scott, DVM <em>— College of Veterinary Medicine, Auburn University</em></div>
+    <div class="meta"><span>Clinician's Brief · กรกฎาคม 2026</span><span>ระยะเวลาอ่านโดยประมาณ 10 นาที</span><span>จัดทำเพื่อการศึกษาต่อเนื่องทางสัตวแพทย์</span></div>
+
+    <div class="abstract reveal">
+      <h3>บทคัดย่อ</h3>
+      <p>รายงานนี้สรุปการวินิจฉัยและการจัดการ acral lick dermatitis (ALD) เรื้อรังในสุนัขเพศเมียทำหมัน พันธุ์ American Staffordshire terrier อายุ 6 ปี ซึ่งมาตรวจด้วยก้อนเนื้อผิวหนังที่มีอาการคันบริเวณ dorsal metatarsus ข้างขวา เป็นระยะเวลา 2 ปี และมีขนาดเพิ่มขึ้นชัดเจนในช่วง 6 สัปดาห์ก่อนมาตรวจ การตรวจเพิ่มเติมประกอบด้วยภาพถ่ายรังสี การตรวจเซลล์วิทยา การขูดผิวหนังลึก และการตัดชิ้นเนื้อขนาด 6 มิลลิเมตร เพื่อการตรวจทางพยาธิสภาพวิทยาและการเพาะเชื้อจากเนื้อเยื่อ ผลการตรวจสนับสนุนการวินิจฉัย chronic acral lick dermatitis ซึ่งมีโรคพื้นเดิมคือ atopic dermatitis การจัดการมุ่งเน้นการตัดวงจรคัน–เลีย ยาต้านอักเสบเฉพาะที่ การควบคุมอาการคันจากโรคพื้นเดิม และการบำบัดด้วยแสงฟลูออเรสเซนต์ (fluorescent light therapy) ผลการรักษาภายใน 14 วันพบว่าขนาดรอยโรคลดลงประมาณร้อยละ 72 รายงานนี้แสดงให้เห็นประโยชน์ของแนวทางอย่างเป็นระบบ ได้แก่ การค้นหาและควบคุมสาเหตุปฐมภูมิ การรักษาภาวะแทรกซ้อน การป้องกันการเลียซ้ำ และการใช้ผลการเพาะเชื้อจากเนื้อเยื่อเพื่อกำกับการเลือกยาต้านจุลชีพ</p>
+      <div class="keywords"><b>คำสำคัญ:</b> acral lick dermatitis; lick granuloma; atopic dermatitis; deep pyoderma; canine dermatology</div>
+    </div>
+
+    <div class="toc reveal">
+      <h3>สารบัญ</h3>
+      <ol>
+        <li><span class="n">1</span><a href="#s1">ข้อมูลผู้ป่วย</a></li>
+        <li><span class="n">2</span><a href="#s2">การตรวจร่างกาย</a></li>
+        <li><span class="n">3</span><a href="#s3">การวินิจฉัยแยกโรค</a></li>
+        <li><span class="n">4</span><a href="#s4">การตรวจเพิ่มเติมและผล</a></li>
+        <li><span class="n">5</span><a href="#s5">ภาพถ่ายทางรังสีและคลินิก</a></li>
+        <li><span class="n">6</span><a href="#s6">การวินิจฉัยสุดท้าย</a></li>
+        <li><span class="n">7</span><a href="#s7">การรักษาและการดูแลระยะยาว</a></li>
+        <li><span class="n">8</span><a href="#s8">ผลการรักษาและการติดตาม</a></li>
+        <li><span class="n">9</span><a href="#s9">อภิปราย</a></li>
+        <li><span class="n">10</span><a href="#s10">สรุปข้อเสนอแนะทางคลินิก</a></li>
+        <li><span class="n">†</span><a href="#ref">เอกสารอ้างอิง</a></li>
+        <li><span class="n">†</span><a href="#quiz">แบบทดสอบท้ายบท</a></li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ================= 1 ================= -->
+  <section id="s1">
+    <h2 class="sec reveal"><span class="no">1.</span>ข้อมูลผู้ป่วย</h2>
+    <p class="reveal">ผู้ป่วยชื่อ “Lady” สุนัขเพศเมียทำหมันแล้ว พันธุ์ American Staffordshire terrier อายุ 6 ปี มาตรวจด้วยก้อนเนื้อผิวหนังที่มีอาการคันบริเวณ dorsal metatarsus ข้างขวา เป็นระยะเวลา 2 ปี โดยมีขนาดเพิ่มขึ้นอย่างชัดเจนในช่วง 6 สัปดาห์ก่อนมาตรวจ ข้อมูลสัญญาณผู้ป่วยสรุปดังตารางที่ 1</p>
+    <table class="tbl reveal">
+      <thead><tr><th colspan="2">ตารางที่ 1 · สัญญาณผู้ป่วย (Signalment) และประวัติการป่วย</th></tr></thead>
+      <tbody>
+        <tr><td>ชื่อ</td><td>Lady</td></tr>
+        <tr><td>พันธุ์</td><td>American Staffordshire terrier</td></tr>
+        <tr><td>อายุ / เพศ</td><td>6 ปี / เพศเมียทำหมัน (spayed)</td></tr>
+        <tr><td>อาการสำคัญ</td><td>ก้อนเนื้อผิวหนังที่มีอาการคันบริเวณ dorsal metatarsus ข้างขวา ระยะเวลาดำรงโรค 2 ปี</td></tr>
+        <tr><td>การดำเนินโรค</td><td>ขนาดก้อนเพิ่มขึ้นอย่างมีนัยสำคัญในช่วง 6 สัปดาห์ก่อนมาตรวจ</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ================= 2 ================= -->
+  <section id="s2">
+    <h2 class="sec reveal"><span class="no">2.</span>การตรวจร่างกาย</h2>
+    <p class="reveal">ภาวะทั่วไป: สดใส รู้ตัวดี ตอบสนองต่อสิ่งเร้าปกติ สัญญาณชีพอยู่ในเกณฑ์ปกติ การตรวจร่างกายโดยรวมไม่พบความผิดปกติอื่น อย่างไรก็ดี พบความผิดปกติทางผิวหนังและต่อมน้ำเหลืองดังตารางที่ 2 พร้อมนัยสำคัญทางคลินิกของแต่ละการตรวจพบ</p>
+    <table class="tbl tight reveal">
+      <thead><tr><th style="width:22%">การตรวจพบ</th><th style="width:40%">ลักษณะทางคลินิก</th><th style="width:38%">นัยสำคัญทางคลินิก</th></tr></thead>
+      <tbody>
+        <tr><td>รอยโรคหลัก</td><td>ก้อนขนาด 5 × 3.5 เซนติเมตร ขอบเขตชัดเจน ขนร่วง นูน แดง มีแผลหลุม (ulcerative) พร้อมสารคัดหลั่งปนเลือดและหนองระบายออกทาง draining tracts บริเวณ dorsal metatarsus ขวา</td><td>เข้าได้กับ acral lick dermatitis ที่มีการติดเชื้อชั้นลึก (deep pyoderma) แทรกซ้อน</td></tr>
+        <tr><td>ต่อมน้ำเหลือง</td><td>ต่อมน้ำเหลือง popliteal ข้างขวาโตเล็กน้อย (unilateral)</td><td>ต้องแยกระหว่างกระบวนการเนื้องอกกับการอักเสบ — ได้รับการตรวจยืนยันด้วย fine-needle aspirate (หัวข้อที่ 4)</td></tr>
+        <tr><td>บริเวณโคนหาง</td><td>ขนบางลง (hypotrichosis) บริเวณ tail gland</td><td>การวินิจฉัยแยก ได้แก่ endocrinopathy (เช่น hypothyroidism), demodicosis, pyoderma หรือ atopic dermatitis</td></tr>
+        <tr><td>ฝ่าเท้า</td><td>Pododermatitis ที่มีอาการคันเล็กน้อยบริเวณ palmar/plantar ของเท้าทั้งสี่ แดงปานกลาง พร้อมคราบน้ำลาย (salivary staining)</td><td>การอักเสบคันหลายตำแหน่งสนับสนุนโรคพื้นเดิมกลุ่ม atopic dermatitis</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ================= 3 ================= -->
+  <section id="s3">
+    <h2 class="sec reveal"><span class="no">3.</span>การวินิจฉัยแยกโรค</h2>
+    <p class="reveal">ก้อนเนื้อที่มีอาการคันร่วมกับ draining tracts บริเวณปลายเท้า มีกลุ่มการวินิจฉัยแยกโรคที่ต้องพิจารณา ได้แก่ acral lick granuloma/dermatitis, การติดเชื้อชั้นลึก (เชื้อรา แบคทีเรีย <i>Demodex</i> spp.), การบาดเจ็บหรือสิ่งแปลกปลอม, furunculosis และเนื้องอก การมีต่อมน้ำเหลืองโตข้างเดียวเพิ่มความกังวลต่อกระบวนการเนื้องอกหรือการอักเสบ จึงจำเป็นต้องได้รับการตรวจยืนยันอย่างเป็นระบบ</p>
+    <table class="tbl tight reveal">
+      <thead><tr><th style="width:30%">การวินิจฉัยแยก</th><th style="width:35%">เหตุผลสนับสนุน</th><th style="width:35%">แนวทางยืนยัน / ผลในเคสนี้</th></tr></thead>
+      <tbody>
+        <tr><td>Acral lick dermatitis (ALD)</td><td>ประวัติเลียซ้ำเฉพาะที่เป็นระยะเวลาต่อเนื่อง สอดคล้องกับลักษณะรอยโรค</td><td>ยืนยันด้วย histopathology</td></tr>
+        <tr><td>การติดเชื้อชั้นลึก</td><td>รอยโรคมี draining tracts และสารคัดหลั่งปนหนอง</td><td>ขูดผิวหนังลึกไม่พบไร; เพาะเชื้อราให้ผลลบ; เพาะเชื้อแบคทีเรียจากเนื้อเยื่อพบ <i>S. pseudintermedius</i> ขึ้นเบา ๆ</td></tr>
+        <tr><td>การบาดเจ็บ / สิ่งแปลกปลอม / Furunculosis</td><td>อาจก่อให้เกิดก้อนและการอักเสบเฉพาะที่</td><td>ภาพถ่ายรังสีไม่พบสิ่งแปลกปลอมหรือความผิดปกติของกระดูก</td></tr>
+        <tr><td>Neoplasia</td><td>ก้อนโตเร็วขึ้นร่วมกับต่อมน้ำเหลืองโตข้างเดียว</td><td>FNA ต่อมน้ำเหลืองพบ reactive lymphoid hyperplasia; histopathology ไม่พบเซลล์เนื้องอก</td></tr>
+      </tbody>
+    </table>
+    <p class="reveal">นอกจากนี้ การมี pododermatitis ที่มีอาการคันร่วมกับอาการคันที่กำเริบตามฤดูกาลตลอดระยะเวลา 2 ปี เป็นหลักฐานสนับสนุนว่าโรคพื้นเดิมคือ <b>atopic dermatitis</b> ซึ่งเป็นปัจจัยนำให้เกิดรอยโรค ALD</p>
+  </section>
+
+  <!-- ================= 4 ================= -->
+  <section id="s4">
+    <h2 class="sec reveal"><span class="no">4.</span>การตรวจเพิ่มเติมและผลการตรวจ</h2>
+    <p class="reveal">การซักประวัติอย่างละเอียดเป็นขั้นตอนพื้นฐานเพื่อกำหนดสาเหตุพื้นเดิม คำถามสำคัญได้แก่</p>
+    <ul class="hist reveal">
+      <li>อายุที่เริ่มแสดงอาการ และความรุนแรงของอาการคัน</li>
+      <li>ลำดับเหตุการณ์: อาการคันเกิดขึ้นก่อนรอยโรคหรือไม่</li>
+      <li>ความเป็นฤดูกาลของอาการ</li>
+      <li>รูปแบบการเลี้ยง (ในร่ม/กลางแจ้ง) และสถานะการป้องกันปรสิตของสัตว์ทุกตัวในบ้าน</li>
+      <li>มีสัตว์อื่นหรือมนุษย์ในบ้านแสดงรอยโรคคล้ายกันหรือไม่</li>
+      <li>ยาที่ใช้ร่วม โรคประจำตัว ประวัติการเดินทาง และประวัติอาหาร</li>
+    </ul>
+    <p class="reveal">ในเคสนี้ ผลเลือดสมบูรณ์และ thyroid panel อยู่ภายในเกณฑ์ปกติ การตรวจและการเก็บตัวอย่างดำเนินการภายใต้การ镇静ด้วย butorphanol 0.3 mg/kg IV ร่วมกับ dexmedetomidine 5 µg/kg IV และแก้ยาด้วย atipamezole 0.5 mg/kg IM ตำแหน่งตัดชิ้นเนื้อได้รับการเตรียมด้วย chlorhexidine และฉีด 2% lidocaine ก่อนเก็บตัวอย่างแบบ punch biopsy ขนาด 6 มิลลิเมตร จำนวน 4 ตำแหน่ง ผลการตรวจเพิ่มเติมสรุปในตารางที่ 3 <span class="note">(คลิกแต่ละแถวเพื่อแสดงการแปลผล)</span></p>
+    <table class="tbl tight reveal">
+      <thead><tr><th style="width:34%">รายการตรวจ</th><th style="width:66%">ผลการตรวจ</th></tr></thead>
+      <tbody>
+        <tr class="main"><td>เลือดสมบูรณ์ + thyroid panel</td><td>อยู่ภายในเกณฑ์ปกติ</td></tr>
+        <tr class="detail"><td colspan="2"><b>การแปลผล:</b> ลดน้ำหนักของโรคทางต่อมไร้ท่อ เช่น hypothyroidism ในฐานะสาเหตุของขนบางบริเวณโคนหาง</td></tr>
+        <tr class="main"><td>Fine-needle aspirate ต่อมน้ำเหลือง popliteal ขวา</td><td>Reactive lymphoid hyperplasia</td></tr>
+        <tr class="detail"><td colspan="2"><b>การแปลผล:</b> การโตของต่อมน้ำเหลืองเป็นการตอบสนองต่อการอักเสบ ไม่สนับสนุนกระบวนการเนื้องอก</td></tr>
+        <tr class="main"><td>ภาพถ่ายรังสี right metatarsus (ภาพที่ 1)</td><td>ก้อนเนื้อเยื่ออ่อนรูปกระสวย ขอบเรียบ บริเวณ dorsal metatarsal; ไม่พบความผิดปกติของกระดูก</td></tr>
+        <tr class="detail"><td colspan="2"><b>การแปลผล:</b> รอยโรคจำกัดอยู่ภายในผิวหนังและเนื้อเยื่ออ่อน ไม่มีการลุกลามเข้าโครงสร้างกระดูก และไม่พบสิ่งแปลกปลอมทึบรังสี</td></tr>
+        <tr class="main"><td>Direct impression cytology + ขูดผิวหนังลึก</td><td>พบเม็ดเลือดแดง นิวโทรฟิล อีโอซิโนฟิล ลิมโฟไซต์ ไม่พบแบคทีเรีย; ไม่พบไร</td></tr>
+        <tr class="detail"><td colspan="2"><b>การแปลผล:</b> ตัด demodicosis ออกจากการวินิจฉัย; อย่างไรก็ดี การไม่พบแบคทีเรียบน cytology ไม่สามารถตัดการติดเชื้อชั้นลึกได้ จึงต้องอาศัยการเพาะเชื้อจากเนื้อเยื่อ</td></tr>
+        <tr class="main"><td>Histopathology (punch biopsy 6 มม.)</td><td>Compact hyperkeratosis (parakeratotic และ orthokeratotic), acanthosis, lymphoplasmacytic superficial dermatitis, dermal fibrosis เด่น, ต่อม apocrine ขยาย</td></tr>
+        <tr class="detail"><td colspan="2"><b>การแปลผล:</b> ลักษณะสอดคล้องกับ acral lick dermatitis ระยะเรื้อรัง</td></tr>
+        <tr class="main"><td>Tissue culture (aerobic และเชื้อรา)</td><td>เชื้อรา: ผลลบ · Aerobic: ขึ้นเบา ๆ ของ <i>Staphylococcus pseudintermedius</i> ซึ่งไวต่อยาต้านจุลชีพวงกว้าง</td></tr>
+        <tr class="detail"><td colspan="2"><b>การแปลผล:</b> เป็นข้อมูลกำกับการเลือกยาต้านจุลชีพระบบในกรณีที่ต้องใช้ ตามแนวทาง ISCAID ที่จัด ALD เป็น deep pyoderma</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ================= 5 ================= -->
+  <section id="s5">
+    <h2 class="sec reveal"><span class="no">5.</span>ภาพถ่ายทางรังสีและภาพถ่ายคลินิก</h2>
+    <p class="note reveal">คลิกภาพเพื่อขยาย · หากมีไฟล์ต้นฉบับ ให้บันทึกในโฟลเดอร์เดียวกับเอกสารนี้โดยใช้ชื่อ fig1A.jpg, fig1B.jpg, fig2A.jpg, fig2B.jpg, fig2C.jpg ภาพจะแสดงโดยอัตโนมัติ</p>
+    <div class="plate reveal"><div class="grid g2">
+      <div class="cell"><span class="tag">A</span><img src="fig1A.jpg" alt="ภาพถ่ายรังสี มุมมอง lateral"><div class="ph">ภาพรังสี มุมมอง lateral<br>(fig1A.jpg)</div></div>
+      <div class="cell"><span class="tag">B</span><img src="fig1B.jpg" alt="ภาพถ่ายรังสี มุมมอง dorsoplantar"><div class="ph">ภาพรังสี มุมมอง dorsoplantar<br>(fig1B.jpg)</div></div>
+    </div></div>
+    <figcaption class="fcap reveal"><b>ภาพที่ 1</b> — ภาพถ่ายรังสีของ right metatarsus มุมมอง lateral (A) และ dorsoplantar (B) พบก้อนเนื้อเยื่ออ่อนรูปกระสวยขอบเรียบบริเวณ dorsal metatarsal โดยไม่พบการเปลี่ยนแปลงของโครงสร้างกระดูกส่วนล่าง และส่วนที่เหลือของการตรวจไม่พบความผิดปกติ</figcaption>
+    <div class="plate reveal"><div class="grid g3">
+      <div class="cell"><span class="tag">A</span><img src="fig2A.jpg" alt="ภาพถ่ายคลินิกแรกมาตรวจ"><div class="ph">ภาพถ่ายคลินิก แรกมาตรวจ<br>(fig2A.jpg)</div></div>
+      <div class="cell"><span class="tag">B</span><img src="fig2B.jpg" alt="ภาพถ่ายคลินิกระหว่างรักษา"><div class="ph">ภาพถ่ายคลินิก ระหว่างรักษา<br>(fig2B.jpg)</div></div>
+      <div class="cell"><span class="tag">C</span><img src="fig2C.jpg" alt="ภาพถ่ายคลินิกเมื่อติดตามผล"><div class="ph">ภาพถ่ายคลินิก ติดตามผล<br>(fig2C.jpg)</div></div>
+    </div></div>
+    <figcaption class="fcap reveal"><b>ภาพที่ 2</b> — ภาพถ่ายคลินิกของรอยโรคบริเวณ dorsal metatarsus ขวา เมื่อแรกมาตรวจ (A) และการเปลี่ยนแปลงของรอยโรคในระหว่างติดตามการรักษา (B–C) แสดงการลดขนาดของก้อนและการหายของแผล</figcaption>
+  </section>
+
+  <!-- ================= 6 ================= -->
+  <section id="s6">
+    <div class="statement reveal">
+      <div class="k">FINAL DIAGNOSIS · การวินิจฉัยสุดท้าย</div>
+      <h3>Chronic Acral Lick Dermatitis ซึ่งมีสาเหตุปฐมภูมิจาก Atopic Dermatitis</h3>
+      <p>โดยมี secondary deep bacterial infection (<i>Staphylococcus pseudintermedius</i>) และ reactive lymphoid hyperplasia ของต่อมน้ำเหลือง popliteal ขวา เป็นภาวะร่วม</p>
+    </div>
+  </section>
+
+  <!-- ================= 7 ================= -->
+  <section id="s7">
+    <h2 class="sec reveal"><span class="no">7.</span>การรักษาและการดูแลระยะยาว</h2>
+    <p class="reveal">เสาหลักของการจัดการ ALD ประกอบด้วยสี่ประการ ดังนี้</p>
+    <ol class="principles reveal">
+      <li>ระบุและรักษาสาเหตุปฐมภูมิของการเลีย ได้แก่ อาการคันหรือความเจ็บปวด</li>
+      <li>ตัดวงจรคัน–เลียด้วยยาแก้คันและยาต้านอักเสบออกฤทธิ์เร็ว (เช่น corticosteroids, oclacitinib, ilunocitinib, atinvicitinib, lokivetmab) ร่วมกับยาทาฆ่าเชื้อและต้านอักเสบเฉพาะที่</li>
+      <li>รักษาการติดเชื้อชั้นลึกโดยอาศัยผลการเพาะเชื้อจากเนื้อเยื่อกำกับการเลือกยาต้านจุลชีพ ทั้งนี้ตามแนวทาง ISCAID จัดให้ ALD อยู่ในหมวด deep pyoderma</li>
+      <li>ป้องกันการบาดเจ็บซ้ำจากการเลียด้วยสิ่งกีดขวาง (Elizabethan collar, leg wraps, ผ้าพันแผล, เสื้อผ้า) และพิจารณายาปรับพฤติกรรมเมื่อสงสัยองค์ประกอบทางจิตใจ</li>
+    </ol>
+    <div class="caution reveal"><b>ข้อพึงระวัง:</b> การผ่าตัดเอารอยโรคออกไม่จัดเป็นการรักษาทางเลือกแรก เนื่องจากมีความเสี่ยงสูงต่อภาวะแผลหายไม่ดีและการกลับเป็นซ้ำของรอยโรค</div>
+    <p class="reveal">แผนการรักษาที่ผู้ป่วยได้รับ สรุปในตารางที่ 4</p>
+    <table class="tbl tight reveal">
+      <thead><tr><th style="width:34%">การรักษา</th><th style="width:34%">ขนาดและวิธีใช้</th><th style="width:32%">วัตถุประสงค์</th></tr></thead>
+      <tbody>
+        <tr><td>Fluocinolone acetonide ใน 60% dimethyl sulfoxide (topical)</td><td>ทาบริเวณรอยโรค ทุก 24 ชั่วโมง</td><td>ต้านอักเสบเฉพาะที่ ณ ตำแหน่งรอยโรค</td></tr>
+        <tr><td>Lokivetmab</td><td>2 mg/kg SC ทุก 1 เดือน</td><td>ควบคุมอาการคันจากโรคพื้นเดิม atopic dermatitis</td></tr>
+        <tr><td>Fluorescent light therapy</td><td>2 ช่วงการรักษาติดกันในวันเดียวกัน ทุก 7 วัน</td><td>Photobiomodulation: ลดการเจริญของจุลชีพและการอักเสบ เร่งการหายของแผล</td></tr>
+        <tr><td>Elizabethan collar</td><td>ตลอดระยะเวลาการรักษา</td><td>ตัดวงจรคัน–เลีย ป้องกัน self-trauma</td></tr>
+      </tbody>
+    </table>
+
+    <div class="chk reveal">
+      <h3>กรอบสรุปแนวทางรักษา (Treatment at a Glance)</h3>
+      <div class="barwrap"><div id="chkBar"></div></div>
+      <span id="chkCount">ตรวจสอบแล้ว 0 / 9 ข้อ</span>
+      <div style="margin-top:8px">
+        <label><input type="checkbox"><span class="box">✓</span><span class="txt">ระบุและรักษาสาเหตุหลักของการเลีย (เช่น ความเจ็บปวด อาการคัน)</span></label>
+        <label><input type="checkbox"><span class="box">✓</span><span class="txt">การตรวจมาตรฐาน: ประวัติละเอียด การตรวจผิวหนังและ cytology การตรวจ orthopedic และภาพถ่ายรังสี</span></label>
+        <label><input type="checkbox"><span class="box">✓</span><span class="txt">ตัดวงจรคัน–เลียด้วยยาแก้คัน/ต้านอักเสบออกฤทธิ์เร็ว</span></label>
+        <label><input type="checkbox"><span class="box">✓</span><span class="txt">ป้องกันการบาดเจ็บซ้ำด้วยสิ่งกีดขวางการเลีย</span></label>
+        <label><input type="checkbox"><span class="box">✓</span><span class="txt">ALD คือ deep pyoderma — ใช้ tissue culture นำการเลือกยาต้านจุลชีพระบบเมื่อการรักษาเฉพาะที่ไม่เพียงพอ</span></label>
+        <label><input type="checkbox"><span class="box">✓</span><span class="txt">ส่งตัวอย่างเพื่อการเพาะเชื้อราและ histopathology เพื่อตัดสาเหตุร่วมอื่น</span></label>
+        <label><input type="checkbox"><span class="box">✓</span><span class="txt">การรักษาเฉพาะที่เป็นการรักษาเสริมที่มีประสิทธิภาพต่อการติดเชื้อและการอักเสบ</span></label>
+        <label><input type="checkbox"><span class="box">✓</span><span class="txt">หลักฐานเบื้องต้นสนับสนุน fluorescent light therapy เป็นการรักษาเดี่ยวหรือเสริม</span></label>
+        <label><input type="checkbox"><span class="box">✓</span><span class="txt">การผ่าตัดเอารอยโรคออกมิใช่การรักษาทางเลือกที่แนะนำ</span></label>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 8 ================= -->
+  <section id="s8">
+    <h2 class="sec reveal"><span class="no">8.</span>ผลการรักษาและการติดตาม</h2>
+    <table class="tbl tight reveal">
+      <thead><tr><th style="width:22%">ห้วงเวลา</th><th style="width:42%">การตรวจพบ</th><th style="width:36%">การปรับแผนการรักษา</th></tr></thead>
+      <tbody>
+        <tr><td>ภายใน 14 วัน</td><td>ขนาดรอยโรคลดลงประมาณร้อยละ 72 จากแรกมาตรวจ และไม่แสดงอาการคันภายหลังแสงบำบัดครั้งที่ 3</td><td>คงแผนการรักษาเดิม</td></tr>
+        <tr><td>นัดประเมิน 2 เดือน</td><td>พบ erythema ทั่วไประดับปานกลางพร้อมอาการคัน สัมพันธ์กับการเปลี่ยนแปลงฤดูกาล</td><td>เพิ่ม oclacitinib 0.5 mg/kg PO ทุก 24 ชั่วโมง เพื่อควบคุมอาการคันจากภูมิแพ้</td></tr>
+        <tr><td>ระยะยาว</td><td>ควบคุมโรคพื้นเดิม atopic dermatitis อย่างต่อเนื่อง</td><td>เริ่ม allergen-specific immunotherapy (ASIT) ฉีดใต้ผิวหนังทุกสัปดาห์</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ================= 9 ================= -->
+  <section id="s9">
+    <h2 class="sec reveal"><span class="no">9.</span>อภิปราย</h2>
+    <p class="reveal">ALD เป็นโรคผิวหนังที่พบบ่อยแต่จัดการยาก คิดเป็นสัดส่วนเกือบร้อยละ 3 ของภาวะทางผิวหนังในสุนัข การวินิจฉัยอาศัยประวัติการเลียซ้ำเฉพาะที่อย่างต่อเนื่อง โดยมักเกิดที่ปลายขา เดิม ALD ถูกรับรู้ว่าเป็นภาวะทางจิตใจเป็นหลัก อย่างไรก็ตาม หลักฐานปัจจุบันชี้ว่ารอยโรคส่วนมากเริ่มต้นจากสิ่งกระตุ้นสัญญาณคันหรือเจ็บ ซึ่งอาจได้แก่ โรคภูมิแพ้ ความผิดปกติทาง orthopedic หรือระบบประสาท ปรสิต การติดเชื้อ เนื้องอก หรือปัจจัยทางพฤติกรรม การจัดการที่ประสบความสำเร็จจึงต้องควบคุมทั้งโรคพื้นเดิมและปัจจัยดำรงโรค (perpetuating factors) โดยเฉพาะการติดเชื้อแทรกซ้อน</p>
+    <p class="reveal">รอยโรค ALD ส่วนใหญ่มีการติดเชื้อแบคทีเรียแทรกซ้อน และพบความคลาดเคลื่อนสูงระหว่างผลเพาะเชื้อจาก swab ผิวหนังกับการเพาะเชื้อจากเนื้อเยื่อ ซึ่งอธิบายการตอบสนองที่ไม่ดีต่อการให้ยาปฏิชีวนะตามประสบการณ์ แนวทาง ISCAID จัดให้ ALD เป็น deep pyoderma ดังนั้นการเลือกยาต้านจุลชีพที่เหมาะสมจึงมีความสำคัญต่อการลดการดื้อยา มาตรฐานคือการตัดชิ้นเนื้อแบบ punch ขนาด 6 มิลลิเมตร จากบริเวณที่เตรียมผิวอย่างปลอดเชื้อ เพื่อให้ได้ความลึกเพียงพอต่อการเพาะเชื้อ ระยะเวลาการให้ยาปฏิชีวนะแนะนำขั้นต่ำ 3 สัปดาห์ร่วมกับการรักษาเฉพาะที่ และประเมินซ้ำทุก 2 สัปดาห์จนกว่ารอยโรคจะหายสนิท บางกรณีจำเป็นต้องใช้เวลานานกว่า 6 สัปดาห์</p>
+    <p class="reveal">การบำบัดด้วยแสงฟลูออเรสเซนต์อาศัยฤทธิ์ photobiomodulation ของแสงเพื่อลดการอักเสบ ช่วยกำจัดแบคทีเรีย และกระตุ้นกระบวนการหายแผลตามธรรมชาติ โดยมีหลักฐานว่าสามารถลดระยะเวลาการหายของ pyoderma ลงได้ประมาณร้อยละ 50</p>
+    <div class="stats reveal">
+      <div class="stat"><b>≈3%</b><p>ของภาวะทางผิวหนังในสุนัขคือ ALD</p></div>
+      <div class="stat"><b>≥3 สัปดาห์</b><p>ระยะเวลาขั้นต่ำของยาปฏิชีวนะ ประเมินซ้ำทุก 2 สัปดาห์ บางเคส &gt;6 สัปดาห์</p></div>
+      <div class="stat"><b>≈50%</b><p>ระยะเวลาหายของแผลสั้นลงด้วยการบำบัดด้วยแสงฟลูออเรสเซนต์</p></div>
+      <div class="stat"><b>Swab ≠ Tissue</b><p>ผลเพาะเชื้อผิวผิวหนังมักคลาดเคลื่อนจาก tissue culture จึงต้องอาศัยชิ้นเนื้อ</p></div>
+    </div>
+  </section>
+
+  <!-- ================= 10 ================= -->
+  <section id="s10">
+    <h2 class="sec reveal"><span class="no">10.</span>สรุปข้อเสนอแนะทางคลินิก</h2>
+    <ol class="principles reveal">
+      <li><b>ค้นหาและควบคุมสิ่งกระตุ้นปฐมภูมิ</b> ของสัญญาณคันหรือเจ็บ ซึ่งเป็นต้นตอของวงจรการเลีย</li>
+      <li><b>ป้องกันการบาดเจ็บซ้ำ</b> จากการเลียด้วยสิ่งกีดขวางตลอดระยะเวลาการรักษา</li>
+      <li><b>รักษาภาวะแทรกซ้อน</b> โดยเฉพาะการติดเชื้อแบคทีเรียชั้นลึกของผิวหนัง</li>
+      <li><b>ใช้การเพาะเชื้อและความไวต่อยา</b> จากเนื้อเยื่อเพื่อกำกับการเลือกยาต้านจุลชีพ</li>
+      <li><b>จัดทำแผนระยะยาว</b> ในการควบคุมโรคพื้นเดิมเพื่อป้องกันการกลับเป็นซ้ำ</li>
+    </ol>
+  </section>
+
+  <!-- ================= REF ================= -->
+  <section id="ref">
+    <h2 class="sec reveal"><span class="no">†</span>เอกสารอ้างอิง</h2>
+    <ol class="principles reveal" style="font-size:.88rem">
+      <li>White AG, Scott FH. Lick Granulomas. <i>Clinician's Brief</i>. 2026 (ฉบับกรกฎาคม).</li>
+      <li>Shumaker AK. Diagnosis and treatment of canine acral lick dermatitis. <i>Vet Clin North Am Small Anim Pract</i>. 2019;49(1):105-123.</li>
+      <li>Loeffler A, Cain CL, Ferrer L, et al. Antimicrobial use guidelines for canine pyoderma by the International Society for Companion Animal Infectious Diseases (ISCAID). <i>Vet Dermatol</i>. 2025;36(3):234-282.</li>
+    </ol>
+  </section>
+
+  <!-- ================= QUIZ ================= -->
+  <section id="quiz">
+    <h2 class="sec reveal"><span class="no">†</span>แบบทดสอบท้ายบท</h2>
+    <p class="note reveal">เลือกคำตอบที่เหมาะสมที่สุดแต่ละข้อ ระบบจะแสดงผลการตรวจคำตอบและคำอธิบายทันที</p>
+
+    <div class="q reveal"><h4><span class="qn">ข้อ 1</span>ขั้นตอนที่มีความสำคัญที่สุดในการจัดการ ALD คือข้อใด</h4>
+      <button class="opt">ก. การผ่าตัดเอารอยโรคออกโดยทันที</button>
+      <button class="opt" data-ok="1">ข. การระบุและควบคุมสิ่งกระตุ้นอาการคันหรือความเจ็บปวดที่เป็นต้นตอ</button>
+      <button class="opt">ค. การให้ยาปฏิชีวนะตามประสบการณ์โดยไม่ต้องเพาะเชื้อ</button>
+      <button class="opt">ง. การปรับเปลี่ยนอาหารโดยไม่ได้ซักประวัติโดยละเอียด</button>
+      <div class="explain"><b>ถูกต้อง</b> — หัวใจของการจัดการ ALD คือการค้นหาและควบคุมสิ่งกระตุ้นปฐมภูมิ ร่วมกับการตัดวงจรคัน–เลีย จึงจะให้ผลการรักษาที่ยั่งยืนและป้องกันการกลับเป็นซ้ำ</div>
+    </div>
+
+    <div class="q reveal"><h4><span class="qn">ข้อ 2</span>เหตุใดจึงต้องอาศัยการเพาะเชื้อจากเนื้อเยื่อ (tissue culture) แทนการ swab ผิวหนัง</h4>
+      <button class="opt" data-ok="1">ก. เนื่องจาก swab ผิวหนังมักคลาดเคลื่อนจากเชื้อก่อโรคจริง และผลมักไม่สอดคล้องกับ tissue culture</button>
+      <button class="opt">ข. เนื่องจาก tissue culture มีต้นทุนต่ำกว่าอย่างมีนัยสำคัญ</button>
+      <button class="opt">ค. เนื่องจากไม่สามารถเพาะเชื้อราจากเนื้อเยื่อได้</button>
+      <button class="opt">ง. เนื่องจากทั้งสองวิธีให้ผลตรงกันในทุกกรณี</button>
+      <div class="explain"><b>ถูกต้อง</b> — ALD จัดเป็น deep pyoderma การเพาะเชื้อจากผิวจึงมักได้เชื้อที่ไม่ใช่สาเหตุจริง มาตรฐานคือ punch biopsy ขนาด 6 มิลลิเมตร ส่งเพาะเชื้อจากเนื้อเยื่อ</div>
+    </div>
+
+    <div class="q reveal"><h4><span class="qn">ข้อ 3</span>ข้อความใดถูกต้องเกี่ยวกับการผ่าตัดใน ALD</h4>
+      <button class="opt">ก. เป็นการรักษาทางเลือกแรกในทุกกรณี</button>
+      <button class="opt" data-ok="1">ข. ไม่แนะนำเป็นการรักษาทางเลือกแรก เนื่องจากความเสี่ยงต่อแผลหายไม่ดีและการกลับเป็นซ้ำ</button>
+      <button class="opt">ค. ไม่พบการกลับเป็นซ้ำภายหลังการผ่าตัด</button>
+      <button class="opt">ง. สงวนใช้เฉพาะสัตว์ป่วยอายุน้อย</button>
+      <div class="explain"><b>ถูกต้อง</b> — การผ่าตัดมีความเสี่ยงสูงต่อภาวะแผลหายไม่ดีและการกลับเป็นซ้ำ จึงมิใช่การรักษาทางเลือกแรก</div>
+    </div>
+
+    <div class="q reveal"><h4><span class="qn">ข้อ 4</span>โรคพื้นเดิมที่ต้องควบคุมระยะยาวในผู้ป่วยรายนี้คือโรคใด</h4>
+      <button class="opt">ก. Hypothyroidism</button>
+      <button class="opt">ข. Demodicosis</button>
+      <button class="opt" data-ok="1">ค. Atopic dermatitis</button>
+      <button class="opt">ง. การแพ้อาหารเพียงประการเดียว</button>
+      <div class="explain"><b>ถูกต้อง</b> — หลักฐานจาก pododermatitis คันหลายตำแหน่งและการกำเริบตามฤดูกาลสนับสนุน atopic dermatitis ซึ่งต้องควบคุมระยะยาวด้วย lokivetmab, oclacitinib และ ASIT</div>
+    </div>
+
+    <div id="score"></div>
+  </section>
+</main>
+
+<div id="lightbox"><button id="lbClose" aria-label="ปิด">✕</button><img id="lbImg" src="" alt=""><p id="lbCap"></p></div>
+<button id="toTop" aria-label="กลับขึ้นด้านบน">↑</button>
+
+<footer>
+  <div class="wrap foot">
+    <img class="logo" src="https://yunhfdekcjosnfwndepu.supabase.co/storage/v1/object/public/DATA%20SRNanimalcare/Logo%20symbol.png" alt="โลโก้ SRN Animal Care">
+    <p><span class="k">SRN Animal Care</span> — เอกสารนี้จัดทำเพื่อวัตถุประสงค์ทางการศึกษาและการศึกษาต่อเนื่องทางสัตวแพทย์ เรียบเรียงจากบทความต้นฉบับที่ผ่านการพิจารณาโดยผู้ทรงคุณวุฒิ (peer-reviewed) มิใช่คำแนะนำทดแทนการวินิจฉัยและการรักษาโดยสัตวแพทย์ผู้ดูแลผู้ป่วยโดยตรง</p>
+  </div>
+</footer>
+
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+
+/* progress + toTop */
+addEventListener('scroll',()=>{
+  const h=document.documentElement;
+  $('#progress').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  $('#toTop').classList.toggle('show',h.scrollTop>600);
+});
+$('#toTop').onclick=()=>scrollTo({top:0,behavior:'smooth'});
+
+/* reveal */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.08});
+$$('.reveal').forEach(el=>io.observe(el));
+
+/* scrollspy */
+const spy=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){$$('#nav a').forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id));}
+}),{rootMargin:'-35% 0px -55% 0px'});
+$$('section[id]').forEach(s=>spy.observe(s));
+
+/* expandable table rows */
+$$('tr.main').forEach(r=>r.addEventListener('click',()=>{
+  r.classList.toggle('open');
+  const d=r.nextElementSibling;
+  if(d&&d.classList.contains('detail'))d.classList.toggle('open');
+}));
+
+/* checklist */
+const chks=$$('.chk input');
+const upd=()=>{const n=chks.filter(c=>c.checked).length;
+  $('#chkBar').style.width=(n/chks.length*100)+'%';
+  $('#chkCount').textContent=`ตรวจสอบแล้ว ${n} / ${chks.length} ข้อ`;};
+chks.forEach(c=>c.addEventListener('change',upd));
+
+/* figures */
+$$('.cell img').forEach(img=>img.addEventListener('error',()=>img.closest('.cell').classList.add('noimg')));
+const lb=$('#lightbox');
+$$('.cell').forEach(cell=>cell.addEventListener('click',()=>{
+  const img=cell.querySelector('img');
+  if(!img||cell.classList.contains('noimg'))return;
+  $('#lbImg').src=img.src;
+  const cap=cell.closest('.plate').nextElementSibling;
+  $('#lbCap').textContent=cap?cap.textContent:'';
+  lb.classList.add('show');
+}));
+$('#lbClose').onclick=()=>lb.classList.remove('show');
+lb.addEventListener('click',e=>{if(e.target===lb)lb.classList.remove('show')});
+addEventListener('keydown',e=>{if(e.key==='Escape')lb.classList.remove('show')});
+
+/* quiz + score */
+let answered=0, correct=0;
+$$('.q').forEach(q=>{
+  q.querySelectorAll('.opt').forEach(o=>o.addEventListener('click',()=>{
+    if(q.classList.contains('answered'))return;
+    q.classList.add('answered'); answered++;
+    const ok=!!o.dataset.ok;
+    if(ok){o.classList.add('good');correct++;}
+    else{o.classList.add('bad');q.querySelector('[data-ok]').classList.add('good');}
+    if(answered===$$('.q').length){
+      const s=$('#score'); s.classList.add('show');
+      const remark= correct===4?'ผลการประเมินอยู่ในเกณฑ์ดีเยี่ยม แสดงถึงความเข้าใจเนื้อหาอย่างครบถ้วน':
+                    correct===3?'ผลการประเมินอยู่ในเกณฑ์ดี ควรทบทวนหัวข้อที่ตอบผิดเพิ่มเติม':
+                    'ขอแนะนำให้ทบทวนเนื้อหาหัวข้อที่ 3–7 แล้วทำแบบทดสอบอีกครั้ง';
+      s.innerHTML=`ผลการทดสอบ: ตอบถูกต้อง <b>${correct}</b> จาก 4 ข้อ — ${remark}`;
+      s.scrollIntoView({behavior:'smooth',block:'nearest'});
+    }
+  }));
+});
+</script>
+</body>
+</html>
