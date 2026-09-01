@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pemphigus Foliaceus ในสุนัข | คู่มืออ้างอิงทางคลินิกแบบ Interactive</title>
+<meta name="description" content="บทความสัตวแพทย์แบบ Interactive เรื่อง Canine Pemphigus Foliaceus — พยาธิกำเนิด การวินิจฉัย การรักษา พยากรณ์โรค และการสื่อสารกับเจ้าของ">
+<script>
+(function(){try{var t=localStorage.getItem('pf-theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark');}}catch(e){}})();
+</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/ibm-plex-sans-thai@latest/thai-400-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/ibm-plex-sans-thai@latest/thai-600-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/ibm-plex-sans-thai@latest/thai-700-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/ibm-plex-sans-thai@latest/latin-400-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/ibm-plex-sans-thai@latest/latin-700-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/sarabun@latest/thai-400-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/sarabun@latest/thai-700-normal.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['"IBM Plex Sans Thai"','Sarabun','system-ui','sans-serif'],
+        body: ['Sarabun','"IBM Plex Sans Thai"','sans-serif']
+      },
+      colors: {
+        brand: { 50:'#effafa',100:'#d7f0f1',200:'#b0e0e2',300:'#7cc9cd',400:'#45abb1',500:'#2b9097',600:'#1f767e',700:'#1c5f66',800:'#1a4d54',900:'#194147' },
+        coral: { 400:'#ef8a70',500:'#e2725b',600:'#cf5540' }
+      },
+      boxShadow: { soft:'0 8px 30px -12px rgba(15,60,70,.25)' }
+    }
+  }
+}
+</script>
+<style>
+  html{scroll-behavior:smooth}
+  body{font-family:'IBM Plex Sans Thai','Sarabun',system-ui,sans-serif}
+  .font-body{font-family:'Sarabun','IBM Plex Sans Thai',sans-serif}
+  ::selection{background:#7cc9cd;color:#123}
+
+  /* Scroll reveal */
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  /* Hotspot pulse */
+  .hs-pulse{transform-box:fill-box;transform-origin:center;animation:hsPulse 2.4s ease-out infinite;pointer-events:none}
+  @keyframes hsPulse{0%{transform:scale(.55);opacity:.9}100%{transform:scale(1.6);opacity:0}}
+  .hotspot{cursor:pointer;outline:none}
+  .hotspot:focus-visible .hs-ring{stroke-width:5}
+
+  /* Wave animation */
+  .wave-path{stroke-dasharray:5 9;animation:waveDash 16s linear infinite}
+  @keyframes waveDash{to{stroke-dashoffset:-560}}
+
+  /* Flip cards */
+  .flip{perspective:1100px}
+  .flip-inner{position:relative;width:100%;height:100%;transition:transform .65s cubic-bezier(.4,.2,.2,1);transform-style:preserve-3d}
+  .flip.flipped .flip-inner{transform:rotateY(180deg)}
+  .flip-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+  .flip-back{transform:rotateY(180deg)}
+
+  /* Tooltip */
+  #cite-tip{transition:opacity .18s ease}
+
+  /* Key point fade */
+  .kp-swap{animation:kpIn .45s ease}
+  @keyframes kpIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* Nav chip active */
+  .chip[data-active="true"]{background:#1f767e;color:#fff;border-color:#1f767e}
+  .dark .chip[data-active="true"]{background:#45abb1;color:#06282c;border-color:#45abb1}
+
+  /* Print handout only */
+  @media print{
+    @page{size:A4;margin:1.4cm}
+    body.printing-handout > *:not(#handout-modal){display:none !important}
+    #handout-modal{position:static !important;overflow:visible !important;background:#fff !important;padding:0 !important;display:block !important}
+    #handout-modal .no-print{display:none !important}
+    .handout-paper{box-shadow:none !important;border:none !important;border-radius:0 !important;max-width:100% !important;margin:0 !important}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1;transform:none;transition:none}
+    .hs-pulse,.wave-path{animation:none}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-200 antialiased transition-colors">
+
+<!-- Scroll progress -->
+<div id="progress-bar" class="fixed top-0 left-0 h-1 z-[60] bg-gradient-to-r from-brand-600 via-brand-400 to-coral-500 rounded-r-full" style="width:0%"></div>
+
+<!-- ============ HEADER ============ -->
+<header class="sticky top-0 z-40 border-b border-slate-200/70 dark:border-slate-800 bg-white/85 dark:bg-slate-900/85 backdrop-blur">
+  <div class="max-w-7xl mx-auto px-4 pt-3 pb-2 flex items-center gap-3">
+    <img src="https://emwqphotlwubauvfbsfz.supabase.co/storage/v1/object/public/DATASRN/Logo%20symbol.png" alt="โลโก้ DATASRN" class="h-10 w-10 rounded-xl object-contain bg-white shadow-soft" onerror="this.style.display='none'">
+    <div class="min-w-0">
+      <p class="text-[11px] tracking-wide text-brand-600 dark:text-brand-300 font-semibold uppercase">Vet Dermatology • Interactive Article</p>
+      <h1 class="text-base sm:text-lg font-bold leading-tight truncate">Pemphigus Foliaceus ในสุนัข</h1>
+    </div>
+    <div class="ml-auto flex items-center gap-2">
+      <button id="handout-open" class="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold px-3 py-2 rounded-lg bg-brand-600 text-white hover:bg-brand-700 transition shadow-soft">
+        <span aria-hidden="true">📄</span> Handout เจ้าของ
+      </button>
+      <button id="theme-toggle" aria-label="สลับโหมดสว่าง/มืด" class="h-10 w-10 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 transition text-lg">🌙</button>
+    </div>
+  </div>
+  <!-- Scrollspy chips -->
+  <nav id="spy-nav" aria-label="สารบัญบทความ" class="max-w-7xl mx-auto px-4 pb-3 flex gap-2 overflow-x-auto scrollbar-none">
+    <button class="chip shrink-0 text-xs sm:text-sm px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-brand-400 transition" data-target="overview">ภาพรวม</button>
+    <button class="chip shrink-0 text-xs sm:text-sm px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-brand-400 transition" data-target="breeds">สายพันธุ์เสี่ยง</button>
+    <button class="chip shrink-0 text-xs sm:text-sm px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-brand-400 transition" data-target="lesions">อาการทางคลินิก</button>
+    <button class="chip shrink-0 text-xs sm:text-sm px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-brand-400 transition" data-target="diagnosis">การวินิจฉัย</button>
+    <button class="chip shrink-0 text-xs sm:text-sm px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-brand-400 transition" data-target="treatment">การรักษา</button>
+    <button class="chip shrink-0 text-xs sm:text-sm px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-brand-400 transition" data-target="prognosis">พยากรณ์โรค</button>
+    <button class="chip shrink-0 text-xs sm:text-sm px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-brand-400 transition" data-target="barriers">อุปสรรคการดูแล</button>
+    <button class="chip shrink-0 text-xs sm:text-sm px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-brand-400 transition" data-target="references">เอกสารอ้างอิง</button>
+  </nav>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="max-w-7xl mx-auto px-4 pt-10 pb-6">
+  <div class="grid lg:grid-cols-2 gap-8 items-center">
+    <div class="reveal in">
+      <p class="inline-flex items-center gap-2 text-xs font-semibold text-brand-700 dark:text-brand-300 bg-brand-100 dark:bg-brand-900/60 px-3 py-1 rounded-full mb-4">🐾 โรคผิวหนังภูมิคุ้มกันทำลายตนเอง (Autoimmune)</p>
+      <h2 class="text-3xl sm:text-4xl lg:text-[2.6rem] font-bold leading-snug text-slate-900 dark:text-white">
+        Canine <span class="text-brand-600 dark:text-brand-300">Pemphigus Foliaceus</span>
+      </h2>
+      <p class="mt-4 text-base sm:text-lg leading-relaxed text-slate-600 dark:text-slate-300 font-body">
+        โรคผิวหนังภูมิคุ้มกันทำลายตนเองที่พบบ่อยที่สุดในสุนัข เกิดจากแอนติบอดีในกระแสเลือด (ส่วนใหญ่เป็น <em class="font-semibold not-italic text-slate-800 dark:text-slate-100">IgG</em>) เข้าจับกับโครงสร้างของ <strong>desmosome</strong> ในชั้น epidermis ส่วนตื้น ทำให้เซลล์ผิวหนังแยกตัวออกจากกัน เรียกว่า <strong class="text-coral-600 dark:text-coral-400">acantholysis</strong>
+      </p>
+      <div class="mt-5 flex flex-wrap gap-2 text-xs sm:text-sm">
+        <span class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm">🎯 อายุเริ่มป่วยมัธยฐาน ~4 ปี<sup class="cite cursor-help text-brand-600 dark:text-brand-300 font-bold" data-ref="1" tabindex="0">1</sup></span>
+        <span class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm">💉 สิ่งกระตุ้นที่เป็นไปได้: วัคซีน / ยาบางชนิด</span>
+        <span class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm">♾️ ส่วนใหญ่ต้องรักษาระยะยาวตลอดชีวิต</span>
+      </div>
+      <div class="mt-6 flex gap-3">
+        <a href="#overview" class="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-semibold shadow-soft transition">เริ่มอ่านบทความ ↓</a>
+        <button class="handout-trigger px-5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 font-semibold transition">📄 สรุปสำหรับเจ้าของ</button>
+      </div>
+    </div>
+    <figure class="reveal in relative">
+      <div class="rounded-3xl overflow-hidden shadow-soft ring-1 ring-slate-200 dark:ring-slate-800">
+        <img src="https://image.qwenlm.ai/public_source/33900023-8b3f-440d-b52d-2db20ec5adb1/1531c527a-ba24-41f6-b398-a9bf4af6eaf1.png" alt="สุนัขพันธุ์อากิต้าพร้อมไฮไลต์รูปแบบ butterfly บนใบหน้า" class="w-full h-72 sm:h-96 object-cover">
+      </div>
+      <figcaption class="mt-2 text-xs text-slate-500 dark:text-slate-400 text-center">ภาพจำลองการกระจายรอยโรคแบบ "butterfly pattern" บริเวณใบหน้า — ลักษณะคลาสสิกของ PF</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ MAIN GRID ============ -->
+<div class="max-w-7xl mx-auto px-4 grid grid-cols-12 gap-8 pb-16">
+
+  <!-- ===== CONTENT ===== -->
+  <main class="col-span-12 lg:col-span-8 space-y-16">
+
+    <!-- §1 OVERVIEW -->
+    <section id="overview" data-spy class="scroll-mt-32 reveal">
+      <header class="flex items-center gap-3 mb-5">
+        <span class="h-9 w-9 shrink-0 rounded-xl bg-brand-600 text-white grid place-items-center font-bold">1</span>
+        <h3 class="text-2xl font-bold text-slate-900 dark:text-white">ภาพรวมโรคและพยาธิกำเนิด</h3>
+      </header>
+      <div class="space-y-4 leading-relaxed font-body text-slate-700 dark:text-slate-300">
+        <p>เมื่อ autoantibodies เข้าจับกับ desmosome ในชั้น epidermis ส่วนตื้น การยึดเกาะระหว่าง keratinocyte จะสูญเสียไป เกิด <strong>acantholysis</strong> และกลายเป็นตุ่มหนอง (pustule) ตื้น ๆ ซึ่งเป็นรอยโรคหลักของโรคนี้</p>
+        <div class="rounded-2xl overflow-hidden ring-1 ring-slate-200 dark:ring-slate-800 shadow-soft bg-white dark:bg-slate-900">
+          <img src="https://image.qwenlm.ai/public_source/33900023-8b3f-440d-b52d-2db20ec5adb1/16531c8e6-dc45-4b78-85be-6ee2adb4ed80.png" alt="แผนภาพพยาธิกำเนิด: IgG จับ desmosome ทำให้เกิด acantholysis" loading="lazy" class="w-full max-h-96 object-contain bg-white">
+          <p class="px-4 py-3 text-xs text-slate-500 dark:text-slate-400 border-t border-slate-100 dark:border-slate-800">แผนภาพ: IgG autoantibodies (สีแดง-ส้ม) จับ desmosome → keratinocyte แยกตัวในชั้นตื้น (acantholysis)</p>
+        </div>
+        <div>
+          <p class="font-semibold text-slate-900 dark:text-white mb-2">โรคกลุ่ม pemphigus อื่นที่พบน้อยกว่า:</p>
+          <div class="flex flex-wrap gap-2 text-sm">
+            <span class="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800">Panepidermal pustular pemphigus</span>
+            <span class="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800">Paraneoplastic pemphigus</span>
+            <span class="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800">Pemphigus erythematosus</span>
+            <span class="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800">Pemphigus vulgaris</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- §2 BREEDS -->
+    <section id="breeds" data-spy class="scroll-mt-32 reveal">
+      <header class="flex items-center gap-3 mb-5">
+        <span class="h-9 w-9 shrink-0 rounded-xl bg-brand-600 text-white grid place-items-center font-bold">2</span>
+        <h3 class="text-2xl font-bold text-slate-900 dark:text-white">สายพันธุ์ที่มีความเสี่ยง (Breed Predisposition)</h3>
+      </header>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div class="rounded-2xl bg-white dark:bg-slate-900 ring-1 ring-slate-200 dark:ring-slate-800 p-4 hover:shadow-soft hover:-translate-y-0.5 transition">
+          <div class="h-10 w-10 rounded-full bg-coral-500/15 text-coral-600 dark:text-coral-400 grid place-items-center font-bold mb-2">A</div>
+          <p class="font-bold text-slate-900 dark:text-white">Akita</p><p class="text-sm text-slate-500 dark:text-slate-400 font-body">สายพันธุ์เสี่ยงอันดับต้น ๆ</p>
+        </div>
+        <div class="rounded-2xl bg-white dark:bg-slate-900 ring-1 ring-slate-200 dark:ring-slate-800 p-4 hover:shadow-soft hover:-translate-y-0.5 transition">
+          <div class="h-10 w-10 rounded-full bg-coral-500/15 text-coral-600 dark:text-coral-400 grid place-items-center font-bold mb-2">C</div>
+          <p class="font-bold text-slate-900 dark:text-white">Chow Chow</p><p class="text-sm text-slate-500 dark:text-slate-400 font-body">พบรายงานบ่อย</p>
+        </div>
+        <div class="rounded-2xl bg-white dark:bg-slate-900 ring-1 ring-slate-200 dark:ring-slate-800 p-4 hover:shadow-soft hover:-translate-y-0.5 transition">
+          <div class="h-10 w-10 rounded-full bg-coral-500/15 text-coral-600 dark:text-coral-400 grid place-items-center font-bold mb-2">D</div>
+          <p class="font-bold text-slate-900 dark:text-white">Dachshund</p><p class="text-sm text-slate-500 dark:text-slate-400 font-body">กลุ่มเสี่ยง</p>
+        </div>
+        <div class="rounded-2xl bg-white dark:bg-slate-900 ring-1 ring-slate-200 dark:ring-slate-800 p-4 hover:shadow-soft hover:-translate-y-0.5 transition">
+          <div class="h-10 w-10 rounded-full bg-coral-500/15 text-coral-600 dark:text-coral-400 grid place-items-center font-bold mb-2">E</div>
+          <p class="font-bold text-slate-900 dark:text-white">English Bulldog</p><p class="text-sm text-slate-500 dark:text-slate-400 font-body">กลุ่มเสี่ยง</p>
+        </div>
+        <div class="rounded-2xl bg-white dark:bg-slate-900 ring-1 ring-slate-200 dark:ring-slate-800 p-4 hover:shadow-soft hover:-translate-y-0.5 transition">
+          <div class="h-10 w-10 rounded-full bg-coral-500/15 text-coral-600 dark:text-coral-400 grid place-items-center font-bold mb-2">S</div>
+          <p class="font-bold text-slate-900 dark:text-white">Spaniels</p><p class="text-sm text-slate-500 dark:text-slate-400 font-body">หลายสายพันธุ์ในกลุ่ม spaniel</p>
+        </div>
+        <div class="rounded-2xl bg-brand-600 text-white p-4 shadow-soft">
+          <p class="text-3xl font-bold">4 ปี<sup class="cite cursor-help text-sm font-bold" data-ref="1" tabindex="0">1</sup></p>
+          <p class="text-sm text-brand-100 font-body mt-1">อายุเริ่มแสดงอาการมัธยฐาน (median age of onset)</p>
+        </div>
+      </div>
+      <div class="mt-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5">
+        <p class="font-bold text-slate-900 dark:text-white mb-2">🔎 ปัจจัยกระตุ้น (Triggers)</p>
+        <p class="font-body text-slate-600 dark:text-slate-300 text-sm leading-relaxed">ในสุนัขส่วนใหญ่ <strong>ไม่ทราบสาเหตุชัดเจน</strong> แต่มีปัจจัยกระตุ้นที่ได้รับการรายงาน ได้แก่</p>
+        <div class="mt-3 flex flex-wrap gap-2 text-sm">
+          <span class="px-3 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-900">💉 วัคซีน</span>
+          <span class="px-3 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-900">💊 ยาปฏิชีวนะ</span>
+          <span class="px-3 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-900">💊 NSAIDs</span>
+          <span class="px-3 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-900">🧴 ยาหยอด/ยากำจัดปรสิตชนิดทา</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- §3 LESIONS -->
+    <section id="lesions" data-spy class="scroll-mt-32 reveal">
+      <header class="flex items-center gap-3 mb-5">
+        <span class="h-9 w-9 shrink-0 rounded-xl bg-brand-600 text-white grid place-items-center font-bold">3</span>
+        <h3 class="text-2xl font-bold text-slate-900 dark:text-white">อาการทางคลินิก (Presentation)</h3>
+      </header>
+
+      <div class="grid md:grid-cols-2 gap-4 mb-6">
+        <div class="rounded-2xl bg-white dark:bg-slate-900 ring-1 ring-slate-200 dark:ring-slate-800 p-5">
+          <p class="font-bold text-slate-900 dark:text-white mb-2">🫧 รอยโรคหลัก: Pustule ตื้นขนาดใหญ่</p>
+          <ul class="list-disc pl-5 text-sm font-body text-slate-600 dark:text-slate-300 space-y-1.5">
+            <li>อาจเป็นจุดเล็ก (punctate) หรือคลุมหลาย follicle</li>
+            <li>หนองสีใสถึงเหลือง</li>
+            <li>ผนังตุ่มบาง → <strong>แตกง่าย</strong> กลายเป็นสะเก็ด (crust) พร้อมรอยถลอก (erosion) ใต้สะเก็ด</li>
+          </ul>
+        </div>
+        <div class="rounded-2xl bg-white dark:bg-slate-900 ring-1 ring-slate-200 dark:ring-slate-800 p-5">
+          <p class="font-bold text-slate-900 dark:text-white mb-2">🌊 ลักษณะการดำเนินโรค</p>
+          <ul class="list-disc pl-5 text-sm font-body text-slate-600 dark:text-slate-300 space-y-1.5">
+            <li>โรคกำเริบ-สงบเองได้ (wax and wane) รอยโรคมาเป็นระลอก</li>
+            <li>ถ้าติดเชื้อแบคทีเรียแทรกซ้อน หรือรอยโรคอยู่ที่ footpad → ผิวลอก สะเก็ดหนา เจ็บ มีสารคัดหลั่ง</li>
+            <li>อาการคัน: ตั้งแต่เล็กน้อยจนถึงรุนแรง</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Wax & wane wave -->
+      <div class="rounded-2xl bg-white dark:bg-slate-900 ring-1 ring-slate-200 dark:ring-slate-800 p-4 mb-6">
+        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">กราฟจำลอง: ระดับความรุนแรงของโรคที่เปลี่ยนแปลงเป็นระลอก (wax &amp; wane)</p>
+        <svg viewBox="0 0 600 110" class="w-full" aria-hidden="true">
+          <line x1="0" y1="88" x2="600" y2="88" class="stroke-slate-200 dark:stroke-slate-700" stroke-width="1"/>
+          <path class="wave-path" d="M0 80 C 40 26, 80 26, 120 74 S 200 94, 240 56 S 320 18, 360 66 S 440 94, 480 48 S 560 26, 600 70" fill="none" stroke="#2b9097" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="320" cy="24" r="5" fill="#e2725b"><animate attributeName="opacity" values="1;.3;1" dur="2s" repeatCount="indefinite"/></circle>
+          <text x="330" y="22" class="fill-coral-500" font-size="12" font-weight="700">flare (กำเริบ)</text>
+          <circle cx="205" cy="90" r="5" fill="#2b9097"><animate attributeName="opacity" values="1;.3;1" dur="2s" repeatCount="indefinite"/></circle>
+          <text x="215" y="102" class="fill-slate-400" font-size="12" font-weight="700">remission (สงบ)</text>
+        </svg>
+      </div>
+
+      <!-- Interactive body map -->
+      <div class="rounded-3xl bg-white dark:bg-slate-900 ring-1 ring-slate-200 dark:ring-slate-800 shadow-soft overflow-hidden">
+        <div class="px-5 pt-5 pb-2 flex items-center justify-between gap-2 flex-wrap">
+          <p class="font-bold text-slate-900 dark:text-white">🗺️ แผนที่รอยโรค — แตะจุดบนตัวสุนัขเพื่อดูรูปแบบโรค</p>
+          <div class="flex gap-2 text-xs" role="group" aria-label="เลือกตำแหน่งรอยโรค">
+            <button class="spot-btn px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 hover:border-brand-400 transition" data-spot="face">ใบหน้า</button>
+            <button class="spot-btn px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 hover:border-brand-400 transition" data-spot="foot">Footpad</button>
+            <button class="spot-btn px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 hover:border-brand-400 transition" data-spot="trunk">ลำตัว</button>
+          </div>
+        </div>
+        <div class="grid md:grid-cols-5 gap-4 p-5 pt-2">
+          <div class="md:col-span-3">
+            <svg id="dog-svg" viewBox="0 0 460 300" class="w-full select-none" role="img" aria-label="แผนภาพตำแหน่งรอยโรคบนตัวสุนัข">
+              <ellipse cx="235" cy="284" rx="180" ry="8" class="fill-slate-300/40 dark:fill-slate-700/40"/>
+              <!-- tail -->
+              <path d="M345 152 Q398 136 394 86" fill="none" class="stroke-[#8aa5c0] dark:stroke-[#5b7186]" stroke-width="18" stroke-linecap="round"/>
+              <!-- legs -->
+              <rect x="163" y="196" width="20" height="76" rx="10" class="fill-[#8aa5c0] dark:fill-[#5b7186]"/>
+              <rect x="203" y="202" width="20" height="70" rx="10" class="fill-[#9db4c8] dark:fill-[#64798f]"/>
+              <rect x="288" y="202" width="20" height="70" rx="10" class="fill-[#9db4c8] dark:fill-[#64798f]"/>
+              <rect x="325" y="196" width="20" height="76" rx="10" class="fill-[#8aa5c0] dark:fill-[#5b7186]"/>
+              <ellipse cx="173" cy="274" rx="15" ry="7" class="fill-[#6f8aa5] dark:fill-[#4a5f75]"/>
+              <ellipse cx="335" cy="274" rx="15" ry="7" class="fill-[#6f8aa5] dark:fill-[#4a5f75]"/>
+              <!-- body -->
+              <rect x="138" y="126" width="208" height="96" rx="48" class="fill-[#9db4c8] dark:fill-[#64798f]"/>
+              <!-- neck + head -->
+              <rect x="112" y="104" width="70" height="66" rx="28" class="fill-[#9db4c8] dark:fill-[#64798f]"/>
+              <path d="M124 56 q36 -16 28 26 q-5 26 -32 17 z" class="fill-[#6f8aa5] dark:fill-[#4a5f75]"/>
+              <circle cx="110" cy="98" r="44" class="fill-[#9db4c8] dark:fill-[#64798f]"/>
+              <rect x="46" y="90" width="54" height="34" rx="17" class="fill-[#aebfd2] dark:fill-[#71879d]"/>
+              <circle cx="54" cy="106" r="7" class="fill-slate-700 dark:fill-slate-900"/>
+              <circle cx="104" cy="90" r="5" class="fill-slate-800 dark:fill-slate-950"/>
+              <!-- hotspots -->
+              <g class="hotspot" data-spot="face" tabindex="0" role="button" aria-label="รูปแบบใบหน้า butterfly pattern">
+                <circle class="hs-pulse" cx="92" cy="100" r="46" fill="none" stroke="#e2725b" stroke-width="2"/>
+                <circle class="hs-ring" cx="92" cy="100" r="46" fill="#e2725b" fill-opacity=".16" stroke="#e2725b" stroke-width="2.5"/>
+                <circle cx="92" cy="100" r="12" fill="#e2725b"/><text x="92" y="105" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">1</text>
+              </g>
+              <g class="hotspot" data-spot="trunk" tabindex="0" role="button" aria-label="รูปแบบลำตัว">
+                <circle class="hs-pulse" cx="245" cy="172" r="50" fill="none" stroke="#2b9097" stroke-width="2"/>
+                <circle class="hs-ring" cx="245" cy="172" r="50" fill="#2b9097" fill-opacity=".14" stroke="#2b9097" stroke-width="2.5"/>
+                <circle cx="245" cy="172" r="12" fill="#2b9097"/><text x="245" y="177" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">2</text>
+              </g>
+              <g class="hotspot" data-spot="foot" tabindex="0" role="button" aria-label="รูปแบบ footpad">
+                <circle class="hs-pulse" cx="312" cy="266" r="26" fill="none" stroke="#d97706" stroke-width="2"/>
+                <circle class="hs-ring" cx="312" cy="266" r="26" fill="#d97706" fill-opacity=".16" stroke="#d97706" stroke-width="2.5"/>
+                <circle cx="312" cy="266" r="12" fill="#d97706"/><text x="312" y="271" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">3</text>
+              </g>
+            </svg>
+          </div>
+          <div class="md:col-span-2">
+            <div id="spot-info" class="h-full rounded-2xl p-5 border-2 transition-colors" >
+              <p id="spot-badge" class="text-xs font-bold uppercase tracking-wide mb-1"></p>
+              <h4 id="spot-title" class="text-lg font-bold text-slate-900 dark:text-white mb-2"></h4>
+              <p id="spot-desc" class="text-sm font-body leading-relaxed text-slate-600 dark:text-slate-300"></p>
+              <p id="spot-note" class="mt-3 text-xs font-semibold"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- §4 DIAGNOSIS -->
+    <section id="diagnosis" data-spy class="scroll-mt-32 reveal">
+      <header class="flex items-center gap-3 mb-5">
+        <span class="h-9 w-9 shrink-0 rounded-xl bg-brand-600 text-white grid place-items-center font-bold">4</span>
+        <h3 class="text-2xl font-bold text-slate-900 dark:text-white">การวินิจฉัย (Diagnosis)</h3>
+      </header>
+
+      <div class="flex gap-2 mb-4" role="tablist" aria-label="ระดับการวินิจฉัย">
+        <button class="dx-tab px-4 py-2 rounded-t-xl text-sm font-bold border-b-2 border-transparent transition" data-panel="dx-cyto" role="tab" aria-selected="true">🔬 Tentative — Cytology</button>
+        <button class="dx-tab px-4 py-2 rounded-t-xl text-sm font-bold border-b-2 border-transparent transition" data-panel="dx-histo" role="tab" aria-selected="false">🧫 Definitive — Histopathology</button>
+      </div>
+
+      <div id="dx-cyto" class="dx-panel rounded-2xl bg-white dark:bg-slate-900 ring-1 ring-slate-200 dark:ring-slate-800 p-5 grid md:grid-cols-2 gap-5">
+        <img src="https://image.qwenlm.ai/public_source/33900023-8b3f-440d-b52d-2db20ec5adb1/1aa2d067c-40e0-49b3-b10e-bbc271726420.png" alt="ภาพ cytology แสดง acantholytic keratinocytes ล้อมรอบด้วย neutrophils และ eosinophil" loading="lazy" class="rounded-xl ring-1 ring-slate-200 dark:ring-slate-700 w-full h-64 object-cover">
+        <div>
+          <p class="font-bold text-slate-900 dark:text-white mb-2">สิ่งที่พบใน cytology จากหนองใน pustule:</p>
+          <ul class="space-y-2 text-sm font-body">
+            <li class="flex gap-2"><span class="text-coral-500">●</span><span><strong>Acantholytic keratinocytes</strong> — keratinocyte อ่อนวัย ลอยอิสระเดี่ยว ๆ หรือเป็นแพ (rafts)</span></li>
+            <li class="flex gap-2"><span class="text-brand-500">●</span><span><strong>Neutrophils</strong> ที่ยังมีสภาพสมบูรณ์จำนวนมาก</span></li>
+            <li class="flex gap-2"><span class="text-amber-500">●</span><span><strong>Eosinophils</strong> พบได้บางครั้ง</span></li>
+          </ul>
+          <p class="mt-3 text-xs text-slate-500 dark:text-slate-400 font-body">ภาพจำลอง: acantholytic keratinocytes (เซลล์ใหญ่สีฟ้า-ม่วงกลางภาพ) อยู่เป็นแพ ล้อมด้วย neutrophils (ชมพู) และ eosinophil 1 ตัว (ส้ม)</p>
+        </div>
+      </div>
+
+      <div id="dx-histo" class="dx-panel hidden rounded-2xl bg-white dark:bg-slate-900 ring-1 ring-slate-200 dark:ring-slate-800 p-5">
+        <p class="font-bold text-slate-900 dark:text-white mb-3">การยืนยันผลต้องอาศัย histopathology จาก skin biopsy เท่านั้น</p>
+        <ol class="grid sm:grid-cols-2 gap-3 text-sm font-body">
+          <li class="rounded-xl bg-slate-50 dark:bg-slate-800 p-4"><strong class="text-brand-600 dark:text-brand-300">1.</strong> เก็บตัวอย่างหลายรอยโรค ด้วย <strong>punch biopsy ≥ 6 มม.</strong></li>
+          <li class="rounded-xl bg-slate-50 dark:bg-slate-800 p-4"><strong class="text-brand-600 dark:text-brand-300">2.</strong> เลือกตัวอย่างที่มี <strong>pustule สมบูรณ์</strong> (ถ้ามี) และ <strong>ต้องรวม crust</strong> ด้วย เพราะอาจพบ acantholytic cells ในสะเก็ด</li>
+          <li class="rounded-xl bg-slate-50 dark:bg-slate-800 p-4"><strong class="text-brand-600 dark:text-brand-300">3.</strong> ส่งอ่านผลโดย pathologist ที่มีความเชี่ยวชาญด้าน <strong>dermatopathology</strong></li>
+          <li class="rounded-xl bg-slate-50 dark:bg-slate-800 p-4"><strong class="text-brand-600 dark:text-brand-300">4.</strong> ถ้าเป็นไปได้ <strong>หยุดยากดภูมิก่อนเก็บ biopsy</strong></li>
+        </ol>
+      </div>
+
+      <aside class="mt-5 border-l-4 border-amber-400 bg-amber-50 dark:bg-amber-950/40 rounded-r-2xl p-4">
+        <p class="font-bold text-amber-800 dark:text-amber-300 text-sm">⚠️ Clinical Pearl — Biopsy</p>
+        <p class="text-sm font-body text-amber-900 dark:text-amber-200 mt-1">หยุดยากดภูมิ (immunosuppressive) ก่อนเก็บตัวอย่าง biopsy ถ้าทำได้ เพื่อลดโอกาสได้ผลลบเทียม (false negative) และอย่าลืมส่ง crust ไปด้วย</p>
+      </aside>
+    </section>
+
+    <!-- §5 TREATMENT -->
+    <section id="treatment" data-spy class="scroll-mt-32 reveal">
+      <header class="flex items-center gap-3 mb-5">
+        <span class="h-9 w-9 shrink-0 rounded-xl bg-brand-600 text-white grid place-items-center font-bold">5</span>
+        <h3 class="text-2xl font-bold text-slate-900 dark:text-white">การรักษา (Treatment)</h3>
+      </header>
+
+      <!-- Phase timeline -->
+      <div class="grid sm:grid-cols-3 gap-3 mb-6">
+        <div class="rounded-2xl bg-brand-600 text-white p-4 shadow-soft relative">
+          <p class="text-xs font-bold uppercase tracking-wider text-brand-100">Phase 1</p>
+          <p class="font-bold mt-1">Induction</p>
+          <p class="text-sm text-brand-50 font-body mt-1">ให้ยากดภูมิขนาดเต็มที่ (เดี่ยวหรือหลายขนาน) เพื่อเหนี่ยวนำให้โรคสงบ</p>
+        </div>
+        <div class="rounded-2xl bg-white dark:bg-slate-900 ring-1 ring-slate-200 dark:ring-slate-800 p-4">
+          <p class="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-300">Phase 2</p>
+          <p class="font-bold mt-1 text-slate-900 dark:text-white">Taper</p>
+          <p class="text-sm text-slate-600 dark:text-slate-300 font-body mt-1">ค่อย ๆ ลดขนาด/ความถี่ตามการตอบสนอง — เพิ่ม steroid-sparing drug เพื่อช่วยลดสเตียรอยด์</p>
+        </div>
+        <div class="rounded-2xl bg-white dark:bg-slate-900 ring-1 ring-slate-200 dark:ring-slate-800 p-4">
+          <p class="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-300">Phase 3</p>
+          <p class="font-bold mt-1 text-slate-900 dark:text-white">Maintenance</p>
+          <p class="text-sm text-slate-600 dark:text-slate-300 font-body mt-1">คุมโรคด้วยยาต่ำสุดที่ได้ผล ติดตาม CBC/chem เป็นระยะตลอดชีวิต</p>
+        </div>
+      </div>
+
+      <!-- Drug checker -->
+      <div class="rounded-3xl bg-white dark:bg-slate-900 ring-1 ring-slate-200 dark:ring-slate-800 shadow-soft p-5 sm:p-6">
+        <p class="font-bold text-slate-900 dark:text-white text-lg mb-1">🧪 Drug &amp; Monitoring Checker</p>
+        <p class="text-sm text-slate-500 dark:text-slate-400 font-body mb-5">เลือกยาหลักและยาร่วม → ระบบสรุปขนาดยา การติดตาม และข้อควรระวังให้อัตโนมัติ</p>
+        <div class="grid lg:grid-cols-2 gap-6">
+          <div>
+            <p class="text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">1) ยาหลัก (induction)</p>
+            <div id="dc-primary" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
+            <p class="text-sm font-bold text-slate-700 dark:text-slate-300 mt-5 mb-2">2) เพิ่มยาร่วม (steroid-sparing)</p>
+            <div id="dc-adjuncts" class="flex flex-wrap gap-2"></div>
+          </div>
+          <div id="dc-output" class="rounded-2xl bg-slate-50 dark:bg-slate-800/60 p-5 space-y-4"></div>
+        </div>
+        <div class="mt-5 flex flex-wrap items-center gap-3">
+          <button id="dc-copy" class="px-4 py-2 rounded-lg bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold transition">📋 คัดลอกสรุปแผนยา</button>
+          <p class="text-xs text-slate-400 dark:text-slate-500 font-body">ข้อมูลอ้างอิงจากบทความต้นฉบับ — ปรับตามดุลยพินิจและประสบการณ์ของสัตวแพทย์แต่ละท่าน</p>
+        </div>
+      </div>
+
+      <aside class="mt-5 border-l-4 border-brand-500 bg-brand-50 dark:bg-brand-900/30 rounded-r-2xl p-4">
+        <p class="font-bold text-brand-800 dark:text-brand-300 text-sm">💡 Clinical Pearl — การติดเชื้อแทรกซ้อน</p>
+        <p class="text-sm font-body text-brand-900 dark:text-brand-200 mt-1">Secondary bacterial infection พบบ่อยมาก มักเริ่มยาปฏิชีวนะก่อนผล biopsy ออก หากเคยได้ยามาก่อนควรทำ <strong>culture &amp; susceptibility</strong> และการอาบน้ำแชมพูยา (chlorhexidine / ethyl lactate / benzoyl peroxide) เป็นประจำ ช่วยให้สะเก็ดหลุดง่าย สัตว์สบายตัวขึ้น ลดระยะเวลาใช้ยาปฏิชีวนะ และประเมินผลการรักษาได้ดีขึ้น</p>
+      </aside>
+    </section>
+
+    <!-- §6 PROGNOSIS -->
+    <section id="prognosis" data-spy class="scroll-mt-32 reveal">
+      <header class="flex items-center gap-3 mb-5">
+        <span class="h-9 w-9 shrink-0 rounded-xl bg-brand-600 text-white grid place-items-center font-bold">6</span>
+        <h3 class="text-2xl font-bold text-slate-900 dark:text-white">พยากรณ์โรค (Prognosis)</h3>
+      </header>
+      <div class="rounded-2xl bg-white dark:bg-slate-900 ring-1 ring-slate-200 dark:ring-slate-800 p-6">
+        <p class="text-sm font-bold text-slate-700 dark:text-slate-300 mb-3">ระดับพยากรณ์โรคโดยรวม: <span class="text-brand-600 dark:text-brand-300">Fair → Good</span> (ขึ้นกับการตอบสนองต่อการรักษา)</p>
+        <div class="relative h-3 rounded-full bg-gradient-to-r from-rose-400 via-amber-400 to-emerald-400">
+          <div class="absolute top-1/2 -translate-y-1/2 left-[46%] w-[34%] h-5 rounded-full border-2 border-white dark:border-slate-900 bg-white/25 backdrop-blur-[1px]"></div>
+          <div class="absolute top-1/2 -translate-y-1/2 left-[62%] h-6 w-6 rounded-full bg-slate-800 dark:bg-white border-4 border-white dark:border-slate-900 shadow"></div>
+        </div>
+        <div class="flex justify-between text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-2 font-semibold">
+          <span>Poor</span><span>Fair</span><span>Good</span><span>Excellent</span>
+        </div>
+        <ul class="mt-5 grid sm:grid-cols-3 gap-3 text-sm font-body">
+          <li class="rounded-xl bg-slate-50 dark:bg-slate-800 p-4">✅ ได้ประโยชน์จากการรักษาเชิงรุกช่วงแรกเพื่อเหนี่ยวนำ remission</li>
+          <li class="rounded-xl bg-slate-50 dark:bg-slate-800 p-4">📉 จากนั้นลดยาลงเพื่อคงการควบคุมโรค</li>
+          <li class="rounded-xl bg-slate-50 dark:bg-slate-800 p-4">♾️ เกือบทุกรายต้องได้ยากดภูมิ<strong>ตลอดชีวิต</strong> — remission ถาวรพบน้อยมาก</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- §7 BARRIERS -->
+    <section id="barriers" data-spy class="scroll-mt-32 reveal">
+      <header class="flex items-center gap-3 mb-5">
+        <span class="h-9 w-9 shrink-0 rounded-xl bg-brand-600 text-white grid place-items-center font-bold">7</span>
+        <h3 class="text-2xl font-bold text-slate-900 dark:text-white">อุปสรรคในการดูแล (Barriers to Care)</h3>
+      </header>
+      <p class="font-body text-slate-600 dark:text-slate-300 mb-5 leading-relaxed">โรคเรื้อรังอย่าง PF มีค่าใช้จ่ายสะสมสูง และเจ้าของอาจมีข้อจำกัดทางอารมณ์ ร่างกาย หรือ logistics ที่ไม่ควรมองข้าม เช่น ผู้ที่ต้องดูแลผู้สูงอายุเองอยู่แล้ว เจ้าของที่ไม่มีพาหนะพาสัตว์มาติดตามนัด หรือผู้ที่มีข้อจำกัดทางร่างกาย/จิตใจในการป้อนยาที่บ้าน</p>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div class="flip h-52 cursor-pointer" role="button" tabindex="0" aria-label="พลิกการ์ดดูเคล็ดลับ">
+          <div class="flip-inner">
+            <div class="flip-face rounded-2xl bg-coral-500 text-white p-5 shadow-soft flex flex-col justify-between">
+              <p class="text-3xl">🗣️</p>
+              <p class="font-bold leading-snug">"คุณมีความกังวลอะไรบ้างเกี่ยวกับการให้ยากิน?"</p>
+              <p class="text-xs text-coral-400/90">แตะเพื่อพลิก → ทำไมคำถามนี้จึงสำคัญ</p>
+            </div>
+            <div class="flip-face flip-back rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-700 p-5">
+              <p class="text-sm font-body text-slate-600 dark:text-slate-300">คำถามปลายเปิดช่วยให้เจ้าของเล่าอุปสรรคจริง เช่น กลัวลืมให้ยา กังวลผลข้างเคียง หรือภาระค่าใช้จ่าย ทำให้เราปรับแผนให้ทำได้จริง</p>
+            </div>
+          </div>
+        </div>
+        <div class="flip h-52 cursor-pointer" role="button" tabindex="0" aria-label="พลิกการ์ดดูเคล็ดลับ">
+          <div class="flip-inner">
+            <div class="flip-face rounded-2xl bg-coral-500 text-white p-5 shadow-soft flex flex-col justify-between">
+              <p class="text-3xl">💊</p>
+              <p class="font-bold leading-snug">"มีผลข้างเคียงไหนที่คุณอยากทราบเพิ่มเติมไหม?"</p>
+              <p class="text-xs text-coral-400/90">แตะเพื่อพลิก → ทำไมคำถามนี้จึงสำคัญ</p>
+            </div>
+            <div class="flip-face flip-back rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-700 p-5">
+              <p class="text-sm font-body text-slate-600 dark:text-slate-300">การอธิบายล่วงหน้า เช่น กินน้ำมาก/ปัสสาวะมากจากสเตียรอยด์ ลดความตกใจและป้องกันการหยุดยาเองกลางทาง</p>
+            </div>
+          </div>
+        </div>
+        <div class="flip h-52 cursor-pointer" role="button" tabindex="0" aria-label="พลิกการ์ดดูเคล็ดลับ">
+          <div class="flip-inner">
+            <div class="flip-face rounded-2xl bg-coral-500 text-white p-5 shadow-soft flex flex-col justify-between">
+              <p class="text-3xl">❤️</p>
+              <p class="font-bold leading-snug">"เรื่องไหนที่คุณกังวลที่สุดเกี่ยวกับโรคของน้อง?"</p>
+              <p class="text-xs text-coral-400/90">แตะเพื่อพลิก → ทำไมคำถามนี้จึงสำคัญ</p>
+            </div>
+            <div class="flip-face flip-back rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-700 p-5">
+              <p class="text-sm font-body text-slate-600 dark:text-slate-300">เป้าหมายและความคาดหวังต่างกันในแต่ละครอบครัว — การเข้าใจความกังวลหลักช่วยให้จัดลำดับการรักษาร่วมกันได้จริง</p>
+            </div>
+          </div>
+        </div>
+        <div class="flip h-52 cursor-pointer" role="button" tabindex="0" aria-label="พลิกการ์ดดูเคล็ดลับ">
+          <div class="flip-inner">
+            <div class="flip-face rounded-2xl bg-coral-500 text-white p-5 shadow-soft flex flex-col justify-between">
+              <p class="text-3xl">🚗</p>
+              <p class="font-bold leading-snug">"การพามานัดติดตามทำให้คุณเครียดไหม? ถ้าใช่ มาคุยกันนะ"</p>
+              <p class="text-xs text-coral-400/90">แตะเพื่อพลิก → ทำไมคำถามนี้จึงสำคัญ</p>
+            </div>
+            <div class="flip-face flip-back rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-700 p-5">
+              <p class="text-sm font-body text-slate-600 dark:text-slate-300">เปิดทางแก้ปัญหาเชิงปฏิบัติ เช่น นัดแบบ telemedicine ช่วงที่โรคสงบ หรือจัดรอบนัดให้ยืดหยุ่นตามข้อจำกัดของเจ้าของ</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <aside class="mt-5 border-l-4 border-coral-500 bg-coral-500/10 rounded-r-2xl p-4">
+        <p class="font-bold text-coral-600 dark:text-coral-400 text-sm">💡 Clinical Pearl — การสื่อสาร</p>
+        <p class="text-sm font-body text-slate-700 dark:text-slate-300 mt-1">ตั้งเป้าหมายการรักษาให้สมจริงและยอมรับร่วมกันได้ — เป้าหมายที่ดีของเจ้าของแต่ละคนอาจไม่เหมือนกัน และนั่นไม่ใช่เรื่องผิด</p>
+      </aside>
+    </section>
+
+    <!-- §8 REFERENCES -->
+    <section id="references" data-spy class="scroll-mt-32 reveal">
+      <header class="flex items-center gap-3 mb-5">
+        <span class="h-9 w-9 shrink-0 rounded-xl bg-brand-600 text-white grid place-items-center font-bold">📚</span>
+        <h3 class="text-2xl font-bold text-slate-900 dark:text-white">เอกสารอ้างอิง</h3>
+      </header>
+      <ol class="space-y-2 text-sm font-body text-slate-600 dark:text-slate-300 list-decimal pl-6">
+        <li id="ref-1">ข้อมูลสายพันธุ์ที่มีความเสี่ยงและอายุเริ่มแสดงอาการมัธยฐาน — ตามการอ้างอิงหมายเลข 1 ของบทความต้นฉบับ</li>
+        <li id="ref-2">การศึกษาสนับสนุนประสิทธิภาพของ oclacitinib ในการควบคุมอาการของ pemphigus complex — อ้างอิงหมายเลข 2–7 ของบทความต้นฉบับ</li>
+      </ol>
+      <p class="mt-4 text-sm font-body text-slate-500 dark:text-slate-400">แหล่งที่มา: Clinician's Brief — <em>Canine Pemphigus Foliaceus</em> (Online 260831). แปลและดัดแปลงเป็นภาษาไทยเพื่อวัตถุประสงค์ทางการศึกษา</p>
+    </section>
+
+  </main>
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="hidden lg:block col-span-4">
+    <div class="sticky top-32 space-y-4">
+      <div class="rounded-2xl bg-white dark:bg-slate-900 ring-1 ring-slate-200 dark:ring-slate-800 p-5">
+        <p class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-3">สารบัญ</p>
+        <nav id="side-links" class="space-y-1 text-sm font-semibold">
+          <a href="#overview" data-target="overview" class="block px-3 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition">ภาพรวมโรค</a>
+          <a href="#breeds" data-target="breeds" class="block px-3 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition">สายพันธุ์เสี่ยง</a>
+          <a href="#lesions" data-target="lesions" class="block px-3 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition">อาการทางคลินิก</a>
+          <a href="#diagnosis" data-target="diagnosis" class="block px-3 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition">การวินิจฉัย</a>
+          <a href="#treatment" data-target="treatment" class="block px-3 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition">การรักษา</a>
+          <a href="#prognosis" data-target="prognosis" class="block px-3 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition">พยากรณ์โรค</a>
+          <a href="#barriers" data-target="barriers" class="block px-3 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition">อุปสรรคการดูแล</a>
+        </nav>
+      </div>
+      <div id="keypoint-card" class="rounded-2xl bg-brand-600 text-white p-5 shadow-soft">
+        <p class="text-xs font-bold uppercase tracking-wider text-brand-100 mb-2">🔑 Key Point</p>
+        <p id="keypoint-text" class="text-sm leading-relaxed font-body">Autoantibodies (IgG) โจมตี desmosome ชั้นตื้น → acantholysis คือกลไกหลักของโรค</p>
+      </div>
+      <button class="handout-trigger w-full px-4 py-3 rounded-2xl bg-white dark:bg-slate-900 ring-1 ring-slate-200 dark:ring-slate-800 hover:ring-brand-400 font-bold text-sm transition">📄 สร้าง Handout สำหรับเจ้าของ</button>
+    </div>
+  </aside>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+  <div class="max-w-7xl mx-auto px-4 py-8 flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+    <img src="https://emwqphotlwubauvfbsfz.supabase.co/storage/v1/object/public/DATASRN/Logo%20symbol.png" alt="โลโก้ DATASRN" class="h-9 w-9 rounded-lg object-contain" onerror="this.style.display='none'">
+    <div class="text-xs text-slate-500 dark:text-slate-400 font-body leading-relaxed">
+      <p><strong class="text-slate-700 dark:text-slate-200">คำเตือน:</strong> เนื้อหานี้เป็นข้อมูลอ้างอิงสำหรับสัตวแพทย์ ไม่ใช่คำแนะนำทางการแพทย์แทนการวินิจฉัยเฉพาะราย การตัดสินใจรักษาต้องใช้ดุลยพินิจทางคลินิกประกอบ</p>
+      <p class="mt-1">อ้างอิง: Clinician's Brief — "Canine Pemphigus Foliaceus" • แปล/ดัดแปลงเพื่อการศึกษา • อัปเดต ก.ย. 2569</p>
+    </div>
+  </div>
+</footer>
+
+<!-- FAB -->
+<button id="fab-handout" aria-label="เปิดเอกสารสำหรับเจ้าของ" class="handout-trigger fixed bottom-5 right-5 z-40 h-14 w-14 rounded-full bg-coral-500 hover:bg-coral-600 text-white text-2xl shadow-soft transition sm:hidden">📄</button>
+
+<!-- Citation tooltip -->
+<div id="cite-tip" class="fixed z-[70] hidden max-w-xs rounded-xl bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-xs font-body px-3 py-2 shadow-xl" role="tooltip"></div>
+
+<!-- Toast -->
+<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[75] hidden px-4 py-2.5 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-sm font-semibold shadow-xl"></div>
+
+<!-- ============ HANDOUT MODAL ============ -->
+<div id="handout-modal" class="fixed inset-0 z-[80] hidden overflow-y-auto bg-slate-900/70 backdrop-blur-sm p-4" role="dialog" aria-modal="true" aria-label="เอกสารข้อมูลสำหรับเจ้าของสัตว์เลี้ยง">
+  <div class="handout-paper mx-auto max-w-2xl my-6 bg-white text-slate-800 rounded-2xl shadow-2xl overflow-hidden">
+    <div class="no-print flex items-center justify-between gap-2 px-5 py-3 bg-slate-100 border-b border-slate-200">
+      <p class="text-sm font-bold text-slate-600">ตัวอย่างเอกสาร — กด Print / บันทึกเป็น PDF ได้เลย</p>
+      <div class="flex gap-2">
+        <button id="handout-print" class="px-3 py-1.5 rounded-lg bg-brand-600 text-white text-sm font-semibold hover:bg-brand-700 transition">🖨️ Print / PDF</button>
+        <button id="handout-close" class="px-3 py-1.5 rounded-lg bg-slate-200 text-slate-700 text-sm font-semibold hover:bg-slate-300 transition">✕ ปิด</button>
+      </div>
+    </div>
+    <div class="p-7 sm:p-9 font-body text-[15px] leading-relaxed">
+      <div class="flex items-center gap-3 border-b-2 border-brand-600 pb-4 mb-5">
+        <img src="https://emwqphotlwubauvfbsfz.supabase.co/storage/v1/object/public/DATASRN/Logo%20symbol.png" alt="โลโก้" class="h-11 w-11 object-contain" onerror="this.style.display='none'">
+        <div>
+          <h4 class="text-xl font-bold text-slate-900" style="font-family:'IBM Plex Sans Thai',sans-serif">โรคเพมฟิกัส โฟลิเอซัส (Pemphigus Foliaceus)</h4>
+          <p class="text-sm text-slate-500">ข้อมูลสำหรับเจ้าของสัตว์เลี้ยง • โรคผิวหนังภูมิคุ้มกันทำลายตนเองในสุนัข</p>
+        </div>
+      </div>
+
+      <h5 class="font-bold text-brand-700 mb-1" style="font-family:'IBM Plex Sans Thai',sans-serif">🐶 สุนัขของคุณเป็นโรคอะไร?</h5>
+      <p class="mb-4">ระบบภูมิคุ้มกันของสุนัข "เข้าใจผิด" และโจมตีผิวหนังของตัวเอง ทำให้เกิดตุ่มหนองและสะเก็ด โดยเฉพาะบริเวณใบหน้า จมูก รอบตา และแผ่นอุ้งเท้า <strong>โรคนี้ไม่ใช่โรคติดต่อ และไม่ได้เกิดจากความสกปรก</strong></p>
+
+      <h5 class="font-bold text-brand-700 mb-1" style="font-family:'IBM Plex Sans Thai',sans-serif">💊 การรักษาและการดูแลที่บ้าน</h5>
+      <ul class="list-disc pl-6 mb-4 space-y-1">
+        <li>ให้ยาตามขนาดและเวลาอย่างเคร่งครัด <strong>ห้ามปรับขนาดหรือหยุดยาเองเด็ดขาด</strong></li>
+        <li>พามานัดติดตามและตรวจเลือดตามกำหนด เพื่อความปลอดภัยของการใช้ยาระยะยาว</li>
+        <li>อาบน้ำด้วยแชมพูยาตามสัตวแพทย์แนะนำ เพื่อช่วยให้สะเก็ดหลุดออกอย่างอ่อนโยน</li>
+        <li>ถ่ายภาพรอยโรคเป็นระยะเพื่อใช้เปรียบเทียบตอนมาพบสัตวแพทย์</li>
+        <li>หากสังเกตว่ากินน้ำมาก ปัสสาวะมาก หรือกินจุขึ้นระหว่างได้ยา ให้แจ้งสัตวแพทย์ (เป็นผลจากยาที่คาดการณ์ได้)</li>
+      </ul>
+
+      <h5 class="font-bold text-coral-600 mb-1" style="font-family:'IBM Plex Sans Thai',sans-serif">⚠️ สัญญาณที่ต้องรีบพามาพบสัตวแพทย์</h5>
+      <ul class="list-disc pl-6 mb-4 space-y-1">
+        <li>ซึม มีไข้ หรือไม่กินอาหารเกิน 24 ชั่วโมง</li>
+        <li>รอยโรคลุกลามเร็ว มีหนอง กลิ่นเหม็น หรือแสดงอาการเจ็บมาก</li>
+        <li>อาเจียน ท้องเสีย หรือมีอาการผิดปกติหลังเริ่มยาใหม่</li>
+      </ul>
+
+      <h5 class="font-bold text-brand-700 mb-1" style="font-family:'IBM Plex Sans Thai',sans-serif">🌈 ข้อความถึงเจ้าของ</h5>
+      <p class="mb-5">โรคนี้ส่วนใหญ่ต้องได้รับการรักษาต่อเนื่องระยะยาว แต่ด้วยการดูแลที่เหมาะสม สุนัขส่วนใหญ่สามารถใช้ชีวิตได้อย่างมีความสุขและมีคุณภาพชีวิตที่ดี หากมีข้อกังวลเรื่องค่าใช้จ่าย เวลา หรือการดูแลที่บ้าน โปรดพูดคุยกับสัตวแพทย์ของท่าน — เราสามารถปรับแผนการรักษาร่วมกันได้เสมอ</p>
+
+      <div class="rounded-xl border border-dashed border-slate-300 p-4 text-sm text-slate-600">
+        <p>📞 นัดหมายครั้งต่อไป: ______________________ &nbsp; เวลา: ____________</p>
+        <p class="mt-1">คลินิก/โรงพยาบาลสัตว์: ______________________________________ โทร: ______________</p>
+      </div>
+      <p class="mt-4 text-[11px] text-slate-400">เอกสารนี้จัดทำเพื่อประกอบการอธิบายของสัตวแพทย์ ไม่แทนที่คำแนะนำเฉพาะราย • อ้างอิงจาก Clinician's Brief (Canine Pemphigus Foliaceus)</p>
+    </div>
+  </div>
+</div>
+
+<noscript><p class="text-center p-4 text-sm">เปิดใช้งาน JavaScript เพื่อใช้งานฟีเจอร์ interactive ของหน้านี้</p></noscript>
+
+<script>
+/* ================= DATA ================= */
+const DRUG_DB = {
+  pred: {
+    name: 'Prednisone / Prednisolone', th: 'เพรดนิโซน / เพรดนิโซโลน', cls: 'Corticosteroid', badge: 'First-line induction',
+    dose: '1–4 mg/kg PO ทุก 24 ชม. (ช่วง induction) แล้ว taper ตามการตอบสนอง',
+    monitor: [
+      ['CBC', 'ตามคำแนะนำของตำรายา'],
+      ['Serum chemistry', 'เฝ้าระวัง ALT/ALP, น้ำตาลในเลือด, อิเล็กโทรไลต์'],
+      ['Urinalysis ± urine culture', 'เสี่ยง UTI แฝงจากภาวะกดภูมิ'],
+      ['ความดันโลหิต / น้ำหนักตัว', 'เฝ้าระวังผลข้างเคียงระยะยาว']
+    ],
+    cautions: ['พบบ่อย: กินน้ำมาก ปัสสาวะมาก กินจุ หอบ — ควรแจ้งเจ้าของล่วงหน้า', 'ระวังเป็นพิเศษในสุนัขที่สงสัยเบาหวานหรือมีการติดเชื้อ']
+  },
+  aza: {
+    name: 'Azathioprine', th: 'อะซาไธโอพรีน', cls: 'Steroid-sparing', badge: 'Steroid-sparing',
+    dose: '50 mg/m² PO ทุก 24 ชม. (อาจเว้นระยะห่างเมื่อคุมโรคได้)',
+    monitor: [
+      ['CBC', 'ทุก 1–2 สัปดาห์ในช่วงแรก จากนั้นเป็นระยะ — เฝ้าระวัง myelosuppression'],
+      ['Serum chemistry', 'เฝ้าระวัง hepatotoxicity']
+    ],
+    cautions: ['⚠️ ห้ามใช้ในแมว (myelosuppression รุนแรงถึงชีวิต)', 'ระวังภาวะตับอ่อนอักเสบและภาวะซีด']
+  },
+  cy: {
+    name: 'Cyclosporine (modified)', th: 'ไซโคลสปอริน (modified)', cls: 'Steroid-sparing', badge: 'Steroid-sparing',
+    dose: '5–7 mg/kg PO ทุก 24 ชม.',
+    monitor: [
+      ['CBC + chemistry เป็นระยะ', 'ไม่จำเป็นต้องถี่เท่า azathioprine แต่ควรติดตามระยะยาว'],
+      ['ประเมินทางเดินอาหาร', 'อาเจียน/ท้องเสียพบได้ในช่วงแรก มักดีขึ้นเอง']
+    ],
+    cautions: ['Ketoconazole เพิ่มระดับยาในเลือด — ใช้ร่วมกันต้องระวัง/ปรับขนาด', 'หลีกเลี่ยงวัคซีนเชื้อเป็นระหว่างกดภูมิ']
+  },
+  oc: {
+    name: 'Oclacitinib', th: 'โอคลาซิทินิบ', cls: 'JAK inhibitor', badge: 'ทางเลือกเสริม',
+    dose: '0.5–1 mg/kg PO ทุก 12–24 ชม.',
+    monitor: [
+      ['CBC + chemistry เป็นระยะ', 'ตามคำแนะนำการติดตามของยา'],
+      ['คัดกรองก่อนเริ่มยา', 'ประเมินการติดเชื้อและประวัติเนื้องอก']
+    ],
+    cautions: ['มีรายงานสนับสนุนประสิทธิภาพใน pemphigus complex<sup class="cite cursor-help text-brand-600 font-bold" data-ref="2" tabindex="0">2–7</sup>', 'ติดตามการตอบสนองทุก 4–6 สัปดาห์']
+  }
+};
+const INTERACTIONS = [
+  { pair: ['pred','aza'], level: 'info', msg: 'ชุดยามาตรฐานที่นิยมเพื่อช่วย taper สเตียรอยด์ — ติดตาม CBC ใกล้ชิดและเฝ้าระวังการติดเชื้อ' },
+  { pair: ['pred','cy'], level: 'info', msg: 'ใช้ร่วมกันได้เพื่อลดขนาดสเตียรอยด์ — ระวังภาวะกดภูมิรวมกัน' },
+  { pair: ['pred','oc'], level: 'warn', msg: 'การกดภูมิซ้อนทับ — คัดกรองการติดเชื้อก่อนเริ่มและระหว่างใช้ยาอย่างสม่ำเสมอ' },
+  { pair: ['aza','cy'], level: 'warn', msg: 'การรวม steroid-sparing สองตัว — มักสงวนไว้สำหรับเคสดื้อรักษา ควรอยู่ภายใต้การดูแลของผู้เชี่ยวชาญ' },
+  { pair: ['aza','oc'], level: 'warn', msg: 'ไม่ใช่ชุดยาที่นิยม — พิจารณาความจำเป็นเป็นรายกรณีและเฝ้าระวัง CBC' },
+  { pair: ['cy','oc'], level: 'warn', msg: 'การกดภูมิเข้มข้น — สงวนไว้สำหรับเคสที่ควบคุมไม่ได้ด้วยวิธีมาตรฐาน' }
+];
+const PATTERNS = {
+  face: {
+    badge: 'รูปแบบที่ 1 • Facial (Classic)', color: '#e2725b',
+    title: 'Facial pattern — "Butterfly"',
+    desc: 'รอยโรคบริเวณ nasal planum, สันจมูก (dorsal muzzle), รอบดวงตา และใบหู (pinnal) — เป็นการกระจายตัวแบบคลาสสิกที่ช่วยชี้นำการวินิจฉัย',
+    note: 'พบบ่อยที่สุดในการแสดงอาการระยะแรก'
+  },
+  trunk: {
+    badge: 'รูปแบบที่ 2 • Truncal', color: '#2b9097',
+    title: 'Truncal-predominant pattern',
+    desc: 'รอยโรคเด่นบริเวณลำตัว อาจมี pustule และ crust กระจายกว้าง ระวังแยกจาก pyoderma ชนิดอื่น',
+    note: 'ประเมินร่วมกับ cytology ทุกครั้ง'
+  },
+  foot: {
+    badge: 'รูปแบบที่ 3 • Footpad', color: '#d97706',
+    title: 'Footpad crusting',
+    desc: 'สะเก็ดหนาติดแน่นบริเวณขอบแผ่นอุ้งเท้า (footpad margins) อาจเจ็บและมีสารคัดหลั่งเมื่อติดเชื้อแทรกซ้อน',
+    note: 'ทำให้สัตว์เจ็บ — ควรจัดการความเจ็บปวดร่วม'
+  }
+};
+const KEYPOINTS = {
+  overview: 'Autoantibodies (IgG) โจมตี desmosome ชั้นตื้น → acantholysis คือกลไกหลักของโรค',
+  breeds: 'Akita, Chow Chow, Dachshund, English Bulldog, Spaniels • อายุเริ่มป่วยมัธยฐาน 4 ปี',
+  lesions: 'Pustule ตื้นผนังบางแตกง่าย → crust • 3 รูปแบบ: ใบหน้า (butterfly) / footpad / ลำตัว',
+  diagnosis: 'Cytology = tentative dx • Biopsy ≥6 มม. + ส่ง dermatopathologist = definitive dx',
+  treatment: 'ยากดภูมิ ± steroid-sparing drug • อาบน้ำแชมพูยาช่วยลดติดเชื้อและเพิ่มความสบายตัว',
+  prognosis: 'Fair–Good • เกือบทุกรายต้องได้ยาตลอดชีวิต remission ถาวรพบน้อย',
+  barriers: 'ถามคำถามปลายเปิด • อย่ามองข้ามอุปสรรคการเงิน/อารมณ์/ร่างกายของเจ้าของ',
+  references: 'อ้างอิงจาก Clinician\u2019s Brief — Canine Pemphigus Foliaceus (Online 260831)'
+};
+const CITATIONS = {
+  '1': 'อ้างอิง 1 — ข้อมูลสายพันธุ์เสี่ยงและอายุเริ่มป่วยมัธยฐาน (ตามบทความต้นฉบับ)',
+  '2': 'อ้างอิง 2–7 — ชุดการศึกษาสนับสนุนประสิทธิภาพของ oclacitinib ใน pemphigus complex (ตามบทความต้นฉบับ)'
+};
+
+/* ================= HELPERS ================= */
+const $q = (s, c=document) => c.querySelector(s);
+const $qa = (s, c=document) => [...c.querySelectorAll(s)];
+function showToast(msg){
+  const t = $q('#toast');
+  t.textContent = msg; t.classList.remove('hidden');
+  clearTimeout(showToast._tm);
+  showToast._tm = setTimeout(()=>t.classList.add('hidden'), 2200);
+}
+
+/* ================= THEME ================= */
+(function(){
+  const btn = $q('#theme-toggle');
+  const sync = () => { btn.textContent = document.documentElement.classList.contains('dark') ? '☀️' : '🌙'; };
+  btn.addEventListener('click', () => {
+    document.documentElement.classList.toggle('dark');
+    try{ localStorage.setItem('pf-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light'); }catch(e){}
+    sync();
+  });
+  sync();
+})();
+
+/* ================= PROGRESS + REVEAL ================= */
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100;
+  $q('#progress-bar').style.width = pct + '%';
+}, { passive: true });
+
+const revealObs = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting){ e.target.classList.add('in'); revealObs.unobserve(e.target); }
+}), { threshold: .12 });
+$qa('.reveal').forEach(el => revealObs.observe(el));
+
+/* ================= SCROLLSPY ================= */
+function setActive(id){
+  $qa('#spy-nav .chip').forEach(c => c.dataset.active = String(c.dataset.target === id));
+  $qa('#side-links a').forEach(a => {
+    const on = a.dataset.target === id;
+    a.classList.toggle('bg-brand-100', on); a.classList.toggle('dark:bg-brand-900/50', on);
+    a.classList.toggle('text-brand-700', on); a.classList.toggle('dark:text-brand-300', on);
+  });
+  const kp = $q('#keypoint-text');
+  if (kp.dataset.cur !== id && KEYPOINTS[id]){
+    kp.dataset.cur = id;
+    kp.textContent = KEYPOINTS[id];
+    kp.classList.remove('kp-swap'); void kp.offsetWidth; kp.classList.add('kp-swap');
+  }
+}
+const spyObs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) setActive(e.target.id); }),
+  { rootMargin: '-35% 0px -55% 0px' });
+$qa('section[data-spy]').forEach(s => spyObs.observe(s));
+$qa('#spy-nav .chip').forEach(c => c.addEventListener('click', () => {
+  document.getElementById(c.dataset.target)?.scrollIntoView({ behavior: 'smooth' });
+}));
+
+/* ================= HOTSPOTS ================= */
+function setSpot(key){
+  const p = PATTERNS[key]; if (!p) return;
+  $qa('#dog-svg .hotspot').forEach(g => {
+    const on = g.dataset.spot === key;
+    const ring = $q('.hs-ring', g);
+    ring.setAttribute('fill-opacity', on ? '.32' : '.14');
+    ring.setAttribute('stroke-width', on ? '4' : '2.5');
+  });
+  $qa('.spot-btn').forEach(b => {
+    const on = b.dataset.spot === key;
+    b.style.background = on ? p.color : '';
+    b.style.color = on ? '#fff' : '';
+    b.style.borderColor = on ? p.color : '';
+  });
+  const box = $q('#spot-info');
+  box.style.borderColor = p.color;
+  box.style.background = p.color + '14';
+  $q('#spot-badge').textContent = p.badge; $q('#spot-badge').style.color = p.color;
+  $q('#spot-title').textContent = p.title;
+  $q('#spot-desc').textContent = p.desc;
+  $q('#spot-note').textContent = '📌 ' + p.note; $q('#spot-note').style.color = p.color;
+}
+$qa('#dog-svg .hotspot').forEach(g => {
+  g.addEventListener('click', () => setSpot(g.dataset.spot));
+  g.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); setSpot(g.dataset.spot); } });
+});
+$qa('.spot-btn').forEach(b => b.addEventListener('click', () => setSpot(b.dataset.spot)));
+setSpot('face');
+
+/* ================= DX TABS ================= */
+$qa('.dx-tab').forEach(tab => tab.addEventListener('click', () => {
+  $qa('.dx-tab').forEach(t => {
+    const on = t === tab;
+    t.setAttribute('aria-selected', on);
+    t.classList.toggle('bg-white', on); t.classList.toggle('dark:bg-slate-900', on);
+    t.classList.toggle('text-brand-700', on); t.classList.toggle('dark:text-brand-300', on);
+    t.classList.toggle('border-brand-600', on); t.classList.toggle('text-slate-500', !on);
+  });
+  $qa('.dx-panel').forEach(p => p.classList.toggle('hidden', p.id !== tab.dataset.panel));
+}));
+$qa('.dx-tab')[0].click();
+
+/* ================= DRUG CHECKER ================= */
+const dcState = { primary: 'pred', adjuncts: new Set() };
+function renderDrugControls(){
+  const prim = $q('#dc-primary');
+  prim.innerHTML = Object.entries(DRUG_DB).map(([k, d]) => {
+    const on = dcState.primary === k;
+    return `<button data-drug="${k}" class="text-left rounded-xl border-2 p-3 transition ${on ? 'border-brand-600 bg-brand-50 dark:bg-brand-900/40' : 'border-slate-200 dark:border-slate-700 hover:border-brand-400'}">
+      <p class="font-bold text-sm text-slate-900 dark:text-white">${d.th}</p>
+      <p class="text-[11px] text-slate-500 dark:text-slate-400">${d.name}</p>
+      <span class="inline-block mt-1 text-[10px] font-bold px-2 py-0.5 rounded-full ${on ? 'bg-brand-600 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-500'}">${d.badge}</span>
+    </button>`;
+  }).join('');
+  $qa('button[data-drug]', prim).forEach(b => b.addEventListener('click', () => {
+    dcState.primary = b.dataset.drug;
+    dcState.adjuncts.delete(b.dataset.drug);
+    renderDrugControls(); renderDrugOutput();
+  }));
+
+  const adj = $q('#dc-adjuncts');
+  adj.innerHTML = Object.entries(DRUG_DB).filter(([k]) => k !== dcState.primary).map(([k, d]) => {
+    const on = dcState.adjuncts.has(k);
+    return `<button data-adj="${k}" aria-pressed="${on}" class="px-3 py-1.5 rounded-full border text-sm font-semibold transition ${on ? 'bg-brand-600 border-brand-600 text-white' : 'border-slate-300 dark:border-slate-600 hover:border-brand-400'}">${on ? '✓ ' : '+ '}${d.th}</button>`;
+  }).join('');
+  $qa('button[data-adj]', adj).forEach(b => b.addEventListener('click', () => {
+    const k = b.dataset.adj;
+    dcState.adjuncts.has(k) ? dcState.adjuncts.delete(k) : dcState.adjuncts.add(k);
+    renderDrugControls(); renderDrugOutput();
+  }));
+}
+function renderDrugOutput(){
+  const sel = [dcState.primary, ...dcState.adjuncts];
+  const out = $q('#dc-output');
+  let html = '';
+  const pr = DRUG_DB[dcState.primary];
+  html += `<div class="rounded-xl bg-white dark:bg-slate-900 ring-1 ring-slate-200 dark:ring-slate-700 p-4">
+    <p class="text-xs font-bold uppercase tracking-wide text-brand-600 dark:text-brand-300">ยาหลัก</p>
+    <p class="font-bold text-slate-900 dark:text-white mt-0.5">${pr.th} <span class="text-xs font-normal text-slate-500">(${pr.name})</span></p>
+    <p class="text-sm font-body text-slate-600 dark:text-slate-300 mt-1">💊 ${pr.dose}</p>
+  </div>`;
+  if (dcState.adjuncts.size){
+    html += `<div class="text-sm font-body space-y-1">${[...dcState.adjuncts].map(k => `<p class="text-slate-600 dark:text-slate-300">➕ <strong>${DRUG_DB[k].th}</strong> — ${DRUG_DB[k].dose}</p>`).join('')}</div>`;
+  }
+  const alerts = INTERACTIONS.filter(ix => {
+    const [a, b] = ix.pair;
+    return sel.includes(a) && sel.includes(b);
+  });
+  if (alerts.length){
+    html += `<div class="space-y-2">${alerts.map(ix => `<div class="rounded-xl border p-3 text-sm font-body ${ix.level === 'warn' ? 'border-amber-300 bg-amber-50 text-amber-900 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200' : 'border-brand-300 bg-brand-50 text-brand-900 dark:border-brand-800 dark:bg-brand-900/40 dark:text-brand-200'}">${ix.level === 'warn' ? '⚠️' : '🔗'} ${ix.msg}</div>`).join('')}</div>`;
+  }
+  const mons = [];
+  sel.forEach(k => DRUG_DB[k].monitor.forEach(m => mons.push([k, m[0], m[1]])));
+  html += `<div><p class="text-xs font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">🩺 Monitoring ที่ต้องทำ</p>
+    <ul class="space-y-1.5 text-sm font-body">${mons.map(m => `<li class="flex gap-2"><span class="shrink-0 text-[10px] font-bold px-1.5 h-5 inline-flex items-center rounded bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300">${DRUG_DB[m[0]].th.split(' ')[0]}</span><span><strong>${m[1]}</strong>${m[2] ? ' — ' + m[2] : ''}</span></li>`).join('')}</ul></div>`;
+  const cauts = sel.flatMap(k => DRUG_DB[k].cautions);
+  html += `<div><p class="text-xs font-bold uppercase tracking-wide text-coral-600 dark:text-coral-400 mb-2">🚩 ข้อควรระวัง</p>
+    <ul class="space-y-1 text-sm font-body text-slate-600 dark:text-slate-300">${cauts.map(c => `<li>• ${c}</li>`).join('')}</ul></div>`;
+  out.innerHTML = html;
+}
+renderDrugControls(); renderDrugOutput();
+
+$q('#dc-copy').addEventListener('click', async () => {
+  const sel = [dcState.primary, ...dcState.adjuncts];
+  const lines = ['สรุปแผนยา PF (อ้างอิงบทความ Clinician\u2019s Brief)', '─'.repeat(30)];
+  sel.forEach(k => {
+    const d = DRUG_DB[k];
+    lines.push(`• ${d.th} (${d.name}) — ${d.dose}`);
+    d.monitor.forEach(m => lines.push(`   - Monitor: ${m[0]}${m[1] ? ' (' + m[1] + ')' : ''}`));
+  });
+  const alerts = INTERACTIONS.filter(ix => sel.includes(ix.pair[0]) && sel.includes(ix.pair[1]));
+  if (alerts.length){ lines.push('Interaction alerts:'); alerts.forEach(a => lines.push('   ! ' + a.msg)); }
+  try { await navigator.clipboard.writeText(lines.join('\n')); showToast('คัดลอกสรุปแผนยาแล้ว ✓'); }
+  catch(e){ showToast('เบราว์เซอร์ไม่อนุญาตให้คัดลอก'); }
+});
+
+/* ================= FLIP CARDS ================= */
+$qa('.flip').forEach(f => {
+  const toggle = () => f.classList.toggle('flipped');
+  f.addEventListener('click', toggle);
+  f.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); } });
+});
+
+/* ================= CITATION TOOLTIP ================= */
+(function(){
+  const tip = $q('#cite-tip');
+  let showTm = null, sticky = false;
+  function place(el){
+    const r = el.getBoundingClientRect();
+    tip.classList.remove('hidden');
+    const tw = tip.offsetWidth, th = tip.offsetHeight;
+    let x = Math.min(Math.max(8, r.left + r.width/2 - tw/2), window.innerWidth - tw - 8);
+    let y = r.top - th - 8;
+    if (y < 8) y = r.bottom + 8;
+    tip.style.left = x + 'px'; tip.style.top = y + 'px';
+  }
+  function show(el){ tip.textContent = CITATIONS[el.dataset.ref] || ''; place(el); }
+  document.addEventListener('mouseover', e => {
+    const c = e.target.closest('.cite'); if (!c) return;
+    clearTimeout(showTm); showTm = setTimeout(() => show(c), 200);
+  });
+  document.addEventListener('mouseout', e => {
+    if (e.target.closest('.cite') && !sticky){ clearTimeout(showTm); tip.classList.add('hidden'); }
+  });
+  document.addEventListener('click', e => {
+    const c = e.target.closest('.cite');
+    if (c){ sticky = !sticky; show(c); e.stopPropagation(); }
+    else if (sticky){ sticky = false; tip.classList.add('hidden'); }
+  });
+  document.addEventListener('focusin', e => { const c = e.target.closest('.cite'); if (c) show(c); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape'){ sticky = false; tip.classList.add('hidden'); } });
+})();
+
+/* ================= HANDOUT ================= */
+(function(){
+  const modal = $q('#handout-modal');
+  const open = () => { modal.classList.remove('hidden'); document.body.style.overflow = 'hidden'; };
+  const close = () => { modal.classList.add('hidden'); document.body.style.overflow = ''; };
+  $qa('.handout-trigger, #handout-open').forEach(b => b.addEventListener('click', open));
+  $q('#handout-close').addEventListener('click', close);
+  modal.addEventListener('click', e => { if (e.target === modal) close(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !modal.classList.contains('hidden')) close(); });
+  $q('#handout-print').addEventListener('click', () => {
+    document.body.classList.add('printing-handout');
+    window.print();
+  });
+  window.addEventListener('afterprint', () => document.body.classList.remove('printing-handout'));
+})();
+
+setActive('overview');
+</script>
+</body>
+</html>
